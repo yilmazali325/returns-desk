@@ -1,0 +1,46 @@
+0.00.067.599 I srv  llama_server: initializing ...
+0.00.067.606 I cmn  common_param: common_params_print_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.067.679 I srv  init_listene: The UI is disabled
+0.00.067.680 I srv  init_listene: Use --ui/--no-ui (or deprecated --webui/--no-webui) to enable/disable
+0.00.067.712 W srv  llama_server: security: no API key is set and CORS allows all origins (see https://github.com/ggml-org/llama.cpp/pull/25655)
+0.00.069.227 I srv    load_model: loading model '/Users/ali/Desktop/Projects/retail-returns-desk/models/Qwen3.5-4B-Q4_K_M.gguf'
+0.00.633.371 I cmn          init: llama threadpool init, n_threads = 5
+0.00.686.699 I srv    load_model: initializing, n_slots = 1, n_ctx_slot = 8192, kv_unified = 'false'
+0.00.689.163 I srv  llama_server: model loaded
+0.00.689.166 I srv  llama_server: listening on http://127.0.0.1:8401
+0.00.693.025 I slot get_availabl: id  0 | task -1 | selected slot by LRU, n_tokens = 0, t_last = -1
+0.00.693.048 I slot launch_slot_: id  0 | task 0 | processing task, is_child = 0
+0.00.747.749 I slot print_timing: id  0 | task 0 | prompt eval time =      54.69 ms /    13 tokens (    4.21 ms per token,   237.71 tokens per second)
+0.00.747.751 I slot print_timing: id  0 | task 0 |        eval time =       0.00 ms /     1 tokens (    0.00 ms per token,     0.00 tokens per second)
+0.00.747.752 I slot print_timing: id  0 | task 0 |       total time =      54.69 ms /    14 tokens
+0.00.747.752 I slot print_timing: id  0 | task 0 |    graphs reused =          1
+0.00.747.752 I slot print_timing: id  0 | task 0 |   graph reallocs =          0    /     0        (same size) / (changed size)
+0.00.747.765 I slot      release: id  0 | task 0 | stop processing: n_tokens = 13, truncated = 0
+0.00.758.095 I slot get_availabl: id  0 | task -1 | selected slot by LRU, n_tokens = 13, t_last = 1099733089821
+parse: error parsing grammar: expecting newline or end at ::= | " " | "\n"{1,2} [ \t]{0,20}
+
+
+root ::= 
+space ::= | " " | "\n"{1,2} [ \t]{0,20}
+
+0.00.782.316 E failed to parse grammar
+0.00.783.423 E srv    send_error: task id = 3, error: Failed to initialize samplers: failed to parse grammar
+0.00.783.428 E srv  process_sing: failed to launch slot with task, id_task = 3
+0.00.783.439 W srv          stop: cancel task, id_task = 3
+0.00.792.733 I slot get_availabl: id  0 | task -1 | selected slot by LRU, n_tokens = 13, t_last = 1099733089821
+0.00.792.900 I slot launch_slot_: id  0 | task 5 | processing task, is_child = 0
+0.01.856.503 I slot print_timing: id  0 | task 5 | prompt eval time =     625.04 ms /   902 tokens (    0.69 ms per token,  1443.10 tokens per second)
+0.01.856.507 I slot print_timing: id  0 | task 5 |        eval time =     438.55 ms /    24 tokens (   19.07 ms per token,    52.45 tokens per second)
+0.01.856.507 I slot print_timing: id  0 | task 5 |       total time =    1063.59 ms /   926 tokens
+0.01.856.508 I slot print_timing: id  0 | task 5 |    graphs reused =         23
+0.01.856.508 I slot print_timing: id  0 | task 5 |   graph reallocs =          0    /     0        (same size) / (changed size)
+0.01.856.545 I slot      release: id  0 | task 5 | stop processing: n_tokens = 925, truncated = 0
+0.01.861.939 I slot get_availabl: id  0 | task -1 | selected slot by LRU, n_tokens = 925, t_last = 1099734198601
+0.01.909.114 I slot launch_slot_: id  0 | task 33 | processing task, is_child = 0
+0.03.311.981 I slot print_timing: id  0 | task 33 | prompt eval time =     553.18 ms /   817 tokens (    0.68 ms per token,  1476.93 tokens per second)
+0.03.311.983 I slot print_timing: id  0 | task 33 |        eval time =     849.68 ms /    62 tokens (   13.93 ms per token,    71.79 tokens per second)
+0.03.311.984 I slot print_timing: id  0 | task 33 |       total time =    1402.85 ms /   879 tokens
+0.03.311.984 I slot print_timing: id  0 | task 33 |    graphs reused =         83
+0.03.311.985 I slot print_timing: id  0 | task 33 |   graph reallocs =          0    /     0        (same size) / (changed size)
+0.03.312.017 I slot      release: id  0 | task 33 | stop processing: n_tokens = 878, truncated = 0
+0.03.313.252 I srv    operator(): operator(): cleaning up before exit...

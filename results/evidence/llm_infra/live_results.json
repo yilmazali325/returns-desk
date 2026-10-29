@@ -1,0 +1,826 @@
+{
+ "cache_ram": {
+  "0": {
+   "cache_hit_pct": 53.8,
+   "cached_tokens": 30422,
+   "calls": 80,
+   "decode_ms": 31155.6,
+   "peak_unified_gpu_mb": 3471.7,
+   "prefill_ms": 21261.0,
+   "prompt_tokens": 56597,
+   "server_peak_phys_footprint_mb": 884.8,
+   "server_phys_footprint_mb_end": 884.8,
+   "step_p50_ms": 583.5,
+   "step_p95_ms": 1270.8,
+   "trace_sha": "a0e6e1275e855eb4",
+   "wall_ms": 52678.9
+  },
+  "1024": {
+   "cache_hit_pct": 92.2,
+   "cached_tokens": 52209,
+   "calls": 80,
+   "decode_ms": 30534.0,
+   "peak_unified_gpu_mb": 3268.8,
+   "prefill_ms": 7964.3,
+   "prompt_tokens": 56597,
+   "server_peak_phys_footprint_mb": 1927.8,
+   "server_phys_footprint_mb_end": 1927.8,
+   "step_p50_ms": 443.3,
+   "step_p95_ms": 915.8,
+   "trace_sha": "49d2cfef87c76f62",
+   "wall_ms": 39119.2
+  },
+  "2048": {
+   "cache_hit_pct": 92.2,
+   "cached_tokens": 52209,
+   "calls": 80,
+   "decode_ms": 29784.4,
+   "peak_unified_gpu_mb": 3300.4,
+   "prefill_ms": 7814.8,
+   "prompt_tokens": 56597,
+   "server_peak_phys_footprint_mb": 1927.0,
+   "server_phys_footprint_mb_end": 1927.0,
+   "step_p50_ms": 442.1,
+   "step_p95_ms": 869.6,
+   "trace_sha": "49d2cfef87c76f62",
+   "wall_ms": 38181.8
+  },
+  "8192": {
+   "cache_hit_pct": 92.2,
+   "cached_tokens": 52209,
+   "calls": 80,
+   "decode_ms": 29966.2,
+   "peak_unified_gpu_mb": 3284.6,
+   "prefill_ms": 7861.9,
+   "prompt_tokens": 56597,
+   "server_peak_phys_footprint_mb": 1925.7,
+   "server_phys_footprint_mb_end": 1925.7,
+   "step_p50_ms": 443.6,
+   "step_p95_ms": 890.6,
+   "trace_sha": "49d2cfef87c76f62",
+   "wall_ms": 38397.6
+  }
+ },
+ "cache_sequence_q4": {
+  "constrained": [
+   {
+    "cached": 0,
+    "decode_ms": 572.21,
+    "error": null,
+    "generated": 42,
+    "prefill": 823,
+    "prompt": 823,
+    "prompt_ms": 560.64,
+    "step": "R1 cold",
+    "tool": "handoff_to_operations"
+   },
+   {
+    "cached": 864,
+    "decode_ms": 809.45,
+    "error": null,
+    "generated": 59,
+    "prefill": 40,
+    "prompt": 904,
+    "prompt_ms": 94.07,
+    "step": "R2 append-only, allowed narrowed",
+    "tool": "reply_to_customer"
+   },
+   {
+    "cached": 0,
+    "decode_ms": 194.39,
+    "error": null,
+    "generated": 15,
+    "prefill": 512,
+    "prompt": 512,
+    "prompt_ms": 363.99,
+    "step": "O1 other role",
+    "tool": "check_eligibility"
+   },
+   {
+    "cached": 526,
+    "decode_ms": 249.95,
+    "error": null,
+    "generated": 19,
+    "prefill": 29,
+    "prompt": 555,
+    "prompt_ms": 85.17,
+    "step": "O2 append-only",
+    "tool": "create_proposal"
+   },
+   {
+    "cached": 573,
+    "decode_ms": 266.32,
+    "error": null,
+    "generated": 19,
+    "prefill": 35,
+    "prompt": 608,
+    "prompt_ms": 86.14,
+    "step": "O3 append-only, terminal only",
+    "tool": "report_to_resolution"
+   },
+   {
+    "cached": 962,
+    "decode_ms": 813.27,
+    "error": null,
+    "generated": 59,
+    "prefill": 34,
+    "prompt": 996,
+    "prompt_ms": 85.78,
+    "step": "R3 back to R (host cache restore)",
+    "tool": "reply_to_customer"
+   },
+   {
+    "cached": 665,
+    "decode_ms": 572.15,
+    "error": null,
+    "generated": 42,
+    "prefill": 167,
+    "prompt": 832,
+    "prompt_ms": 161.87,
+    "step": "R turn 2 (new user block)",
+    "tool": "handoff_to_operations"
+   },
+   {
+    "cached": 0,
+    "decode_ms": 823.92,
+    "error": null,
+    "generated": 59,
+    "prefill": 931,
+    "prompt": 931,
+    "prompt_ms": 637.01,
+    "step": "BREAK tool list changed",
+    "tool": "reply_to_customer"
+   },
+   {
+    "cached": 0,
+    "decode_ms": 812.56,
+    "error": null,
+    "generated": 59,
+    "prefill": 1011,
+    "prompt": 1011,
+    "prompt_ms": 664.43,
+    "step": "BREAK dynamic text in system prompt",
+    "tool": "reply_to_customer"
+   },
+   {
+    "cached": 665,
+    "decode_ms": 1075.97,
+    "error": null,
+    "generated": 77,
+    "prefill": 338,
+    "prompt": 1003,
+    "prompt_ms": 235.93,
+    "step": "BREAK replayed call differs from generated",
+    "tool": "reply_to_customer"
+   }
+  ],
+  "native": [
+   {
+    "cached": 0,
+    "decode_ms": 442.43,
+    "error": null,
+    "generated": 32,
+    "prefill": 899,
+    "prompt": 899,
+    "prompt_ms": 599.23,
+    "step": "R1 cold",
+    "tool": "find_order_lines"
+   },
+   {
+    "cached": 930,
+    "decode_ms": 867.77,
+    "error": null,
+    "generated": 63,
+    "prefill": 40,
+    "prompt": 970,
+    "prompt_ms": 87.58,
+    "step": "R2 append-only, allowed narrowed",
+    "tool": "handoff_to_operations"
+   },
+   {
+    "cached": 0,
+    "decode_ms": 224.01,
+    "error": null,
+    "generated": 17,
+    "prefill": 700,
+    "prompt": 700,
+    "prompt_ms": 524.88,
+    "step": "O1 other role",
+    "tool": "check_eligibility"
+   },
+   {
+    "cached": 716,
+    "decode_ms": 378.35,
+    "error": null,
+    "generated": 28,
+    "prefill": 29,
+    "prompt": 745,
+    "prompt_ms": 84.35,
+    "step": "O2 append-only",
+    "tool": "create_proposal"
+   },
+   {
+    "cached": 772,
+    "decode_ms": 209.88,
+    "error": "TOOL_NOT_ALLOWED: execute_proposal is not allowed now (allowed now: report_to_resolution)",
+    "generated": 16,
+    "prefill": 35,
+    "prompt": 807,
+    "prompt_ms": 92.44,
+    "step": "O3 append-only, terminal only",
+    "tool": "execute_proposal"
+   },
+   {
+    "cached": 1032,
+    "decode_ms": 732.08,
+    "error": null,
+    "generated": 53,
+    "prefill": 34,
+    "prompt": 1066,
+    "prompt_ms": 85.53,
+    "step": "R3 back to R (host cache restore)",
+    "tool": "reply_to_customer"
+   },
+   {
+    "cached": 741,
+    "decode_ms": 435.83,
+    "error": null,
+    "generated": 32,
+    "prefill": 167,
+    "prompt": 908,
+    "prompt_ms": 162.35,
+    "step": "R turn 2 (new user block)",
+    "tool": "find_order_lines"
+   },
+   {
+    "cached": 0,
+    "decode_ms": 715.83,
+    "error": null,
+    "generated": 52,
+    "prefill": 992,
+    "prompt": 992,
+    "prompt_ms": 687.2,
+    "step": "BREAK tool list changed",
+    "tool": "reply_to_customer"
+   },
+   {
+    "cached": 383,
+    "decode_ms": 730.22,
+    "error": null,
+    "generated": 53,
+    "prefill": 698,
+    "prompt": 1081,
+    "prompt_ms": 521.56,
+    "step": "BREAK dynamic text in system prompt",
+    "tool": "reply_to_customer"
+   },
+   {
+    "cached": 565,
+    "decode_ms": 730.33,
+    "error": null,
+    "generated": 53,
+    "prefill": 497,
+    "prompt": 1062,
+    "prompt_ms": 380.73,
+    "step": "BREAK replayed call differs from generated",
+    "tool": "reply_to_customer"
+   }
+  ]
+ },
+ "cold_start": {
+  "Q4_K_M": {
+   "engine_version": "0.7.0 (build 11669, commit 620d2225c)",
+   "engine_version_mismatch_allowed": false,
+   "first_request_ms": 64.8,
+   "gpu_in_use_delta_mb_idle": 2901.1,
+   "model_page_cache": "partial",
+   "model_page_cache_resident_pct": 52.4,
+   "model_sha256": "00fe7986ff5f6b463e62455821146049db6f9313603938a70800d1fb69ef11a4",
+   "server_log_facts": {
+    "kv_unified": false,
+    "n_ctx_slot": 8192,
+    "n_slots": 1,
+    "n_threads": 5
+   },
+   "server_phys_footprint_mb_idle": 540.4,
+   "server_rss_mb_idle": 3150.2,
+   "server_spawn_to_ready_ms": 1107.9,
+   "warmup": true
+  },
+  "Q8_0": {
+   "engine_version": "0.7.0 (build 11669, commit 620d2225c)",
+   "engine_version_mismatch_allowed": false,
+   "first_request_ms": 60.3,
+   "gpu_in_use_delta_mb_idle": 4733.1,
+   "model_page_cache": "cold",
+   "model_page_cache_resident_pct": 0.0,
+   "model_sha256": "10cc391b403021dd11c614679d2fd92f611c3681d29e29651b717316965d61e1",
+   "server_log_facts": {
+    "kv_unified": false,
+    "n_ctx_slot": 8192,
+    "n_slots": 1,
+    "n_threads": 5
+   },
+   "server_phys_footprint_mb_idle": 563.6,
+   "server_rss_mb_idle": 4126.6,
+   "server_spawn_to_ready_ms": 2197.6,
+   "warmup": true
+  }
+ },
+ "cold_start_ssd_vs_warm": {
+  "Q4_K_M": {
+   "page_cache_warm": {
+    "first_agent_step_ms": 1137.2,
+    "first_request_ms": 60.7,
+    "model_page_cache": "warm",
+    "model_page_cache_resident_pct": 99.6,
+    "resident_pct_after_first_step": 100.0,
+    "second_agent_step_ms": 590.5,
+    "server_spawn_to_ready_ms": 717.2
+   },
+   "ssd_cold": {
+    "first_agent_step_ms": 1127.7,
+    "first_request_ms": 56.2,
+    "model_page_cache": "cold",
+    "model_page_cache_resident_pct": 0.0,
+    "resident_pct_after_first_step": 99.6,
+    "second_agent_step_ms": 583.0,
+    "server_spawn_to_ready_ms": 1558.5
+   }
+  },
+  "Q8_0": {
+   "page_cache_warm": {
+    "first_agent_step_ms": 982.4,
+    "first_request_ms": 57.6,
+    "model_page_cache": "warm",
+    "model_page_cache_resident_pct": 99.8,
+    "resident_pct_after_first_step": 100.0,
+    "second_agent_step_ms": 444.8,
+    "server_spawn_to_ready_ms": 791.8
+   },
+   "ssd_cold": {
+    "first_agent_step_ms": 980.0,
+    "first_request_ms": 63.0,
+    "model_page_cache": "cold",
+    "model_page_cache_resident_pct": 0.0,
+    "resident_pct_after_first_step": 99.8,
+    "second_agent_step_ms": 442.5,
+    "server_spawn_to_ready_ms": 2086.4
+   }
+  }
+ },
+ "constrained_off_account": {
+  "Q4_K_M": {
+   "args": {
+    "message": "I don't see line LN-7 in order ORD-999. Could you confirm which order and line you'd like to refund? Here are your current order lines: ORD-3Q line LN-1 (HOODIE-M) and ORD-3Q line LN-2 (TEE-M)."
+   },
+   "tool": "reply_to_customer"
+  },
+  "Q8_0": {
+   "args": {
+    "message": "I don't see an order ORD-999 or line LN-7 in your account. Could you please confirm the correct order and line numbers?"
+   },
+   "tool": "reply_to_customer"
+  }
+ },
+ "constrained_protocol": {
+  "Q4_K_M": {
+   "all_parsed_and_valid": true,
+   "resolution_tools_chosen": {
+    "find_order_lines": 5,
+    "handoff_to_operations": 9,
+    "reply_to_customer": 10
+   },
+   "steps_checked": 30
+  },
+  "Q8_0": {
+   "all_parsed_and_valid": true,
+   "resolution_tools_chosen": {
+    "find_order_lines": 5,
+    "handoff_to_operations": 9,
+    "reply_to_customer": 10
+   },
+   "steps_checked": 30
+  }
+ },
+ "engine_facts": {
+  "q4": {
+   "native_flattened_call": {
+    "args": {
+     "intent": "propose_refund",
+     "line_id": "LN-1",
+     "order_id": "ORD-1Q"
+    },
+    "error": null,
+    "tool": "handoff_to_operations"
+   },
+   "native_unflattened_oneof_calls": [
+    [
+     "handoff_to_operations",
+     "{}"
+    ]
+   ],
+   "tools_plus_response_format_body": "{\"error\":{\"code\":400,\"message\":\"Failed to initialize samplers: failed to parse grammar\",\"type\":\"invalid_request_error\"}}",
+   "tools_plus_response_format_http_status": 400
+  }
+ },
+ "hardware": {
+  "cpu": "Apple M5 Pro",
+  "cpu_cores": 15,
+  "driver": "Metal (bundled with macOS 25E253; no separate GPU driver)",
+  "gpu": "Apple M5 Pro integrated GPU (16 cores)",
+  "gpu_count": 1,
+  "os": "macOS 26.4.1 (25E253)",
+  "power": "AC power, pmset powermode 0 (automatic), sleep prevented",
+  "ram_gb": 24,
+  "unified_memory": true
+ },
+ "memory_3_cases_constrained": {
+  "Q4_K_M": {
+   "calls": 30,
+   "gpu_baseline_mb": 814.9,
+   "gpu_in_use_peak_mb_absolute": 4029.7,
+   "memory_samples": 69,
+   "peak_ram_mb": 1728.9,
+   "peak_vram_mb": 3214.8,
+   "per_process": {
+    "adapter": {
+     "interval_reset": true,
+     "peak_phys_footprint_mb": 53.9,
+     "peak_rss_mb": 49.2,
+     "phys_footprint_mb": 53.9,
+     "pid": 2767,
+     "source": "kernel high-water"
+    },
+    "llama-server": {
+     "interval_reset": true,
+     "peak_phys_footprint_mb": 1675.0,
+     "peak_rss_mb": 4067.0,
+     "phys_footprint_mb": 1514.0,
+     "pid": 3454,
+     "source": "kernel high-water"
+    }
+   },
+   "rss_mb": 4116.2
+  },
+  "Q8_0": {
+   "calls": 30,
+   "gpu_baseline_mb": 661.3,
+   "gpu_in_use_peak_mb_absolute": 5572.1,
+   "memory_samples": 94,
+   "peak_ram_mb": 1743.6,
+   "peak_vram_mb": 4910.8,
+   "per_process": {
+    "adapter": {
+     "interval_reset": true,
+     "peak_phys_footprint_mb": 55.1,
+     "peak_rss_mb": 50.1,
+     "phys_footprint_mb": 52.4,
+     "pid": 2767,
+     "source": "kernel high-water"
+    },
+    "llama-server": {
+     "interval_reset": true,
+     "peak_phys_footprint_mb": 1688.5,
+     "peak_rss_mb": 5525.9,
+     "phys_footprint_mb": 1496.3,
+     "pid": 3557,
+     "source": "kernel high-water"
+    }
+   },
+   "rss_mb": 5576.0
+  }
+ },
+ "native_protocol": {
+  "Q4_K_M": {
+   "calls": [
+    {
+     "args": {
+      "order_ref": "ORD-0Q"
+     },
+     "error": null,
+     "tool": "find_order_lines"
+    },
+    {
+     "args": {
+      "order_ref": "ORD-1Q"
+     },
+     "error": null,
+     "tool": "find_order_lines"
+    },
+    {
+     "args": {
+      "order_ref": "ORD-2Q"
+     },
+     "error": null,
+     "tool": "find_order_lines"
+    },
+    {
+     "args": {
+      "order_ref": "ORD-999"
+     },
+     "error": null,
+     "tool": "find_order_lines"
+    },
+    {
+     "args": {
+      "order_ref": "ORD-4Q"
+     },
+     "error": null,
+     "tool": "find_order_lines"
+    },
+    {
+     "args": {
+      "order_ref": "ORD-5Q"
+     },
+     "error": null,
+     "tool": "find_order_lines"
+    },
+    {
+     "args": {
+      "order_ref": "ORD-6Q"
+     },
+     "error": null,
+     "tool": "find_order_lines"
+    },
+    {
+     "args": {
+      "order_ref": "ORD-7Q"
+     },
+     "error": null,
+     "tool": "find_order_lines"
+    },
+    {
+     "args": {},
+     "error": null,
+     "tool": "check_eligibility"
+    },
+    {
+     "args": {},
+     "error": null,
+     "tool": "check_eligibility"
+    }
+   ],
+   "outcomes": {
+    "ok": 8
+   }
+  },
+  "Q8_0": {
+   "calls": [
+    {
+     "args": {
+      "order_ref": "ORD-0Q"
+     },
+     "error": null,
+     "tool": "find_order_lines"
+    },
+    {
+     "args": {
+      "intent": "propose_exchange",
+      "line_id": "LN-1",
+      "order_id": "ORD-1Q",
+      "requested_size": "L"
+     },
+     "error": null,
+     "tool": "handoff_to_operations"
+    },
+    {
+     "args": {
+      "order_ref": "ORD-2Q"
+     },
+     "error": null,
+     "tool": "find_order_lines"
+    },
+    {
+     "args": {
+      "order_ref": "ORD-999"
+     },
+     "error": null,
+     "tool": "find_order_lines"
+    },
+    {
+     "args": {
+      "order_ref": "ORD-4Q"
+     },
+     "error": null,
+     "tool": "find_order_lines"
+    },
+    {
+     "args": {
+      "order_ref": "ORD-5Q"
+     },
+     "error": null,
+     "tool": "find_order_lines"
+    },
+    {
+     "args": {
+      "order_ref": "ORD-6Q"
+     },
+     "error": null,
+     "tool": "find_order_lines"
+    },
+    {
+     "args": {
+      "intent": "propose_refund",
+      "line_id": "LN-1",
+      "order_id": "ORD-7Q"
+     },
+     "error": null,
+     "tool": "handoff_to_operations"
+    },
+    {
+     "args": {},
+     "error": null,
+     "tool": "check_eligibility"
+    },
+    {
+     "args": {},
+     "error": null,
+     "tool": "check_eligibility"
+    }
+   ],
+   "outcomes": {
+    "ok": 8
+   }
+  }
+ },
+ "new_turn_card_layout_q4": {
+  "constrained": {
+   "card_as_separate_user_message": {
+    "cached": 759,
+    "prefill": 69,
+    "prompt": 828,
+    "prompt_ms": 95.41,
+    "tool": "handoff_to_operations"
+   },
+   "card_inside_last_user_message": {
+    "cached": 665,
+    "prefill": 159,
+    "prompt": 824,
+    "prompt_ms": 156.41,
+    "tool": "handoff_to_operations"
+   }
+  }
+ },
+ "runs": [
+  {
+   "pytest_args": [
+    "-m",
+    "llm",
+    "tests/llm/test_llm_live.py",
+    "-s",
+    "-p",
+    "no:cacheprovider",
+    "--timeout",
+    "1500"
+   ],
+   "run_conditions_after": {
+    "battery_percent": 79,
+    "cpu_heavy_processes": [],
+    "gpu_device_utilization_pct": 0,
+    "gpu_in_use_system_memory_mb": 647.4,
+    "load_avg_1_5_15": [
+     2.38,
+     2.14,
+     2.63
+    ],
+    "low_power_mode": false,
+    "on_ac_power": true,
+    "other_llama_servers": [],
+    "power_source": "AC Power",
+    "powermode": 0,
+    "sleep_prevented": true,
+    "thermal": [
+     "Note: No thermal warning level has been recorded",
+     "Note: No performance warning level has been recorded",
+     "Note: No CPU power status has been recorded"
+    ],
+    "thermal_warning": false
+   },
+   "run_conditions_before": {
+    "battery_percent": 80,
+    "cpu_heavy_processes": [],
+    "gpu_device_utilization_pct": 20,
+    "gpu_in_use_system_memory_mb": 831.7,
+    "load_avg_1_5_15": [
+     1.51,
+     2.04,
+     2.93
+    ],
+    "low_power_mode": false,
+    "on_ac_power": true,
+    "other_llama_servers": [],
+    "power_source": "AC Power",
+    "powermode": 0,
+    "sleep_prevented": true,
+    "thermal": [
+     "Note: No thermal warning level has been recorded",
+     "Note: No performance warning level has been recorded",
+     "Note: No CPU power status has been recorded"
+    ],
+    "thermal_warning": false
+   },
+   "sections": [
+    "cache_ram",
+    "cache_sequence_q4",
+    "cold_start",
+    "cold_start_ssd_vs_warm",
+    "constrained_off_account",
+    "constrained_protocol",
+    "hardware",
+    "memory_3_cases_constrained",
+    "native_protocol",
+    "new_turn_card_layout_q4",
+    "throughput"
+   ]
+  },
+  {
+   "pytest_args": [
+    "-m",
+    "llm",
+    "tests/llm/test_llm_live.py",
+    "-s",
+    "-p",
+    "no:cacheprovider",
+    "--timeout",
+    "300",
+    "-k",
+    "engine_facts"
+   ],
+   "run_conditions_after": {
+    "battery_percent": 79,
+    "cpu_heavy_processes": [],
+    "gpu_device_utilization_pct": 94,
+    "gpu_in_use_system_memory_mb": 642.6,
+    "load_avg_1_5_15": [
+     2.16,
+     2.1,
+     2.61
+    ],
+    "low_power_mode": false,
+    "on_ac_power": true,
+    "other_llama_servers": [],
+    "power_source": "AC Power",
+    "powermode": 0,
+    "sleep_prevented": true,
+    "thermal": [
+     "Note: No thermal warning level has been recorded",
+     "Note: No performance warning level has been recorded",
+     "Note: No CPU power status has been recorded"
+    ],
+    "thermal_warning": false
+   },
+   "run_conditions_before": {
+    "battery_percent": 79,
+    "cpu_heavy_processes": [],
+    "gpu_device_utilization_pct": 20,
+    "gpu_in_use_system_memory_mb": 820.5,
+    "load_avg_1_5_15": [
+     2.09,
+     2.09,
+     2.6
+    ],
+    "low_power_mode": false,
+    "on_ac_power": true,
+    "other_llama_servers": [],
+    "power_source": "AC Power",
+    "powermode": 0,
+    "sleep_prevented": true,
+    "thermal": [
+     "Note: No thermal warning level has been recorded",
+     "Note: No performance warning level has been recorded",
+     "Note: No CPU power status has been recorded"
+    ],
+    "thermal_warning": false
+   },
+   "sections": [
+    "engine_facts",
+    "hardware"
+   ]
+  }
+ ],
+ "throughput": {
+  "Q4_K_M": {
+   "decode_tok_s_median_of_5_x128": 70.5,
+   "decode_tok_s_range": [
+    69.8,
+    70.9
+   ],
+   "prefill_tok_s_median_of_3": {
+    "~1000_tokens": 1522.6,
+    "~2000_tokens": 1529.0
+   }
+  },
+  "Q8_0": {
+   "decode_tok_s_median_of_5_x128": 50.8,
+   "decode_tok_s_range": [
+    50.3,
+    51.1
+   ],
+   "prefill_tok_s_median_of_3": {
+    "~1000_tokens": 1693.3,
+    "~2000_tokens": 1709.5
+   }
+  }
+ }
+}

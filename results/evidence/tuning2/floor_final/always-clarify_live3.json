@@ -1,0 +1,2124 @@
+{
+ "contract_version": 1,
+ "input_sha256": "9114db7675154d6bb5a377da3beb87804c5a93157d8230104629b5a50752af45",
+ "hardware": {
+  "note": "code-only probe, no model"
+ },
+ "configuration": {
+  "mode": "always-clarify",
+  "profile": "F",
+  "llm": "stub (no model)"
+ },
+ "results": [
+  {
+   "case_id": "num1_jeans_for_a_32",
+   "turns": [
+    {
+     "decision": "clarify",
+     "response": "Matching item on your account: 1) JEANS-30 (size 30), order O-1206, line L1, paid $70.00. Could you tell me a bit more about what you need?",
+     "proposal": null,
+     "transaction": null,
+     "confirmed_proposal_id": null
+    },
+    {
+     "decision": "clarify",
+     "response": "Matching item on your account: 1) JEANS-30 (size 30), order O-1206, line L1, paid $70.00. Could you tell me a bit more about what you need?",
+     "proposal": null,
+     "transaction": null,
+     "confirmed_proposal_id": null
+    }
+   ],
+   "action_audit": [
+    {
+     "seq": 1,
+     "turn": 1,
+     "kind": "grounding",
+     "agent": "orchestrator",
+     "tool": "analyze",
+     "arguments": {
+      "turn": 1
+     },
+     "result": {
+      "order_refs": [
+       "O-1206"
+      ],
+      "unknown_order_refs": [],
+      "line_refs": [
+       "L1"
+      ],
+      "unknown_line_refs": [],
+      "other_id_refs": [],
+      "product_refs": [],
+      "unmatched_product_words": [],
+      "requested_products": [],
+      "requested_size": "32",
+      "requested_sizes": [
+       "32"
+      ],
+      "original_size_hints": [],
+      "mentioned_sizes": [
+       "32"
+      ],
+      "remedy_cue": "exchange",
+      "stated_remedy": "exchange",
+      "remedy_words": [
+       "exchange",
+       "<size> wanted"
+      ],
+      "cancel_cue": false,
+      "last_remedy_cue": "exchange",
+      "last_requested_size": "32",
+      "inquiry": false,
+      "candidates": [
+       "O-1206/L1"
+      ],
+      "id_candidates": [
+       "O-1206/L1"
+      ],
+      "unique_target": [
+       "O-1206",
+       "L1"
+      ],
+      "not_found_code": null,
+      "filters_used": [
+       "order",
+       "line"
+      ],
+      "explain": [
+       "message 1: orders O-1206; lines L1; requested sizes 32; remedy exchange (exchange, <size> wanted)",
+       "filter order O-1206: 2 candidate(s)",
+       "filter line L1: 1 candidate(s)",
+       "unique target O-1206/L1"
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 2,
+     "turn": 1,
+     "kind": "tool",
+     "agent": "orchestrator",
+     "tool": "prefetch_account_card",
+     "arguments": {},
+     "result": {
+      "lines": [
+       {
+        "order_id": "O-1206",
+        "line_id": "L1",
+        "sku": "JEANS-30",
+        "product_id": "JEANS",
+        "size": "30",
+        "aliases": [
+         "jeans",
+         "denim",
+         "pants",
+         "trouser"
+        ],
+        "paid_cents": 7000,
+        "delivered_on": "2026-10-28"
+       },
+       {
+        "order_id": "O-1206",
+        "line_id": "L2",
+        "sku": "TEE-M",
+        "product_id": "TEE",
+        "size": "M",
+        "aliases": [
+         "tee",
+         "t-shirt",
+         "tee shirt",
+         "shirt",
+         "top"
+        ],
+        "paid_cents": 4000,
+        "delivered_on": "2026-10-28"
+       }
+      ],
+      "count": 2,
+      "catalog": [
+       {
+        "sku": "TEE-S",
+        "product_id": "TEE",
+        "size": "S"
+       },
+       {
+        "sku": "TEE-M",
+        "product_id": "TEE",
+        "size": "M"
+       },
+       {
+        "sku": "TEE-L",
+        "product_id": "TEE",
+        "size": "L"
+       },
+       {
+        "sku": "TEE-XL",
+        "product_id": "TEE",
+        "size": "XL"
+       },
+       {
+        "sku": "JEANS-30",
+        "product_id": "JEANS",
+        "size": "30"
+       },
+       {
+        "sku": "JEANS-32",
+        "product_id": "JEANS",
+        "size": "32"
+       },
+       {
+        "sku": "JEANS-34",
+        "product_id": "JEANS",
+        "size": "34"
+       },
+       {
+        "sku": "JEANS-36",
+        "product_id": "JEANS",
+        "size": "36"
+       }
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 3,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "reply_to_customer",
+     "arguments": {
+      "message": "Could you tell me a bit more about what you need?"
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "reply_to_customer",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 0,
+      "cached_tokens": 0,
+      "prefill_tokens": 0,
+      "completion_tokens": 1,
+      "prompt_ms": 0.0,
+      "predicted_ms": 0.0,
+      "latency_ms": 0.0,
+      "finish_reason": "stop",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "handoff_to_operations",
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 4,
+     "turn": 1,
+     "kind": "guard",
+     "agent": "orchestrator",
+     "tool": "clarify_veto",
+     "arguments": {
+      "intent": "propose_exchange",
+      "order_id": "O-1206",
+      "line_id": "L1",
+      "requested_size": "32",
+      "requested_product": "SAME"
+     },
+     "result": {
+      "reason": "the conversation already names one line and the remedy"
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 5,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "reply_to_customer",
+     "arguments": {
+      "message": "Could you tell me a bit more about what you need?"
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "reply_to_customer",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 0,
+      "cached_tokens": 0,
+      "prefill_tokens": 0,
+      "completion_tokens": 1,
+      "prompt_ms": 0.0,
+      "predicted_ms": 0.0,
+      "latency_ms": 0.0,
+      "finish_reason": "stop",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "handoff_to_operations",
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 6,
+     "turn": 1,
+     "kind": "tool",
+     "agent": "orchestrator",
+     "tool": "check_eligibility",
+     "arguments": {
+      "order_id": "O-1206",
+      "line_id": "L1"
+     },
+     "result": {
+      "eligible": true,
+      "reasons": [],
+      "order_id": "O-1206",
+      "line_id": "L1",
+      "sku": "JEANS-30",
+      "product_id": "JEANS",
+      "size": "30",
+      "paid_cents": 7000,
+      "delivered_on": "2026-10-28",
+      "as_of": "2026-11-01",
+      "days_since_delivery": 4,
+      "window_days": 30
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 7,
+     "turn": 2,
+     "kind": "grounding",
+     "agent": "orchestrator",
+     "tool": "analyze",
+     "arguments": {
+      "turn": 2
+     },
+     "result": {
+      "order_refs": [
+       "O-1206"
+      ],
+      "unknown_order_refs": [],
+      "line_refs": [
+       "L1"
+      ],
+      "unknown_line_refs": [],
+      "other_id_refs": [],
+      "product_refs": [],
+      "unmatched_product_words": [],
+      "requested_products": [],
+      "requested_size": "32",
+      "requested_sizes": [
+       "32"
+      ],
+      "original_size_hints": [],
+      "mentioned_sizes": [
+       "32"
+      ],
+      "remedy_cue": "exchange",
+      "stated_remedy": "exchange",
+      "remedy_words": [
+       "exchange"
+      ],
+      "cancel_cue": false,
+      "last_remedy_cue": "exchange",
+      "last_requested_size": null,
+      "inquiry": false,
+      "candidates": [
+       "O-1206/L1"
+      ],
+      "id_candidates": [
+       "O-1206/L1"
+      ],
+      "unique_target": [
+       "O-1206",
+       "L1"
+      ],
+      "not_found_code": null,
+      "filters_used": [
+       "order",
+       "line"
+      ],
+      "explain": [
+       "message 1: orders O-1206; lines L1; requested sizes 32; remedy exchange (exchange, <size> wanted)",
+       "message 2: remedy exchange (exchange)",
+       "filter order O-1206: 2 candidate(s)",
+       "filter line L1: 1 candidate(s)",
+       "unique target O-1206/L1"
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 8,
+     "turn": 2,
+     "kind": "confirmation",
+     "agent": "orchestrator",
+     "tool": "confirmation_unresolved",
+     "arguments": {
+      "confirm_proposal": "last"
+     },
+     "result": {
+      "presented": []
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 9,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "reply_to_customer",
+     "arguments": {
+      "message": "Could you tell me a bit more about what you need?"
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "reply_to_customer",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 0,
+      "cached_tokens": 0,
+      "prefill_tokens": 0,
+      "completion_tokens": 1,
+      "prompt_ms": 0.0,
+      "predicted_ms": 0.0,
+      "latency_ms": 0.0,
+      "finish_reason": "stop",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "handoff_to_operations",
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 10,
+     "turn": 2,
+     "kind": "guard",
+     "agent": "orchestrator",
+     "tool": "clarify_veto",
+     "arguments": {
+      "intent": "propose_exchange",
+      "order_id": "O-1206",
+      "line_id": "L1",
+      "requested_size": "32",
+      "requested_product": "SAME"
+     },
+     "result": {
+      "reason": "the conversation already names one line and the remedy"
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 11,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "reply_to_customer",
+     "arguments": {
+      "message": "Could you tell me a bit more about what you need?"
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "reply_to_customer",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 0,
+      "cached_tokens": 0,
+      "prefill_tokens": 0,
+      "completion_tokens": 1,
+      "prompt_ms": 0.0,
+      "predicted_ms": 0.0,
+      "latency_ms": 0.0,
+      "finish_reason": "stop",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "handoff_to_operations",
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 12,
+     "turn": 2,
+     "kind": "tool",
+     "agent": "orchestrator",
+     "tool": "check_eligibility",
+     "arguments": {
+      "order_id": "O-1206",
+      "line_id": "L1"
+     },
+     "result": {
+      "eligible": true,
+      "reasons": [],
+      "order_id": "O-1206",
+      "line_id": "L1",
+      "sku": "JEANS-30",
+      "product_id": "JEANS",
+      "size": "30",
+      "paid_cents": 7000,
+      "delivered_on": "2026-10-28",
+      "as_of": "2026-11-01",
+      "days_since_delivery": 4,
+      "window_days": 30
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    }
+   ],
+   "final_state": {
+    "as_of": "2026-11-01",
+    "currency": "USD",
+    "products": [
+     {
+      "sku": "TEE-S",
+      "product_id": "TEE",
+      "size": "S",
+      "price_cents": 4000,
+      "stock": 5
+     },
+     {
+      "sku": "TEE-M",
+      "product_id": "TEE",
+      "size": "M",
+      "price_cents": 4000,
+      "stock": 2
+     },
+     {
+      "sku": "TEE-L",
+      "product_id": "TEE",
+      "size": "L",
+      "price_cents": 4000,
+      "stock": 3
+     },
+     {
+      "sku": "TEE-XL",
+      "product_id": "TEE",
+      "size": "XL",
+      "price_cents": 4500,
+      "stock": 4
+     },
+     {
+      "sku": "JACKET-S",
+      "product_id": "JACKET",
+      "size": "S",
+      "price_cents": 9000,
+      "stock": 2
+     },
+     {
+      "sku": "JACKET-M",
+      "product_id": "JACKET",
+      "size": "M",
+      "price_cents": 9000,
+      "stock": 1
+     },
+     {
+      "sku": "JACKET-L",
+      "product_id": "JACKET",
+      "size": "L",
+      "price_cents": 9000,
+      "stock": 0
+     },
+     {
+      "sku": "HOODIE-S",
+      "product_id": "HOODIE",
+      "size": "S",
+      "price_cents": 6000,
+      "stock": 0
+     },
+     {
+      "sku": "HOODIE-M",
+      "product_id": "HOODIE",
+      "size": "M",
+      "price_cents": 6000,
+      "stock": 3
+     },
+     {
+      "sku": "HOODIE-L",
+      "product_id": "HOODIE",
+      "size": "L",
+      "price_cents": 6000,
+      "stock": 2
+     },
+     {
+      "sku": "HOODIE-XL",
+      "product_id": "HOODIE",
+      "size": "XL",
+      "price_cents": 6000,
+      "stock": 1
+     },
+     {
+      "sku": "JEANS-30",
+      "product_id": "JEANS",
+      "size": "30",
+      "price_cents": 7000,
+      "stock": 2
+     },
+     {
+      "sku": "JEANS-32",
+      "product_id": "JEANS",
+      "size": "32",
+      "price_cents": 7000,
+      "stock": 1
+     },
+     {
+      "sku": "JEANS-34",
+      "product_id": "JEANS",
+      "size": "34",
+      "price_cents": 7000,
+      "stock": 2
+     },
+     {
+      "sku": "JEANS-36",
+      "product_id": "JEANS",
+      "size": "36",
+      "price_cents": 7000,
+      "stock": 3
+     },
+     {
+      "sku": "SNEAKER-9",
+      "product_id": "SNEAKER",
+      "size": "9",
+      "price_cents": 11000,
+      "stock": 2
+     },
+     {
+      "sku": "SNEAKER-9.5",
+      "product_id": "SNEAKER",
+      "size": "9.5",
+      "price_cents": 11000,
+      "stock": 1
+     },
+     {
+      "sku": "SNEAKER-10",
+      "product_id": "SNEAKER",
+      "size": "10",
+      "price_cents": 11000,
+      "stock": 1
+     },
+     {
+      "sku": "SNEAKER-10.5",
+      "product_id": "SNEAKER",
+      "size": "10.5",
+      "price_cents": 11000,
+      "stock": 4
+     }
+    ],
+    "orders": [
+     {
+      "order_id": "O-1206",
+      "customer_id": "C4105",
+      "status": "delivered",
+      "delivered_on": "2026-10-28",
+      "lines": [
+       {
+        "line_id": "L1",
+        "sku": "JEANS-30",
+        "paid_cents": 7000,
+        "unopened": true,
+        "final_sale": false,
+        "returned": false
+       },
+       {
+        "line_id": "L2",
+        "sku": "TEE-M",
+        "paid_cents": 4000,
+        "unopened": true,
+        "final_sale": false,
+        "returned": false
+       }
+      ]
+     }
+    ],
+    "returns": [],
+    "refunds": [],
+    "exchanges": [],
+    "quarantine": [],
+    "idempotency": {}
+   },
+   "proposals": [],
+   "external_events": [],
+   "metrics": {
+    "elapsed_ms": 7.1,
+    "peak_ram_mb": null,
+    "peak_vram_mb": null,
+    "peak_unified_gpu_mb": null,
+    "rss_mb": null,
+    "memory_architecture": "unified",
+    "memory_notes": [
+     "peak_ram_mb / peak_vram_mb are null: no memory probe was attached to this run."
+    ],
+    "llm_calls": 4,
+    "prompt_tokens": 0,
+    "cached_tokens": 0,
+    "completion_tokens": 4,
+    "prefill_ms": 0.0,
+    "decode_ms": 0.0,
+    "tool_ms": 0.2,
+    "decode_tok_s": null,
+    "prefill_tok_s": null,
+    "turn_latency_ms": [
+     5.3,
+     1.4
+    ],
+    "protocol_errors": 0,
+    "guard_overrides": 2,
+    "fallbacks": 0,
+    "gate_rejections": 0,
+    "dropped_calls": 0,
+    "llm_errors": 0,
+    "first_case_after_start": false,
+    "status": "ok"
+   }
+  },
+  {
+   "case_id": "num2_jeans_to_34",
+   "turns": [
+    {
+     "decision": "clarify",
+     "response": "Matching item on your account: 1) JEANS-30 (size 30), order O-1206, line L1, paid $70.00. Could you tell me a bit more about what you need?",
+     "proposal": null,
+     "transaction": null,
+     "confirmed_proposal_id": null
+    },
+    {
+     "decision": "clarify",
+     "response": "Matching item on your account: 1) JEANS-30 (size 30), order O-1206, line L1, paid $70.00. Could you tell me a bit more about what you need?",
+     "proposal": null,
+     "transaction": null,
+     "confirmed_proposal_id": null
+    }
+   ],
+   "action_audit": [
+    {
+     "seq": 1,
+     "turn": 1,
+     "kind": "grounding",
+     "agent": "orchestrator",
+     "tool": "analyze",
+     "arguments": {
+      "turn": 1
+     },
+     "result": {
+      "order_refs": [
+       "O-1206"
+      ],
+      "unknown_order_refs": [],
+      "line_refs": [
+       "L1"
+      ],
+      "unknown_line_refs": [],
+      "other_id_refs": [],
+      "product_refs": [],
+      "unmatched_product_words": [],
+      "requested_products": [],
+      "requested_size": "34",
+      "requested_sizes": [
+       "34"
+      ],
+      "original_size_hints": [],
+      "mentioned_sizes": [
+       "34"
+      ],
+      "remedy_cue": "exchange",
+      "stated_remedy": "exchange",
+      "remedy_words": [
+       "swap",
+       "<size> wanted"
+      ],
+      "cancel_cue": false,
+      "last_remedy_cue": "exchange",
+      "last_requested_size": "34",
+      "inquiry": false,
+      "candidates": [
+       "O-1206/L1"
+      ],
+      "id_candidates": [
+       "O-1206/L1"
+      ],
+      "unique_target": [
+       "O-1206",
+       "L1"
+      ],
+      "not_found_code": null,
+      "filters_used": [
+       "order",
+       "line"
+      ],
+      "explain": [
+       "message 1: orders O-1206; lines L1; requested sizes 34; remedy exchange (swap, <size> wanted)",
+       "filter order O-1206: 2 candidate(s)",
+       "filter line L1: 1 candidate(s)",
+       "unique target O-1206/L1"
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 2,
+     "turn": 1,
+     "kind": "tool",
+     "agent": "orchestrator",
+     "tool": "prefetch_account_card",
+     "arguments": {},
+     "result": {
+      "lines": [
+       {
+        "order_id": "O-1206",
+        "line_id": "L1",
+        "sku": "JEANS-30",
+        "product_id": "JEANS",
+        "size": "30",
+        "aliases": [
+         "jeans",
+         "denim",
+         "pants",
+         "trouser"
+        ],
+        "paid_cents": 7000,
+        "delivered_on": "2026-10-28"
+       },
+       {
+        "order_id": "O-1206",
+        "line_id": "L2",
+        "sku": "TEE-M",
+        "product_id": "TEE",
+        "size": "M",
+        "aliases": [
+         "tee",
+         "t-shirt",
+         "tee shirt",
+         "shirt",
+         "top"
+        ],
+        "paid_cents": 4000,
+        "delivered_on": "2026-10-28"
+       }
+      ],
+      "count": 2,
+      "catalog": [
+       {
+        "sku": "TEE-S",
+        "product_id": "TEE",
+        "size": "S"
+       },
+       {
+        "sku": "TEE-M",
+        "product_id": "TEE",
+        "size": "M"
+       },
+       {
+        "sku": "TEE-L",
+        "product_id": "TEE",
+        "size": "L"
+       },
+       {
+        "sku": "TEE-XL",
+        "product_id": "TEE",
+        "size": "XL"
+       },
+       {
+        "sku": "JEANS-30",
+        "product_id": "JEANS",
+        "size": "30"
+       },
+       {
+        "sku": "JEANS-32",
+        "product_id": "JEANS",
+        "size": "32"
+       },
+       {
+        "sku": "JEANS-34",
+        "product_id": "JEANS",
+        "size": "34"
+       },
+       {
+        "sku": "JEANS-36",
+        "product_id": "JEANS",
+        "size": "36"
+       }
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 3,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "reply_to_customer",
+     "arguments": {
+      "message": "Could you tell me a bit more about what you need?"
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "reply_to_customer",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 0,
+      "cached_tokens": 0,
+      "prefill_tokens": 0,
+      "completion_tokens": 1,
+      "prompt_ms": 0.0,
+      "predicted_ms": 0.0,
+      "latency_ms": 0.0,
+      "finish_reason": "stop",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "handoff_to_operations",
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 4,
+     "turn": 1,
+     "kind": "guard",
+     "agent": "orchestrator",
+     "tool": "clarify_veto",
+     "arguments": {
+      "intent": "propose_exchange",
+      "order_id": "O-1206",
+      "line_id": "L1",
+      "requested_size": "34",
+      "requested_product": "SAME"
+     },
+     "result": {
+      "reason": "the conversation already names one line and the remedy"
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 5,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "reply_to_customer",
+     "arguments": {
+      "message": "Could you tell me a bit more about what you need?"
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "reply_to_customer",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 0,
+      "cached_tokens": 0,
+      "prefill_tokens": 0,
+      "completion_tokens": 1,
+      "prompt_ms": 0.0,
+      "predicted_ms": 0.0,
+      "latency_ms": 0.0,
+      "finish_reason": "stop",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "handoff_to_operations",
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 6,
+     "turn": 1,
+     "kind": "tool",
+     "agent": "orchestrator",
+     "tool": "check_eligibility",
+     "arguments": {
+      "order_id": "O-1206",
+      "line_id": "L1"
+     },
+     "result": {
+      "eligible": true,
+      "reasons": [],
+      "order_id": "O-1206",
+      "line_id": "L1",
+      "sku": "JEANS-30",
+      "product_id": "JEANS",
+      "size": "30",
+      "paid_cents": 7000,
+      "delivered_on": "2026-10-28",
+      "as_of": "2026-11-01",
+      "days_since_delivery": 4,
+      "window_days": 30
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 7,
+     "turn": 2,
+     "kind": "grounding",
+     "agent": "orchestrator",
+     "tool": "analyze",
+     "arguments": {
+      "turn": 2
+     },
+     "result": {
+      "order_refs": [
+       "O-1206"
+      ],
+      "unknown_order_refs": [],
+      "line_refs": [
+       "L1"
+      ],
+      "unknown_line_refs": [],
+      "other_id_refs": [],
+      "product_refs": [],
+      "unmatched_product_words": [],
+      "requested_products": [],
+      "requested_size": "34",
+      "requested_sizes": [
+       "34"
+      ],
+      "original_size_hints": [],
+      "mentioned_sizes": [
+       "34"
+      ],
+      "remedy_cue": "exchange",
+      "stated_remedy": "exchange",
+      "remedy_words": [
+       "exchange"
+      ],
+      "cancel_cue": false,
+      "last_remedy_cue": "exchange",
+      "last_requested_size": null,
+      "inquiry": false,
+      "candidates": [
+       "O-1206/L1"
+      ],
+      "id_candidates": [
+       "O-1206/L1"
+      ],
+      "unique_target": [
+       "O-1206",
+       "L1"
+      ],
+      "not_found_code": null,
+      "filters_used": [
+       "order",
+       "line"
+      ],
+      "explain": [
+       "message 1: orders O-1206; lines L1; requested sizes 34; remedy exchange (swap, <size> wanted)",
+       "message 2: remedy exchange (exchange)",
+       "filter order O-1206: 2 candidate(s)",
+       "filter line L1: 1 candidate(s)",
+       "unique target O-1206/L1"
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 8,
+     "turn": 2,
+     "kind": "confirmation",
+     "agent": "orchestrator",
+     "tool": "confirmation_unresolved",
+     "arguments": {
+      "confirm_proposal": "last"
+     },
+     "result": {
+      "presented": []
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 9,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "reply_to_customer",
+     "arguments": {
+      "message": "Could you tell me a bit more about what you need?"
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "reply_to_customer",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 0,
+      "cached_tokens": 0,
+      "prefill_tokens": 0,
+      "completion_tokens": 1,
+      "prompt_ms": 0.0,
+      "predicted_ms": 0.0,
+      "latency_ms": 0.0,
+      "finish_reason": "stop",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "handoff_to_operations",
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 10,
+     "turn": 2,
+     "kind": "guard",
+     "agent": "orchestrator",
+     "tool": "clarify_veto",
+     "arguments": {
+      "intent": "propose_exchange",
+      "order_id": "O-1206",
+      "line_id": "L1",
+      "requested_size": "34",
+      "requested_product": "SAME"
+     },
+     "result": {
+      "reason": "the conversation already names one line and the remedy"
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 11,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "reply_to_customer",
+     "arguments": {
+      "message": "Could you tell me a bit more about what you need?"
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "reply_to_customer",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 0,
+      "cached_tokens": 0,
+      "prefill_tokens": 0,
+      "completion_tokens": 1,
+      "prompt_ms": 0.0,
+      "predicted_ms": 0.0,
+      "latency_ms": 0.0,
+      "finish_reason": "stop",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "handoff_to_operations",
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 12,
+     "turn": 2,
+     "kind": "tool",
+     "agent": "orchestrator",
+     "tool": "check_eligibility",
+     "arguments": {
+      "order_id": "O-1206",
+      "line_id": "L1"
+     },
+     "result": {
+      "eligible": true,
+      "reasons": [],
+      "order_id": "O-1206",
+      "line_id": "L1",
+      "sku": "JEANS-30",
+      "product_id": "JEANS",
+      "size": "30",
+      "paid_cents": 7000,
+      "delivered_on": "2026-10-28",
+      "as_of": "2026-11-01",
+      "days_since_delivery": 4,
+      "window_days": 30
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    }
+   ],
+   "final_state": {
+    "as_of": "2026-11-01",
+    "currency": "USD",
+    "products": [
+     {
+      "sku": "TEE-S",
+      "product_id": "TEE",
+      "size": "S",
+      "price_cents": 4000,
+      "stock": 5
+     },
+     {
+      "sku": "TEE-M",
+      "product_id": "TEE",
+      "size": "M",
+      "price_cents": 4000,
+      "stock": 2
+     },
+     {
+      "sku": "TEE-L",
+      "product_id": "TEE",
+      "size": "L",
+      "price_cents": 4000,
+      "stock": 3
+     },
+     {
+      "sku": "TEE-XL",
+      "product_id": "TEE",
+      "size": "XL",
+      "price_cents": 4500,
+      "stock": 4
+     },
+     {
+      "sku": "JACKET-S",
+      "product_id": "JACKET",
+      "size": "S",
+      "price_cents": 9000,
+      "stock": 2
+     },
+     {
+      "sku": "JACKET-M",
+      "product_id": "JACKET",
+      "size": "M",
+      "price_cents": 9000,
+      "stock": 1
+     },
+     {
+      "sku": "JACKET-L",
+      "product_id": "JACKET",
+      "size": "L",
+      "price_cents": 9000,
+      "stock": 0
+     },
+     {
+      "sku": "HOODIE-S",
+      "product_id": "HOODIE",
+      "size": "S",
+      "price_cents": 6000,
+      "stock": 0
+     },
+     {
+      "sku": "HOODIE-M",
+      "product_id": "HOODIE",
+      "size": "M",
+      "price_cents": 6000,
+      "stock": 3
+     },
+     {
+      "sku": "HOODIE-L",
+      "product_id": "HOODIE",
+      "size": "L",
+      "price_cents": 6000,
+      "stock": 2
+     },
+     {
+      "sku": "HOODIE-XL",
+      "product_id": "HOODIE",
+      "size": "XL",
+      "price_cents": 6000,
+      "stock": 1
+     },
+     {
+      "sku": "JEANS-30",
+      "product_id": "JEANS",
+      "size": "30",
+      "price_cents": 7000,
+      "stock": 2
+     },
+     {
+      "sku": "JEANS-32",
+      "product_id": "JEANS",
+      "size": "32",
+      "price_cents": 7000,
+      "stock": 1
+     },
+     {
+      "sku": "JEANS-34",
+      "product_id": "JEANS",
+      "size": "34",
+      "price_cents": 7000,
+      "stock": 2
+     },
+     {
+      "sku": "JEANS-36",
+      "product_id": "JEANS",
+      "size": "36",
+      "price_cents": 7000,
+      "stock": 3
+     },
+     {
+      "sku": "SNEAKER-9",
+      "product_id": "SNEAKER",
+      "size": "9",
+      "price_cents": 11000,
+      "stock": 2
+     },
+     {
+      "sku": "SNEAKER-9.5",
+      "product_id": "SNEAKER",
+      "size": "9.5",
+      "price_cents": 11000,
+      "stock": 1
+     },
+     {
+      "sku": "SNEAKER-10",
+      "product_id": "SNEAKER",
+      "size": "10",
+      "price_cents": 11000,
+      "stock": 1
+     },
+     {
+      "sku": "SNEAKER-10.5",
+      "product_id": "SNEAKER",
+      "size": "10.5",
+      "price_cents": 11000,
+      "stock": 4
+     }
+    ],
+    "orders": [
+     {
+      "order_id": "O-1206",
+      "customer_id": "C4105",
+      "status": "delivered",
+      "delivered_on": "2026-10-28",
+      "lines": [
+       {
+        "line_id": "L1",
+        "sku": "JEANS-30",
+        "paid_cents": 7000,
+        "unopened": true,
+        "final_sale": false,
+        "returned": false
+       },
+       {
+        "line_id": "L2",
+        "sku": "TEE-M",
+        "paid_cents": 4000,
+        "unopened": true,
+        "final_sale": false,
+        "returned": false
+       }
+      ]
+     }
+    ],
+    "returns": [],
+    "refunds": [],
+    "exchanges": [],
+    "quarantine": [],
+    "idempotency": {}
+   },
+   "proposals": [],
+   "external_events": [],
+   "metrics": {
+    "elapsed_ms": 3.2,
+    "peak_ram_mb": null,
+    "peak_vram_mb": null,
+    "peak_unified_gpu_mb": null,
+    "rss_mb": null,
+    "memory_architecture": "unified",
+    "memory_notes": [
+     "peak_ram_mb / peak_vram_mb are null: no memory probe was attached to this run."
+    ],
+    "llm_calls": 4,
+    "prompt_tokens": 0,
+    "cached_tokens": 0,
+    "completion_tokens": 4,
+    "prefill_ms": 0.0,
+    "decode_ms": 0.0,
+    "tool_ms": 0.3,
+    "decode_tok_s": null,
+    "prefill_tok_s": null,
+    "turn_latency_ms": [
+     1.5,
+     1.5
+    ],
+    "protocol_errors": 0,
+    "guard_overrides": 2,
+    "fallbacks": 0,
+    "gate_rejections": 0,
+    "dropped_calls": 0,
+    "llm_errors": 0,
+    "first_case_after_start": false,
+    "status": "ok"
+   }
+  },
+  {
+   "case_id": "num3_sneaker_for_a_10",
+   "turns": [
+    {
+     "decision": "clarify",
+     "response": "Matching item on your account: 1) SNEAKER-10.5 (size 10.5), order O-36, line L1, paid $110.00. Could you tell me a bit more about what you need?",
+     "proposal": null,
+     "transaction": null,
+     "confirmed_proposal_id": null
+    },
+    {
+     "decision": "clarify",
+     "response": "Matching item on your account: 1) SNEAKER-10.5 (size 10.5), order O-36, line L1, paid $110.00. Could you tell me a bit more about what you need?",
+     "proposal": null,
+     "transaction": null,
+     "confirmed_proposal_id": null
+    }
+   ],
+   "action_audit": [
+    {
+     "seq": 1,
+     "turn": 1,
+     "kind": "grounding",
+     "agent": "orchestrator",
+     "tool": "analyze",
+     "arguments": {
+      "turn": 1
+     },
+     "result": {
+      "order_refs": [
+       "O-36"
+      ],
+      "unknown_order_refs": [],
+      "line_refs": [
+       "L1"
+      ],
+      "unknown_line_refs": [],
+      "other_id_refs": [],
+      "product_refs": [],
+      "unmatched_product_words": [],
+      "requested_products": [],
+      "requested_size": "10",
+      "requested_sizes": [
+       "10"
+      ],
+      "original_size_hints": [],
+      "mentioned_sizes": [
+       "10"
+      ],
+      "remedy_cue": "exchange",
+      "stated_remedy": "exchange",
+      "remedy_words": [
+       "exchange",
+       "<size> wanted"
+      ],
+      "cancel_cue": false,
+      "last_remedy_cue": "exchange",
+      "last_requested_size": "10",
+      "inquiry": false,
+      "candidates": [
+       "O-36/L1"
+      ],
+      "id_candidates": [
+       "O-36/L1"
+      ],
+      "unique_target": [
+       "O-36",
+       "L1"
+      ],
+      "not_found_code": null,
+      "filters_used": [
+       "order",
+       "line"
+      ],
+      "explain": [
+       "message 1: orders O-36; lines L1; requested sizes 10; remedy exchange (exchange, <size> wanted)",
+       "filter order O-36: 2 candidate(s)",
+       "filter line L1: 1 candidate(s)",
+       "unique target O-36/L1"
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 2,
+     "turn": 1,
+     "kind": "tool",
+     "agent": "orchestrator",
+     "tool": "prefetch_account_card",
+     "arguments": {},
+     "result": {
+      "lines": [
+       {
+        "order_id": "O-36",
+        "line_id": "L1",
+        "sku": "SNEAKER-10.5",
+        "product_id": "SNEAKER",
+        "size": "10.5",
+        "aliases": [
+         "sneaker",
+         "shoe",
+         "trainer",
+         "kicks"
+        ],
+        "paid_cents": 11000,
+        "delivered_on": "2026-11-10"
+       },
+       {
+        "order_id": "O-36",
+        "line_id": "L2",
+        "sku": "TEE-M",
+        "product_id": "TEE",
+        "size": "M",
+        "aliases": [
+         "tee",
+         "t-shirt",
+         "tee shirt",
+         "shirt",
+         "top"
+        ],
+        "paid_cents": 4000,
+        "delivered_on": "2026-11-10"
+       },
+       {
+        "order_id": "O-37",
+        "line_id": "L1",
+        "sku": "HOODIE-L",
+        "product_id": "HOODIE",
+        "size": "L",
+        "aliases": [
+         "hoodie",
+         "hoody",
+         "sweatshirt",
+         "hooded sweatshirt",
+         "pullover"
+        ],
+        "paid_cents": 6000,
+        "delivered_on": "2026-10-18"
+       }
+      ],
+      "count": 3,
+      "catalog": [
+       {
+        "sku": "TEE-S",
+        "product_id": "TEE",
+        "size": "S"
+       },
+       {
+        "sku": "TEE-M",
+        "product_id": "TEE",
+        "size": "M"
+       },
+       {
+        "sku": "TEE-L",
+        "product_id": "TEE",
+        "size": "L"
+       },
+       {
+        "sku": "TEE-XL",
+        "product_id": "TEE",
+        "size": "XL"
+       },
+       {
+        "sku": "HOODIE-S",
+        "product_id": "HOODIE",
+        "size": "S"
+       },
+       {
+        "sku": "HOODIE-M",
+        "product_id": "HOODIE",
+        "size": "M"
+       },
+       {
+        "sku": "HOODIE-L",
+        "product_id": "HOODIE",
+        "size": "L"
+       },
+       {
+        "sku": "HOODIE-XL",
+        "product_id": "HOODIE",
+        "size": "XL"
+       },
+       {
+        "sku": "SNEAKER-9",
+        "product_id": "SNEAKER",
+        "size": "9"
+       },
+       {
+        "sku": "SNEAKER-9.5",
+        "product_id": "SNEAKER",
+        "size": "9.5"
+       },
+       {
+        "sku": "SNEAKER-10",
+        "product_id": "SNEAKER",
+        "size": "10"
+       },
+       {
+        "sku": "SNEAKER-10.5",
+        "product_id": "SNEAKER",
+        "size": "10.5"
+       }
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 3,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "reply_to_customer",
+     "arguments": {
+      "message": "Could you tell me a bit more about what you need?"
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "reply_to_customer",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 0,
+      "cached_tokens": 0,
+      "prefill_tokens": 0,
+      "completion_tokens": 1,
+      "prompt_ms": 0.0,
+      "predicted_ms": 0.0,
+      "latency_ms": 0.0,
+      "finish_reason": "stop",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "handoff_to_operations",
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 4,
+     "turn": 1,
+     "kind": "guard",
+     "agent": "orchestrator",
+     "tool": "clarify_veto",
+     "arguments": {
+      "intent": "propose_exchange",
+      "order_id": "O-36",
+      "line_id": "L1",
+      "requested_size": "10",
+      "requested_product": "SAME"
+     },
+     "result": {
+      "reason": "the conversation already names one line and the remedy"
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 5,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "reply_to_customer",
+     "arguments": {
+      "message": "Could you tell me a bit more about what you need?"
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "reply_to_customer",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 0,
+      "cached_tokens": 0,
+      "prefill_tokens": 0,
+      "completion_tokens": 1,
+      "prompt_ms": 0.0,
+      "predicted_ms": 0.0,
+      "latency_ms": 0.0,
+      "finish_reason": "stop",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "handoff_to_operations",
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 6,
+     "turn": 1,
+     "kind": "tool",
+     "agent": "orchestrator",
+     "tool": "check_eligibility",
+     "arguments": {
+      "order_id": "O-36",
+      "line_id": "L1"
+     },
+     "result": {
+      "eligible": true,
+      "reasons": [],
+      "order_id": "O-36",
+      "line_id": "L1",
+      "sku": "SNEAKER-10.5",
+      "product_id": "SNEAKER",
+      "size": "10.5",
+      "paid_cents": 11000,
+      "delivered_on": "2026-11-10",
+      "as_of": "2026-11-12",
+      "days_since_delivery": 2,
+      "window_days": 30
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 7,
+     "turn": 2,
+     "kind": "grounding",
+     "agent": "orchestrator",
+     "tool": "analyze",
+     "arguments": {
+      "turn": 2
+     },
+     "result": {
+      "order_refs": [
+       "O-36"
+      ],
+      "unknown_order_refs": [],
+      "line_refs": [
+       "L1"
+      ],
+      "unknown_line_refs": [],
+      "other_id_refs": [],
+      "product_refs": [],
+      "unmatched_product_words": [],
+      "requested_products": [],
+      "requested_size": "10",
+      "requested_sizes": [
+       "10"
+      ],
+      "original_size_hints": [],
+      "mentioned_sizes": [
+       "10"
+      ],
+      "remedy_cue": "exchange",
+      "stated_remedy": "exchange",
+      "remedy_words": [
+       "exchange"
+      ],
+      "cancel_cue": false,
+      "last_remedy_cue": "exchange",
+      "last_requested_size": null,
+      "inquiry": false,
+      "candidates": [
+       "O-36/L1"
+      ],
+      "id_candidates": [
+       "O-36/L1"
+      ],
+      "unique_target": [
+       "O-36",
+       "L1"
+      ],
+      "not_found_code": null,
+      "filters_used": [
+       "order",
+       "line"
+      ],
+      "explain": [
+       "message 1: orders O-36; lines L1; requested sizes 10; remedy exchange (exchange, <size> wanted)",
+       "message 2: remedy exchange (exchange)",
+       "filter order O-36: 2 candidate(s)",
+       "filter line L1: 1 candidate(s)",
+       "unique target O-36/L1"
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 8,
+     "turn": 2,
+     "kind": "confirmation",
+     "agent": "orchestrator",
+     "tool": "confirmation_unresolved",
+     "arguments": {
+      "confirm_proposal": "last"
+     },
+     "result": {
+      "presented": []
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 9,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "reply_to_customer",
+     "arguments": {
+      "message": "Could you tell me a bit more about what you need?"
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "reply_to_customer",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 0,
+      "cached_tokens": 0,
+      "prefill_tokens": 0,
+      "completion_tokens": 1,
+      "prompt_ms": 0.0,
+      "predicted_ms": 0.0,
+      "latency_ms": 0.0,
+      "finish_reason": "stop",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "handoff_to_operations",
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 10,
+     "turn": 2,
+     "kind": "guard",
+     "agent": "orchestrator",
+     "tool": "clarify_veto",
+     "arguments": {
+      "intent": "propose_exchange",
+      "order_id": "O-36",
+      "line_id": "L1",
+      "requested_size": "10",
+      "requested_product": "SAME"
+     },
+     "result": {
+      "reason": "the conversation already names one line and the remedy"
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 11,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "reply_to_customer",
+     "arguments": {
+      "message": "Could you tell me a bit more about what you need?"
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "reply_to_customer",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 0,
+      "cached_tokens": 0,
+      "prefill_tokens": 0,
+      "completion_tokens": 1,
+      "prompt_ms": 0.0,
+      "predicted_ms": 0.0,
+      "latency_ms": 0.0,
+      "finish_reason": "stop",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "handoff_to_operations",
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 12,
+     "turn": 2,
+     "kind": "tool",
+     "agent": "orchestrator",
+     "tool": "check_eligibility",
+     "arguments": {
+      "order_id": "O-36",
+      "line_id": "L1"
+     },
+     "result": {
+      "eligible": true,
+      "reasons": [],
+      "order_id": "O-36",
+      "line_id": "L1",
+      "sku": "SNEAKER-10.5",
+      "product_id": "SNEAKER",
+      "size": "10.5",
+      "paid_cents": 11000,
+      "delivered_on": "2026-11-10",
+      "as_of": "2026-11-12",
+      "days_since_delivery": 2,
+      "window_days": 30
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    }
+   ],
+   "final_state": {
+    "as_of": "2026-11-12",
+    "currency": "USD",
+    "products": [
+     {
+      "sku": "TEE-S",
+      "product_id": "TEE",
+      "size": "S",
+      "price_cents": 4000,
+      "stock": 5
+     },
+     {
+      "sku": "TEE-M",
+      "product_id": "TEE",
+      "size": "M",
+      "price_cents": 4000,
+      "stock": 2
+     },
+     {
+      "sku": "TEE-L",
+      "product_id": "TEE",
+      "size": "L",
+      "price_cents": 4000,
+      "stock": 3
+     },
+     {
+      "sku": "TEE-XL",
+      "product_id": "TEE",
+      "size": "XL",
+      "price_cents": 4500,
+      "stock": 4
+     },
+     {
+      "sku": "JACKET-S",
+      "product_id": "JACKET",
+      "size": "S",
+      "price_cents": 9000,
+      "stock": 2
+     },
+     {
+      "sku": "JACKET-M",
+      "product_id": "JACKET",
+      "size": "M",
+      "price_cents": 9000,
+      "stock": 1
+     },
+     {
+      "sku": "JACKET-L",
+      "product_id": "JACKET",
+      "size": "L",
+      "price_cents": 9000,
+      "stock": 0
+     },
+     {
+      "sku": "HOODIE-S",
+      "product_id": "HOODIE",
+      "size": "S",
+      "price_cents": 6000,
+      "stock": 0
+     },
+     {
+      "sku": "HOODIE-M",
+      "product_id": "HOODIE",
+      "size": "M",
+      "price_cents": 6000,
+      "stock": 3
+     },
+     {
+      "sku": "HOODIE-L",
+      "product_id": "HOODIE",
+      "size": "L",
+      "price_cents": 6000,
+      "stock": 2
+     },
+     {
+      "sku": "HOODIE-XL",
+      "product_id": "HOODIE",
+      "size": "XL",
+      "price_cents": 6000,
+      "stock": 1
+     },
+     {
+      "sku": "JEANS-30",
+      "product_id": "JEANS",
+      "size": "30",
+      "price_cents": 7000,
+      "stock": 2
+     },
+     {
+      "sku": "JEANS-32",
+      "product_id": "JEANS",
+      "size": "32",
+      "price_cents": 7000,
+      "stock": 1
+     },
+     {
+      "sku": "JEANS-34",
+      "product_id": "JEANS",
+      "size": "34",
+      "price_cents": 7000,
+      "stock": 2
+     },
+     {
+      "sku": "JEANS-36",
+      "product_id": "JEANS",
+      "size": "36",
+      "price_cents": 7000,
+      "stock": 3
+     },
+     {
+      "sku": "SNEAKER-9",
+      "product_id": "SNEAKER",
+      "size": "9",
+      "price_cents": 11000,
+      "stock": 2
+     },
+     {
+      "sku": "SNEAKER-9.5",
+      "product_id": "SNEAKER",
+      "size": "9.5",
+      "price_cents": 11000,
+      "stock": 1
+     },
+     {
+      "sku": "SNEAKER-10",
+      "product_id": "SNEAKER",
+      "size": "10",
+      "price_cents": 11000,
+      "stock": 2
+     },
+     {
+      "sku": "SNEAKER-10.5",
+      "product_id": "SNEAKER",
+      "size": "10.5",
+      "price_cents": 11000,
+      "stock": 4
+     }
+    ],
+    "orders": [
+     {
+      "order_id": "O-36",
+      "customer_id": "C9022",
+      "status": "delivered",
+      "delivered_on": "2026-11-10",
+      "lines": [
+       {
+        "line_id": "L1",
+        "sku": "SNEAKER-10.5",
+        "paid_cents": 11000,
+        "unopened": true,
+        "final_sale": false,
+        "returned": false
+       },
+       {
+        "line_id": "L2",
+        "sku": "TEE-M",
+        "paid_cents": 4000,
+        "unopened": true,
+        "final_sale": false,
+        "returned": false
+       }
+      ]
+     },
+     {
+      "order_id": "O-37",
+      "customer_id": "C9022",
+      "status": "delivered",
+      "delivered_on": "2026-10-18",
+      "lines": [
+       {
+        "line_id": "L1",
+        "sku": "HOODIE-L",
+        "paid_cents": 6000,
+        "unopened": true,
+        "final_sale": false,
+        "returned": false
+       }
+      ]
+     }
+    ],
+    "returns": [],
+    "refunds": [],
+    "exchanges": [],
+    "quarantine": [],
+    "idempotency": {}
+   },
+   "proposals": [],
+   "external_events": [],
+   "metrics": {
+    "elapsed_ms": 3.4,
+    "peak_ram_mb": null,
+    "peak_vram_mb": null,
+    "peak_unified_gpu_mb": null,
+    "rss_mb": null,
+    "memory_architecture": "unified",
+    "memory_notes": [
+     "peak_ram_mb / peak_vram_mb are null: no memory probe was attached to this run."
+    ],
+    "llm_calls": 4,
+    "prompt_tokens": 0,
+    "cached_tokens": 0,
+    "completion_tokens": 4,
+    "prefill_ms": 0.0,
+    "decode_ms": 0.0,
+    "tool_ms": 0.3,
+    "decode_tok_s": null,
+    "prefill_tok_s": null,
+    "turn_latency_ms": [
+     1.7,
+     1.5
+    ],
+    "protocol_errors": 0,
+    "guard_overrides": 2,
+    "fallbacks": 0,
+    "gate_rejections": 0,
+    "dropped_calls": 0,
+    "llm_errors": 0,
+    "first_case_after_start": false,
+    "status": "ok"
+   }
+  }
+ ]
+}

@@ -1,0 +1,123 @@
+{
+ "scorer": "evals.score v1",
+ "warnings": [],
+ "summary": {
+  "cases": 6,
+  "strict_success": 6,
+  "strict_rate": 1.0,
+  "strict_wilson95": [
+   0.6096569663469354,
+   0.9999999999999999
+  ],
+  "lenient_success": 6,
+  "turns": 13,
+  "turn_decision_accuracy": 1.0,
+  "invariant_violations": 0,
+  "cases_with_invariant_violations": 0
+ },
+ "decision_confusion": {},
+ "invariants": {},
+ "families": {
+  "public": {
+   "cases": 6,
+   "strict": 6,
+   "lenient": 6,
+   "turns": 13,
+   "turns_ok": 13
+  }
+ },
+ "cases": [
+  {
+   "case_id": "public_01_refund_boundary",
+   "family": "public",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "propose",
+    "completed"
+   ],
+   "diffs": []
+  },
+  {
+   "case_id": "public_02_exchange",
+   "family": "public",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "propose",
+    "completed"
+   ],
+   "diffs": []
+  },
+  {
+   "case_id": "public_03_expired",
+   "family": "public",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "deny"
+   ],
+   "actual_decisions": [
+    "deny"
+   ],
+   "diffs": []
+  },
+  {
+   "case_id": "public_04_clarify",
+   "family": "public",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "clarify",
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "clarify",
+    "propose",
+    "completed"
+   ],
+   "diffs": []
+  },
+  {
+   "case_id": "public_05_stale_stock",
+   "family": "public",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "propose",
+    "deny"
+   ],
+   "actual_decisions": [
+    "propose",
+    "deny"
+   ],
+   "diffs": []
+  },
+  {
+   "case_id": "public_06_timeout_replay",
+   "family": "public",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "propose",
+    "completed",
+    "completed"
+   ],
+   "actual_decisions": [
+    "propose",
+    "completed",
+    "completed"
+   ],
+   "diffs": []
+  }
+ ]
+}

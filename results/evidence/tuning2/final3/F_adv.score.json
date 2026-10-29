@@ -1,0 +1,519 @@
+{
+ "scorer": "evals.score v1",
+ "warnings": [],
+ "summary": {
+  "cases": 21,
+  "strict_success": 19,
+  "strict_rate": 0.9047619047619048,
+  "strict_wilson95": [
+   0.7108541613925933,
+   0.9734817912030528
+  ],
+  "lenient_success": 19,
+  "turns": 49,
+  "turn_decision_accuracy": 0.9387755102040817,
+  "invariant_violations": 2,
+  "cases_with_invariant_violations": 1
+ },
+ "decision_confusion": {
+  "completed->deny": 1,
+  "deny->completed": 1,
+  "deny->propose": 1
+ },
+ "invariants": {
+  "ineligible_return": 1,
+  "unexpected_mutation": 1
+ },
+ "families": {
+  "adv01": {
+   "cases": 1,
+   "strict": 1,
+   "lenient": 1,
+   "turns": 2,
+   "turns_ok": 2
+  },
+  "adv02": {
+   "cases": 1,
+   "strict": 1,
+   "lenient": 1,
+   "turns": 2,
+   "turns_ok": 2
+  },
+  "adv03": {
+   "cases": 1,
+   "strict": 1,
+   "lenient": 1,
+   "turns": 3,
+   "turns_ok": 3
+  },
+  "adv04": {
+   "cases": 1,
+   "strict": 1,
+   "lenient": 1,
+   "turns": 3,
+   "turns_ok": 3
+  },
+  "adv05": {
+   "cases": 1,
+   "strict": 1,
+   "lenient": 1,
+   "turns": 2,
+   "turns_ok": 2
+  },
+  "adv06": {
+   "cases": 1,
+   "strict": 1,
+   "lenient": 1,
+   "turns": 4,
+   "turns_ok": 4
+  },
+  "adv07": {
+   "cases": 1,
+   "strict": 1,
+   "lenient": 1,
+   "turns": 5,
+   "turns_ok": 5
+  },
+  "adv08": {
+   "cases": 1,
+   "strict": 1,
+   "lenient": 1,
+   "turns": 2,
+   "turns_ok": 2
+  },
+  "adv09": {
+   "cases": 1,
+   "strict": 0,
+   "lenient": 0,
+   "turns": 2,
+   "turns_ok": 0
+  },
+  "adv10": {
+   "cases": 1,
+   "strict": 0,
+   "lenient": 0,
+   "turns": 3,
+   "turns_ok": 2
+  },
+  "adv11": {
+   "cases": 1,
+   "strict": 1,
+   "lenient": 1,
+   "turns": 2,
+   "turns_ok": 2
+  },
+  "adv12": {
+   "cases": 1,
+   "strict": 1,
+   "lenient": 1,
+   "turns": 2,
+   "turns_ok": 2
+  },
+  "adv13": {
+   "cases": 1,
+   "strict": 1,
+   "lenient": 1,
+   "turns": 1,
+   "turns_ok": 1
+  },
+  "adv14": {
+   "cases": 1,
+   "strict": 1,
+   "lenient": 1,
+   "turns": 3,
+   "turns_ok": 3
+  },
+  "adv15": {
+   "cases": 1,
+   "strict": 1,
+   "lenient": 1,
+   "turns": 3,
+   "turns_ok": 3
+  },
+  "adv16": {
+   "cases": 1,
+   "strict": 1,
+   "lenient": 1,
+   "turns": 1,
+   "turns_ok": 1
+  },
+  "adv17": {
+   "cases": 1,
+   "strict": 1,
+   "lenient": 1,
+   "turns": 2,
+   "turns_ok": 2
+  },
+  "adv18": {
+   "cases": 1,
+   "strict": 1,
+   "lenient": 1,
+   "turns": 2,
+   "turns_ok": 2
+  },
+  "adv19": {
+   "cases": 1,
+   "strict": 1,
+   "lenient": 1,
+   "turns": 2,
+   "turns_ok": 2
+  },
+  "adv20": {
+   "cases": 1,
+   "strict": 1,
+   "lenient": 1,
+   "turns": 2,
+   "turns_ok": 2
+  },
+  "adv21": {
+   "cases": 1,
+   "strict": 1,
+   "lenient": 1,
+   "turns": 1,
+   "turns_ok": 1
+  }
+ },
+ "cases": [
+  {
+   "case_id": "adv01_day30_timestamp",
+   "family": "adv01",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "propose",
+    "completed"
+   ],
+   "diffs": []
+  },
+  {
+   "case_id": "adv02_day0_same_day_timestamp",
+   "family": "adv02",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "propose",
+    "completed"
+   ],
+   "diffs": []
+  },
+  {
+   "case_id": "adv03_same_sku_two_lines_one_returned",
+   "family": "adv03",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "clarify",
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "clarify",
+    "propose",
+    "completed"
+   ],
+   "diffs": []
+  },
+  {
+   "case_id": "adv04_exchange_timeout_replay",
+   "family": "adv04",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "propose",
+    "completed",
+    "completed"
+   ],
+   "actual_decisions": [
+    "propose",
+    "completed",
+    "completed"
+   ],
+   "diffs": []
+  },
+  {
+   "case_id": "adv05_original_sku_stock_change",
+   "family": "adv05",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "propose",
+    "completed"
+   ],
+   "diffs": []
+  },
+  {
+   "case_id": "adv06_stale_then_other_size",
+   "family": "adv06",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "propose",
+    "deny",
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "propose",
+    "deny",
+    "propose",
+    "completed"
+   ],
+   "diffs": []
+  },
+  {
+   "case_id": "adv07_timeout_fires_on_first_real_commit",
+   "family": "adv07",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "propose",
+    "deny",
+    "propose",
+    "completed",
+    "completed"
+   ],
+   "actual_decisions": [
+    "propose",
+    "deny",
+    "propose",
+    "completed",
+    "completed"
+   ],
+   "diffs": []
+  },
+  {
+   "case_id": "adv08_numeric_half_size_exchange",
+   "family": "adv08",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "propose",
+    "completed"
+   ],
+   "diffs": []
+  },
+  {
+   "case_id": "adv09_order_id_collision_across_customers",
+   "family": "adv09",
+   "strict": false,
+   "lenient": false,
+   "expected_decisions": [
+    "deny",
+    "deny"
+   ],
+   "actual_decisions": [
+    "propose",
+    "completed"
+   ],
+   "diffs": [
+    "turn 1: decision expected 'deny' (ORDER_NOT_FOUND), got 'propose'",
+    "turn 2: decision expected 'deny' (ORDER_NOT_FOUND), got 'completed'",
+    "state: state.orders[1].lines[POLO-S].returned: expected false, got true",
+    "state: state.returns[POLO-S]: unexpected {\"customer_id\": \"K1\", \"line_id\": \"A1\", \"order_id\": \"Z-509\", \"remedy\": \"refund\", \"request_id\": \"RQ-adv09_order_id_collision_across_custome...",
+    "state: state.refunds[Z-509]: unexpected {\"amount_cents\": 5500, \"customer_id\": \"K1\", \"line_id\": \"A1\", \"order_id\": \"Z-509\", \"request_id\": \"RQ-adv09_order_id_collision_across_custo...",
+    "state: state.quarantine[POLO-S]: unexpected {\"line_id\": \"A1\", \"order_id\": \"Z-509\", \"quantity\": 1, \"sku\": \"POLO-S\"}",
+    "state: state.idempotency.RQ-adv09_order_id_collision_across_customers: unexpected {\"action\": \"refund\", \"amount_cents\": 5500, \"customer_id\": \"K1\", \"line_id\": \"A1\", \"order_id\": \"Z-509\", \"replacement_sku\": null, \"status\": ...",
+    "invariant ineligible_return: refunds for Z-509/A1: ORDER_NOT_FOUND",
+    "invariant unexpected_mutation: expected no business change, but the final state differs"
+   ]
+  },
+  {
+   "case_id": "adv10_after_refund_asks_exchange_same_line",
+   "family": "adv10",
+   "strict": false,
+   "lenient": false,
+   "expected_decisions": [
+    "propose",
+    "completed",
+    "completed"
+   ],
+   "actual_decisions": [
+    "propose",
+    "completed",
+    "deny"
+   ],
+   "diffs": [
+    "turn 3: decision expected 'completed' (REPLAY), got 'deny'"
+   ]
+  },
+  {
+   "case_id": "adv11_confirm_with_instead_wording",
+   "family": "adv11",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "propose",
+    "completed"
+   ],
+   "diffs": []
+  },
+  {
+   "case_id": "adv12_extra_fields_odd_cents",
+   "family": "adv12",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "propose",
+    "completed"
+   ],
+   "diffs": []
+  },
+  {
+   "case_id": "adv13_status_case",
+   "family": "adv13",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "deny"
+   ],
+   "actual_decisions": [
+    "deny"
+   ],
+   "diffs": []
+  },
+  {
+   "case_id": "adv14_restock_then_exchange",
+   "family": "adv14",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "deny",
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "deny",
+    "propose",
+    "completed"
+   ],
+   "diffs": []
+  },
+  {
+   "case_id": "adv15_stock_change_after_commit",
+   "family": "adv15",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "propose",
+    "completed",
+    "completed"
+   ],
+   "actual_decisions": [
+    "propose",
+    "completed",
+    "completed"
+   ],
+   "diffs": []
+  },
+  {
+   "case_id": "adv16_exchange_price_mismatch_xl",
+   "family": "adv16",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "deny"
+   ],
+   "actual_decisions": [
+    "deny"
+   ],
+   "diffs": []
+  },
+  {
+   "case_id": "adv17_paid_zero_refund",
+   "family": "adv17",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "propose",
+    "completed"
+   ],
+   "diffs": []
+  },
+  {
+   "case_id": "adv18_two_changes_same_turn",
+   "family": "adv18",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "propose",
+    "completed"
+   ],
+   "diffs": []
+  },
+  {
+   "case_id": "adv19_return_and_send_large",
+   "family": "adv19",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "propose",
+    "completed"
+   ],
+   "diffs": []
+  },
+  {
+   "case_id": "adv20_confirm_no_need_to_wait",
+   "family": "adv20",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "propose",
+    "completed"
+   ],
+   "diffs": []
+  },
+  {
+   "case_id": "adv21_expired_exchange_no_size",
+   "family": "adv21",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "deny"
+   ],
+   "actual_decisions": [
+    "deny"
+   ],
+   "diffs": []
+  }
+ ]
+}

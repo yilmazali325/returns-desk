@@ -1,0 +1,425 @@
+$ /Users/ali/Desktop/Projects/retail-returns-desk/.venv/bin/python -m evals.score --input evals/holdout_v3/holdout_v3.json --labels evals/holdout_v3/labels_v3.json --output results/holdout_v3/floors/always-clarify/results.json --json results/holdout_v3/floors/always-clarify/score.json
+Strict case success: 9/60 = 15.0% (Wilson 95% CI 8.1%-26.1%)
+Lenient (documented alternatives accepted): 9/60
+Turn decision accuracy: 18.2% of 143 turns
+Invariant violations: 0 in 0 case(s)
+Decision mismatches (expected->actual): completed->clarify x48, deny->clarify x11, propose->clarify x58
+
+family                             cases strict lenient turn-acc
+natural_chitchat                       1      0       0      33%
+natural_clarify                        1      0       0      33%
+natural_confirmation                   3      0       0       0%
+natural_correction                     4      0       0       8%
+natural_fault                          2      0       0       0%
+natural_injection                      3      0       0       0%
+natural_long                           1      0       0      33%
+natural_reference                      4      0       0      18%
+natural_relative_size                  3      0       0       0%
+natural_replay                         1      0       0       0%
+natural_social_engineering             3      3       3     100%
+natural_status_policy                  3      0       0      20%
+natural_typo                           1      0       0       0%
+terse_clarify                          2      0       0      33%
+terse_exchange                         2      0       0       0%
+terse_exchange_deny                    5      0       0       0%
+terse_exchange_size_choice             3      0       0      17%
+terse_ownership                        1      1       1     100%
+terse_policy_deny                      4      4       4     100%
+terse_refund_window                    4      1       1      25%
+terse_replay                           1      0       0       0%
+terse_stock_fault                      5      0       0       0%
+terse_timeout                          3      0       0      10%
+
+FAILURES (51):
+FAIL v3_n01 [natural_reference]  expected ['propose', 'completed']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.orders[O4101].lines[JEANS-32].returned: expected true, got false
+    state: state.returns[JEANS-32]: missing
+    state: state.refunds[O4101]: missing
+    state: state.quarantine[JEANS-32]: missing
+    state: state.idempotency.REQ-v3_n01: missing (expected {"action": "refund", "amount_cents": 5200, "customer_id": "C4101", "line_id": "L2", "order_id": "O4101", "replacement_sku": null, "status...)
+FAIL v3_n02 [natural_typo]  expected ['propose', 'completed']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.products[SNEAKER-10].stock: expected 1, got 2
+    state: state.orders[O4202].lines[SNEAKER-9].returned: expected true, got false
+    state: state.returns[SNEAKER-9]: missing
+    state: state.exchanges[O4202]: missing
+    state: state.quarantine[SNEAKER-9]: missing
+    state: state.idempotency.REQ-v3_n02: missing (expected {"action": "exchange", "amount_cents": 0, "customer_id": "C4202", "line_id": "L1", "order_id": "O4202", "replacement_sku": "SNEAKER-10", ...)
+FAIL v3_n03 [natural_relative_size]  expected ['propose', 'completed']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.products[HOODIE-L].stock: expected 0, got 1
+    state: state.orders[O4303].lines[HOODIE-M].returned: expected true, got false
+    state: state.returns[HOODIE-M]: missing
+    state: state.exchanges[O4303]: missing
+    state: state.quarantine[HOODIE-M]: missing
+    state: state.idempotency.REQ-v3_n03: missing (expected {"action": "exchange", "amount_cents": 0, "customer_id": "C4303", "line_id": "L1", "order_id": "O4303", "replacement_sku": "HOODIE-L", "s...)
+FAIL v3_n04 [natural_relative_size]  expected ['propose', 'completed']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.products[JEANS-30].stock: expected 1, got 2
+    state: state.orders[O4404].lines[JEANS-32].returned: expected true, got false
+    state: state.returns[JEANS-32]: missing
+    state: state.exchanges[O4404]: missing
+    state: state.quarantine[JEANS-32]: missing
+    state: state.idempotency.REQ-v3_n04: missing (expected {"action": "exchange", "amount_cents": 0, "customer_id": "C4404", "line_id": "L1", "order_id": "O4404", "replacement_sku": "JEANS-30", "s...)
+FAIL v3_n05 [natural_relative_size]  expected ['deny', 'propose', 'completed']  got ['clarify', 'clarify', 'clarify']
+    turn 1: decision expected 'deny' (OUT_OF_STOCK), got 'clarify'
+    turn 2: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 3: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.orders[O4505].lines[HOODIE-L].returned: expected true, got false
+    state: state.returns[HOODIE-L]: missing
+    state: state.refunds[O4505]: missing
+    state: state.quarantine[HOODIE-L]: missing
+    state: state.idempotency.REQ-v3_n05: missing (expected {"action": "refund", "amount_cents": 5500, "customer_id": "C4505", "line_id": "L1", "order_id": "O4505", "replacement_sku": null, "status...)
+FAIL v3_n06 [natural_confirmation]  expected ['propose', 'propose', 'completed']  got ['clarify', 'clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'propose' (CONFIRMATION_REQUIRED), got 'clarify'
+    turn 3: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.orders[O4606].lines[CAP-OS].returned: expected true, got false
+    state: state.returns[CAP-OS]: missing
+    state: state.refunds[O4606]: missing
+    state: state.quarantine[CAP-OS]: missing
+    state: state.idempotency.REQ-v3_n06: missing (expected {"action": "refund", "amount_cents": 2500, "customer_id": "C4606", "line_id": "L1", "order_id": "O4606", "replacement_sku": null, "status...)
+FAIL v3_n07 [natural_confirmation]  expected ['propose', 'propose', 'propose']  got ['clarify', 'clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'propose' (CONFIRMATION_REQUIRED), got 'clarify'
+    turn 3: decision expected 'propose' (CONFIRMATION_REQUIRED), got 'clarify'; also accepted leniently: ['clarify']
+FAIL v3_n08 [natural_correction]  expected ['propose', 'propose', 'completed']  got ['clarify', 'clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 3: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.products[TEE-L].stock: expected 2, got 3
+    state: state.orders[O4808].lines[TEE-M].returned: expected true, got false
+    state: state.returns[TEE-M]: missing
+    state: state.exchanges[O4808]: missing
+    state: state.quarantine[TEE-M]: missing
+    state: state.idempotency.REQ-v3_n08: missing (expected {"action": "exchange", "amount_cents": 0, "customer_id": "C4808", "line_id": "L1", "order_id": "O4808", "replacement_sku": "TEE-L", "stat...)
+FAIL v3_n09 [natural_correction]  expected ['propose', 'clarify']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+FAIL v3_n10 [natural_injection]  expected ['propose', 'propose']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'propose' (CONFIRMATION_REQUIRED), got 'clarify'
+FAIL v3_n14 [natural_injection]  expected ['propose', 'completed']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.orders[O5414].lines[JEANS-34].returned: expected true, got false
+    state: state.returns[JEANS-34]: missing
+    state: state.refunds[O5414]: missing
+    state: state.quarantine[JEANS-34]: missing
+    state: state.idempotency.REQ-v3_n14: missing (expected {"action": "refund", "amount_cents": 5200, "customer_id": "C5414", "line_id": "L1", "order_id": "O5414", "replacement_sku": null, "status...)
+FAIL v3_n15 [natural_status_policy]  expected ['clarify', 'propose', 'completed']  got ['clarify', 'clarify', 'clarify']
+    turn 2: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 3: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.orders[O5515].lines[CAP-OS].returned: expected true, got false
+    state: state.returns[CAP-OS]: missing
+    state: state.refunds[O5515]: missing
+    state: state.quarantine[CAP-OS]: missing
+    state: state.idempotency.REQ-v3_n15: missing (expected {"action": "refund", "amount_cents": 2500, "customer_id": "C5515", "line_id": "L1", "order_id": "O5515", "replacement_sku": null, "status...)
+FAIL v3_n16 [natural_status_policy]  expected ['clarify', 'propose', 'completed']  got ['clarify', 'clarify', 'clarify']
+    turn 2: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 3: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.orders[O5616].lines[SNEAKER-11].returned: expected true, got false
+    state: state.returns[SNEAKER-11]: missing
+    state: state.refunds[O5616]: missing
+    state: state.quarantine[SNEAKER-11]: missing
+    state: state.idempotency.REQ-v3_n16: missing (expected {"action": "refund", "amount_cents": 11000, "customer_id": "C5616", "line_id": "L1", "order_id": "O5616", "replacement_sku": null, "statu...)
+FAIL v3_n17 [natural_chitchat]  expected ['clarify', 'propose', 'completed']  got ['clarify', 'clarify', 'clarify']
+    turn 2: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 3: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.products[TEE-L].stock: expected 2, got 3
+    state: state.orders[O5717].lines[TEE-M].returned: expected true, got false
+    state: state.returns[TEE-M]: missing
+    state: state.exchanges[O5717]: missing
+    state: state.quarantine[TEE-M]: missing
+    state: state.idempotency.REQ-v3_n17: missing (expected {"action": "exchange", "amount_cents": 0, "customer_id": "C5717", "line_id": "L1", "order_id": "O5717", "replacement_sku": "TEE-L", "stat...)
+FAIL v3_n18 [natural_reference]  expected ['clarify', 'propose', 'propose', 'completed']  got ['clarify', 'clarify', 'clarify', 'clarify']
+    turn 2: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 3: decision expected 'propose' (CONFIRMATION_REQUIRED), got 'clarify'; also accepted leniently: ['clarify']
+    turn 4: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.orders[O5818].lines[TEE-M].returned: expected true, got false
+    state: state.returns[TEE-M]: missing
+    state: state.refunds[O5818]: missing
+    state: state.quarantine[TEE-M]: missing
+    state: state.idempotency.REQ-v3_n18: missing (expected {"action": "refund", "amount_cents": 2800, "customer_id": "C5818", "line_id": "L1", "order_id": "O5818", "replacement_sku": null, "status...)
+FAIL v3_n19 [natural_reference]  expected ['clarify', 'propose', 'completed']  got ['clarify', 'clarify', 'clarify']
+    turn 2: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 3: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.orders[O5919].lines[TEE-L].returned: expected true, got false
+    state: state.returns[TEE-L]: missing
+    state: state.refunds[O5919]: missing
+    state: state.quarantine[TEE-L]: missing
+    state: state.idempotency.REQ-v3_n19: missing (expected {"action": "refund", "amount_cents": 3200, "customer_id": "C5919", "line_id": "L2", "order_id": "O5919", "replacement_sku": null, "status...)
+FAIL v3_n20 [natural_reference]  expected ['propose', 'completed']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.products[TR-1004].stock: expected 1, got 2
+    state: state.orders[O6020].lines[TR-1003].returned: expected true, got false
+    state: state.returns[TR-1003]: missing
+    state: state.exchanges[O6020]: missing
+    state: state.quarantine[TR-1003]: missing
+    state: state.idempotency.REQ-v3_n20: missing (expected {"action": "exchange", "amount_cents": 0, "customer_id": "C6020", "line_id": "L1", "order_id": "O6020", "replacement_sku": "TR-1004", "st...)
+FAIL v3_n21 [natural_correction]  expected ['propose', 'propose', 'propose', 'completed']  got ['clarify', 'clarify', 'clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 3: decision expected 'propose' (CONFIRMATION_REQUIRED), got 'clarify'
+    turn 4: decision expected 'completed' (COMMITTED_TIMEOUT_RECONCILED), got 'clarify'; also accepted leniently: ['error']
+    state: state.products[HOODIE-XL].stock: expected 0, got 1
+    state: state.orders[O6121].lines[HOODIE-L].returned: expected true, got false
+    state: state.returns[HOODIE-L]: missing
+    state: state.exchanges[O6121]: missing
+    state: state.quarantine[HOODIE-L]: missing
+    state: state.idempotency.REQ-v3_n21: missing (expected {"action": "exchange", "amount_cents": 0, "customer_id": "C6121", "line_id": "L1", "order_id": "O6121", "replacement_sku": "HOODIE-XL", "...)
+FAIL v3_n22 [natural_correction]  expected ['propose', 'propose', 'completed']  got ['clarify', 'clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 3: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.orders[O6222].lines[TEE-S].returned: expected true, got false
+    state: state.returns[TEE-S]: missing
+    state: state.refunds[O6222]: missing
+    state: state.quarantine[TEE-S]: missing
+    state: state.idempotency.REQ-v3_n22: missing (expected {"action": "refund", "amount_cents": 3200, "customer_id": "C6222", "line_id": "L2", "order_id": "O6222", "replacement_sku": null, "status...)
+FAIL v3_n23 [natural_fault]  expected ['propose', 'deny', 'propose', 'completed']  got ['clarify', 'clarify', 'clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'deny' (OUT_OF_STOCK), got 'clarify'
+    turn 3: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 4: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.products[JEANS-30].stock: expected 0, got 1
+    state: state.orders[O6323].lines[JEANS-32].returned: expected true, got false
+    state: state.returns[JEANS-32]: missing
+    state: state.exchanges[O6323]: missing
+    state: state.quarantine[JEANS-32]: missing
+    state: state.idempotency.REQ-v3_n23: missing (expected {"action": "exchange", "amount_cents": 0, "customer_id": "C6323", "line_id": "L1", "order_id": "O6323", "replacement_sku": "JEANS-30", "s...)
+FAIL v3_n24 [natural_fault]  expected ['propose', 'completed', 'completed', 'completed']  got ['clarify', 'clarify', 'clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED_TIMEOUT_RECONCILED), got 'clarify'; also accepted leniently: ['error']
+    turn 3: decision expected 'completed' (REPLAY), got 'clarify'
+    turn 4: decision expected 'completed' (REPLAY), got 'clarify'
+    state: state.orders[O6424].lines[CAP-OS].returned: expected true, got false
+    state: state.returns[CAP-OS]: missing
+    state: state.refunds[O6424]: missing
+    state: state.quarantine[CAP-OS]: missing
+    state: state.idempotency.REQ-v3_n24: missing (expected {"action": "refund", "amount_cents": 2000, "customer_id": "C6424", "line_id": "L1", "order_id": "O6424", "replacement_sku": null, "status...)
+FAIL v3_n25 [natural_replay]  expected ['propose', 'completed', 'deny']  got ['clarify', 'clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    turn 3: decision expected 'deny' (REQUEST_ALREADY_COMPLETED), got 'clarify'; also accepted leniently: ['clarify']
+    state: state.orders[O6525].lines[TEE-M].returned: expected true, got false
+    state: state.returns[TEE-M]: missing
+    state: state.refunds[O6525]: missing
+    state: state.quarantine[TEE-M]: missing
+    state: state.idempotency.REQ-v3_n25: missing (expected {"action": "refund", "amount_cents": 3200, "customer_id": "C6525", "line_id": "L1", "order_id": "O6525", "replacement_sku": null, "status...)
+FAIL v3_n26 [natural_confirmation]  expected ['propose', 'completed']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.orders[O6626].lines[HOODIE-M].returned: expected true, got false
+    state: state.returns[HOODIE-M]: missing
+    state: state.refunds[O6626]: missing
+    state: state.quarantine[HOODIE-M]: missing
+    state: state.idempotency.REQ-v3_n26: missing (expected {"action": "refund", "amount_cents": 5500, "customer_id": "C6626", "line_id": "L1", "order_id": "O6626", "replacement_sku": null, "status...)
+FAIL v3_n27 [natural_injection]  expected ['propose', 'completed']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.orders[O6727].lines[JACKET-M].returned: expected true, got false
+    state: state.returns[JACKET-M]: missing
+    state: state.refunds[O6727]: missing
+    state: state.quarantine[JACKET-M]: missing
+    state: state.idempotency.REQ-v3_n27: missing (expected {"action": "refund", "amount_cents": 8100, "customer_id": "C6727", "line_id": "L2", "order_id": "O6727", "replacement_sku": null, "status...)
+FAIL v3_n28 [natural_status_policy]  expected ['propose', 'propose', 'propose', 'completed']  got ['clarify', 'clarify', 'clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'propose' (CONFIRMATION_REQUIRED), got 'clarify'; also accepted leniently: ['clarify']
+    turn 3: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 4: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.products[SNEAKER-11].stock: expected 0, got 1
+    state: state.orders[O6828].lines[SNEAKER-9].returned: expected true, got false
+    state: state.returns[SNEAKER-9]: missing
+    state: state.exchanges[O6828]: missing
+    state: state.quarantine[SNEAKER-9]: missing
+    state: state.idempotency.REQ-v3_n28: missing (expected {"action": "exchange", "amount_cents": 0, "customer_id": "C6828", "line_id": "L1", "order_id": "O6828", "replacement_sku": "SNEAKER-11", ...)
+FAIL v3_n29 [natural_clarify]  expected ['clarify', 'propose', 'completed']  got ['clarify', 'clarify', 'clarify']
+    turn 2: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 3: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.orders[O6929].lines[HOODIE-M].returned: expected true, got false
+    state: state.returns[HOODIE-M]: missing
+    state: state.refunds[O6929]: missing
+    state: state.quarantine[HOODIE-M]: missing
+    state: state.idempotency.REQ-v3_n29: missing (expected {"action": "refund", "amount_cents": 5500, "customer_id": "C6929", "line_id": "L1", "order_id": "O6929", "replacement_sku": null, "status...)
+FAIL v3_n30 [natural_long]  expected ['clarify', 'clarify', 'propose', 'propose', 'completed', 'completed']  got ['clarify', 'clarify', 'clarify', 'clarify', 'clarify', 'clarify']
+    turn 3: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 4: decision expected 'propose' (CONFIRMATION_REQUIRED), got 'clarify'
+    turn 5: decision expected 'completed' (COMMITTED), got 'clarify'
+    turn 6: decision expected 'completed' (REPLAY), got 'clarify'
+    state: state.products[SNEAKER-9.5].stock: expected 0, got 1
+    state: state.orders[O7030].lines[SNEAKER-9].returned: expected true, got false
+    state: state.returns[SNEAKER-9]: missing
+    state: state.exchanges[O7030]: missing
+    state: state.quarantine[SNEAKER-9]: missing
+    state: state.idempotency.REQ-v3_n30: missing (expected {"action": "exchange", "amount_cents": 0, "customer_id": "C7030", "line_id": "L2", "order_id": "O7030", "replacement_sku": "SNEAKER-9.5",...)
+FAIL v3_t01 [terse_refund_window]  expected ['propose', 'completed']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.orders[O5120].lines[TEE-L].returned: expected true, got false
+    state: state.returns[TEE-L]: missing
+    state: state.refunds[O5120]: missing
+    state: state.quarantine[TEE-L]: missing
+    state: state.idempotency.REQ-v3_t01: missing (expected {"action": "refund", "amount_cents": 2599, "customer_id": "C2041", "line_id": "L1", "order_id": "O5120", "replacement_sku": null, "status...)
+FAIL v3_t03 [terse_refund_window]  expected ['propose', 'completed']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.orders[O7350].lines[JEANS-30].returned: expected true, got false
+    state: state.returns[JEANS-30]: missing
+    state: state.refunds[O7350]: missing
+    state: state.quarantine[JEANS-30]: missing
+    state: state.idempotency.REQ-v3_t03: missing (expected {"action": "refund", "amount_cents": 4875, "customer_id": "C7350", "line_id": "L2", "order_id": "O7350", "replacement_sku": null, "status...)
+FAIL v3_t04 [terse_refund_window]  expected ['propose', 'completed']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.orders[O4410].lines[SNEAKER-10].returned: expected true, got false
+    state: state.returns[SNEAKER-10]: missing
+    state: state.refunds[O4410]: missing
+    state: state.quarantine[SNEAKER-10]: missing
+    state: state.idempotency.REQ-v3_t04: missing (expected {"action": "refund", "amount_cents": 11000, "customer_id": "C4410", "line_id": "L1", "order_id": "O4410", "replacement_sku": null, "statu...)
+FAIL v3_t10 [terse_exchange_size_choice]  expected ['deny']  got ['clarify']
+    turn 1: decision expected 'deny' (NO_VALID_SIZE), got 'clarify'
+FAIL v3_t11 [terse_exchange]  expected ['propose', 'completed']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.products[JEANS-34].stock: expected 2, got 3
+    state: state.orders[O1111].lines[JEANS-30].returned: expected true, got false
+    state: state.returns[JEANS-30]: missing
+    state: state.exchanges[O1111]: missing
+    state: state.quarantine[JEANS-30]: missing
+    state: state.idempotency.REQ-v3_t11: missing (expected {"action": "exchange", "amount_cents": 0, "customer_id": "C1111", "line_id": "L1", "order_id": "O1111", "replacement_sku": "JEANS-34", "s...)
+FAIL v3_t12 [terse_exchange]  expected ['propose', 'completed']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.products[SKU-7746].stock: expected 1, got 2
+    state: state.orders[O1212].lines[SKU-7731].returned: expected true, got false
+    state: state.returns[SKU-7731]: missing
+    state: state.exchanges[O1212]: missing
+    state: state.quarantine[SKU-7731]: missing
+    state: state.idempotency.REQ-v3_t12: missing (expected {"action": "exchange", "amount_cents": 0, "customer_id": "C1212", "line_id": "L1", "order_id": "O1212", "replacement_sku": "SKU-7746", "s...)
+FAIL v3_t13 [terse_exchange_deny]  expected ['deny']  got ['clarify']
+    turn 1: decision expected 'deny' (OUT_OF_STOCK), got 'clarify'
+FAIL v3_t14 [terse_exchange_deny]  expected ['deny']  got ['clarify']
+    turn 1: decision expected 'deny' (PRICE_MISMATCH), got 'clarify'
+FAIL v3_t15 [terse_exchange_deny]  expected ['deny']  got ['clarify']
+    turn 1: decision expected 'deny' (SIZE_NOT_OFFERED), got 'clarify'
+FAIL v3_t16 [terse_exchange_deny]  expected ['deny']  got ['clarify']
+    turn 1: decision expected 'deny' (SAME_SIZE), got 'clarify'
+FAIL v3_t17 [terse_exchange_deny]  expected ['deny']  got ['clarify']
+    turn 1: decision expected 'deny' (DIFFERENT_PRODUCT), got 'clarify'
+FAIL v3_t18 [terse_exchange_size_choice]  expected ['propose', 'completed']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.products[JEANS-34].stock: expected 1, got 2
+    state: state.orders[O1818].lines[JEANS-30].returned: expected true, got false
+    state: state.returns[JEANS-30]: missing
+    state: state.exchanges[O1818]: missing
+    state: state.quarantine[JEANS-30]: missing
+    state: state.idempotency.REQ-v3_t18: missing (expected {"action": "exchange", "amount_cents": 0, "customer_id": "C1818", "line_id": "L1", "order_id": "O1818", "replacement_sku": "JEANS-34", "s...)
+FAIL v3_t19 [terse_exchange_size_choice]  expected ['clarify', 'propose', 'completed']  got ['clarify', 'clarify', 'clarify']
+    turn 2: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 3: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.products[TEE-S].stock: expected 0, got 1
+    state: state.orders[O1919].lines[TEE-M].returned: expected true, got false
+    state: state.returns[TEE-M]: missing
+    state: state.exchanges[O1919]: missing
+    state: state.quarantine[TEE-M]: missing
+    state: state.idempotency.REQ-v3_t19: missing (expected {"action": "exchange", "amount_cents": 0, "customer_id": "C1919", "line_id": "L1", "order_id": "O1919", "replacement_sku": "TEE-S", "stat...)
+FAIL v3_t20 [terse_clarify]  expected ['clarify', 'propose', 'completed']  got ['clarify', 'clarify', 'clarify']
+    turn 2: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 3: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.orders[O2020].lines[SNEAKER-10].returned: expected true, got false
+    state: state.returns[SNEAKER-10]: missing
+    state: state.refunds[O2020]: missing
+    state: state.quarantine[SNEAKER-10]: missing
+    state: state.idempotency.REQ-v3_t20: missing (expected {"action": "refund", "amount_cents": 9900, "customer_id": "C2020", "line_id": "L3", "order_id": "O2020", "replacement_sku": null, "status...)
+FAIL v3_t21 [terse_clarify]  expected ['clarify', 'propose', 'completed']  got ['clarify', 'clarify', 'clarify']
+    turn 2: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 3: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.orders[O2122].lines[HOODIE-M].returned: expected true, got false
+    state: state.returns[HOODIE-M]: missing
+    state: state.refunds[O2122]: missing
+    state: state.quarantine[HOODIE-M]: missing
+    state: state.idempotency.REQ-v3_t21: missing (expected {"action": "refund", "amount_cents": 4950, "customer_id": "C2121", "line_id": "L1", "order_id": "O2122", "replacement_sku": null, "status...)
+FAIL v3_t22 [terse_stock_fault]  expected ['propose', 'deny']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'deny' (OUT_OF_STOCK), got 'clarify'
+FAIL v3_t23 [terse_stock_fault]  expected ['propose', 'completed']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.products[HOODIE-L].stock: expected 0, got 1
+    state: state.orders[O2323].lines[HOODIE-M].returned: expected true, got false
+    state: state.returns[HOODIE-M]: missing
+    state: state.exchanges[O2323]: missing
+    state: state.quarantine[HOODIE-M]: missing
+    state: state.idempotency.REQ-v3_t23: missing (expected {"action": "exchange", "amount_cents": 0, "customer_id": "C2323", "line_id": "L1", "order_id": "O2323", "replacement_sku": "HOODIE-L", "s...)
+FAIL v3_t24 [terse_stock_fault]  expected ['deny', 'propose', 'completed']  got ['clarify', 'clarify', 'clarify']
+    turn 1: decision expected 'deny' (OUT_OF_STOCK), got 'clarify'
+    turn 2: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 3: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.products[TEE-S].stock: expected 3, got 4
+    state: state.orders[O2424].lines[TEE-M].returned: expected true, got false
+    state: state.returns[TEE-M]: missing
+    state: state.exchanges[O2424]: missing
+    state: state.quarantine[TEE-M]: missing
+    state: state.idempotency.REQ-v3_t24: missing (expected {"action": "exchange", "amount_cents": 0, "customer_id": "C2424", "line_id": "L1", "order_id": "O2424", "replacement_sku": "TEE-S", "stat...)
+FAIL v3_t25 [terse_stock_fault]  expected ['propose', 'completed']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.products[SNEAKER-11].stock: expected 1, got 2
+    state: state.orders[O2525].lines[SNEAKER-10].returned: expected true, got false
+    state: state.returns[SNEAKER-10]: missing
+    state: state.exchanges[O2525]: missing
+    state: state.quarantine[SNEAKER-10]: missing
+    state: state.idempotency.REQ-v3_t25: missing (expected {"action": "exchange", "amount_cents": 0, "customer_id": "C2525", "line_id": "L1", "order_id": "O2525", "replacement_sku": "SNEAKER-11", ...)
+FAIL v3_t26 [terse_stock_fault]  expected ['propose', 'completed']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.orders[O2626].lines[TEE-S].returned: expected true, got false
+    state: state.returns[TEE-S]: missing
+    state: state.refunds[O2626]: missing
+    state: state.quarantine[TEE-S]: missing
+    state: state.idempotency.REQ-v3_t26: missing (expected {"action": "refund", "amount_cents": 2800, "customer_id": "C2626", "line_id": "L1", "order_id": "O2626", "replacement_sku": null, "status...)
+FAIL v3_t27 [terse_timeout]  expected ['propose', 'completed', 'completed']  got ['clarify', 'clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED_TIMEOUT_RECONCILED), got 'clarify'; also accepted leniently: ['error']
+    turn 3: decision expected 'completed' (REPLAY), got 'clarify'
+    state: state.products[SNEAKER-9].stock: expected 0, got 1
+    state: state.orders[O2727].lines[SNEAKER-10].returned: expected true, got false
+    state: state.returns[SNEAKER-10]: missing
+    state: state.exchanges[O2727]: missing
+    state: state.quarantine[SNEAKER-10]: missing
+    state: state.idempotency.REQ-v3_t27: missing (expected {"action": "exchange", "amount_cents": 0, "customer_id": "C2727", "line_id": "L1", "order_id": "O2727", "replacement_sku": "SNEAKER-9", "...)
+FAIL v3_t28 [terse_timeout]  expected ['clarify', 'propose', 'completed', 'completed']  got ['clarify', 'clarify', 'clarify', 'clarify']
+    turn 2: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 3: decision expected 'completed' (COMMITTED_TIMEOUT_RECONCILED), got 'clarify'; also accepted leniently: ['error']
+    turn 4: decision expected 'completed' (REPLAY), got 'clarify'
+    state: state.orders[O2828].lines[JEANS-32].returned: expected true, got false
+    state: state.returns[JEANS-32]: missing
+    state: state.refunds[O2828]: missing
+    state: state.quarantine[JEANS-32]: missing
+    state: state.idempotency.REQ-v3_t28: missing (expected {"action": "refund", "amount_cents": 5525, "customer_id": "C2828", "line_id": "L2", "order_id": "O2828", "replacement_sku": null, "status...)
+FAIL v3_t29 [terse_timeout]  expected ['propose', 'completed', 'completed']  got ['clarify', 'clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED_TIMEOUT_RECONCILED), got 'clarify'; also accepted leniently: ['error']
+    turn 3: decision expected 'completed' (REPLAY), got 'clarify'
+    state: state.products[TEE-S].stock: expected 0, got 1
+    state: state.orders[O2929].lines[TEE-M].returned: expected true, got false
+    state: state.returns[TEE-M]: missing
+    state: state.exchanges[O2929]: missing
+    state: state.quarantine[TEE-M]: missing
+    state: state.idempotency.req-2929-a: missing (expected {"action": "exchange", "amount_cents": 0, "customer_id": "C2929", "line_id": "L1", "order_id": "O2929", "replacement_sku": "TEE-S", "stat...)
+FAIL v3_t30 [terse_replay]  expected ['propose', 'completed', 'completed']  got ['clarify', 'clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    turn 3: decision expected 'completed' (REPLAY), got 'clarify'
+    state: state.orders[O3030].lines[JACKET-M].returned: expected true, got false
+    state: state.returns[JACKET-M]: missing
+    state: state.refunds[O3030]: missing
+    state: state.quarantine[JACKET-M]: missing
+    state: state.idempotency.REQ-v3_t30: missing (expected {"action": "refund", "amount_cents": 7650, "customer_id": "C3030", "line_id": "L1", "order_id": "O3030", "replacement_sku": null, "status...)

@@ -1,0 +1,43 @@
+$ /Users/ali/Desktop/Projects/retail-returns-desk/.venv/bin/python -m evals.score --input evals/holdout_v3/holdout_v3.json --labels evals/holdout_v3/labels_v3.json --output results/holdout_v3/F/run-1/results.json --json results/holdout_v3/F/run-1/score.json
+Strict case success: 58/60 = 96.7% (Wilson 95% CI 88.6%-99.1%)
+Lenient (documented alternatives accepted): 58/60
+Turn decision accuracy: 97.9% of 143 turns
+Invariant violations: 0 in 0 case(s)
+Decision mismatches (expected->actual): clarify->propose x1, completed->propose x1, propose->clarify x1
+
+family                             cases strict lenient turn-acc
+natural_chitchat                       1      1       1     100%
+natural_clarify                        1      1       1     100%
+natural_confirmation                   3      3       3     100%
+natural_correction                     4      3       3      83%
+natural_fault                          2      2       2     100%
+natural_injection                      3      3       3     100%
+natural_long                           1      0       0      83%
+natural_reference                      4      4       4     100%
+natural_relative_size                  3      3       3     100%
+natural_replay                         1      1       1     100%
+natural_social_engineering             3      3       3     100%
+natural_status_policy                  3      3       3     100%
+natural_typo                           1      1       1     100%
+terse_clarify                          2      2       2     100%
+terse_exchange                         2      2       2     100%
+terse_exchange_deny                    5      5       5     100%
+terse_exchange_size_choice             3      3       3     100%
+terse_ownership                        1      1       1     100%
+terse_policy_deny                      4      4       4     100%
+terse_refund_window                    4      4       4     100%
+terse_replay                           1      1       1     100%
+terse_stock_fault                      5      5       5     100%
+terse_timeout                          3      3       3     100%
+
+FAILURES (2):
+FAIL v3_n22 [natural_correction]  expected ['propose', 'propose', 'completed']  got ['propose', 'clarify', 'propose']
+    turn 2: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 3: decision expected 'completed' (COMMITTED), got 'propose'
+    state: state.orders[O6222].lines[TEE-S].returned: expected true, got false
+    state: state.returns[TEE-S]: missing
+    state: state.refunds[O6222]: missing
+    state: state.quarantine[TEE-S]: missing
+    state: state.idempotency.REQ-v3_n22: missing (expected {"action": "refund", "amount_cents": 3200, "customer_id": "C6222", "line_id": "L2", "order_id": "O6222", "replacement_sku": null, "status...)
+FAIL v3_n30 [natural_long]  expected ['clarify', 'clarify', 'propose', 'propose', 'completed', 'completed']  got ['clarify', 'propose', 'propose', 'propose', 'completed', 'completed']
+    turn 2: decision expected 'clarify' (REMEDY_UNSPECIFIED), got 'propose'

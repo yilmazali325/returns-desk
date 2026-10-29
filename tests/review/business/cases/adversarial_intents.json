@@ -1,0 +1,256 @@
+{
+  "adv01_day30_timestamp": [
+    {
+      "kind": "refund",
+      "order_id": "Z-501",
+      "line_id": "A1"
+    },
+    {
+      "kind": "confirm"
+    }
+  ],
+  "adv02_day0_same_day_timestamp": [
+    {
+      "kind": "refund",
+      "order_id": "Z-502",
+      "line_id": "A1"
+    },
+    {
+      "kind": "confirm"
+    }
+  ],
+  "adv03_same_sku_two_lines_one_returned": [
+    {
+      "kind": "clarify_needed",
+      "reason": "TARGET_NOT_UNIQUE"
+    },
+    {
+      "kind": "refund",
+      "order_id": "Z-503",
+      "line_id": "A2"
+    },
+    {
+      "kind": "confirm"
+    }
+  ],
+  "adv04_exchange_timeout_replay": [
+    {
+      "kind": "exchange",
+      "order_id": "Z-504",
+      "line_id": "A1",
+      "requested_size": "S"
+    },
+    {
+      "kind": "confirm"
+    },
+    {
+      "kind": "confirm"
+    }
+  ],
+  "adv05_original_sku_stock_change": [
+    {
+      "kind": "refund",
+      "order_id": "Z-505",
+      "line_id": "A1"
+    },
+    {
+      "kind": "confirm"
+    }
+  ],
+  "adv06_stale_then_other_size": [
+    {
+      "kind": "exchange",
+      "order_id": "Z-506",
+      "line_id": "A1",
+      "requested_size": "L"
+    },
+    {
+      "kind": "confirm"
+    },
+    {
+      "kind": "exchange",
+      "order_id": "Z-506",
+      "line_id": "A1",
+      "requested_size": "S"
+    },
+    {
+      "kind": "confirm"
+    }
+  ],
+  "adv07_timeout_fires_on_first_real_commit": [
+    {
+      "kind": "exchange",
+      "order_id": "Z-507",
+      "line_id": "A1",
+      "requested_size": "L"
+    },
+    {
+      "kind": "confirm"
+    },
+    {
+      "kind": "exchange",
+      "order_id": "Z-507",
+      "line_id": "A1",
+      "requested_size": "S"
+    },
+    {
+      "kind": "confirm"
+    },
+    {
+      "kind": "confirm"
+    }
+  ],
+  "adv08_numeric_half_size_exchange": [
+    {
+      "kind": "exchange",
+      "order_id": "Z-508",
+      "line_id": "A1",
+      "requested_size": "9.5"
+    },
+    {
+      "kind": "confirm"
+    }
+  ],
+  "adv09_order_id_collision_across_customers": [
+    {
+      "kind": "refund",
+      "order_id": "Z-509",
+      "line_id": "A1"
+    },
+    {
+      "kind": "confirm"
+    }
+  ],
+  "adv10_after_refund_asks_exchange_same_line": [
+    {
+      "kind": "refund",
+      "order_id": "Z-510",
+      "line_id": "A1"
+    },
+    {
+      "kind": "confirm"
+    },
+    {
+      "kind": "exchange",
+      "order_id": "Z-510",
+      "line_id": "A1",
+      "requested_size": "S"
+    }
+  ],
+  "adv11_confirm_with_instead_wording": [
+    {
+      "kind": "refund",
+      "order_id": "Z-511",
+      "line_id": "A1"
+    },
+    {
+      "kind": "confirm"
+    }
+  ],
+  "adv12_extra_fields_odd_cents": [
+    {
+      "kind": "refund",
+      "order_id": "Z-512",
+      "line_id": "A1"
+    },
+    {
+      "kind": "confirm"
+    }
+  ],
+  "adv13_status_case": [
+    {
+      "kind": "refund",
+      "order_id": "Z-513",
+      "line_id": "A1"
+    }
+  ],
+  "adv14_restock_then_exchange": [
+    {
+      "kind": "exchange",
+      "order_id": "Z-514",
+      "line_id": "A1",
+      "requested_size": "10"
+    },
+    {
+      "kind": "exchange",
+      "order_id": "Z-514",
+      "line_id": "A1",
+      "requested_size": "10"
+    },
+    {
+      "kind": "confirm"
+    }
+  ],
+  "adv15_stock_change_after_commit": [
+    {
+      "kind": "exchange",
+      "order_id": "Z-515",
+      "line_id": "A1",
+      "requested_size": "S"
+    },
+    {
+      "kind": "confirm"
+    },
+    {
+      "kind": "confirm"
+    }
+  ],
+  "adv16_exchange_price_mismatch_xl": [
+    {
+      "kind": "exchange",
+      "order_id": "Z-516",
+      "line_id": "A1",
+      "requested_size": "XL"
+    }
+  ],
+  "adv17_paid_zero_refund": [
+    {
+      "kind": "refund",
+      "order_id": "Z-517",
+      "line_id": "A1"
+    },
+    {
+      "kind": "confirm"
+    }
+  ],
+  "adv18_two_changes_same_turn": [
+    {
+      "kind": "exchange",
+      "order_id": "Z-518",
+      "line_id": "A1",
+      "requested_size": "L"
+    },
+    {
+      "kind": "confirm"
+    }
+  ],
+  "adv19_return_and_send_large": [
+    {
+      "kind": "exchange",
+      "order_id": "Z-519",
+      "line_id": "A1",
+      "requested_size": "L"
+    },
+    {
+      "kind": "confirm"
+    }
+  ],
+  "adv20_confirm_no_need_to_wait": [
+    {
+      "kind": "exchange",
+      "order_id": "Z-520",
+      "line_id": "A1",
+      "requested_size": "S"
+    },
+    {
+      "kind": "confirm"
+    }
+  ],
+  "adv21_expired_exchange_no_size": [
+    {
+      "kind": "exchange",
+      "order_id": "Z-521",
+      "line_id": "A1"
+    }
+  ]
+}

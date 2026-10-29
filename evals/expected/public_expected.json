@@ -1,0 +1,298 @@
+{
+ "labels_version": 1,
+ "source": "Hand-derived from candidate_assets/CONTRACT.md and docs/CLARIFICATIONS.md defaults (not generated). tests/unit/test_oracle.py asserts evals/oracle.py reproduces every field.",
+ "cases": [
+  {
+   "case_id": "public_01_refund_boundary",
+   "family": "public",
+   "note": "Delivered 2026-09-26, as_of 2026-10-26: exactly 30 days, inside the inclusive window. Refund paid_cents 3000, not the 4000 catalog price. Original goes to quarantine; sellable stock unchanged.",
+   "intents": [
+    {"kind": "refund", "order_id": "O100", "line_id": "L1"},
+    {"kind": "confirm"}
+   ],
+   "expected": {
+    "decisions": ["propose", "completed"],
+    "reasons": ["PROPOSED", "COMMITTED"],
+    "proposals": [
+     {"seq": 1, "customer_id": "C100", "request_id": "REQ-public_01_refund_boundary", "order_id": "O100", "line_id": "L1",
+      "remedy": "refund", "original_sku": "TEE-M", "replacement_sku": null, "amount_cents": 3000, "currency": "USD"},
+     null
+    ],
+    "events": [],
+    "final_business_state": {
+     "top_level_keys": ["as_of", "currency", "exchanges", "idempotency", "orders", "products", "quarantine", "refunds", "returns"],
+     "as_of": "2026-10-26",
+     "currency": "USD",
+     "products": [
+      {"sku": "TEE-S", "product_id": "TEE", "size": "S", "price_cents": 4000, "stock": 4},
+      {"sku": "TEE-M", "product_id": "TEE", "size": "M", "price_cents": 4000, "stock": 2},
+      {"sku": "TEE-L", "product_id": "TEE", "size": "L", "price_cents": 4000, "stock": 3},
+      {"sku": "JACKET-M", "product_id": "JACKET", "size": "M", "price_cents": 9000, "stock": 1},
+      {"sku": "JACKET-L", "product_id": "JACKET", "size": "L", "price_cents": 9000, "stock": 0}
+     ],
+     "orders": [
+      {"order_id": "O100", "customer_id": "C100", "status": "delivered", "delivered_on": "2026-09-26", "lines": [
+       {"line_id": "L1", "sku": "TEE-M", "paid_cents": 3000, "unopened": true, "final_sale": false, "returned": true}
+      ]}
+     ],
+     "returns": [
+      {"request_id": "REQ-public_01_refund_boundary", "customer_id": "C100", "order_id": "O100", "line_id": "L1", "remedy": "refund", "sku": "TEE-M"}
+     ],
+     "refunds": [
+      {"request_id": "REQ-public_01_refund_boundary", "customer_id": "C100", "order_id": "O100", "line_id": "L1", "amount_cents": 3000}
+     ],
+     "exchanges": [],
+     "quarantine": [
+      {"order_id": "O100", "line_id": "L1", "sku": "TEE-M", "quantity": 1}
+     ],
+     "idempotency": {
+      "REQ-public_01_refund_boundary": {"status": "completed", "action": "refund", "customer_id": "C100", "order_id": "O100", "line_id": "L1", "amount_cents": 3000, "replacement_sku": null}
+     }
+    },
+    "state_unchanged": false,
+    "alternatives": {}
+   }
+  },
+  {
+   "case_id": "public_02_exchange",
+   "family": "public",
+   "note": "16 days. TEE-M to TEE-L: same product, different size, same catalog price 4000 (paid 3000 is irrelevant), TEE-L stock 3 > 0. TEE-L 3 -> 2; TEE-M stays 2 because the original is quarantined, not restocked. No money moves.",
+   "intents": [
+    {"kind": "exchange", "order_id": "O100", "line_id": "L1", "requested_size": "L"},
+    {"kind": "confirm"}
+   ],
+   "expected": {
+    "decisions": ["propose", "completed"],
+    "reasons": ["PROPOSED", "COMMITTED"],
+    "proposals": [
+     {"seq": 1, "customer_id": "C100", "request_id": "REQ-public_02_exchange", "order_id": "O100", "line_id": "L1",
+      "remedy": "exchange", "original_sku": "TEE-M", "replacement_sku": "TEE-L", "amount_cents": 0, "currency": "USD"},
+     null
+    ],
+    "events": [],
+    "final_business_state": {
+     "top_level_keys": ["as_of", "currency", "exchanges", "idempotency", "orders", "products", "quarantine", "refunds", "returns"],
+     "as_of": "2026-10-26",
+     "currency": "USD",
+     "products": [
+      {"sku": "TEE-S", "product_id": "TEE", "size": "S", "price_cents": 4000, "stock": 4},
+      {"sku": "TEE-M", "product_id": "TEE", "size": "M", "price_cents": 4000, "stock": 2},
+      {"sku": "TEE-L", "product_id": "TEE", "size": "L", "price_cents": 4000, "stock": 2},
+      {"sku": "JACKET-M", "product_id": "JACKET", "size": "M", "price_cents": 9000, "stock": 1},
+      {"sku": "JACKET-L", "product_id": "JACKET", "size": "L", "price_cents": 9000, "stock": 0}
+     ],
+     "orders": [
+      {"order_id": "O100", "customer_id": "C100", "status": "delivered", "delivered_on": "2026-10-10", "lines": [
+       {"line_id": "L1", "sku": "TEE-M", "paid_cents": 3000, "unopened": true, "final_sale": false, "returned": true}
+      ]}
+     ],
+     "returns": [
+      {"request_id": "REQ-public_02_exchange", "customer_id": "C100", "order_id": "O100", "line_id": "L1", "remedy": "exchange", "sku": "TEE-M"}
+     ],
+     "refunds": [],
+     "exchanges": [
+      {"request_id": "REQ-public_02_exchange", "customer_id": "C100", "order_id": "O100", "line_id": "L1", "original_sku": "TEE-M", "replacement_sku": "TEE-L"}
+     ],
+     "quarantine": [
+      {"order_id": "O100", "line_id": "L1", "sku": "TEE-M", "quantity": 1}
+     ],
+     "idempotency": {
+      "REQ-public_02_exchange": {"status": "completed", "action": "exchange", "customer_id": "C100", "order_id": "O100", "line_id": "L1", "amount_cents": 0, "replacement_sku": "TEE-L"}
+     }
+    },
+    "state_unchanged": false,
+    "alternatives": {}
+   }
+  },
+  {
+   "case_id": "public_03_expired",
+   "family": "public",
+   "note": "Delivered 2026-09-25, as_of 2026-10-26: 31 days, outside the window. No-op refusal: business state byte-identical to the initial state.",
+   "intents": [
+    {"kind": "refund", "order_id": "O100", "line_id": "L1"}
+   ],
+   "expected": {
+    "decisions": ["deny"],
+    "reasons": ["RETURN_WINDOW_EXPIRED"],
+    "proposals": [null],
+    "events": [],
+    "final_business_state": {
+     "top_level_keys": ["as_of", "currency", "exchanges", "idempotency", "orders", "products", "quarantine", "refunds", "returns"],
+     "as_of": "2026-10-26",
+     "currency": "USD",
+     "products": [
+      {"sku": "TEE-S", "product_id": "TEE", "size": "S", "price_cents": 4000, "stock": 4},
+      {"sku": "TEE-M", "product_id": "TEE", "size": "M", "price_cents": 4000, "stock": 2},
+      {"sku": "TEE-L", "product_id": "TEE", "size": "L", "price_cents": 4000, "stock": 3},
+      {"sku": "JACKET-M", "product_id": "JACKET", "size": "M", "price_cents": 9000, "stock": 1},
+      {"sku": "JACKET-L", "product_id": "JACKET", "size": "L", "price_cents": 9000, "stock": 0}
+     ],
+     "orders": [
+      {"order_id": "O100", "customer_id": "C100", "status": "delivered", "delivered_on": "2026-09-25", "lines": [
+       {"line_id": "L1", "sku": "TEE-M", "paid_cents": 3000, "unopened": true, "final_sale": false, "returned": false}
+      ]}
+     ],
+     "returns": [],
+     "refunds": [],
+     "exchanges": [],
+     "quarantine": [],
+     "idempotency": {}
+    },
+    "state_unchanged": true,
+    "alternatives": {}
+   }
+  },
+  {
+   "case_id": "public_04_clarify",
+   "family": "public",
+   "note": "T1 names the order but O100 has two lines (L1 tee, L2 jacket), so no unique target: clarify. T2 names L1 and refund. T3 confirms. Final as public_01 with L2 untouched and JACKET-M stock 1.",
+   "intents": [
+    {"kind": "clarify_needed", "reason": "TARGET_NOT_UNIQUE"},
+    {"kind": "refund", "order_id": "O100", "line_id": "L1"},
+    {"kind": "confirm"}
+   ],
+   "expected": {
+    "decisions": ["clarify", "propose", "completed"],
+    "reasons": ["TARGET_NOT_UNIQUE", "PROPOSED", "COMMITTED"],
+    "proposals": [
+     null,
+     {"seq": 1, "customer_id": "C100", "request_id": "REQ-public_04_clarify", "order_id": "O100", "line_id": "L1",
+      "remedy": "refund", "original_sku": "TEE-M", "replacement_sku": null, "amount_cents": 3000, "currency": "USD"},
+     null
+    ],
+    "events": [],
+    "final_business_state": {
+     "top_level_keys": ["as_of", "currency", "exchanges", "idempotency", "orders", "products", "quarantine", "refunds", "returns"],
+     "as_of": "2026-10-26",
+     "currency": "USD",
+     "products": [
+      {"sku": "TEE-S", "product_id": "TEE", "size": "S", "price_cents": 4000, "stock": 4},
+      {"sku": "TEE-M", "product_id": "TEE", "size": "M", "price_cents": 4000, "stock": 2},
+      {"sku": "TEE-L", "product_id": "TEE", "size": "L", "price_cents": 4000, "stock": 3},
+      {"sku": "JACKET-M", "product_id": "JACKET", "size": "M", "price_cents": 9000, "stock": 1},
+      {"sku": "JACKET-L", "product_id": "JACKET", "size": "L", "price_cents": 9000, "stock": 0}
+     ],
+     "orders": [
+      {"order_id": "O100", "customer_id": "C100", "status": "delivered", "delivered_on": "2026-10-10", "lines": [
+       {"line_id": "L1", "sku": "TEE-M", "paid_cents": 3000, "unopened": true, "final_sale": false, "returned": true},
+       {"line_id": "L2", "sku": "JACKET-M", "paid_cents": 9000, "unopened": true, "final_sale": false, "returned": false}
+      ]}
+     ],
+     "returns": [
+      {"request_id": "REQ-public_04_clarify", "customer_id": "C100", "order_id": "O100", "line_id": "L1", "remedy": "refund", "sku": "TEE-M"}
+     ],
+     "refunds": [
+      {"request_id": "REQ-public_04_clarify", "customer_id": "C100", "order_id": "O100", "line_id": "L1", "amount_cents": 3000}
+     ],
+     "exchanges": [],
+     "quarantine": [
+      {"order_id": "O100", "line_id": "L1", "sku": "TEE-M", "quantity": 1}
+     ],
+     "idempotency": {
+      "REQ-public_04_clarify": {"status": "completed", "action": "refund", "customer_id": "C100", "order_id": "O100", "line_id": "L1", "amount_cents": 3000, "replacement_sku": null}
+     }
+    },
+    "state_unchanged": false,
+    "alternatives": {}
+   }
+  },
+  {
+   "case_id": "public_05_stale_stock",
+   "family": "public",
+   "note": "T1 proposes TEE-L while stock is 3. The external stock_change sets TEE-L to 0 before T2; revalidation at commit fails, so T2 denies with no alternative proposal. Only the external stock change remains.",
+   "intents": [
+    {"kind": "exchange", "order_id": "O100", "line_id": "L1", "requested_size": "L"},
+    {"kind": "confirm"}
+   ],
+   "expected": {
+    "decisions": ["propose", "deny"],
+    "reasons": ["PROPOSED", "OUT_OF_STOCK"],
+    "proposals": [
+     {"seq": 1, "customer_id": "C100", "request_id": "REQ-public_05_stale_stock", "order_id": "O100", "line_id": "L1",
+      "remedy": "exchange", "original_sku": "TEE-M", "replacement_sku": "TEE-L", "amount_cents": 0, "currency": "USD"},
+     null
+    ],
+    "events": [
+     {"type": "stock_change", "sku": "TEE-L", "old_stock": 3, "new_stock": 0, "before_turn": 2, "applied": true}
+    ],
+    "final_business_state": {
+     "top_level_keys": ["as_of", "currency", "exchanges", "idempotency", "orders", "products", "quarantine", "refunds", "returns"],
+     "as_of": "2026-10-26",
+     "currency": "USD",
+     "products": [
+      {"sku": "TEE-S", "product_id": "TEE", "size": "S", "price_cents": 4000, "stock": 4},
+      {"sku": "TEE-M", "product_id": "TEE", "size": "M", "price_cents": 4000, "stock": 2},
+      {"sku": "TEE-L", "product_id": "TEE", "size": "L", "price_cents": 4000, "stock": 0},
+      {"sku": "JACKET-M", "product_id": "JACKET", "size": "M", "price_cents": 9000, "stock": 1},
+      {"sku": "JACKET-L", "product_id": "JACKET", "size": "L", "price_cents": 9000, "stock": 0}
+     ],
+     "orders": [
+      {"order_id": "O100", "customer_id": "C100", "status": "delivered", "delivered_on": "2026-10-10", "lines": [
+       {"line_id": "L1", "sku": "TEE-M", "paid_cents": 3000, "unopened": true, "final_sale": false, "returned": false}
+      ]}
+     ],
+     "returns": [],
+     "refunds": [],
+     "exchanges": [],
+     "quarantine": [],
+     "idempotency": {}
+    },
+    "state_unchanged": true,
+    "alternatives": {}
+   }
+  },
+  {
+   "case_id": "public_06_timeout_replay",
+   "family": "public",
+   "note": "T2's commit persists, then the simulated timeout hides the result; recovery queries status and finds it committed (completed; 'error' is the documented alternative, CLARIFICATIONS #1). T3 repeats confirm_proposal 'last', which still resolves to T1's proposal: idempotent replay, zero new effects. Exactly one refund.",
+   "intents": [
+    {"kind": "refund", "order_id": "O100", "line_id": "L1"},
+    {"kind": "confirm"},
+    {"kind": "confirm"}
+   ],
+   "expected": {
+    "decisions": ["propose", "completed", "completed"],
+    "reasons": ["PROPOSED", "COMMITTED_TIMEOUT_RECONCILED", "REPLAY"],
+    "proposals": [
+     {"seq": 1, "customer_id": "C100", "request_id": "REQ-public_06_timeout_replay", "order_id": "O100", "line_id": "L1",
+      "remedy": "refund", "original_sku": "TEE-M", "replacement_sku": null, "amount_cents": 3000, "currency": "USD"},
+     null,
+     null
+    ],
+    "events": [],
+    "final_business_state": {
+     "top_level_keys": ["as_of", "currency", "exchanges", "idempotency", "orders", "products", "quarantine", "refunds", "returns"],
+     "as_of": "2026-10-26",
+     "currency": "USD",
+     "products": [
+      {"sku": "TEE-S", "product_id": "TEE", "size": "S", "price_cents": 4000, "stock": 4},
+      {"sku": "TEE-M", "product_id": "TEE", "size": "M", "price_cents": 4000, "stock": 2},
+      {"sku": "TEE-L", "product_id": "TEE", "size": "L", "price_cents": 4000, "stock": 3},
+      {"sku": "JACKET-M", "product_id": "JACKET", "size": "M", "price_cents": 9000, "stock": 1},
+      {"sku": "JACKET-L", "product_id": "JACKET", "size": "L", "price_cents": 9000, "stock": 0}
+     ],
+     "orders": [
+      {"order_id": "O100", "customer_id": "C100", "status": "delivered", "delivered_on": "2026-10-10", "lines": [
+       {"line_id": "L1", "sku": "TEE-M", "paid_cents": 3000, "unopened": true, "final_sale": false, "returned": true}
+      ]}
+     ],
+     "returns": [
+      {"request_id": "REQ-public_06_timeout_replay", "customer_id": "C100", "order_id": "O100", "line_id": "L1", "remedy": "refund", "sku": "TEE-M"}
+     ],
+     "refunds": [
+      {"request_id": "REQ-public_06_timeout_replay", "customer_id": "C100", "order_id": "O100", "line_id": "L1", "amount_cents": 3000}
+     ],
+     "exchanges": [],
+     "quarantine": [
+      {"order_id": "O100", "line_id": "L1", "sku": "TEE-M", "quantity": 1}
+     ],
+     "idempotency": {
+      "REQ-public_06_timeout_replay": {"status": "completed", "action": "refund", "customer_id": "C100", "order_id": "O100", "line_id": "L1", "amount_cents": 3000, "replacement_sku": null}
+     }
+    },
+    "state_unchanged": false,
+    "alternatives": {"2": ["error"]}
+   }
+  }
+ ]
+}

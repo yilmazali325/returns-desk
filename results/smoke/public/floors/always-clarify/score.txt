@@ -1,0 +1,48 @@
+$ /Users/ali/Desktop/Projects/retail-returns-desk/.venv/bin/python -m evals.score --input candidate_assets/public_cases.json --labels evals/expected/public_expected.json --output results/smoke/public/floors/always-clarify/results.json --json results/smoke/public/floors/always-clarify/score.json
+Strict case success: 1/6 = 16.7% (Wilson 95% CI 3.0%-56.4%)
+Lenient (documented alternatives accepted): 1/6
+Turn decision accuracy: 15.4% of 13 turns
+Invariant violations: 0 in 0 case(s)
+Decision mismatches (expected->actual): completed->clarify x5, deny->clarify x1, propose->clarify x5
+
+family                             cases strict lenient turn-acc
+public                                 6      1       1      15%
+
+FAILURES (5):
+FAIL public_01_refund_boundary [public]  expected ['propose', 'completed']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.orders[O100].lines[TEE-M].returned: expected true, got false
+    state: state.returns[TEE-M]: missing
+    state: state.refunds[O100]: missing
+    state: state.quarantine[TEE-M]: missing
+    state: state.idempotency.REQ-public_01_refund_boundary: missing (expected {"action": "refund", "amount_cents": 3000, "customer_id": "C100", "line_id": "L1", "order_id": "O100", "replacement_sku": null, "status":...)
+FAIL public_02_exchange [public]  expected ['propose', 'completed']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.products[TEE-L].stock: expected 2, got 3
+    state: state.orders[O100].lines[TEE-M].returned: expected true, got false
+    state: state.returns[TEE-M]: missing
+    state: state.exchanges[O100]: missing
+    state: state.quarantine[TEE-M]: missing
+    state: state.idempotency.REQ-public_02_exchange: missing (expected {"action": "exchange", "amount_cents": 0, "customer_id": "C100", "line_id": "L1", "order_id": "O100", "replacement_sku": "TEE-L", "status...)
+FAIL public_04_clarify [public]  expected ['clarify', 'propose', 'completed']  got ['clarify', 'clarify', 'clarify']
+    turn 2: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 3: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.orders[O100].lines[TEE-M].returned: expected true, got false
+    state: state.returns[TEE-M]: missing
+    state: state.refunds[O100]: missing
+    state: state.quarantine[TEE-M]: missing
+    state: state.idempotency.REQ-public_04_clarify: missing (expected {"action": "refund", "amount_cents": 3000, "customer_id": "C100", "line_id": "L1", "order_id": "O100", "replacement_sku": null, "status":...)
+FAIL public_05_stale_stock [public]  expected ['propose', 'deny']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'deny' (OUT_OF_STOCK), got 'clarify'
+FAIL public_06_timeout_replay [public]  expected ['propose', 'completed', 'completed']  got ['clarify', 'clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED_TIMEOUT_RECONCILED), got 'clarify'; also accepted leniently: ['error']
+    turn 3: decision expected 'completed' (REPLAY), got 'clarify'
+    state: state.orders[O100].lines[TEE-M].returned: expected true, got false
+    state: state.returns[TEE-M]: missing
+    state: state.refunds[O100]: missing
+    state: state.quarantine[TEE-M]: missing
+    state: state.idempotency.REQ-public_06_timeout_replay: missing (expected {"action": "refund", "amount_cents": 3000, "customer_id": "C100", "line_id": "L1", "order_id": "O100", "replacement_sku": null, "status":...)

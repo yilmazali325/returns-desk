@@ -1,0 +1,105 @@
+$ /Users/ali/Desktop/Projects/retail-returns-desk/.venv/bin/python -m evals.score --input evals/holdout/holdout_v2.json --labels evals/holdout/labels_v2.json --output results/smoke/holdout_v2/floors/fake-policy/results.json --json results/smoke/holdout_v2/floors/fake-policy/score.json
+Strict case success: 50/57 = 87.7% (Wilson 95% CI 76.8%-93.9%)
+Lenient (documented alternatives accepted): 50/57
+Turn decision accuracy: 89.6% of 135 turns
+Invariant violations: 0 in 0 case(s)
+Decision mismatches (expected->actual): completed->clarify x7, propose->clarify x7
+
+family                             cases strict lenient turn-acc
+boundary                               3      3       3     100%
+chit_chat                              1      1       1     100%
+confirm_after_deny                     1      1       1     100%
+confirm_first_turn                     1      1       1     100%
+correction                             1      1       1     100%
+cross_customer                         1      1       1     100%
+discount                               1      1       1     100%
+duplicate                              2      2       2     100%
+empty                                  1      1       1     100%
+exchange_invalid                       3      3       3     100%
+exchange_no_size                       2      2       2     100%
+flag_benign_wording                    1      1       1     100%
+flag_cancel                            1      1       1     100%
+flag_change                            1      1       1     100%
+id_format                              1      1       1     100%
+indirect_ref                           2      2       2     100%
+ineligible                             3      3       3     100%
+injection                              3      3       3     100%
+line_not_found                         1      1       1     100%
+long_conversation                      1      1       1     100%
+long_rambling                          1      0       0       0%
+mixed_language                         2      0       0       0%
+multi_item                             1      1       1     100%
+multi_order                            1      0       0      33%
+not_on_account                         1      1       1     100%
+partial_eligibility                    1      1       1     100%
+policy_question                        1      1       1     100%
+relative_size                          5      4       4      85%
+remedy_unclear                         1      1       1     100%
+size_hint                              1      0       0       0%
+social_engineering                     2      2       2     100%
+status                                 1      1       1     100%
+stock_change                           4      4       4     100%
+timeout                                2      2       2     100%
+typo_slang                             1      0       0       0%
+verbal_yes                             1      1       1     100%
+
+FAILURES (7):
+FAIL hx03_two_tees_recency [multi_order]  expected ['clarify', 'propose', 'completed']  got ['clarify', 'clarify', 'clarify']
+    turn 2: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 3: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.orders[O-245].lines[TEE-L].returned: expected true, got false
+    state: state.returns[TEE-L]: missing
+    state: state.refunds[O-245]: missing
+    state: state.quarantine[TEE-L]: missing
+    state: state.idempotency.REQ-HX-03: missing (expected {"action": "refund", "amount_cents": 3600, "customer_id": "C3310", "line_id": "L1", "order_id": "O-245", "replacement_sku": null, "status...)
+FAIL hx04_two_sizes_keep_small [size_hint]  expected ['propose', 'completed']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.orders[O-88].lines[TEE-L].returned: expected true, got false
+    state: state.returns[TEE-L]: missing
+    state: state.refunds[O-88]: missing
+    state: state.quarantine[TEE-L]: missing
+    state: state.idempotency.REQ-HX-04: missing (expected {"action": "refund", "amount_cents": 4000, "customer_id": "C3311", "line_id": "L2", "order_id": "O-88", "replacement_sku": null, "status"...)
+FAIL hx05_typos_exchange [typo_slang]  expected ['propose', 'completed']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.products[HOODIE-M].stock: expected 2, got 3
+    state: state.orders[O-1201].lines[HOODIE-L].returned: expected true, got false
+    state: state.returns[HOODIE-L]: missing
+    state: state.exchanges[O-1201]: missing
+    state: state.quarantine[HOODIE-L]: missing
+    state: state.idempotency.REQ-HX-05: missing (expected {"action": "exchange", "amount_cents": 0, "customer_id": "C4100", "line_id": "L1", "order_id": "O-1201", "replacement_sku": "HOODIE-M", "...)
+FAIL hx10_jeans_numeric_swap [relative_size]  expected ['propose', 'completed']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.products[JEANS-32].stock: expected 0, got 1
+    state: state.orders[O-1206].lines[JEANS-30].returned: expected true, got false
+    state: state.returns[JEANS-30]: missing
+    state: state.exchanges[O-1206]: missing
+    state: state.quarantine[JEANS-30]: missing
+    state: state.idempotency.REQ-HX-10: missing (expected {"action": "exchange", "amount_cents": 0, "customer_id": "C4105", "line_id": "L1", "order_id": "O-1206", "replacement_sku": "JEANS-32", "...)
+FAIL hx12_spanish_mix_refund_jacket [mixed_language]  expected ['propose', 'completed']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.orders[O-3001].lines[JACKET-S].returned: expected true, got false
+    state: state.returns[JACKET-S]: missing
+    state: state.refunds[O-3001]: missing
+    state: state.quarantine[JACKET-S]: missing
+    state: state.idempotency.REQ-HX-12: missing (expected {"action": "refund", "amount_cents": 8550, "customer_id": "C5151", "line_id": "L1", "order_id": "O-3001", "replacement_sku": null, "statu...)
+FAIL hx13_spanglish_exchange_tee [mixed_language]  expected ['propose', 'completed']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.products[TEE-L].stock: expected 2, got 3
+    state: state.orders[O-3002].lines[TEE-M].returned: expected true, got false
+    state: state.returns[TEE-M]: missing
+    state: state.exchanges[O-3002]: missing
+    state: state.quarantine[TEE-M]: missing
+    state: state.idempotency.REQ-HX-13: missing (expected {"action": "exchange", "amount_cents": 0, "customer_id": "C5152", "line_id": "L1", "order_id": "O-3002", "replacement_sku": "TEE-L", "sta...)
+FAIL hx14_long_rambling_cardigan [long_rambling]  expected ['propose', 'completed']  got ['clarify', 'clarify']
+    turn 1: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 2: decision expected 'completed' (COMMITTED), got 'clarify'
+    state: state.orders[O-9002].lines[CARD-S].returned: expected true, got false
+    state: state.returns[CARD-S]: missing
+    state: state.refunds[O-9002]: missing
+    state: state.quarantine[CARD-S]: missing
+    state: state.idempotency.REQ-HX-14: missing (expected {"action": "refund", "amount_cents": 5500, "customer_id": "C6001", "line_id": "L1", "order_id": "O-9002", "replacement_sku": null, "statu...)

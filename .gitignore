@@ -1,0 +1,26 @@
+# Environments and tool caches
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.hypothesis/
+.coverage
+.coverage.*
+htmlcov/
+test-results/
+playwright-report/
+.DS_Store
+
+# Model weights (fetched by scripts/setup.sh, pinned revision + sha256) and the machine-specific
+# digest cache (keyed by real path, size and mtime)
+models/*.gguf
+models/.sha256-cache.json
+
+# Scratch: UI session stores, adapter server logs, E2E screenshots (var/e2e/), ad-hoc runs. Evidence
+# cited by the docs is tracked: run evidence is copied to results/evidence/, and the presentation
+# screenshots (SPEC §10.1, written only by scripts/screenshots.sh) stay in var/screenshots/. Raw logs
+# outside var/ and logs/ are evidence too (results/**/*.log, evals/**/*.log), so there is
+# deliberately no global *.log rule.
+var/*
+!var/screenshots/
+/logs/

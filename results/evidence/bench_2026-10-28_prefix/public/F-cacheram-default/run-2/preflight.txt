@@ -1,0 +1,12 @@
+$ bash bench/preflight.sh --out /Users/ali/Desktop/Projects/retail-returns-desk/results/public/F-cacheram-default/run-2/preflight --port 8405
+preflight 2026-10-28T23:18:29Z thresholds: cpu_hog>=50% load1<=5.0 gpu_busy<=10% gpu_mem<=2048MiB ignore=''
+PASS  llama-server: none running
+PASS  cpu: no other process at or above 50% CPU
+PASS  load: 1/5/15-minute load average 1.07 1.55 1.91 (limit 5.0)
+PASS  gpu: median utilization 0%, median in-use system memory 26 MiB
+PASS  power: AC Power (100%; charged)
+PASS  low power mode: off (pmset powermode 0)
+PASS  thermal: no thermal or performance warning recorded
+INFO  sleep setting: sleep 0 (sleep prevented by Claude, caffeinate, caffeinate, powerd, caffeinate, caffeinate, caffeinate, caffeinate) (the run itself is wrapped in caffeinate -dimsu)
+PASS  port 8405: free
+PREFLIGHT PASSED

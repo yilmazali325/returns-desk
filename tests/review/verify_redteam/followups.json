@@ -1,0 +1,563 @@
+{
+ "contract_version": 1,
+ "cases": [
+  {
+   "case_id": "f1_small_instead",
+   "customer_id": "C100",
+   "request_id": "REQ-VR-0",
+   "initial_state": {
+    "as_of": "2026-10-26",
+    "currency": "USD",
+    "products": [
+     {
+      "sku": "TEE-S",
+      "product_id": "TEE",
+      "size": "S",
+      "price_cents": 4000,
+      "stock": 4
+     },
+     {
+      "sku": "TEE-M",
+      "product_id": "TEE",
+      "size": "M",
+      "price_cents": 4000,
+      "stock": 2
+     },
+     {
+      "sku": "TEE-L",
+      "product_id": "TEE",
+      "size": "L",
+      "price_cents": 4000,
+      "stock": 3
+     },
+     {
+      "sku": "JACKET-M",
+      "product_id": "JACKET",
+      "size": "M",
+      "price_cents": 9000,
+      "stock": 1
+     },
+     {
+      "sku": "JACKET-L",
+      "product_id": "JACKET",
+      "size": "L",
+      "price_cents": 9000,
+      "stock": 0
+     }
+    ],
+    "orders": [
+     {
+      "order_id": "O100",
+      "customer_id": "C100",
+      "status": "delivered",
+      "delivered_on": "2026-10-10",
+      "lines": [
+       {
+        "line_id": "L1",
+        "sku": "TEE-M",
+        "paid_cents": 3000,
+        "unopened": true,
+        "final_sale": false,
+        "returned": false
+       }
+      ]
+     }
+    ],
+    "returns": [],
+    "refunds": [],
+    "exchanges": [],
+    "quarantine": [],
+    "idempotency": {}
+   },
+   "turns": [
+    {
+     "message": "Exchange line L1 of O100 for the same tee in size L."
+    },
+    {
+     "message": "Yes, confirm the proposed exchange.",
+     "confirm_proposal": "last"
+    },
+    {
+     "message": "OK then, the small instead please."
+    },
+    {
+     "message": "Yes, confirm.",
+     "confirm_proposal": "last"
+    }
+   ],
+   "faults": [
+    {
+     "type": "stock_change",
+     "before_turn": 2,
+     "sku": "TEE-L",
+     "new_stock": 0
+    }
+   ]
+  },
+  {
+   "case_id": "f2_size_s_instead",
+   "customer_id": "C100",
+   "request_id": "REQ-VR-1",
+   "initial_state": {
+    "as_of": "2026-10-26",
+    "currency": "USD",
+    "products": [
+     {
+      "sku": "TEE-S",
+      "product_id": "TEE",
+      "size": "S",
+      "price_cents": 4000,
+      "stock": 4
+     },
+     {
+      "sku": "TEE-M",
+      "product_id": "TEE",
+      "size": "M",
+      "price_cents": 4000,
+      "stock": 2
+     },
+     {
+      "sku": "TEE-L",
+      "product_id": "TEE",
+      "size": "L",
+      "price_cents": 4000,
+      "stock": 3
+     },
+     {
+      "sku": "JACKET-M",
+      "product_id": "JACKET",
+      "size": "M",
+      "price_cents": 9000,
+      "stock": 1
+     },
+     {
+      "sku": "JACKET-L",
+      "product_id": "JACKET",
+      "size": "L",
+      "price_cents": 9000,
+      "stock": 0
+     }
+    ],
+    "orders": [
+     {
+      "order_id": "O100",
+      "customer_id": "C100",
+      "status": "delivered",
+      "delivered_on": "2026-10-10",
+      "lines": [
+       {
+        "line_id": "L1",
+        "sku": "TEE-M",
+        "paid_cents": 3000,
+        "unopened": true,
+        "final_sale": false,
+        "returned": false
+       }
+      ]
+     }
+    ],
+    "returns": [],
+    "refunds": [],
+    "exchanges": [],
+    "quarantine": [],
+    "idempotency": {}
+   },
+   "turns": [
+    {
+     "message": "Exchange line L1 of O100 for the same tee in size L."
+    },
+    {
+     "message": "Yes, confirm the proposed exchange.",
+     "confirm_proposal": "last"
+    },
+    {
+     "message": "Fine, exchange it for size S instead."
+    },
+    {
+     "message": "Yes, confirm.",
+     "confirm_proposal": "last"
+    }
+   ],
+   "faults": [
+    {
+     "type": "stock_change",
+     "before_turn": 2,
+     "sku": "TEE-L",
+     "new_stock": 0
+    }
+   ]
+  },
+  {
+   "case_id": "f3_take_small",
+   "customer_id": "C100",
+   "request_id": "REQ-VR-2",
+   "initial_state": {
+    "as_of": "2026-10-26",
+    "currency": "USD",
+    "products": [
+     {
+      "sku": "TEE-S",
+      "product_id": "TEE",
+      "size": "S",
+      "price_cents": 4000,
+      "stock": 4
+     },
+     {
+      "sku": "TEE-M",
+      "product_id": "TEE",
+      "size": "M",
+      "price_cents": 4000,
+      "stock": 2
+     },
+     {
+      "sku": "TEE-L",
+      "product_id": "TEE",
+      "size": "L",
+      "price_cents": 4000,
+      "stock": 3
+     },
+     {
+      "sku": "JACKET-M",
+      "product_id": "JACKET",
+      "size": "M",
+      "price_cents": 9000,
+      "stock": 1
+     },
+     {
+      "sku": "JACKET-L",
+      "product_id": "JACKET",
+      "size": "L",
+      "price_cents": 9000,
+      "stock": 0
+     }
+    ],
+    "orders": [
+     {
+      "order_id": "O100",
+      "customer_id": "C100",
+      "status": "delivered",
+      "delivered_on": "2026-10-10",
+      "lines": [
+       {
+        "line_id": "L1",
+        "sku": "TEE-M",
+        "paid_cents": 3000,
+        "unopened": true,
+        "final_sale": false,
+        "returned": false
+       }
+      ]
+     }
+    ],
+    "returns": [],
+    "refunds": [],
+    "exchanges": [],
+    "quarantine": [],
+    "idempotency": {}
+   },
+   "turns": [
+    {
+     "message": "Exchange line L1 of O100 for the same tee in size L."
+    },
+    {
+     "message": "Yes, confirm the proposed exchange.",
+     "confirm_proposal": "last"
+    },
+    {
+     "message": "Then I'll take the small."
+    },
+    {
+     "message": "Yes, confirm.",
+     "confirm_proposal": "last"
+    }
+   ],
+   "faults": [
+    {
+     "type": "stock_change",
+     "before_turn": 2,
+     "sku": "TEE-L",
+     "new_stock": 0
+    }
+   ]
+  },
+  {
+   "case_id": "f4_ids_size_s",
+   "customer_id": "C100",
+   "request_id": "REQ-VR-3",
+   "initial_state": {
+    "as_of": "2026-10-26",
+    "currency": "USD",
+    "products": [
+     {
+      "sku": "TEE-S",
+      "product_id": "TEE",
+      "size": "S",
+      "price_cents": 4000,
+      "stock": 4
+     },
+     {
+      "sku": "TEE-M",
+      "product_id": "TEE",
+      "size": "M",
+      "price_cents": 4000,
+      "stock": 2
+     },
+     {
+      "sku": "TEE-L",
+      "product_id": "TEE",
+      "size": "L",
+      "price_cents": 4000,
+      "stock": 3
+     },
+     {
+      "sku": "JACKET-M",
+      "product_id": "JACKET",
+      "size": "M",
+      "price_cents": 9000,
+      "stock": 1
+     },
+     {
+      "sku": "JACKET-L",
+      "product_id": "JACKET",
+      "size": "L",
+      "price_cents": 9000,
+      "stock": 0
+     }
+    ],
+    "orders": [
+     {
+      "order_id": "O100",
+      "customer_id": "C100",
+      "status": "delivered",
+      "delivered_on": "2026-10-10",
+      "lines": [
+       {
+        "line_id": "L1",
+        "sku": "TEE-M",
+        "paid_cents": 3000,
+        "unopened": true,
+        "final_sale": false,
+        "returned": false
+       }
+      ]
+     }
+    ],
+    "returns": [],
+    "refunds": [],
+    "exchanges": [],
+    "quarantine": [],
+    "idempotency": {}
+   },
+   "turns": [
+    {
+     "message": "Exchange line L1 of O100 for the same tee in size L."
+    },
+    {
+     "message": "Yes, confirm the proposed exchange.",
+     "confirm_proposal": "last"
+    },
+    {
+     "message": "Exchange line L1 of O100 for size S instead."
+    },
+    {
+     "message": "Yes, confirm.",
+     "confirm_proposal": "last"
+    }
+   ],
+   "faults": [
+    {
+     "type": "stock_change",
+     "before_turn": 2,
+     "sku": "TEE-L",
+     "new_stock": 0
+    }
+   ]
+  },
+  {
+   "case_id": "f5_what_about_small",
+   "customer_id": "C100",
+   "request_id": "REQ-VR-4",
+   "initial_state": {
+    "as_of": "2026-10-26",
+    "currency": "USD",
+    "products": [
+     {
+      "sku": "TEE-S",
+      "product_id": "TEE",
+      "size": "S",
+      "price_cents": 4000,
+      "stock": 4
+     },
+     {
+      "sku": "TEE-M",
+      "product_id": "TEE",
+      "size": "M",
+      "price_cents": 4000,
+      "stock": 2
+     },
+     {
+      "sku": "TEE-L",
+      "product_id": "TEE",
+      "size": "L",
+      "price_cents": 4000,
+      "stock": 3
+     },
+     {
+      "sku": "JACKET-M",
+      "product_id": "JACKET",
+      "size": "M",
+      "price_cents": 9000,
+      "stock": 1
+     },
+     {
+      "sku": "JACKET-L",
+      "product_id": "JACKET",
+      "size": "L",
+      "price_cents": 9000,
+      "stock": 0
+     }
+    ],
+    "orders": [
+     {
+      "order_id": "O100",
+      "customer_id": "C100",
+      "status": "delivered",
+      "delivered_on": "2026-10-10",
+      "lines": [
+       {
+        "line_id": "L1",
+        "sku": "TEE-M",
+        "paid_cents": 3000,
+        "unopened": true,
+        "final_sale": false,
+        "returned": false
+       }
+      ]
+     }
+    ],
+    "returns": [],
+    "refunds": [],
+    "exchanges": [],
+    "quarantine": [],
+    "idempotency": {}
+   },
+   "turns": [
+    {
+     "message": "Exchange line L1 of O100 for the same tee in size L."
+    },
+    {
+     "message": "Yes, confirm the proposed exchange.",
+     "confirm_proposal": "last"
+    },
+    {
+     "message": "What about the small then?"
+    },
+    {
+     "message": "Yes, confirm.",
+     "confirm_proposal": "last"
+    }
+   ],
+   "faults": [
+    {
+     "type": "stock_change",
+     "before_turn": 2,
+     "sku": "TEE-L",
+     "new_stock": 0
+    }
+   ]
+  },
+  {
+   "case_id": "f6_ids_no_instead",
+   "customer_id": "C100",
+   "request_id": "REQ-VR-5",
+   "initial_state": {
+    "as_of": "2026-10-26",
+    "currency": "USD",
+    "products": [
+     {
+      "sku": "TEE-S",
+      "product_id": "TEE",
+      "size": "S",
+      "price_cents": 4000,
+      "stock": 4
+     },
+     {
+      "sku": "TEE-M",
+      "product_id": "TEE",
+      "size": "M",
+      "price_cents": 4000,
+      "stock": 2
+     },
+     {
+      "sku": "TEE-L",
+      "product_id": "TEE",
+      "size": "L",
+      "price_cents": 4000,
+      "stock": 3
+     },
+     {
+      "sku": "JACKET-M",
+      "product_id": "JACKET",
+      "size": "M",
+      "price_cents": 9000,
+      "stock": 1
+     },
+     {
+      "sku": "JACKET-L",
+      "product_id": "JACKET",
+      "size": "L",
+      "price_cents": 9000,
+      "stock": 0
+     }
+    ],
+    "orders": [
+     {
+      "order_id": "O100",
+      "customer_id": "C100",
+      "status": "delivered",
+      "delivered_on": "2026-10-10",
+      "lines": [
+       {
+        "line_id": "L1",
+        "sku": "TEE-M",
+        "paid_cents": 3000,
+        "unopened": true,
+        "final_sale": false,
+        "returned": false
+       }
+      ]
+     }
+    ],
+    "returns": [],
+    "refunds": [],
+    "exchanges": [],
+    "quarantine": [],
+    "idempotency": {}
+   },
+   "turns": [
+    {
+     "message": "Exchange line L1 of O100 for the same tee in size L."
+    },
+    {
+     "message": "Yes, confirm the proposed exchange.",
+     "confirm_proposal": "last"
+    },
+    {
+     "message": "Exchange line L1 of order O100 for the same tee in size S."
+    },
+    {
+     "message": "Yes, confirm.",
+     "confirm_proposal": "last"
+    }
+   ],
+   "faults": [
+    {
+     "type": "stock_change",
+     "before_turn": 2,
+     "sku": "TEE-L",
+     "new_stock": 0
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,663 @@
+{
+ "scorer": "evals.score v1",
+ "warnings": [],
+ "summary": {
+  "cases": 21,
+  "strict_success": 2,
+  "strict_rate": 0.09523809523809523,
+  "strict_wilson95": [
+   0.026518208796947246,
+   0.2891458386074067
+  ],
+  "lenient_success": 2,
+  "turns": 49,
+  "turn_decision_accuracy": 0.061224489795918366,
+  "invariant_violations": 0,
+  "cases_with_invariant_violations": 0
+ },
+ "decision_confusion": {
+  "completed->clarify": 21,
+  "deny->clarify": 6,
+  "propose->clarify": 19
+ },
+ "invariants": {},
+ "families": {
+  "adv01": {
+   "cases": 1,
+   "strict": 0,
+   "lenient": 0,
+   "turns": 2,
+   "turns_ok": 0
+  },
+  "adv02": {
+   "cases": 1,
+   "strict": 0,
+   "lenient": 0,
+   "turns": 2,
+   "turns_ok": 0
+  },
+  "adv03": {
+   "cases": 1,
+   "strict": 0,
+   "lenient": 0,
+   "turns": 3,
+   "turns_ok": 1
+  },
+  "adv04": {
+   "cases": 1,
+   "strict": 0,
+   "lenient": 0,
+   "turns": 3,
+   "turns_ok": 0
+  },
+  "adv05": {
+   "cases": 1,
+   "strict": 0,
+   "lenient": 0,
+   "turns": 2,
+   "turns_ok": 0
+  },
+  "adv06": {
+   "cases": 1,
+   "strict": 0,
+   "lenient": 0,
+   "turns": 4,
+   "turns_ok": 0
+  },
+  "adv07": {
+   "cases": 1,
+   "strict": 0,
+   "lenient": 0,
+   "turns": 5,
+   "turns_ok": 0
+  },
+  "adv08": {
+   "cases": 1,
+   "strict": 0,
+   "lenient": 0,
+   "turns": 2,
+   "turns_ok": 0
+  },
+  "adv09": {
+   "cases": 1,
+   "strict": 0,
+   "lenient": 0,
+   "turns": 2,
+   "turns_ok": 0
+  },
+  "adv10": {
+   "cases": 1,
+   "strict": 0,
+   "lenient": 0,
+   "turns": 3,
+   "turns_ok": 0
+  },
+  "adv11": {
+   "cases": 1,
+   "strict": 0,
+   "lenient": 0,
+   "turns": 2,
+   "turns_ok": 0
+  },
+  "adv12": {
+   "cases": 1,
+   "strict": 0,
+   "lenient": 0,
+   "turns": 2,
+   "turns_ok": 0
+  },
+  "adv13": {
+   "cases": 1,
+   "strict": 1,
+   "lenient": 1,
+   "turns": 1,
+   "turns_ok": 1
+  },
+  "adv14": {
+   "cases": 1,
+   "strict": 0,
+   "lenient": 0,
+   "turns": 3,
+   "turns_ok": 0
+  },
+  "adv15": {
+   "cases": 1,
+   "strict": 0,
+   "lenient": 0,
+   "turns": 3,
+   "turns_ok": 0
+  },
+  "adv16": {
+   "cases": 1,
+   "strict": 0,
+   "lenient": 0,
+   "turns": 1,
+   "turns_ok": 0
+  },
+  "adv17": {
+   "cases": 1,
+   "strict": 0,
+   "lenient": 0,
+   "turns": 2,
+   "turns_ok": 0
+  },
+  "adv18": {
+   "cases": 1,
+   "strict": 0,
+   "lenient": 0,
+   "turns": 2,
+   "turns_ok": 0
+  },
+  "adv19": {
+   "cases": 1,
+   "strict": 0,
+   "lenient": 0,
+   "turns": 2,
+   "turns_ok": 0
+  },
+  "adv20": {
+   "cases": 1,
+   "strict": 0,
+   "lenient": 0,
+   "turns": 2,
+   "turns_ok": 0
+  },
+  "adv21": {
+   "cases": 1,
+   "strict": 1,
+   "lenient": 1,
+   "turns": 1,
+   "turns_ok": 1
+  }
+ },
+ "cases": [
+  {
+   "case_id": "adv01_day30_timestamp",
+   "family": "adv01",
+   "strict": false,
+   "lenient": false,
+   "expected_decisions": [
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "clarify",
+    "clarify"
+   ],
+   "diffs": [
+    "turn 1: decision expected 'propose' (PROPOSED), got 'clarify'",
+    "turn 2: decision expected 'completed' (COMMITTED), got 'clarify'",
+    "state: state.orders[Z-501].lines[POLO-M].returned: expected true, got false",
+    "state: state.returns[POLO-M]: missing",
+    "state: state.refunds[Z-501]: missing",
+    "state: state.quarantine[POLO-M]: missing",
+    "state: state.idempotency.RQ-adv01_day30_timestamp: missing (expected {\"action\": \"refund\", \"amount_cents\": 4999, \"customer_id\": \"K1\", \"line_id\": \"A1\", \"order_id\": \"Z-501\", \"replacement_sku\": null, \"status\": ...)"
+   ]
+  },
+  {
+   "case_id": "adv02_day0_same_day_timestamp",
+   "family": "adv02",
+   "strict": false,
+   "lenient": false,
+   "expected_decisions": [
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "clarify",
+    "clarify"
+   ],
+   "diffs": [
+    "turn 1: decision expected 'propose' (PROPOSED), got 'clarify'",
+    "turn 2: decision expected 'completed' (COMMITTED), got 'clarify'",
+    "state: state.orders[Z-502].lines[POLO-M].returned: expected true, got false",
+    "state: state.returns[POLO-M]: missing",
+    "state: state.refunds[Z-502]: missing",
+    "state: state.quarantine[POLO-M]: missing",
+    "state: state.idempotency.RQ-adv02_day0_same_day_timestamp: missing (expected {\"action\": \"refund\", \"amount_cents\": 1, \"customer_id\": \"K1\", \"line_id\": \"A1\", \"order_id\": \"Z-502\", \"replacement_sku\": null, \"status\": \"co...)"
+   ]
+  },
+  {
+   "case_id": "adv03_same_sku_two_lines_one_returned",
+   "family": "adv03",
+   "strict": false,
+   "lenient": false,
+   "expected_decisions": [
+    "clarify",
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "clarify",
+    "clarify",
+    "clarify"
+   ],
+   "diffs": [
+    "turn 2: decision expected 'propose' (PROPOSED), got 'clarify'",
+    "turn 3: decision expected 'completed' (COMMITTED), got 'clarify'",
+    "state: state.orders[Z-503].lines[A2].returned: expected true, got false",
+    "state: state.returns[POLO-M]: missing",
+    "state: state.refunds[Z-503]: missing",
+    "state: state.quarantine[POLO-M]: missing",
+    "state: state.idempotency.RQ-adv03_same_sku_two_lines_one_returned: missing (expected {\"action\": \"refund\", \"amount_cents\": 4400, \"customer_id\": \"K1\", \"line_id\": \"A2\", \"order_id\": \"Z-503\", \"replacement_sku\": null, \"status\": ...)"
+   ]
+  },
+  {
+   "case_id": "adv04_exchange_timeout_replay",
+   "family": "adv04",
+   "strict": false,
+   "lenient": false,
+   "expected_decisions": [
+    "propose",
+    "completed",
+    "completed"
+   ],
+   "actual_decisions": [
+    "clarify",
+    "clarify",
+    "clarify"
+   ],
+   "diffs": [
+    "turn 1: decision expected 'propose' (PROPOSED), got 'clarify'",
+    "turn 2: decision expected 'completed' (COMMITTED_TIMEOUT_RECONCILED), got 'clarify'; also accepted leniently: ['error']",
+    "turn 3: decision expected 'completed' (REPLAY), got 'clarify'",
+    "state: state.products[POLO-S].stock: expected 4, got 5",
+    "state: state.orders[Z-504].lines[POLO-M].returned: expected true, got false",
+    "state: state.returns[POLO-M]: missing",
+    "state: state.exchanges[Z-504]: missing",
+    "state: state.quarantine[POLO-M]: missing",
+    "state: state.idempotency.RQ-adv04_exchange_timeout_replay: missing (expected {\"action\": \"exchange\", \"amount_cents\": 0, \"customer_id\": \"K1\", \"line_id\": \"A1\", \"order_id\": \"Z-504\", \"replacement_sku\": \"POLO-S\", \"status...)"
+   ]
+  },
+  {
+   "case_id": "adv05_original_sku_stock_change",
+   "family": "adv05",
+   "strict": false,
+   "lenient": false,
+   "expected_decisions": [
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "clarify",
+    "clarify"
+   ],
+   "diffs": [
+    "turn 1: decision expected 'propose' (PROPOSED), got 'clarify'",
+    "turn 2: decision expected 'completed' (COMMITTED), got 'clarify'",
+    "state: state.orders[Z-505].lines[POLO-L].returned: expected true, got false",
+    "state: state.returns[POLO-L]: missing",
+    "state: state.refunds[Z-505]: missing",
+    "state: state.quarantine[POLO-L]: missing",
+    "state: state.idempotency.RQ-adv05_original_sku_stock_change: missing (expected {\"action\": \"refund\", \"amount_cents\": 5500, \"customer_id\": \"K1\", \"line_id\": \"A1\", \"order_id\": \"Z-505\", \"replacement_sku\": null, \"status\": ...)"
+   ]
+  },
+  {
+   "case_id": "adv06_stale_then_other_size",
+   "family": "adv06",
+   "strict": false,
+   "lenient": false,
+   "expected_decisions": [
+    "propose",
+    "deny",
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "clarify",
+    "clarify",
+    "clarify",
+    "clarify"
+   ],
+   "diffs": [
+    "turn 1: decision expected 'propose' (PROPOSED), got 'clarify'",
+    "turn 2: decision expected 'deny' (OUT_OF_STOCK), got 'clarify'",
+    "turn 3: decision expected 'propose' (PROPOSED), got 'clarify'",
+    "turn 4: decision expected 'completed' (COMMITTED), got 'clarify'",
+    "state: state.products[POLO-S].stock: expected 4, got 5",
+    "state: state.orders[Z-506].lines[POLO-M].returned: expected true, got false",
+    "state: state.returns[POLO-M]: missing",
+    "state: state.exchanges[Z-506]: missing",
+    "state: state.quarantine[POLO-M]: missing",
+    "state: state.idempotency.RQ-adv06_stale_then_other_size: missing (expected {\"action\": \"exchange\", \"amount_cents\": 0, \"customer_id\": \"K1\", \"line_id\": \"A1\", \"order_id\": \"Z-506\", \"replacement_sku\": \"POLO-S\", \"status...)"
+   ]
+  },
+  {
+   "case_id": "adv07_timeout_fires_on_first_real_commit",
+   "family": "adv07",
+   "strict": false,
+   "lenient": false,
+   "expected_decisions": [
+    "propose",
+    "deny",
+    "propose",
+    "completed",
+    "completed"
+   ],
+   "actual_decisions": [
+    "clarify",
+    "clarify",
+    "clarify",
+    "clarify",
+    "clarify"
+   ],
+   "diffs": [
+    "turn 1: decision expected 'propose' (PROPOSED), got 'clarify'",
+    "turn 2: decision expected 'deny' (OUT_OF_STOCK), got 'clarify'",
+    "turn 3: decision expected 'propose' (PROPOSED), got 'clarify'",
+    "turn 4: decision expected 'completed' (COMMITTED_TIMEOUT_RECONCILED), got 'clarify'; also accepted leniently: ['error']",
+    "turn 5: decision expected 'completed' (REPLAY), got 'clarify'",
+    "state: state.products[POLO-S].stock: expected 4, got 5",
+    "state: state.orders[Z-507].lines[POLO-M].returned: expected true, got false",
+    "state: state.returns[POLO-M]: missing",
+    "state: state.exchanges[Z-507]: missing",
+    "state: state.quarantine[POLO-M]: missing",
+    "state: state.idempotency.RQ-adv07_timeout_fires_on_first_real_commit: missing (expected {\"action\": \"exchange\", \"amount_cents\": 0, \"customer_id\": \"K1\", \"line_id\": \"A1\", \"order_id\": \"Z-507\", \"replacement_sku\": \"POLO-S\", \"status...)"
+   ]
+  },
+  {
+   "case_id": "adv08_numeric_half_size_exchange",
+   "family": "adv08",
+   "strict": false,
+   "lenient": false,
+   "expected_decisions": [
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "clarify",
+    "clarify"
+   ],
+   "diffs": [
+    "turn 1: decision expected 'propose' (PROPOSED), got 'clarify'",
+    "turn 2: decision expected 'completed' (COMMITTED), got 'clarify'",
+    "state: state.products[BOOT-9.5].stock: expected 1, got 2",
+    "state: state.orders[Z-508].lines[BOOT-9].returned: expected true, got false",
+    "state: state.returns[BOOT-9]: missing",
+    "state: state.exchanges[Z-508]: missing",
+    "state: state.quarantine[BOOT-9]: missing",
+    "state: state.idempotency.RQ-adv08_numeric_half_size_exchange: missing (expected {\"action\": \"exchange\", \"amount_cents\": 0, \"customer_id\": \"K1\", \"line_id\": \"A1\", \"order_id\": \"Z-508\", \"replacement_sku\": \"BOOT-9.5\", \"stat...)"
+   ]
+  },
+  {
+   "case_id": "adv09_order_id_collision_across_customers",
+   "family": "adv09",
+   "strict": false,
+   "lenient": false,
+   "expected_decisions": [
+    "deny",
+    "deny"
+   ],
+   "actual_decisions": [
+    "clarify",
+    "clarify"
+   ],
+   "diffs": [
+    "turn 1: decision expected 'deny' (ORDER_NOT_FOUND), got 'clarify'",
+    "turn 2: decision expected 'deny' (ORDER_NOT_FOUND), got 'clarify'"
+   ]
+  },
+  {
+   "case_id": "adv10_after_refund_asks_exchange_same_line",
+   "family": "adv10",
+   "strict": false,
+   "lenient": false,
+   "expected_decisions": [
+    "propose",
+    "completed",
+    "completed"
+   ],
+   "actual_decisions": [
+    "clarify",
+    "clarify",
+    "clarify"
+   ],
+   "diffs": [
+    "turn 1: decision expected 'propose' (PROPOSED), got 'clarify'",
+    "turn 2: decision expected 'completed' (COMMITTED), got 'clarify'",
+    "turn 3: decision expected 'completed' (REPLAY), got 'clarify'",
+    "state: state.orders[Z-510].lines[POLO-M].returned: expected true, got false",
+    "state: state.returns[POLO-M]: missing",
+    "state: state.refunds[Z-510]: missing",
+    "state: state.quarantine[POLO-M]: missing",
+    "state: state.idempotency.RQ-adv10_after_refund_asks_exchange_same_line: missing (expected {\"action\": \"refund\", \"amount_cents\": 5500, \"customer_id\": \"K1\", \"line_id\": \"A1\", \"order_id\": \"Z-510\", \"replacement_sku\": null, \"status\": ...)"
+   ]
+  },
+  {
+   "case_id": "adv11_confirm_with_instead_wording",
+   "family": "adv11",
+   "strict": false,
+   "lenient": false,
+   "expected_decisions": [
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "clarify",
+    "clarify"
+   ],
+   "diffs": [
+    "turn 1: decision expected 'propose' (PROPOSED), got 'clarify'",
+    "turn 2: decision expected 'completed' (COMMITTED), got 'clarify'",
+    "state: state.orders[Z-511].lines[POLO-M].returned: expected true, got false",
+    "state: state.returns[POLO-M]: missing",
+    "state: state.refunds[Z-511]: missing",
+    "state: state.quarantine[POLO-M]: missing",
+    "state: state.idempotency.RQ-adv11_confirm_with_instead_wording: missing (expected {\"action\": \"refund\", \"amount_cents\": 5500, \"customer_id\": \"K1\", \"line_id\": \"A1\", \"order_id\": \"Z-511\", \"replacement_sku\": null, \"status\": ...)"
+   ]
+  },
+  {
+   "case_id": "adv12_extra_fields_odd_cents",
+   "family": "adv12",
+   "strict": false,
+   "lenient": false,
+   "expected_decisions": [
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "clarify",
+    "clarify"
+   ],
+   "diffs": [
+    "turn 1: decision expected 'propose' (PROPOSED), got 'clarify'",
+    "turn 2: decision expected 'completed' (COMMITTED), got 'clarify'",
+    "state: state.orders[Z-512].lines[POLO-M].returned: expected true, got false",
+    "state: state.returns[POLO-M]: missing",
+    "state: state.refunds[Z-512]: missing",
+    "state: state.quarantine[POLO-M]: missing",
+    "state: state.idempotency.RQ-adv12_extra_fields_odd_cents: missing (expected {\"action\": \"refund\", \"amount_cents\": 3333, \"customer_id\": \"K1\", \"line_id\": \"A1\", \"order_id\": \"Z-512\", \"replacement_sku\": null, \"status\": ...)"
+   ]
+  },
+  {
+   "case_id": "adv13_status_case",
+   "family": "adv13",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "deny"
+   ],
+   "actual_decisions": [
+    "deny"
+   ],
+   "diffs": []
+  },
+  {
+   "case_id": "adv14_restock_then_exchange",
+   "family": "adv14",
+   "strict": false,
+   "lenient": false,
+   "expected_decisions": [
+    "deny",
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "clarify",
+    "clarify",
+    "clarify"
+   ],
+   "diffs": [
+    "turn 1: decision expected 'deny' (OUT_OF_STOCK), got 'clarify'",
+    "turn 2: decision expected 'propose' (PROPOSED), got 'clarify'",
+    "turn 3: decision expected 'completed' (COMMITTED), got 'clarify'",
+    "state: state.products[BOOT-10].stock: expected 2, got 3",
+    "state: state.orders[Z-514].lines[BOOT-9.5].returned: expected true, got false",
+    "state: state.returns[BOOT-9.5]: missing",
+    "state: state.exchanges[Z-514]: missing",
+    "state: state.quarantine[BOOT-9.5]: missing",
+    "state: state.idempotency.RQ-adv14_restock_then_exchange: missing (expected {\"action\": \"exchange\", \"amount_cents\": 0, \"customer_id\": \"K1\", \"line_id\": \"A1\", \"order_id\": \"Z-514\", \"replacement_sku\": \"BOOT-10\", \"statu...)"
+   ]
+  },
+  {
+   "case_id": "adv15_stock_change_after_commit",
+   "family": "adv15",
+   "strict": false,
+   "lenient": false,
+   "expected_decisions": [
+    "propose",
+    "completed",
+    "completed"
+   ],
+   "actual_decisions": [
+    "clarify",
+    "clarify",
+    "clarify"
+   ],
+   "diffs": [
+    "turn 1: decision expected 'propose' (PROPOSED), got 'clarify'",
+    "turn 2: decision expected 'completed' (COMMITTED), got 'clarify'",
+    "turn 3: decision expected 'completed' (REPLAY), got 'clarify'",
+    "state: state.orders[Z-515].lines[POLO-M].returned: expected true, got false",
+    "state: state.returns[POLO-M]: missing",
+    "state: state.exchanges[Z-515]: missing",
+    "state: state.quarantine[POLO-M]: missing",
+    "state: state.idempotency.RQ-adv15_stock_change_after_commit: missing (expected {\"action\": \"exchange\", \"amount_cents\": 0, \"customer_id\": \"K1\", \"line_id\": \"A1\", \"order_id\": \"Z-515\", \"replacement_sku\": \"POLO-S\", \"status...)",
+    "events: external_events[POLO-S].old_stock: expected 4, got 5"
+   ]
+  },
+  {
+   "case_id": "adv16_exchange_price_mismatch_xl",
+   "family": "adv16",
+   "strict": false,
+   "lenient": false,
+   "expected_decisions": [
+    "deny"
+   ],
+   "actual_decisions": [
+    "clarify"
+   ],
+   "diffs": [
+    "turn 1: decision expected 'deny' (PRICE_MISMATCH), got 'clarify'"
+   ]
+  },
+  {
+   "case_id": "adv17_paid_zero_refund",
+   "family": "adv17",
+   "strict": false,
+   "lenient": false,
+   "expected_decisions": [
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "clarify",
+    "clarify"
+   ],
+   "diffs": [
+    "turn 1: decision expected 'propose' (PROPOSED), got 'clarify'",
+    "turn 2: decision expected 'completed' (COMMITTED), got 'clarify'",
+    "state: state.orders[Z-517].lines[POLO-M].returned: expected true, got false",
+    "state: state.returns[POLO-M]: missing",
+    "state: state.refunds[Z-517]: missing",
+    "state: state.quarantine[POLO-M]: missing",
+    "state: state.idempotency.RQ-adv17_paid_zero_refund: missing (expected {\"action\": \"refund\", \"amount_cents\": 0, \"customer_id\": \"K1\", \"line_id\": \"A1\", \"order_id\": \"Z-517\", \"replacement_sku\": null, \"status\": \"co...)"
+   ]
+  },
+  {
+   "case_id": "adv18_two_changes_same_turn",
+   "family": "adv18",
+   "strict": false,
+   "lenient": false,
+   "expected_decisions": [
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "clarify",
+    "clarify"
+   ],
+   "diffs": [
+    "turn 1: decision expected 'propose' (PROPOSED), got 'clarify'",
+    "turn 2: decision expected 'completed' (COMMITTED), got 'clarify'",
+    "state: state.products[POLO-L].stock: expected 1, got 2",
+    "state: state.orders[Z-518].lines[POLO-M].returned: expected true, got false",
+    "state: state.returns[POLO-M]: missing",
+    "state: state.exchanges[Z-518]: missing",
+    "state: state.quarantine[POLO-M]: missing",
+    "state: state.idempotency.RQ-adv18_two_changes_same_turn: missing (expected {\"action\": \"exchange\", \"amount_cents\": 0, \"customer_id\": \"K1\", \"line_id\": \"A1\", \"order_id\": \"Z-518\", \"replacement_sku\": \"POLO-L\", \"status...)"
+   ]
+  },
+  {
+   "case_id": "adv19_return_and_send_large",
+   "family": "adv19",
+   "strict": false,
+   "lenient": false,
+   "expected_decisions": [
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "clarify",
+    "clarify"
+   ],
+   "diffs": [
+    "turn 1: decision expected 'propose' (PROPOSED), got 'clarify'",
+    "turn 2: decision expected 'completed' (COMMITTED), got 'clarify'",
+    "state: state.products[POLO-L].stock: expected 0, got 1",
+    "state: state.orders[Z-519].lines[POLO-M].returned: expected true, got false",
+    "state: state.returns[POLO-M]: missing",
+    "state: state.exchanges[Z-519]: missing",
+    "state: state.quarantine[POLO-M]: missing",
+    "state: state.idempotency.RQ-adv19_return_and_send_large: missing (expected {\"action\": \"exchange\", \"amount_cents\": 0, \"customer_id\": \"K1\", \"line_id\": \"A1\", \"order_id\": \"Z-519\", \"replacement_sku\": \"POLO-L\", \"status...)"
+   ]
+  },
+  {
+   "case_id": "adv20_confirm_no_need_to_wait",
+   "family": "adv20",
+   "strict": false,
+   "lenient": false,
+   "expected_decisions": [
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "clarify",
+    "clarify"
+   ],
+   "diffs": [
+    "turn 1: decision expected 'propose' (PROPOSED), got 'clarify'",
+    "turn 2: decision expected 'completed' (COMMITTED), got 'clarify'",
+    "state: state.products[POLO-S].stock: expected 4, got 5",
+    "state: state.orders[Z-520].lines[POLO-M].returned: expected true, got false",
+    "state: state.returns[POLO-M]: missing",
+    "state: state.exchanges[Z-520]: missing",
+    "state: state.quarantine[POLO-M]: missing",
+    "state: state.idempotency.RQ-adv20_confirm_no_need_to_wait: missing (expected {\"action\": \"exchange\", \"amount_cents\": 0, \"customer_id\": \"K1\", \"line_id\": \"A1\", \"order_id\": \"Z-520\", \"replacement_sku\": \"POLO-S\", \"status...)"
+   ]
+  },
+  {
+   "case_id": "adv21_expired_exchange_no_size",
+   "family": "adv21",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "deny"
+   ],
+   "actual_decisions": [
+    "deny"
+   ],
+   "diffs": []
+  }
+ ]
+}

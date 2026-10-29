@@ -1,0 +1,2067 @@
+{
+  "contract_version": 1,
+  "cases": [
+    {
+      "case_id": "adv01_day30_timestamp",
+      "customer_id": "K1",
+      "request_id": "RQ-adv01_day30_timestamp",
+      "initial_state": {
+        "as_of": "2027-02-10",
+        "currency": "USD",
+        "products": [
+          {
+            "sku": "POLO-S",
+            "product_id": "POLO",
+            "size": "S",
+            "price_cents": 5500,
+            "stock": 5
+          },
+          {
+            "sku": "POLO-M",
+            "product_id": "POLO",
+            "size": "M",
+            "price_cents": 5500,
+            "stock": 2
+          },
+          {
+            "sku": "POLO-L",
+            "product_id": "POLO",
+            "size": "L",
+            "price_cents": 5500,
+            "stock": 1
+          },
+          {
+            "sku": "POLO-XL",
+            "product_id": "POLO",
+            "size": "XL",
+            "price_cents": 6000,
+            "stock": 4
+          },
+          {
+            "sku": "BOOT-9",
+            "product_id": "BOOT",
+            "size": "9",
+            "price_cents": 12000,
+            "stock": 1
+          },
+          {
+            "sku": "BOOT-9.5",
+            "product_id": "BOOT",
+            "size": "9.5",
+            "price_cents": 12000,
+            "stock": 2
+          },
+          {
+            "sku": "BOOT-10",
+            "product_id": "BOOT",
+            "size": "10",
+            "price_cents": 12000,
+            "stock": 0
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "Z-501",
+            "customer_id": "K1",
+            "status": "delivered",
+            "delivered_on": "2027-01-11T23:59:59Z",
+            "lines": [
+              {
+                "line_id": "A1",
+                "sku": "POLO-M",
+                "paid_cents": 4999,
+                "unopened": true,
+                "final_sale": false,
+                "returned": false
+              }
+            ]
+          }
+        ],
+        "returns": [],
+        "refunds": [],
+        "exchanges": [],
+        "quarantine": [],
+        "idempotency": {}
+      },
+      "turns": [
+        {
+          "message": "Please refund item A1 of order Z-501."
+        },
+        {
+          "message": "Yes, I confirm the proposal.",
+          "confirm_proposal": "last"
+        }
+      ],
+      "faults": []
+    },
+    {
+      "case_id": "adv02_day0_same_day_timestamp",
+      "customer_id": "K1",
+      "request_id": "RQ-adv02_day0_same_day_timestamp",
+      "initial_state": {
+        "as_of": "2027-02-10",
+        "currency": "USD",
+        "products": [
+          {
+            "sku": "POLO-S",
+            "product_id": "POLO",
+            "size": "S",
+            "price_cents": 5500,
+            "stock": 5
+          },
+          {
+            "sku": "POLO-M",
+            "product_id": "POLO",
+            "size": "M",
+            "price_cents": 5500,
+            "stock": 2
+          },
+          {
+            "sku": "POLO-L",
+            "product_id": "POLO",
+            "size": "L",
+            "price_cents": 5500,
+            "stock": 1
+          },
+          {
+            "sku": "POLO-XL",
+            "product_id": "POLO",
+            "size": "XL",
+            "price_cents": 6000,
+            "stock": 4
+          },
+          {
+            "sku": "BOOT-9",
+            "product_id": "BOOT",
+            "size": "9",
+            "price_cents": 12000,
+            "stock": 1
+          },
+          {
+            "sku": "BOOT-9.5",
+            "product_id": "BOOT",
+            "size": "9.5",
+            "price_cents": 12000,
+            "stock": 2
+          },
+          {
+            "sku": "BOOT-10",
+            "product_id": "BOOT",
+            "size": "10",
+            "price_cents": 12000,
+            "stock": 0
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "Z-502",
+            "customer_id": "K1",
+            "status": "delivered",
+            "delivered_on": "2027-02-10T18:30:00+00:00",
+            "lines": [
+              {
+                "line_id": "A1",
+                "sku": "POLO-M",
+                "paid_cents": 1,
+                "unopened": true,
+                "final_sale": false,
+                "returned": false
+              }
+            ]
+          }
+        ],
+        "returns": [],
+        "refunds": [],
+        "exchanges": [],
+        "quarantine": [],
+        "idempotency": {}
+      },
+      "turns": [
+        {
+          "message": "Refund line A1 on order Z-502, never opened."
+        },
+        {
+          "message": "Yes, I confirm the proposal.",
+          "confirm_proposal": "last"
+        }
+      ],
+      "faults": []
+    },
+    {
+      "case_id": "adv03_same_sku_two_lines_one_returned",
+      "customer_id": "K1",
+      "request_id": "RQ-adv03_same_sku_two_lines_one_returned",
+      "initial_state": {
+        "as_of": "2027-02-10",
+        "currency": "USD",
+        "products": [
+          {
+            "sku": "POLO-S",
+            "product_id": "POLO",
+            "size": "S",
+            "price_cents": 5500,
+            "stock": 5
+          },
+          {
+            "sku": "POLO-M",
+            "product_id": "POLO",
+            "size": "M",
+            "price_cents": 5500,
+            "stock": 2
+          },
+          {
+            "sku": "POLO-L",
+            "product_id": "POLO",
+            "size": "L",
+            "price_cents": 5500,
+            "stock": 1
+          },
+          {
+            "sku": "POLO-XL",
+            "product_id": "POLO",
+            "size": "XL",
+            "price_cents": 6000,
+            "stock": 4
+          },
+          {
+            "sku": "BOOT-9",
+            "product_id": "BOOT",
+            "size": "9",
+            "price_cents": 12000,
+            "stock": 1
+          },
+          {
+            "sku": "BOOT-9.5",
+            "product_id": "BOOT",
+            "size": "9.5",
+            "price_cents": 12000,
+            "stock": 2
+          },
+          {
+            "sku": "BOOT-10",
+            "product_id": "BOOT",
+            "size": "10",
+            "price_cents": 12000,
+            "stock": 0
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "Z-503",
+            "customer_id": "K1",
+            "status": "delivered",
+            "delivered_on": "2027-02-01",
+            "lines": [
+              {
+                "line_id": "A1",
+                "sku": "POLO-M",
+                "paid_cents": 5500,
+                "unopened": true,
+                "final_sale": false,
+                "returned": true
+              },
+              {
+                "line_id": "A2",
+                "sku": "POLO-M",
+                "paid_cents": 4400,
+                "unopened": true,
+                "final_sale": false,
+                "returned": false
+              }
+            ]
+          }
+        ],
+        "returns": [],
+        "refunds": [],
+        "exchanges": [],
+        "quarantine": [],
+        "idempotency": {}
+      },
+      "turns": [
+        {
+          "message": "I'd like a refund for the medium polo from Z-503."
+        },
+        {
+          "message": "It is line A2."
+        },
+        {
+          "message": "Yes, I confirm the proposal.",
+          "confirm_proposal": "last"
+        }
+      ],
+      "faults": []
+    },
+    {
+      "case_id": "adv04_exchange_timeout_replay",
+      "customer_id": "K1",
+      "request_id": "RQ-adv04_exchange_timeout_replay",
+      "initial_state": {
+        "as_of": "2027-02-10",
+        "currency": "USD",
+        "products": [
+          {
+            "sku": "POLO-S",
+            "product_id": "POLO",
+            "size": "S",
+            "price_cents": 5500,
+            "stock": 5
+          },
+          {
+            "sku": "POLO-M",
+            "product_id": "POLO",
+            "size": "M",
+            "price_cents": 5500,
+            "stock": 2
+          },
+          {
+            "sku": "POLO-L",
+            "product_id": "POLO",
+            "size": "L",
+            "price_cents": 5500,
+            "stock": 1
+          },
+          {
+            "sku": "POLO-XL",
+            "product_id": "POLO",
+            "size": "XL",
+            "price_cents": 6000,
+            "stock": 4
+          },
+          {
+            "sku": "BOOT-9",
+            "product_id": "BOOT",
+            "size": "9",
+            "price_cents": 12000,
+            "stock": 1
+          },
+          {
+            "sku": "BOOT-9.5",
+            "product_id": "BOOT",
+            "size": "9.5",
+            "price_cents": 12000,
+            "stock": 2
+          },
+          {
+            "sku": "BOOT-10",
+            "product_id": "BOOT",
+            "size": "10",
+            "price_cents": 12000,
+            "stock": 0
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "Z-504",
+            "customer_id": "K1",
+            "status": "delivered",
+            "delivered_on": "2027-01-30",
+            "lines": [
+              {
+                "line_id": "A1",
+                "sku": "POLO-M",
+                "paid_cents": 5500,
+                "unopened": true,
+                "final_sale": false,
+                "returned": false
+              }
+            ]
+          }
+        ],
+        "returns": [],
+        "refunds": [],
+        "exchanges": [],
+        "quarantine": [],
+        "idempotency": {}
+      },
+      "turns": [
+        {
+          "message": "Exchange A1 from order Z-504 for the polo in size S."
+        },
+        {
+          "message": "Yes, I confirm the proposal.",
+          "confirm_proposal": "last"
+        },
+        {
+          "message": "Confirming again, I never saw the result.",
+          "confirm_proposal": "last"
+        }
+      ],
+      "faults": [
+        {
+          "type": "timeout_after_commit"
+        }
+      ]
+    },
+    {
+      "case_id": "adv05_original_sku_stock_change",
+      "customer_id": "K1",
+      "request_id": "RQ-adv05_original_sku_stock_change",
+      "initial_state": {
+        "as_of": "2027-02-10",
+        "currency": "USD",
+        "products": [
+          {
+            "sku": "POLO-S",
+            "product_id": "POLO",
+            "size": "S",
+            "price_cents": 5500,
+            "stock": 5
+          },
+          {
+            "sku": "POLO-M",
+            "product_id": "POLO",
+            "size": "M",
+            "price_cents": 5500,
+            "stock": 2
+          },
+          {
+            "sku": "POLO-L",
+            "product_id": "POLO",
+            "size": "L",
+            "price_cents": 5500,
+            "stock": 1
+          },
+          {
+            "sku": "POLO-XL",
+            "product_id": "POLO",
+            "size": "XL",
+            "price_cents": 6000,
+            "stock": 4
+          },
+          {
+            "sku": "BOOT-9",
+            "product_id": "BOOT",
+            "size": "9",
+            "price_cents": 12000,
+            "stock": 1
+          },
+          {
+            "sku": "BOOT-9.5",
+            "product_id": "BOOT",
+            "size": "9.5",
+            "price_cents": 12000,
+            "stock": 2
+          },
+          {
+            "sku": "BOOT-10",
+            "product_id": "BOOT",
+            "size": "10",
+            "price_cents": 12000,
+            "stock": 0
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "Z-505",
+            "customer_id": "K1",
+            "status": "delivered",
+            "delivered_on": "2027-01-20",
+            "lines": [
+              {
+                "line_id": "A1",
+                "sku": "POLO-L",
+                "paid_cents": 5500,
+                "unopened": true,
+                "final_sale": false,
+                "returned": false
+              }
+            ]
+          }
+        ],
+        "returns": [],
+        "refunds": [],
+        "exchanges": [],
+        "quarantine": [],
+        "idempotency": {}
+      },
+      "turns": [
+        {
+          "message": "Refund line A1 of order Z-505."
+        },
+        {
+          "message": "Yes, I confirm the proposal.",
+          "confirm_proposal": "last"
+        }
+      ],
+      "faults": [
+        {
+          "type": "stock_change",
+          "before_turn": 2,
+          "sku": "POLO-L",
+          "new_stock": 0
+        }
+      ]
+    },
+    {
+      "case_id": "adv06_stale_then_other_size",
+      "customer_id": "K1",
+      "request_id": "RQ-adv06_stale_then_other_size",
+      "initial_state": {
+        "as_of": "2027-02-10",
+        "currency": "USD",
+        "products": [
+          {
+            "sku": "POLO-S",
+            "product_id": "POLO",
+            "size": "S",
+            "price_cents": 5500,
+            "stock": 5
+          },
+          {
+            "sku": "POLO-M",
+            "product_id": "POLO",
+            "size": "M",
+            "price_cents": 5500,
+            "stock": 2
+          },
+          {
+            "sku": "POLO-L",
+            "product_id": "POLO",
+            "size": "L",
+            "price_cents": 5500,
+            "stock": 1
+          },
+          {
+            "sku": "POLO-XL",
+            "product_id": "POLO",
+            "size": "XL",
+            "price_cents": 6000,
+            "stock": 4
+          },
+          {
+            "sku": "BOOT-9",
+            "product_id": "BOOT",
+            "size": "9",
+            "price_cents": 12000,
+            "stock": 1
+          },
+          {
+            "sku": "BOOT-9.5",
+            "product_id": "BOOT",
+            "size": "9.5",
+            "price_cents": 12000,
+            "stock": 2
+          },
+          {
+            "sku": "BOOT-10",
+            "product_id": "BOOT",
+            "size": "10",
+            "price_cents": 12000,
+            "stock": 0
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "Z-506",
+            "customer_id": "K1",
+            "status": "delivered",
+            "delivered_on": "2027-01-25",
+            "lines": [
+              {
+                "line_id": "A1",
+                "sku": "POLO-M",
+                "paid_cents": 5000,
+                "unopened": true,
+                "final_sale": false,
+                "returned": false
+              }
+            ]
+          }
+        ],
+        "returns": [],
+        "refunds": [],
+        "exchanges": [],
+        "quarantine": [],
+        "idempotency": {}
+      },
+      "turns": [
+        {
+          "message": "Exchange line A1 of Z-506 for size L please."
+        },
+        {
+          "message": "Yes, I confirm the proposal.",
+          "confirm_proposal": "last"
+        },
+        {
+          "message": "Okay, then exchange it for size S."
+        },
+        {
+          "message": "Yes, I confirm the proposal.",
+          "confirm_proposal": "last"
+        }
+      ],
+      "faults": [
+        {
+          "type": "stock_change",
+          "before_turn": 2,
+          "sku": "POLO-L",
+          "new_stock": 0
+        }
+      ]
+    },
+    {
+      "case_id": "adv07_timeout_fires_on_first_real_commit",
+      "customer_id": "K1",
+      "request_id": "RQ-adv07_timeout_fires_on_first_real_commit",
+      "initial_state": {
+        "as_of": "2027-02-10",
+        "currency": "USD",
+        "products": [
+          {
+            "sku": "POLO-S",
+            "product_id": "POLO",
+            "size": "S",
+            "price_cents": 5500,
+            "stock": 5
+          },
+          {
+            "sku": "POLO-M",
+            "product_id": "POLO",
+            "size": "M",
+            "price_cents": 5500,
+            "stock": 2
+          },
+          {
+            "sku": "POLO-L",
+            "product_id": "POLO",
+            "size": "L",
+            "price_cents": 5500,
+            "stock": 1
+          },
+          {
+            "sku": "POLO-XL",
+            "product_id": "POLO",
+            "size": "XL",
+            "price_cents": 6000,
+            "stock": 4
+          },
+          {
+            "sku": "BOOT-9",
+            "product_id": "BOOT",
+            "size": "9",
+            "price_cents": 12000,
+            "stock": 1
+          },
+          {
+            "sku": "BOOT-9.5",
+            "product_id": "BOOT",
+            "size": "9.5",
+            "price_cents": 12000,
+            "stock": 2
+          },
+          {
+            "sku": "BOOT-10",
+            "product_id": "BOOT",
+            "size": "10",
+            "price_cents": 12000,
+            "stock": 0
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "Z-507",
+            "customer_id": "K1",
+            "status": "delivered",
+            "delivered_on": "2027-01-25",
+            "lines": [
+              {
+                "line_id": "A1",
+                "sku": "POLO-M",
+                "paid_cents": 5000,
+                "unopened": true,
+                "final_sale": false,
+                "returned": false
+              }
+            ]
+          }
+        ],
+        "returns": [],
+        "refunds": [],
+        "exchanges": [],
+        "quarantine": [],
+        "idempotency": {}
+      },
+      "turns": [
+        {
+          "message": "Exchange line A1 of Z-507 for size L please."
+        },
+        {
+          "message": "Yes, I confirm the proposal.",
+          "confirm_proposal": "last"
+        },
+        {
+          "message": "Fine, exchange it for size S instead."
+        },
+        {
+          "message": "Yes, I confirm the proposal.",
+          "confirm_proposal": "last"
+        },
+        {
+          "message": "Did that go through? Confirming again.",
+          "confirm_proposal": "last"
+        }
+      ],
+      "faults": [
+        {
+          "type": "stock_change",
+          "before_turn": 2,
+          "sku": "POLO-L",
+          "new_stock": 0
+        },
+        {
+          "type": "timeout_after_commit"
+        }
+      ]
+    },
+    {
+      "case_id": "adv08_numeric_half_size_exchange",
+      "customer_id": "K1",
+      "request_id": "RQ-adv08_numeric_half_size_exchange",
+      "initial_state": {
+        "as_of": "2027-02-10",
+        "currency": "USD",
+        "products": [
+          {
+            "sku": "POLO-S",
+            "product_id": "POLO",
+            "size": "S",
+            "price_cents": 5500,
+            "stock": 5
+          },
+          {
+            "sku": "POLO-M",
+            "product_id": "POLO",
+            "size": "M",
+            "price_cents": 5500,
+            "stock": 2
+          },
+          {
+            "sku": "POLO-L",
+            "product_id": "POLO",
+            "size": "L",
+            "price_cents": 5500,
+            "stock": 1
+          },
+          {
+            "sku": "POLO-XL",
+            "product_id": "POLO",
+            "size": "XL",
+            "price_cents": 6000,
+            "stock": 4
+          },
+          {
+            "sku": "BOOT-9",
+            "product_id": "BOOT",
+            "size": "9",
+            "price_cents": 12000,
+            "stock": 1
+          },
+          {
+            "sku": "BOOT-9.5",
+            "product_id": "BOOT",
+            "size": "9.5",
+            "price_cents": 12000,
+            "stock": 2
+          },
+          {
+            "sku": "BOOT-10",
+            "product_id": "BOOT",
+            "size": "10",
+            "price_cents": 12000,
+            "stock": 0
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "Z-508",
+            "customer_id": "K1",
+            "status": "delivered",
+            "delivered_on": "2027-02-05",
+            "lines": [
+              {
+                "line_id": "A1",
+                "sku": "BOOT-9",
+                "paid_cents": 9999,
+                "unopened": true,
+                "final_sale": false,
+                "returned": false
+              }
+            ]
+          }
+        ],
+        "returns": [],
+        "refunds": [],
+        "exchanges": [],
+        "quarantine": [],
+        "idempotency": {}
+      },
+      "turns": [
+        {
+          "message": "Exchange line A1 of order Z-508 for size 9.5 boots."
+        },
+        {
+          "message": "Yes, I confirm the proposal.",
+          "confirm_proposal": "last"
+        }
+      ],
+      "faults": []
+    },
+    {
+      "case_id": "adv09_order_id_collision_across_customers",
+      "customer_id": "K1",
+      "request_id": "RQ-adv09_order_id_collision_across_customers",
+      "initial_state": {
+        "as_of": "2027-02-10",
+        "currency": "USD",
+        "products": [
+          {
+            "sku": "POLO-S",
+            "product_id": "POLO",
+            "size": "S",
+            "price_cents": 5500,
+            "stock": 5
+          },
+          {
+            "sku": "POLO-M",
+            "product_id": "POLO",
+            "size": "M",
+            "price_cents": 5500,
+            "stock": 2
+          },
+          {
+            "sku": "POLO-L",
+            "product_id": "POLO",
+            "size": "L",
+            "price_cents": 5500,
+            "stock": 1
+          },
+          {
+            "sku": "POLO-XL",
+            "product_id": "POLO",
+            "size": "XL",
+            "price_cents": 6000,
+            "stock": 4
+          },
+          {
+            "sku": "BOOT-9",
+            "product_id": "BOOT",
+            "size": "9",
+            "price_cents": 12000,
+            "stock": 1
+          },
+          {
+            "sku": "BOOT-9.5",
+            "product_id": "BOOT",
+            "size": "9.5",
+            "price_cents": 12000,
+            "stock": 2
+          },
+          {
+            "sku": "BOOT-10",
+            "product_id": "BOOT",
+            "size": "10",
+            "price_cents": 12000,
+            "stock": 0
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "Z-509",
+            "customer_id": "K2",
+            "status": "delivered",
+            "delivered_on": "2027-02-01",
+            "lines": [
+              {
+                "line_id": "A1",
+                "sku": "POLO-M",
+                "paid_cents": 5500,
+                "unopened": true,
+                "final_sale": false,
+                "returned": true
+              }
+            ]
+          },
+          {
+            "order_id": "Z-509",
+            "customer_id": "K1",
+            "status": "delivered",
+            "delivered_on": "2027-02-01",
+            "lines": [
+              {
+                "line_id": "A1",
+                "sku": "POLO-S",
+                "paid_cents": 5500,
+                "unopened": true,
+                "final_sale": false,
+                "returned": false
+              }
+            ]
+          }
+        ],
+        "returns": [],
+        "refunds": [],
+        "exchanges": [],
+        "quarantine": [],
+        "idempotency": {}
+      },
+      "turns": [
+        {
+          "message": "Refund line A1 of order Z-509."
+        },
+        {
+          "message": "Yes, I confirm the proposal.",
+          "confirm_proposal": "last"
+        }
+      ],
+      "faults": []
+    },
+    {
+      "case_id": "adv10_after_refund_asks_exchange_same_line",
+      "customer_id": "K1",
+      "request_id": "RQ-adv10_after_refund_asks_exchange_same_line",
+      "initial_state": {
+        "as_of": "2027-02-10",
+        "currency": "USD",
+        "products": [
+          {
+            "sku": "POLO-S",
+            "product_id": "POLO",
+            "size": "S",
+            "price_cents": 5500,
+            "stock": 5
+          },
+          {
+            "sku": "POLO-M",
+            "product_id": "POLO",
+            "size": "M",
+            "price_cents": 5500,
+            "stock": 2
+          },
+          {
+            "sku": "POLO-L",
+            "product_id": "POLO",
+            "size": "L",
+            "price_cents": 5500,
+            "stock": 1
+          },
+          {
+            "sku": "POLO-XL",
+            "product_id": "POLO",
+            "size": "XL",
+            "price_cents": 6000,
+            "stock": 4
+          },
+          {
+            "sku": "BOOT-9",
+            "product_id": "BOOT",
+            "size": "9",
+            "price_cents": 12000,
+            "stock": 1
+          },
+          {
+            "sku": "BOOT-9.5",
+            "product_id": "BOOT",
+            "size": "9.5",
+            "price_cents": 12000,
+            "stock": 2
+          },
+          {
+            "sku": "BOOT-10",
+            "product_id": "BOOT",
+            "size": "10",
+            "price_cents": 12000,
+            "stock": 0
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "Z-510",
+            "customer_id": "K1",
+            "status": "delivered",
+            "delivered_on": "2027-02-01",
+            "lines": [
+              {
+                "line_id": "A1",
+                "sku": "POLO-M",
+                "paid_cents": 5500,
+                "unopened": true,
+                "final_sale": false,
+                "returned": false
+              }
+            ]
+          }
+        ],
+        "returns": [],
+        "refunds": [],
+        "exchanges": [],
+        "quarantine": [],
+        "idempotency": {}
+      },
+      "turns": [
+        {
+          "message": "Refund line A1 of order Z-510."
+        },
+        {
+          "message": "Yes, I confirm the proposal.",
+          "confirm_proposal": "last"
+        },
+        {
+          "message": "Actually I'd rather exchange line A1 of Z-510 for size S."
+        }
+      ],
+      "faults": []
+    },
+    {
+      "case_id": "adv11_confirm_with_instead_wording",
+      "customer_id": "K1",
+      "request_id": "RQ-adv11_confirm_with_instead_wording",
+      "initial_state": {
+        "as_of": "2027-02-10",
+        "currency": "USD",
+        "products": [
+          {
+            "sku": "POLO-S",
+            "product_id": "POLO",
+            "size": "S",
+            "price_cents": 5500,
+            "stock": 5
+          },
+          {
+            "sku": "POLO-M",
+            "product_id": "POLO",
+            "size": "M",
+            "price_cents": 5500,
+            "stock": 2
+          },
+          {
+            "sku": "POLO-L",
+            "product_id": "POLO",
+            "size": "L",
+            "price_cents": 5500,
+            "stock": 1
+          },
+          {
+            "sku": "POLO-XL",
+            "product_id": "POLO",
+            "size": "XL",
+            "price_cents": 6000,
+            "stock": 4
+          },
+          {
+            "sku": "BOOT-9",
+            "product_id": "BOOT",
+            "size": "9",
+            "price_cents": 12000,
+            "stock": 1
+          },
+          {
+            "sku": "BOOT-9.5",
+            "product_id": "BOOT",
+            "size": "9.5",
+            "price_cents": 12000,
+            "stock": 2
+          },
+          {
+            "sku": "BOOT-10",
+            "product_id": "BOOT",
+            "size": "10",
+            "price_cents": 12000,
+            "stock": 0
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "Z-511",
+            "customer_id": "K1",
+            "status": "delivered",
+            "delivered_on": "2027-02-01",
+            "lines": [
+              {
+                "line_id": "A1",
+                "sku": "POLO-M",
+                "paid_cents": 5500,
+                "unopened": true,
+                "final_sale": false,
+                "returned": false
+              }
+            ]
+          }
+        ],
+        "returns": [],
+        "refunds": [],
+        "exchanges": [],
+        "quarantine": [],
+        "idempotency": {}
+      },
+      "turns": [
+        {
+          "message": "Refund line A1 of order Z-511."
+        },
+        {
+          "message": "Yes, please refund it to my card instead of store credit.",
+          "confirm_proposal": "last"
+        }
+      ],
+      "faults": []
+    },
+    {
+      "case_id": "adv12_extra_fields_odd_cents",
+      "customer_id": "K1",
+      "request_id": "RQ-adv12_extra_fields_odd_cents",
+      "initial_state": {
+        "as_of": "2027-02-10",
+        "currency": "USD",
+        "products": [
+          {
+            "sku": "POLO-S",
+            "product_id": "POLO",
+            "size": "S",
+            "price_cents": 5500,
+            "stock": 5
+          },
+          {
+            "sku": "POLO-M",
+            "product_id": "POLO",
+            "size": "M",
+            "price_cents": 5500,
+            "stock": 2,
+            "color": "navy"
+          },
+          {
+            "sku": "POLO-L",
+            "product_id": "POLO",
+            "size": "L",
+            "price_cents": 5500,
+            "stock": 1
+          },
+          {
+            "sku": "POLO-XL",
+            "product_id": "POLO",
+            "size": "XL",
+            "price_cents": 6000,
+            "stock": 4
+          },
+          {
+            "sku": "BOOT-9",
+            "product_id": "BOOT",
+            "size": "9",
+            "price_cents": 12000,
+            "stock": 1
+          },
+          {
+            "sku": "BOOT-9.5",
+            "product_id": "BOOT",
+            "size": "9.5",
+            "price_cents": 12000,
+            "stock": 2
+          },
+          {
+            "sku": "BOOT-10",
+            "product_id": "BOOT",
+            "size": "10",
+            "price_cents": 12000,
+            "stock": 0
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "Z-512",
+            "customer_id": "K1",
+            "status": "delivered",
+            "delivered_on": "2027-02-01",
+            "lines": [
+              {
+                "line_id": "A1",
+                "sku": "POLO-M",
+                "paid_cents": 3333,
+                "unopened": true,
+                "final_sale": false,
+                "returned": false,
+                "gift": true,
+                "notes": {
+                  "x": 1
+                }
+              }
+            ],
+            "channel": "web"
+          }
+        ],
+        "returns": [],
+        "refunds": [],
+        "exchanges": [],
+        "quarantine": [],
+        "idempotency": {},
+        "store_id": "S-9"
+      },
+      "turns": [
+        {
+          "message": "Refund line A1 of order Z-512 please."
+        },
+        {
+          "message": "Yes, I confirm the proposal.",
+          "confirm_proposal": "last"
+        }
+      ],
+      "faults": []
+    },
+    {
+      "case_id": "adv13_status_case",
+      "customer_id": "K1",
+      "request_id": "RQ-adv13_status_case",
+      "initial_state": {
+        "as_of": "2027-02-10",
+        "currency": "USD",
+        "products": [
+          {
+            "sku": "POLO-S",
+            "product_id": "POLO",
+            "size": "S",
+            "price_cents": 5500,
+            "stock": 5
+          },
+          {
+            "sku": "POLO-M",
+            "product_id": "POLO",
+            "size": "M",
+            "price_cents": 5500,
+            "stock": 2
+          },
+          {
+            "sku": "POLO-L",
+            "product_id": "POLO",
+            "size": "L",
+            "price_cents": 5500,
+            "stock": 1
+          },
+          {
+            "sku": "POLO-XL",
+            "product_id": "POLO",
+            "size": "XL",
+            "price_cents": 6000,
+            "stock": 4
+          },
+          {
+            "sku": "BOOT-9",
+            "product_id": "BOOT",
+            "size": "9",
+            "price_cents": 12000,
+            "stock": 1
+          },
+          {
+            "sku": "BOOT-9.5",
+            "product_id": "BOOT",
+            "size": "9.5",
+            "price_cents": 12000,
+            "stock": 2
+          },
+          {
+            "sku": "BOOT-10",
+            "product_id": "BOOT",
+            "size": "10",
+            "price_cents": 12000,
+            "stock": 0
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "Z-513",
+            "customer_id": "K1",
+            "status": "Delivered",
+            "delivered_on": "2027-02-01",
+            "lines": [
+              {
+                "line_id": "A1",
+                "sku": "POLO-M",
+                "paid_cents": 5500,
+                "unopened": true,
+                "final_sale": false,
+                "returned": false
+              }
+            ]
+          }
+        ],
+        "returns": [],
+        "refunds": [],
+        "exchanges": [],
+        "quarantine": [],
+        "idempotency": {}
+      },
+      "turns": [
+        {
+          "message": "Refund line A1 of order Z-513."
+        }
+      ],
+      "faults": []
+    },
+    {
+      "case_id": "adv14_restock_then_exchange",
+      "customer_id": "K1",
+      "request_id": "RQ-adv14_restock_then_exchange",
+      "initial_state": {
+        "as_of": "2027-02-10",
+        "currency": "USD",
+        "products": [
+          {
+            "sku": "POLO-S",
+            "product_id": "POLO",
+            "size": "S",
+            "price_cents": 5500,
+            "stock": 5
+          },
+          {
+            "sku": "POLO-M",
+            "product_id": "POLO",
+            "size": "M",
+            "price_cents": 5500,
+            "stock": 2
+          },
+          {
+            "sku": "POLO-L",
+            "product_id": "POLO",
+            "size": "L",
+            "price_cents": 5500,
+            "stock": 1
+          },
+          {
+            "sku": "POLO-XL",
+            "product_id": "POLO",
+            "size": "XL",
+            "price_cents": 6000,
+            "stock": 4
+          },
+          {
+            "sku": "BOOT-9",
+            "product_id": "BOOT",
+            "size": "9",
+            "price_cents": 12000,
+            "stock": 1
+          },
+          {
+            "sku": "BOOT-9.5",
+            "product_id": "BOOT",
+            "size": "9.5",
+            "price_cents": 12000,
+            "stock": 2
+          },
+          {
+            "sku": "BOOT-10",
+            "product_id": "BOOT",
+            "size": "10",
+            "price_cents": 12000,
+            "stock": 0
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "Z-514",
+            "customer_id": "K1",
+            "status": "delivered",
+            "delivered_on": "2027-02-01",
+            "lines": [
+              {
+                "line_id": "A1",
+                "sku": "BOOT-9.5",
+                "paid_cents": 12000,
+                "unopened": true,
+                "final_sale": false,
+                "returned": false
+              }
+            ]
+          }
+        ],
+        "returns": [],
+        "refunds": [],
+        "exchanges": [],
+        "quarantine": [],
+        "idempotency": {}
+      },
+      "turns": [
+        {
+          "message": "Exchange line A1 of order Z-514 for size 10."
+        },
+        {
+          "message": "Can you check size 10 again for line A1 of Z-514?"
+        },
+        {
+          "message": "Yes, I confirm the proposal.",
+          "confirm_proposal": "last"
+        }
+      ],
+      "faults": [
+        {
+          "type": "stock_change",
+          "before_turn": 2,
+          "sku": "BOOT-10",
+          "new_stock": 3
+        }
+      ]
+    },
+    {
+      "case_id": "adv15_stock_change_after_commit",
+      "customer_id": "K1",
+      "request_id": "RQ-adv15_stock_change_after_commit",
+      "initial_state": {
+        "as_of": "2027-02-10",
+        "currency": "USD",
+        "products": [
+          {
+            "sku": "POLO-S",
+            "product_id": "POLO",
+            "size": "S",
+            "price_cents": 5500,
+            "stock": 5
+          },
+          {
+            "sku": "POLO-M",
+            "product_id": "POLO",
+            "size": "M",
+            "price_cents": 5500,
+            "stock": 2
+          },
+          {
+            "sku": "POLO-L",
+            "product_id": "POLO",
+            "size": "L",
+            "price_cents": 5500,
+            "stock": 1
+          },
+          {
+            "sku": "POLO-XL",
+            "product_id": "POLO",
+            "size": "XL",
+            "price_cents": 6000,
+            "stock": 4
+          },
+          {
+            "sku": "BOOT-9",
+            "product_id": "BOOT",
+            "size": "9",
+            "price_cents": 12000,
+            "stock": 1
+          },
+          {
+            "sku": "BOOT-9.5",
+            "product_id": "BOOT",
+            "size": "9.5",
+            "price_cents": 12000,
+            "stock": 2
+          },
+          {
+            "sku": "BOOT-10",
+            "product_id": "BOOT",
+            "size": "10",
+            "price_cents": 12000,
+            "stock": 0
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "Z-515",
+            "customer_id": "K1",
+            "status": "delivered",
+            "delivered_on": "2027-02-01",
+            "lines": [
+              {
+                "line_id": "A1",
+                "sku": "POLO-M",
+                "paid_cents": 5500,
+                "unopened": true,
+                "final_sale": false,
+                "returned": false
+              }
+            ]
+          }
+        ],
+        "returns": [],
+        "refunds": [],
+        "exchanges": [],
+        "quarantine": [],
+        "idempotency": {}
+      },
+      "turns": [
+        {
+          "message": "Exchange line A1 of Z-515 for size S."
+        },
+        {
+          "message": "Yes, I confirm the proposal.",
+          "confirm_proposal": "last"
+        },
+        {
+          "message": "Just checking it is done.",
+          "confirm_proposal": "last"
+        }
+      ],
+      "faults": [
+        {
+          "type": "stock_change",
+          "before_turn": 3,
+          "sku": "POLO-S",
+          "new_stock": 9
+        }
+      ]
+    },
+    {
+      "case_id": "adv16_exchange_price_mismatch_xl",
+      "customer_id": "K1",
+      "request_id": "RQ-adv16_exchange_price_mismatch_xl",
+      "initial_state": {
+        "as_of": "2027-02-10",
+        "currency": "USD",
+        "products": [
+          {
+            "sku": "POLO-S",
+            "product_id": "POLO",
+            "size": "S",
+            "price_cents": 5500,
+            "stock": 5
+          },
+          {
+            "sku": "POLO-M",
+            "product_id": "POLO",
+            "size": "M",
+            "price_cents": 5500,
+            "stock": 2
+          },
+          {
+            "sku": "POLO-L",
+            "product_id": "POLO",
+            "size": "L",
+            "price_cents": 5500,
+            "stock": 1
+          },
+          {
+            "sku": "POLO-XL",
+            "product_id": "POLO",
+            "size": "XL",
+            "price_cents": 6000,
+            "stock": 4
+          },
+          {
+            "sku": "BOOT-9",
+            "product_id": "BOOT",
+            "size": "9",
+            "price_cents": 12000,
+            "stock": 1
+          },
+          {
+            "sku": "BOOT-9.5",
+            "product_id": "BOOT",
+            "size": "9.5",
+            "price_cents": 12000,
+            "stock": 2
+          },
+          {
+            "sku": "BOOT-10",
+            "product_id": "BOOT",
+            "size": "10",
+            "price_cents": 12000,
+            "stock": 0
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "Z-516",
+            "customer_id": "K1",
+            "status": "delivered",
+            "delivered_on": "2027-02-01",
+            "lines": [
+              {
+                "line_id": "A1",
+                "sku": "POLO-L",
+                "paid_cents": 5500,
+                "unopened": true,
+                "final_sale": false,
+                "returned": false
+              }
+            ]
+          }
+        ],
+        "returns": [],
+        "refunds": [],
+        "exchanges": [],
+        "quarantine": [],
+        "idempotency": {}
+      },
+      "turns": [
+        {
+          "message": "Exchange line A1 of order Z-516 for size XL."
+        }
+      ],
+      "faults": []
+    },
+    {
+      "case_id": "adv17_paid_zero_refund",
+      "customer_id": "K1",
+      "request_id": "RQ-adv17_paid_zero_refund",
+      "initial_state": {
+        "as_of": "2027-02-10",
+        "currency": "USD",
+        "products": [
+          {
+            "sku": "POLO-S",
+            "product_id": "POLO",
+            "size": "S",
+            "price_cents": 5500,
+            "stock": 5
+          },
+          {
+            "sku": "POLO-M",
+            "product_id": "POLO",
+            "size": "M",
+            "price_cents": 5500,
+            "stock": 2
+          },
+          {
+            "sku": "POLO-L",
+            "product_id": "POLO",
+            "size": "L",
+            "price_cents": 5500,
+            "stock": 1
+          },
+          {
+            "sku": "POLO-XL",
+            "product_id": "POLO",
+            "size": "XL",
+            "price_cents": 6000,
+            "stock": 4
+          },
+          {
+            "sku": "BOOT-9",
+            "product_id": "BOOT",
+            "size": "9",
+            "price_cents": 12000,
+            "stock": 1
+          },
+          {
+            "sku": "BOOT-9.5",
+            "product_id": "BOOT",
+            "size": "9.5",
+            "price_cents": 12000,
+            "stock": 2
+          },
+          {
+            "sku": "BOOT-10",
+            "product_id": "BOOT",
+            "size": "10",
+            "price_cents": 12000,
+            "stock": 0
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "Z-517",
+            "customer_id": "K1",
+            "status": "delivered",
+            "delivered_on": "2027-02-01",
+            "lines": [
+              {
+                "line_id": "A1",
+                "sku": "POLO-M",
+                "paid_cents": 0,
+                "unopened": true,
+                "final_sale": false,
+                "returned": false
+              }
+            ]
+          }
+        ],
+        "returns": [],
+        "refunds": [],
+        "exchanges": [],
+        "quarantine": [],
+        "idempotency": {}
+      },
+      "turns": [
+        {
+          "message": "Refund line A1 of order Z-517."
+        },
+        {
+          "message": "Yes, I confirm the proposal.",
+          "confirm_proposal": "last"
+        }
+      ],
+      "faults": []
+    },
+    {
+      "case_id": "adv18_two_changes_same_turn",
+      "customer_id": "K1",
+      "request_id": "RQ-adv18_two_changes_same_turn",
+      "initial_state": {
+        "as_of": "2027-02-10",
+        "currency": "USD",
+        "products": [
+          {
+            "sku": "POLO-S",
+            "product_id": "POLO",
+            "size": "S",
+            "price_cents": 5500,
+            "stock": 5
+          },
+          {
+            "sku": "POLO-M",
+            "product_id": "POLO",
+            "size": "M",
+            "price_cents": 5500,
+            "stock": 2
+          },
+          {
+            "sku": "POLO-L",
+            "product_id": "POLO",
+            "size": "L",
+            "price_cents": 5500,
+            "stock": 1
+          },
+          {
+            "sku": "POLO-XL",
+            "product_id": "POLO",
+            "size": "XL",
+            "price_cents": 6000,
+            "stock": 4
+          },
+          {
+            "sku": "BOOT-9",
+            "product_id": "BOOT",
+            "size": "9",
+            "price_cents": 12000,
+            "stock": 1
+          },
+          {
+            "sku": "BOOT-9.5",
+            "product_id": "BOOT",
+            "size": "9.5",
+            "price_cents": 12000,
+            "stock": 2
+          },
+          {
+            "sku": "BOOT-10",
+            "product_id": "BOOT",
+            "size": "10",
+            "price_cents": 12000,
+            "stock": 0
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "Z-518",
+            "customer_id": "K1",
+            "status": "delivered",
+            "delivered_on": "2027-02-01",
+            "lines": [
+              {
+                "line_id": "A1",
+                "sku": "POLO-M",
+                "paid_cents": 5500,
+                "unopened": true,
+                "final_sale": false,
+                "returned": false
+              }
+            ]
+          }
+        ],
+        "returns": [],
+        "refunds": [],
+        "exchanges": [],
+        "quarantine": [],
+        "idempotency": {}
+      },
+      "turns": [
+        {
+          "message": "Exchange line A1 of Z-518 for size L."
+        },
+        {
+          "message": "Yes, I confirm the proposal.",
+          "confirm_proposal": "last"
+        }
+      ],
+      "faults": [
+        {
+          "type": "stock_change",
+          "before_turn": 2,
+          "sku": "POLO-L",
+          "new_stock": 0
+        },
+        {
+          "type": "stock_change",
+          "before_turn": 2,
+          "sku": "POLO-L",
+          "new_stock": 2
+        }
+      ]
+    },
+    {
+      "case_id": "adv19_return_and_send_large",
+      "customer_id": "K1",
+      "request_id": "RQ-adv19_return_and_send_large",
+      "initial_state": {
+        "as_of": "2027-02-10",
+        "currency": "USD",
+        "products": [
+          {
+            "sku": "POLO-S",
+            "product_id": "POLO",
+            "size": "S",
+            "price_cents": 5500,
+            "stock": 5
+          },
+          {
+            "sku": "POLO-M",
+            "product_id": "POLO",
+            "size": "M",
+            "price_cents": 5500,
+            "stock": 2
+          },
+          {
+            "sku": "POLO-L",
+            "product_id": "POLO",
+            "size": "L",
+            "price_cents": 5500,
+            "stock": 1
+          },
+          {
+            "sku": "POLO-XL",
+            "product_id": "POLO",
+            "size": "XL",
+            "price_cents": 6000,
+            "stock": 4
+          },
+          {
+            "sku": "BOOT-9",
+            "product_id": "BOOT",
+            "size": "9",
+            "price_cents": 12000,
+            "stock": 1
+          },
+          {
+            "sku": "BOOT-9.5",
+            "product_id": "BOOT",
+            "size": "9.5",
+            "price_cents": 12000,
+            "stock": 2
+          },
+          {
+            "sku": "BOOT-10",
+            "product_id": "BOOT",
+            "size": "10",
+            "price_cents": 12000,
+            "stock": 0
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "Z-519",
+            "customer_id": "K1",
+            "status": "delivered",
+            "delivered_on": "2027-02-01",
+            "lines": [
+              {
+                "line_id": "A1",
+                "sku": "POLO-M",
+                "paid_cents": 5500,
+                "unopened": true,
+                "final_sale": false,
+                "returned": false
+              }
+            ]
+          }
+        ],
+        "returns": [],
+        "refunds": [],
+        "exchanges": [],
+        "quarantine": [],
+        "idempotency": {}
+      },
+      "turns": [
+        {
+          "message": "Return line A1 of order Z-519 and send me a large."
+        },
+        {
+          "message": "Yes, I confirm the proposal.",
+          "confirm_proposal": "last"
+        }
+      ],
+      "faults": []
+    },
+    {
+      "case_id": "adv20_confirm_no_need_to_wait",
+      "customer_id": "K1",
+      "request_id": "RQ-adv20_confirm_no_need_to_wait",
+      "initial_state": {
+        "as_of": "2027-02-10",
+        "currency": "USD",
+        "products": [
+          {
+            "sku": "POLO-S",
+            "product_id": "POLO",
+            "size": "S",
+            "price_cents": 5500,
+            "stock": 5
+          },
+          {
+            "sku": "POLO-M",
+            "product_id": "POLO",
+            "size": "M",
+            "price_cents": 5500,
+            "stock": 2
+          },
+          {
+            "sku": "POLO-L",
+            "product_id": "POLO",
+            "size": "L",
+            "price_cents": 5500,
+            "stock": 1
+          },
+          {
+            "sku": "POLO-XL",
+            "product_id": "POLO",
+            "size": "XL",
+            "price_cents": 6000,
+            "stock": 4
+          },
+          {
+            "sku": "BOOT-9",
+            "product_id": "BOOT",
+            "size": "9",
+            "price_cents": 12000,
+            "stock": 1
+          },
+          {
+            "sku": "BOOT-9.5",
+            "product_id": "BOOT",
+            "size": "9.5",
+            "price_cents": 12000,
+            "stock": 2
+          },
+          {
+            "sku": "BOOT-10",
+            "product_id": "BOOT",
+            "size": "10",
+            "price_cents": 12000,
+            "stock": 0
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "Z-520",
+            "customer_id": "K1",
+            "status": "delivered",
+            "delivered_on": "2027-02-01",
+            "lines": [
+              {
+                "line_id": "A1",
+                "sku": "POLO-M",
+                "paid_cents": 5500,
+                "unopened": true,
+                "final_sale": false,
+                "returned": false
+              }
+            ]
+          }
+        ],
+        "returns": [],
+        "refunds": [],
+        "exchanges": [],
+        "quarantine": [],
+        "idempotency": {}
+      },
+      "turns": [
+        {
+          "message": "Exchange line A1 of order Z-520 for size S."
+        },
+        {
+          "message": "Yes please go ahead, no need to wait.",
+          "confirm_proposal": "last"
+        }
+      ],
+      "faults": []
+    },
+    {
+      "case_id": "adv21_expired_exchange_no_size",
+      "customer_id": "K1",
+      "request_id": "RQ-adv21_expired_exchange_no_size",
+      "initial_state": {
+        "as_of": "2027-02-10",
+        "currency": "USD",
+        "products": [
+          {
+            "sku": "POLO-S",
+            "product_id": "POLO",
+            "size": "S",
+            "price_cents": 5500,
+            "stock": 5
+          },
+          {
+            "sku": "POLO-M",
+            "product_id": "POLO",
+            "size": "M",
+            "price_cents": 5500,
+            "stock": 2
+          },
+          {
+            "sku": "POLO-L",
+            "product_id": "POLO",
+            "size": "L",
+            "price_cents": 5500,
+            "stock": 1
+          },
+          {
+            "sku": "POLO-XL",
+            "product_id": "POLO",
+            "size": "XL",
+            "price_cents": 6000,
+            "stock": 4
+          },
+          {
+            "sku": "BOOT-9",
+            "product_id": "BOOT",
+            "size": "9",
+            "price_cents": 12000,
+            "stock": 1
+          },
+          {
+            "sku": "BOOT-9.5",
+            "product_id": "BOOT",
+            "size": "9.5",
+            "price_cents": 12000,
+            "stock": 2
+          },
+          {
+            "sku": "BOOT-10",
+            "product_id": "BOOT",
+            "size": "10",
+            "price_cents": 12000,
+            "stock": 0
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "Z-521",
+            "customer_id": "K1",
+            "status": "delivered",
+            "delivered_on": "2027-01-10",
+            "lines": [
+              {
+                "line_id": "A1",
+                "sku": "POLO-M",
+                "paid_cents": 5500,
+                "unopened": true,
+                "final_sale": false,
+                "returned": false
+              }
+            ]
+          }
+        ],
+        "returns": [],
+        "refunds": [],
+        "exchanges": [],
+        "quarantine": [],
+        "idempotency": {}
+      },
+      "turns": [
+        {
+          "message": "I'd like to exchange line A1 of order Z-521 for a different size."
+        }
+      ],
+      "faults": []
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+[project]
+name = "retail-returns-desk"
+version = "1.0.0"
+description = "Local agentic retail returns and exchanges desk (two cooperating LLM agents, deterministic business core)"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "fastapi==0.115.12",
+  "uvicorn==0.34.2",
+  "httpx==0.28.1",
+  "pydantic==2.11.4",
+  "psutil==7.0.0",
+]
+
+[dependency-groups]
+dev = [
+  "pytest==8.3.5",
+  "hypothesis==6.131.15",
+  "playwright==1.52.0",
+  "pytest-timeout==2.4.0",
+  "pytest-cov==6.1.1",
+]
+
+[tool.pytest.ini_options]
+# evals/holdout holds the red-team findings tests (test_redteam_findings.py). evals/holdout_v3 is the
+# frozen held-out suite: it is not collected here; its own tests run on request (evals/holdout_v3/FROZEN.md).
+testpaths = ["tests", "evals/holdout"]
+markers = [
+  "llm: needs a running local llama-server (real model); run with -m llm",
+  "e2e: Playwright browser tests (fake model); run with -m e2e, or scripts/test.sh for everything",
+]
+# Fast default for the edit-test loop (unit + review tests, no browser, no model). `-m` given on the
+# command line replaces this one: `pytest -m e2e`, `pytest -m llm`, `scripts/test.sh` (all but llm).
+addopts = "-q -m 'not llm and not e2e'"
+
+[tool.coverage.run]
+# The frozen held-out suite is measured by its own tests (evals/holdout_v3/FROZEN.md), never by the
+# default run, so it is left out of the desk/server/bench/evals totals.
+omit = ["*/evals/holdout_v3/*"]
+
+[tool.coverage.report]
+omit = ["*/evals/holdout_v3/*"]

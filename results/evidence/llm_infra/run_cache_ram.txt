@@ -1,0 +1,46 @@
+[live] cache_ram 1024: {"calls": 80, "wall_ms": 38508.0, "prompt_tokens": 56597, "cached_tokens": 52209, "cache_hit_pct": 92.2, "prefill_ms": 7845.1, "decode_ms": 29867.8, "step_p50_ms": 443.3, "step_p95_ms": 890.5, "server_peak_phys_footprint_mb": 1706.6, "server_phys_footprint_mb_end": 1475.2, "peak_unified_gpu_mb": 3354.4, "trace_sha": "49d2cfef87c76f62"}
+[live] cache_ram 8192: {"calls": 80, "wall_ms": 38631.6, "prompt_tokens": 56597, "cached_tokens": 52209, "cache_hit_pct": 92.2, "prefill_ms": 7906.6, "decode_ms": 29876.3, "step_p50_ms": 443.6, "step_p95_ms": 876.1, "server_peak_phys_footprint_mb": 1692.6, "server_phys_footprint_mb_end": 1674.1, "peak_unified_gpu_mb": 3408.6, "trace_sha": "49d2cfef87c76f62"}
+[live] cache_ram 0: {"calls": 80, "wall_ms": 50749.1, "prompt_tokens": 56597, "cached_tokens": 30422, "cache_hit_pct": 53.8, "prefill_ms": 20598.9, "decode_ms": 29883.7, "step_p50_ms": 564.9, "step_p95_ms": 1222.3, "server_peak_phys_footprint_mb": 884.4, "server_phys_footprint_mb_end": 884.4, "peak_unified_gpu_mb": 3399.5, "trace_sha": "a0e6e1275e855eb4"}
+F
+[live] results written to /Users/ali/Desktop/Projects/retail-returns-desk/var/llm_infra/live_results.json
+
+=================================== FAILURES ===================================
+______________________ test_cache_ram_bounded_vs_default _______________________
+
+pool = <test_llm_live.ServerPool object at 0x106a11f70>
+
+    def test_cache_ram_bounded_vs_default(pool):
+        """Same 8-case workload on fresh Q4 servers that differ only in --cache-ram."""
+        summary = {}
+        for cache_ram in CACHE_RAM_SETTINGS:
+            profile = variant(get_profile("F"), f"F-cram{cache_ram}", "measurement", cache_ram_mib=cache_ram)
+            pool.stop()
+            server = pool.get(profile)
+            client = LLMClient(server.base_url, "constrained")
+            agent_workload(client, cases=1)  # warm-up case (Metal pipelines, first prefill), not counted
+            with telemetry.MemoryProbe({"llama-server": server.pid}, gpu_baseline_bytes=pool.gpu_baseline) as probe:
+                stats = agent_workload(client, cases=8)
+            report = probe.report()
+            latencies = sorted(stats["step_latency_ms"])
+            summary[str(cache_ram)] = {
+                "calls": stats["calls"], "wall_ms": round(stats["wall_ms"], 1),
+                "prompt_tokens": stats["prompt"], "cached_tokens": stats["cached"],
+                "cache_hit_pct": round(100 * stats["cached"] / stats["prompt"], 1),
+                "prefill_ms": round(stats["prefill_ms"], 1), "decode_ms": round(stats["decode_ms"], 1),
+                "step_p50_ms": latencies[len(latencies) // 2],
+                "step_p95_ms": latencies[max(0, -(-95 * len(latencies) // 100) - 1)],
+                "server_peak_phys_footprint_mb": report["peak_ram_mb"],
+                "server_phys_footprint_mb_end": report["per_process"]["llama-server"]["phys_footprint_mb"],
+                "peak_unified_gpu_mb": report["peak_vram_mb"],
+                "trace_sha": hashlib.sha256("\n".join(stats["trace"]).encode()).hexdigest()[:16],
+            }
+            record("cache_ram", str(cache_ram), summary[str(cache_ram)])
+        pool.stop()
+        bounded, default = summary["1024"], summary["8192"]
+>       assert bounded["server_peak_phys_footprint_mb"] < default["server_peak_phys_footprint_mb"]
+E       assert 1706.6 < 1692.6
+
+tests/llm/test_llm_live.py:445: AssertionError
+=========================== short test summary info ============================
+FAILED tests/llm/test_llm_live.py::test_cache_ram_bounded_vs_default - assert...
+1 failed, 14 deselected in 150.42s (0:02:30)

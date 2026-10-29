@@ -1,0 +1,17 @@
+(version 1)
+;; Offline sandbox for scripts/offline_check.sh (macOS sandbox-exec, Sandbox Profile Language).
+;;
+;;   sandbox-exec -f scripts/offline.sb <command ...>
+;;
+;; Everything is allowed except the network. Outbound IP connections may only go to loopback (the
+;; adapter talks to its own llama-server on 127.0.0.1), inbound connections are accepted only on
+;; loopback, and the DNS resolver's socket is closed so no name lookup can leave the machine
+;; either (lookups go through mDNSResponder, a process outside this sandbox). Child processes
+;; (the .venv re-exec, llama-server, ps/pmset/ioreg) inherit the profile. In SBPL the last
+;; matching rule wins, so each allow below narrows the deny before it.
+(allow default)
+(deny network-outbound (remote ip "*:*"))
+(allow network-outbound (remote ip "localhost:*"))
+(deny network-outbound (remote unix-socket (path-literal "/private/var/run/mDNSResponder")))
+(deny network-inbound)
+(allow network-inbound (local ip "localhost:*"))

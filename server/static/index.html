@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Returns Desk</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#composer-input">Skip to the message box</a>
+
+  <header class="topbar">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7l8-4 8 4v10l-8 4-8-4z M4 7l8 4 8-4 M12 11v10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      <h1>Returns Desk</h1>
+    </div>
+    <div class="model-chip" id="model-chip" data-testid="model-chip">
+      <span class="status-dot" id="llm-dot" data-state="unknown" role="img" aria-label="Model status unknown"></span>
+      <span id="model-text">connecting…</span>
+    </div>
+    <dl class="telemetry" id="telemetry" aria-label="Live telemetry">
+      <div><dt>last step</dt><dd id="tm-step">–</dd></div>
+      <div><dt>decode</dt><dd id="tm-toks">–</dd></div>
+      <div><dt>footprint</dt><dd id="tm-mem">–</dd></div>
+      <div><dt>GPU unified</dt><dd id="tm-gpu">–</dd></div>
+    </dl>
+    <p class="offline-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12a10 10 0 0114 0M8.5 15.5a5 5 0 017 0M12 19h.01M3 3l18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Offline: all inference local</p>
+  </header>
+
+  <div id="banner-area" class="banner-area" role="region" aria-label="Alerts"></div>
+
+  <main class="layout" id="layout">
+    <aside class="rail" aria-label="Scenarios and failure lab">
+      <section class="rail-section">
+        <h2>Scenario</h2>
+        <label class="field">
+          <span>Conversation</span>
+          <select id="scenario-select" data-testid="scenario-select"></select>
+        </label>
+        <div id="blank-options" class="blank-options" hidden>
+          <label class="field"><span>State from</span><select id="blank-state-select"></select></label>
+          <label class="field"><span>Customer</span><select id="customer-select" data-testid="customer-select"></select></label>
+        </div>
+        <p class="hint" id="scenario-notes"></p>
+        <div class="button-row">
+          <button type="button" id="reset-btn" class="btn" data-testid="reset">Reset state</button>
+        </div>
+        <dl class="session-facts" id="session-facts"></dl>
+      </section>
+
+      <section class="rail-section">
+        <h2>Script</h2>
+        <p class="hint">Fill the composer with a scripted customer message. Nothing is sent until you press Send.</p>
+        <ol class="script-list" id="script-list" data-testid="script-list"></ol>
+      </section>
+
+      <section class="rail-section">
+        <h2>Failure lab</h2>
+        <form id="stock-form" class="lab-form" data-testid="stock-form" novalidate>
+          <p class="hint">External stock change, applied now (like the warehouse selling units).</p>
+          <label class="field"><span>SKU</span><select id="stock-sku" data-testid="stock-sku"></select></label>
+          <label class="field"><span>New stock</span><input id="stock-value" type="number" min="0" step="1" value="0" inputmode="numeric" data-testid="stock-value"></label>
+          <button type="submit" class="btn" data-testid="stock-apply">Set stock now</button>
+        </form>
+        <div class="lab-form">
+          <p class="hint">The next commit succeeds, then its answer is lost (a timeout).</p>
+          <button type="button" id="arm-timeout" class="btn" data-testid="arm-timeout">Arm timeout after next commit</button>
+          <p class="fault-status" id="fault-status" data-testid="fault-status"></p>
+        </div>
+      </section>
+    </aside>
+
+    <section class="chat" aria-label="Conversation">
+      <div class="chat-log" id="chat-log" data-testid="chat-log"></div>
+      <p class="progress" id="progress" role="status" aria-live="polite" data-testid="progress"></p>
+      <form class="composer" id="composer" data-testid="composer">
+        <label for="composer-input" class="sr-only">Customer message</label>
+        <textarea id="composer-input" rows="2" maxlength="2000" placeholder="Type the customer's message, or fill one from the script" data-testid="composer-input"></textarea>
+        <div class="composer-row">
+          <label class="confirm-attach" id="confirm-attach" hidden>
+            <input type="checkbox" id="confirm-attach-box" data-testid="confirm-attach">
+            <span id="confirm-attach-text" data-testid="confirm-attach-text">Send with explicit confirmation of <strong id="confirm-attach-id"></strong><span id="confirm-attach-note"></span></span>
+          </label>
+          <span class="kbd-hint">Enter to send · Shift+Enter for a new line</span>
+          <button type="submit" class="btn btn-primary" id="send-btn" data-testid="send">Send</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="side" aria-label="Agents and audit trail">
+      <div class="side-tabs">
+        <div role="tablist" aria-label="Agent views">
+          <button type="button" role="tab" id="tab-team" aria-selected="true" aria-controls="panel-team" data-testid="tab-team">Team (live)</button>
+          <button type="button" role="tab" id="tab-audit" aria-selected="false" aria-controls="panel-audit" tabindex="-1" data-testid="tab-audit">Audit trail</button>
+        </div>
+        <button type="button" class="btn btn-small" id="theater-btn" aria-pressed="false" data-testid="theater">Theater <kbd>T</kbd></button>
+      </div>
+
+      <div role="tabpanel" id="panel-team" aria-labelledby="tab-team" tabindex="0" class="panel panel-team" data-testid="panel-team">
+        <div class="team-head">
+          <p class="turn-strip" id="turn-strip" data-testid="turn-strip">No turn yet.</p>
+          <div class="replay" id="replay" data-testid="replay">
+            <label class="field-inline"><span>Turn</span><select id="replay-turn" data-testid="replay-turn"></select></label>
+            <button type="button" class="btn btn-small" id="replay-back" aria-label="Step back" data-testid="replay-back">&#9664;</button>
+            <button type="button" class="btn btn-small" id="replay-play" data-testid="replay-play">&#9654; Replay</button>
+            <button type="button" class="btn btn-small" id="replay-fwd" aria-label="Step forward" data-testid="replay-fwd">&#9654;&#9654;</button>
+            <label class="field-inline"><span>Speed</span>
+              <select id="replay-speed" data-testid="replay-speed">
+                <option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option>
+              </select>
+            </label>
+            <span class="replay-pos" id="replay-pos" data-testid="replay-pos">0 / 0</span>
+            <span class="catching-up" id="catching-up" hidden>catching up…</span>
+          </div>
+        </div>
+        <div class="graph-wrap" id="team-graph" role="group" aria-label="The agent team: 2 LLM agents and deterministic specialists" data-testid="team-graph"></div>
+        <div class="team-story">
+          <div class="store-chips" id="store-chips" data-testid="store-chips" aria-label="Committed effects this turn"></div>
+          <p class="mission-now" id="mission-now" aria-live="polite" data-testid="mission-now"></p>
+          <ol class="mission-log" id="mission-log" data-testid="mission-log" aria-label="Mission log"></ol>
+        </div>
+        <p class="legend" id="legend">
+          <span class="legend-item"><span class="badge badge-llm">LLM</span> <span id="legend-llm">LLM agent: local model</span></span>
+          <span class="legend-item"><span class="badge badge-code">CODE</span> Deterministic specialist: plain code, no model</span>
+          <span class="legend-item legend-motto">Agents decide; code can say no.</span>
+        </p>
+      </div>
+
+      <div role="tabpanel" id="panel-audit" aria-labelledby="tab-audit" tabindex="0" class="panel" hidden data-testid="panel-audit">
+        <div class="audit-tools">
+          <label class="check"><input type="checkbox" id="audit-hide-grounding"> Hide grounding detail</label>
+          <button type="button" class="btn btn-small" id="audit-expand">Expand all</button>
+          <button type="button" class="btn btn-small" id="audit-collapse">Collapse all</button>
+        </div>
+        <div id="audit-timeline" class="audit-timeline" data-testid="audit-timeline"></div>
+      </div>
+    </section>
+  </main>
+
+  <section class="drawer" id="drawer" aria-label="State inspector">
+    <button type="button" class="drawer-toggle" id="drawer-toggle" aria-expanded="false" aria-controls="drawer-body" data-testid="drawer-toggle">
+      <span class="drawer-title">State inspector</span>
+      <span class="drawer-summary" id="drawer-summary"></span>
+    </button>
+    <div class="drawer-body" id="drawer-body" hidden data-testid="inspector"></div>
+  </section>
+
+  <script src="/static/app.js" defer></script>
+</body>
+</html>

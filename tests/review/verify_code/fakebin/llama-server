@@ -1,0 +1,9 @@
+#!/bin/sh
+# Verifier fake (C2): a newer llama.cpp build. Only answers --version; anything else fails.
+if [ "$1" = "--version" ]; then
+  echo "version: 0.7.1 (build 11701, commit abcdef123)" >&2
+  echo "built with Apple clang for arm64-apple-darwin" >&2
+  exit 0
+fi
+echo "fake llama-server: refusing to serve" >&2
+exit 1

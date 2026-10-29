@@ -1,0 +1,164 @@
+{
+ "scorer": "evals.score v1",
+ "warnings": [],
+ "summary": {
+  "cases": 6,
+  "strict_success": 1,
+  "strict_rate": 0.16666666666666666,
+  "strict_wilson95": [
+   0.03005258587173032,
+   0.563509436563646
+  ],
+  "lenient_success": 1,
+  "turns": 13,
+  "turn_decision_accuracy": 0.15384615384615385,
+  "invariant_violations": 0,
+  "cases_with_invariant_violations": 0
+ },
+ "decision_confusion": {
+  "completed->clarify": 5,
+  "deny->clarify": 1,
+  "propose->clarify": 5
+ },
+ "invariants": {},
+ "families": {
+  "public": {
+   "cases": 6,
+   "strict": 1,
+   "lenient": 1,
+   "turns": 13,
+   "turns_ok": 2
+  }
+ },
+ "cases": [
+  {
+   "case_id": "public_01_refund_boundary",
+   "family": "public",
+   "strict": false,
+   "lenient": false,
+   "expected_decisions": [
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "clarify",
+    "clarify"
+   ],
+   "diffs": [
+    "turn 1: decision expected 'propose' (PROPOSED), got 'clarify'",
+    "turn 2: decision expected 'completed' (COMMITTED), got 'clarify'",
+    "state: state.orders[O100].lines[TEE-M].returned: expected true, got false",
+    "state: state.returns[TEE-M]: missing",
+    "state: state.refunds[O100]: missing",
+    "state: state.quarantine[TEE-M]: missing",
+    "state: state.idempotency.REQ-public_01_refund_boundary: missing (expected {\"action\": \"refund\", \"amount_cents\": 3000, \"customer_id\": \"C100\", \"line_id\": \"L1\", \"order_id\": \"O100\", \"replacement_sku\": null, \"status\":...)"
+   ]
+  },
+  {
+   "case_id": "public_02_exchange",
+   "family": "public",
+   "strict": false,
+   "lenient": false,
+   "expected_decisions": [
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "clarify",
+    "clarify"
+   ],
+   "diffs": [
+    "turn 1: decision expected 'propose' (PROPOSED), got 'clarify'",
+    "turn 2: decision expected 'completed' (COMMITTED), got 'clarify'",
+    "state: state.products[TEE-L].stock: expected 2, got 3",
+    "state: state.orders[O100].lines[TEE-M].returned: expected true, got false",
+    "state: state.returns[TEE-M]: missing",
+    "state: state.exchanges[O100]: missing",
+    "state: state.quarantine[TEE-M]: missing",
+    "state: state.idempotency.REQ-public_02_exchange: missing (expected {\"action\": \"exchange\", \"amount_cents\": 0, \"customer_id\": \"C100\", \"line_id\": \"L1\", \"order_id\": \"O100\", \"replacement_sku\": \"TEE-L\", \"status...)"
+   ]
+  },
+  {
+   "case_id": "public_03_expired",
+   "family": "public",
+   "strict": true,
+   "lenient": true,
+   "expected_decisions": [
+    "deny"
+   ],
+   "actual_decisions": [
+    "deny"
+   ],
+   "diffs": []
+  },
+  {
+   "case_id": "public_04_clarify",
+   "family": "public",
+   "strict": false,
+   "lenient": false,
+   "expected_decisions": [
+    "clarify",
+    "propose",
+    "completed"
+   ],
+   "actual_decisions": [
+    "clarify",
+    "clarify",
+    "clarify"
+   ],
+   "diffs": [
+    "turn 2: decision expected 'propose' (PROPOSED), got 'clarify'",
+    "turn 3: decision expected 'completed' (COMMITTED), got 'clarify'",
+    "state: state.orders[O100].lines[TEE-M].returned: expected true, got false",
+    "state: state.returns[TEE-M]: missing",
+    "state: state.refunds[O100]: missing",
+    "state: state.quarantine[TEE-M]: missing",
+    "state: state.idempotency.REQ-public_04_clarify: missing (expected {\"action\": \"refund\", \"amount_cents\": 3000, \"customer_id\": \"C100\", \"line_id\": \"L1\", \"order_id\": \"O100\", \"replacement_sku\": null, \"status\":...)"
+   ]
+  },
+  {
+   "case_id": "public_05_stale_stock",
+   "family": "public",
+   "strict": false,
+   "lenient": false,
+   "expected_decisions": [
+    "propose",
+    "deny"
+   ],
+   "actual_decisions": [
+    "clarify",
+    "clarify"
+   ],
+   "diffs": [
+    "turn 1: decision expected 'propose' (PROPOSED), got 'clarify'",
+    "turn 2: decision expected 'deny' (OUT_OF_STOCK), got 'clarify'"
+   ]
+  },
+  {
+   "case_id": "public_06_timeout_replay",
+   "family": "public",
+   "strict": false,
+   "lenient": false,
+   "expected_decisions": [
+    "propose",
+    "completed",
+    "completed"
+   ],
+   "actual_decisions": [
+    "clarify",
+    "clarify",
+    "clarify"
+   ],
+   "diffs": [
+    "turn 1: decision expected 'propose' (PROPOSED), got 'clarify'",
+    "turn 2: decision expected 'completed' (COMMITTED_TIMEOUT_RECONCILED), got 'clarify'; also accepted leniently: ['error']",
+    "turn 3: decision expected 'completed' (REPLAY), got 'clarify'",
+    "state: state.orders[O100].lines[TEE-M].returned: expected true, got false",
+    "state: state.returns[TEE-M]: missing",
+    "state: state.refunds[O100]: missing",
+    "state: state.quarantine[TEE-M]: missing",
+    "state: state.idempotency.REQ-public_06_timeout_replay: missing (expected {\"action\": \"refund\", \"amount_cents\": 3000, \"customer_id\": \"C100\", \"line_id\": \"L1\", \"order_id\": \"O100\", \"replacement_sku\": null, \"status\":...)"
+   ]
+  }
+ ]
+}

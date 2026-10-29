@@ -1,0 +1,58 @@
+$ /Users/ali/Desktop/Projects/retail-returns-desk/.venv/bin/python -m evals.score --input evals/holdout_v3/holdout_v3.json --labels evals/holdout_v3/labels_v3.json --output results/holdout_v3/B/run-1/results.json --json results/holdout_v3/B/run-1/score.json
+Strict case success: 56/60 = 93.3% (Wilson 95% CI 84.1%-97.4%)
+Lenient (documented alternatives accepted): 57/60
+Turn decision accuracy: 96.5% of 143 turns
+Invariant violations: 0 in 0 case(s)
+Decision mismatches (expected->actual): clarify->propose x1, completed->deny x1, propose->clarify x3
+
+family                             cases strict lenient turn-acc
+natural_chitchat                       1      1       1     100%
+natural_clarify                        1      1       1     100%
+natural_confirmation                   3      3       3     100%
+natural_correction                     4      3       3      92%
+natural_fault                          2      1       1      75%
+natural_injection                      3      3       3     100%
+natural_long                           1      0       0      83%
+natural_reference                      4      4       4     100%
+natural_relative_size                  3      3       3     100%
+natural_replay                         1      1       1     100%
+natural_social_engineering             3      3       3     100%
+natural_status_policy                  3      2       3      90%
+natural_typo                           1      1       1     100%
+terse_clarify                          2      2       2     100%
+terse_exchange                         2      2       2     100%
+terse_exchange_deny                    5      5       5     100%
+terse_exchange_size_choice             3      3       3     100%
+terse_ownership                        1      1       1     100%
+terse_policy_deny                      4      4       4     100%
+terse_refund_window                    4      4       4     100%
+terse_replay                           1      1       1     100%
+terse_stock_fault                      5      5       5     100%
+terse_timeout                          3      3       3     100%
+
+FAILURES (4):
+FAIL v3_n22 [natural_correction]  expected ['propose', 'propose', 'completed']  got ['propose', 'clarify', 'completed']
+    turn 2: decision expected 'propose' (PROPOSED), got 'clarify'
+    state: state.orders[O6222].lines[JEANS-30].returned: expected false, got true
+    state: state.orders[O6222].lines[TEE-S].returned: expected true, got false
+    state: state.returns[TEE-S]: missing
+    state: state.returns[JEANS-30]: unexpected {"customer_id": "C6222", "line_id": "L1", "order_id": "O6222", "remedy": "refund", "request_id": "REQ-v3_n22", "sku": "JEANS-30"}
+    state: state.refunds[O6222].line_id: expected "L2", got "L1"
+    state: state.refunds[O6222].amount_cents: expected 3200, got 6500
+    state: state.quarantine[TEE-S]: missing
+    state: state.quarantine[JEANS-30]: unexpected {"line_id": "L1", "order_id": "O6222", "quantity": 1, "sku": "JEANS-30"}
+    state: state.idempotency.REQ-v3_n22.line_id: expected "L2", got "L1"
+    state: state.idempotency.REQ-v3_n22.amount_cents: expected 3200, got 6500
+FAIL v3_n23 [natural_fault]  expected ['propose', 'deny', 'propose', 'completed']  got ['propose', 'deny', 'clarify', 'deny']
+    turn 3: decision expected 'propose' (PROPOSED), got 'clarify'
+    turn 4: decision expected 'completed' (COMMITTED), got 'deny'
+    state: state.products[JEANS-30].stock: expected 0, got 1
+    state: state.orders[O6323].lines[JEANS-32].returned: expected true, got false
+    state: state.returns[JEANS-32]: missing
+    state: state.exchanges[O6323]: missing
+    state: state.quarantine[JEANS-32]: missing
+    state: state.idempotency.REQ-v3_n23: missing (expected {"action": "exchange", "amount_cents": 0, "customer_id": "C6323", "line_id": "L1", "order_id": "O6323", "replacement_sku": "JEANS-30", "s...)
+FAIL v3_n28 [natural_status_policy]  expected ['propose', 'propose', 'propose', 'completed']  got ['propose', 'clarify', 'propose', 'completed']
+    turn 2: decision expected 'propose' (CONFIRMATION_REQUIRED), got 'clarify'; also accepted leniently: ['clarify']
+FAIL v3_n30 [natural_long]  expected ['clarify', 'clarify', 'propose', 'propose', 'completed', 'completed']  got ['clarify', 'propose', 'propose', 'propose', 'completed', 'completed']
+    turn 2: decision expected 'clarify' (REMEDY_UNSPECIFIED), got 'propose'
