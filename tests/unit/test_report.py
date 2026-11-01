@@ -494,6 +494,27 @@ def test_report_end_to_end(tree: tuple[Path, Path]) -> None:
                                                    "comparisons.csv", "gate.csv"}
 
 
+def test_summary_json_recomputes_public_p50_p95(tree: tuple[Path, Path]) -> None:
+    root, results = tree
+    report.build_report(results, results / "REPORT.md", root)
+    summary = json.loads((results / "summary.json").read_text())
+    assert summary["suite"] == "public"
+    assert summary["final"] == {"profile": "F", "runs": 2, "successful_cases": "6/6", "p50_ms": 2000.0,
+                                "p95_ms": 3000.0, "results": [str(results / "public" / "F" / f"run-{k}" /
+                                                                  "results.json") for k in (1, 2)]}
+    assert (summary["baseline"]["p50_ms"], summary["baseline"]["p95_ms"]) == (4000.0, 6000.0)
+    assert "summary.json`" in (results / "REPORT.md").read_text()
+
+
+def test_summary_json_without_public_runs(tmp_path: Path) -> None:
+    root, results = tmp_path, tmp_path / "results"
+    write_run(root, results, "variants", "F", 1, standard_results(), families=FAMILIES)
+    report.build_report(results, results / "REPORT.md", root)
+    summary = json.loads((results / "summary.json").read_text())
+    assert summary["final"] == {"profile": "F", "runs": 0, "successful_cases": "0/0", "p50_ms": None,
+                                "p95_ms": None, "results": []}
+
+
 def test_report_sections_for_failures_faults_and_gaps(tmp_path: Path) -> None:
     root, results = tmp_path, tmp_path / "results"
     faulted = case_result("k_two", audit=[

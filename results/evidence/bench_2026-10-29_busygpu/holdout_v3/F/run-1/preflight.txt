@@ -1,0 +1,12 @@
+$ bash bench/preflight.sh --out /Users/ali/Desktop/Projects/retail-returns-desk/results/holdout_v3/F/run-1/preflight --port 8405
+preflight 2026-10-29T07:31:33Z thresholds: cpu_hog>=50% load1<=5.0 gpu_busy<=10% gpu_mem<=2048MiB ignore=''
+PASS  llama-server: none running
+PASS  cpu: no other process at or above 50% CPU
+PASS  load: 1/5/15-minute load average 3.45 2.96 2.39 (limit 5.0)
+FAIL  gpu: median utilization 36%, median in-use system memory 549 MiB (limits 10% / 2048 MiB)
+PASS  power: AC Power (100%; charged)
+PASS  low power mode: off (pmset powermode 0)
+PASS  thermal: no thermal or performance warning recorded
+INFO  sleep setting: sleep 0 (sleep prevented by Claude, powerd, sharingd, caffeinate, caffeinate, caffeinate, caffeinate, caffeinate, caffeinate, AddressBookSourceSync) (the run itself is wrapped in caffeinate -dimsu)
+PASS  port 8405: free
+PREFLIGHT REFUSED: 1 problem(s); timings taken now would not be clean.

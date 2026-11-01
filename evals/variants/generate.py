@@ -5,7 +5,7 @@
 Writes variants_v1.json (contract_version 1 + cases, the exact input schema of
 candidate_assets/public_cases.json) and labels_v1.json (per case: family, intents, expected
 decisions, proposals, events and final business state). Each family exercises one disclosed rule
-or conversation pattern with 3+ different hand-written phrasings (evals/variants/phrases.py).
+or conversation pattern with 3+ different hand-written phrasings (evals/variants/testdata/phrases.py).
 
 Double entry: every case states the decisions its family is about (`expect=`), and the generator
 refuses to write a case where the oracle disagrees. A typo in a world (wrong date, wrong stock)
@@ -26,7 +26,7 @@ from pathlib import Path
 from typing import Callable, Iterator
 
 from evals.oracle import build_expectation
-from evals.variants import phrases as P
+from evals.variants.testdata import phrases as P
 from evals.variants.metamorphic import rename_ids, shift_dates
 
 SEED = 20261027

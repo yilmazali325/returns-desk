@@ -6,7 +6,7 @@ Input: results/<suite>/<profile>/run-<k>/{run.json, results.json, metrics_before
 metrics_after.prom, run_conditions.json} plus every run-<k>.attempt-<n> directory (earlier attempts:
 listed, never measured), and the code-only floors in results/<suite>/floors/<mode>/. Each
 results.json is re-scored with the independent oracle (evals.score), so the report never trusts a
-number it did not recompute. Output: REPORT.md and CSVs in csv/.
+number it did not recompute. Output: REPORT.md, CSVs in csv/ and summary.json (public p50/p95).
 
 The report opens with the setup disclosure the brief asks for (hardware, every profile's
 configuration and engine flags, power readings, seeds, concurrency, caches, timeouts and the exact
@@ -1455,11 +1455,29 @@ def _rel(path: Path) -> str:
         return str(path)
 
 
+def write_summary(model: Model, out_path: Path) -> Path:
+    """Public-suite case latency of B and F as JSON, recomputed from the raw runs like section_latency."""
+    def side(profile: str) -> dict[str, Any]:
+        runs = model.run_list(PUBLIC_SUITE, profile)
+        cases = model.case_rows(PUBLIC_SUITE, profile)
+        ok_ms = [c.elapsed_ms for c in successful(cases)]
+        return {"profile": profile, "runs": len(runs), "successful_cases": f"{len(ok_ms)}/{len(cases)}",
+                "p50_ms": nearest_rank(ok_ms, 50), "p95_ms": nearest_rank(ok_ms, 95),
+                "results": [_rel(r.directory / "results.json") for r in runs]}
+    summary = {"suite": PUBLIC_SUITE,
+               "method": "metrics.elapsed_ms of strict-success cases pooled over all complete runs; "
+                         "nearest-rank percentiles (p95 = max below 20 samples)",
+               "baseline": side(BASELINE), "final": side(FINAL)}
+    out_path.write_text(json.dumps(summary, indent=2) + "\n")
+    return out_path
+
+
 def build_report(results_root: Path, out_path: Path, root: Path = ROOT) -> Model:
     model = build_model(results_root, root)
     found = comparisons(model) if model.runs else []
     csv_paths = write_csvs(model, found, out_path.parent / "csv")
-    out_path.write_text(render(model, results_root, csv_paths, found))
+    summary_path = write_summary(model, out_path.parent / "summary.json")
+    out_path.write_text(render(model, results_root, [*csv_paths, summary_path], found))
     return model
 
 

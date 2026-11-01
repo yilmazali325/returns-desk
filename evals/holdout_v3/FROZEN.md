@@ -9,7 +9,7 @@ cases before they were frozen.
 | `holdout_v3.json` (adapter input, `contract_version: 1`) | `86e90d31572312d1525f3de2fa5c5da31573177c7b26624f518d51c1111002d3` |
 | `labels_v3.json` (labels in the `evals.score --labels` format) | `81f20e2e684a0bc85f5cf621fbe2efdc23d14b08455bf6650b4e9cca71eb28bb` |
 
-The labels come from the hand-written specs in `spec.py`, `cases_terse.py` and `cases_natural.py`,
+The labels come from the hand-written specs in `spec.py`, `testdata/cases_terse.py` and `testdata/cases_natural.py`,
 and `build_v3.py` builds them. `check_v3.py` checks their structure, and `test_holdout_v3.py`
 tests the tooling.
 

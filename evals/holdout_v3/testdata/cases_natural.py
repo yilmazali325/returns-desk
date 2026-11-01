@@ -8,7 +8,7 @@ documented alternative.
 """
 from __future__ import annotations
 
-from evals.holdout_v3.cases_terse import hoodies, jackets, jeans, sneakers, tees
+from evals.holdout_v3.testdata.cases_terse import hoodies, jackets, jeans, sneakers, tees
 from evals.holdout_v3.spec import (
     CANCEL, CONFIRM, STATUS, TIMEOUT, VERBAL_YES, CaseSpec, exchange, exchange_offer, exchanged, flagged, line,
     order, product, refund, refund_offer, refunded, say, sized, state, stock_change, unclear,

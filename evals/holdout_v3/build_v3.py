@@ -15,7 +15,7 @@ import json
 import sys
 from pathlib import Path
 
-from evals.holdout_v3 import cases_natural, cases_terse
+from evals.holdout_v3.testdata import cases_natural, cases_terse
 from evals.holdout_v3.spec import CURRENCY, CaseSpec, Proposal
 from evals.oracle import build_expectation, find_line, find_order
 

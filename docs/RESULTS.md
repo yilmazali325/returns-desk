@@ -40,7 +40,9 @@ labels, with no invariant violation. Two "floors" run the same desk with no mode
 - **The model's share** is F's strict rate minus the floor's (agent-attributable): +83.3 pp public,
   +77.6 pp variants, +78.9 pp holdout_v2, +81.7 pp holdout_v3.
 - **Repeatability:** on the public suite, every profile made identical decisions and wrote identical
-  text in all 3 runs. The held-out sets ran once per profile, so they have no repeatability figure.
+  text in all 3 runs. The held-out sets and variants-B ran twice, three days apart (2026-10-29 on a
+  busy GPU, 2026-11-01 on a clean machine): all 475 case-runs had identical decisions, text and
+  final state. The first runs are archived in `results/evidence/bench_2026-10-29_busygpu/`.
 
 Every failure in the final runs:
 
@@ -52,7 +54,7 @@ Every failure in the final runs:
 | v3_n28 | B | "Is the exchange done yet?" with an open proposal: B asks instead of re-presenting the proposal. Accepted by the lenient score | yes |
 
 Other counts:
-- **LLM step timeouts:** 0 in every run, including the held-out runs on a busy GPU.
+- **LLM step timeouts:** 0 in every run.
 - **Hitting the step or call cap:** B 10 times (4 on variants, 2 on v2, 4 on v3); F never.
 - **Protocol errors:** F 0 on every suite. B 37 (25 on variants, 12 on the held-out sets). On public, F-native has 12 and
   B-q4 has 9, all handled by guards.
@@ -68,9 +70,9 @@ Other counts:
 - **Paired F/B ratio:** 0.425, 95% CI [0.398, 0.449], so F is **57.5% faster**. The A/A ratio
   (B-repeat/B) is 0.982 [0.968, 0.996], so the effect is far outside the noise.
 - **Variants suite, F (clean):** p50 5,150 ms, p95 9,411 ms over 241 cases.
-- **Held-out suites:** F/B 0.423 on holdout_v2 and 0.431 on holdout_v3. These four runs, and
-  variants-B, started after the preflight refused the machine (GPU busy from another app, `--allow-dirty`). The report
-  marks their timings as not clean, and no latency claim here rests on them.
+- **Variants and held-out suites (one run each, clean machine):** paired F/B 0.460
+  [0.452, 0.468] on variants, 0.426 [0.415, 0.438] on holdout_v2 and 0.441 [0.431, 0.452] on
+  holdout_v3. These suites have no A/A run, so their noise floor is not measured.
 
 ## 3. Throughput and where the time goes (public, means per case)
 
@@ -150,11 +152,10 @@ to fix bugs, so these are regression scores, not generalization scores.
 - **High:** F is about 2.3× faster than B on this machine at equal quality. The interval is tight
   and the A/A noise is small.
 - **High:** no invariant violation and no wrong mutation in the final runs.
-- **Medium:** the quality numbers. The samples are small (6 public cases), every set has been used
-  for tuning, and the held-out sets ran once per profile. The grader's hidden variants are the real
-  test.
-- **Medium:** the held-out quality is unaffected by the busy GPU. There were no step timeouts, and
-  decoding is greedy and seeded, but those runs were not repeated on a clean machine.
+- **High:** the desk is repeatable on these sets. Every held-out and variants-B case made the same
+  decisions, wrote the same text and reached the same final state in two runs three days apart.
+- **Medium:** the quality numbers. The samples are small (6 public cases) and every set has been
+  used for tuning. The grader's hidden variants are the real test.
 
 ## 9. Proposed improvements (not measured)
 
@@ -164,4 +165,3 @@ to fix bugs, so these are regression scores, not generalization scores.
   model file is in `models/`, but nothing has been measured.
 - **A blind test set written by people**, plus 3 runs per held-out set to measure run-to-run
   variation.
-- **Held-out and variants-B runs on a clean machine**, to replace the five runs marked not clean.

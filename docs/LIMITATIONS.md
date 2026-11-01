@@ -19,10 +19,6 @@ improvements below are not measured unless stated.
 - **Small samples.** The public suite has 6 cases. 18 pooled case-runs give a wide Wilson interval,
   and with fewer than 20 samples p95 is the maximum. Pooled runs of the same cases are not
   independent. The report states both.
-- **The held-out sets ran once per profile, on a busy GPU.** Another app kept the GPU about 37%
-  busy for over 2 hours, so the four held-out runs (and variants-B) used `--allow-dirty`. The
-  report marks their timings as not clean, and no latency claim rests on them. There were no step
-  timeouts, so quality is very likely unaffected, but those runs have no repeat.
 - **The scripted fake-policy agent scores close to the real model** (`holdout_v3` 56/60, against
   58/60 for F and 57/60 for B in the final run). It is our own test double, written for our vocabulary. Its score shows that the
   suites stay within that vocabulary; it does not show the LLM is unnecessary. The always-clarify
@@ -51,7 +47,7 @@ improvements below are not measured unless stated.
   In the final v3 run it fired 5 times across the 60 cases for F, and 16 times for B.
 - **Run-to-run variation.** Decoding is greedy and seeded, but small timing-dependent differences in
   the prompt cache can still flip a borderline case between runs. The public suite was identical
-  across 3 runs; unseen wording may vary more.
+  across 3 runs and the held-out sets across 2; unseen wording may vary more.
 
 ## Scope (by design, from the brief)
 
