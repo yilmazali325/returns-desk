@@ -39,7 +39,7 @@ def all_specs() -> list[CaseSpec]:
 
 def proposal_view(spec: CaseSpec, proposal: Proposal) -> dict:
     """The binding a propose turn must carry, in the scorer's field order."""
-    original = find_line(find_order(spec.initial_state, proposal.order_id), proposal.line_id)
+    original = find_line(find_order(spec.initial_state, spec.customer_id, proposal.order_id), proposal.line_id)
     return {"seq": proposal.seq, "customer_id": spec.customer_id, "request_id": spec.resolved_request_id(),
             "order_id": proposal.order_id, "line_id": proposal.line_id, "remedy": proposal.remedy,
             "original_sku": original["sku"], "replacement_sku": proposal.replacement_sku,
@@ -70,7 +70,7 @@ def effect_mismatches(spec: CaseSpec, expected: dict) -> list[str]:
         refunds = [{"request_id": request_id, "customer_id": spec.customer_id, "order_id": spec.effect.order_id,
                     "line_id": spec.effect.line_id, "amount_cents": spec.effect.amount_cents}]
     if spec.effect and spec.effect.remedy == "exchange":
-        original = find_line(find_order(spec.initial_state, spec.effect.order_id), spec.effect.line_id)
+        original = find_line(find_order(spec.initial_state, spec.customer_id, spec.effect.order_id), spec.effect.line_id)
         exchanges = [{"request_id": request_id, "customer_id": spec.customer_id, "order_id": spec.effect.order_id,
                       "line_id": spec.effect.line_id, "original_sku": original["sku"],
                       "replacement_sku": spec.effect.replacement_sku}]
