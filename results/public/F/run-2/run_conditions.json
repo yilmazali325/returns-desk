@@ -2,13 +2,13 @@
  "preflight": {
   "passed": true,
   "overridden": false,
-  "waited_s": 30.0,
+  "waited_s": 0.0,
   "verdict": "PREFLIGHT PASSED"
  },
  "before_run": {
   "power_source": "AC Power",
   "on_ac_power": true,
-  "battery_percent": 100,
+  "battery_percent": 80,
   "powermode": 0,
   "low_power_mode": false,
   "sleep_prevented": true,
@@ -20,19 +20,19 @@
   "thermal_warning": false,
   "power_summary": "AC Power, powermode 0, no thermal warning, sleep prevented",
   "load_avg_1_5_15": [
-   1.79,
-   1.86,
-   1.72
+   1.6,
+   2.01,
+   2.24
   ],
   "other_llama_servers": [],
   "cpu_heavy_processes": [],
   "gpu_device_utilization_pct": 0,
-  "gpu_in_use_system_memory_mb": 594.3
+  "gpu_in_use_system_memory_mb": 765.7
  },
  "after_run": {
   "power_source": "AC Power",
   "on_ac_power": true,
-  "battery_percent": 100,
+  "battery_percent": 80,
   "powermode": 0,
   "low_power_mode": false,
   "sleep_prevented": true,
@@ -44,14 +44,21 @@
   "thermal_warning": false,
   "power_summary": "AC Power, powermode 0, no thermal warning, sleep prevented",
   "load_avg_1_5_15": [
-   1.49,
-   1.79,
-   1.7
+   1.51,
+   1.95,
+   2.21
   ],
   "other_llama_servers": [],
-  "cpu_heavy_processes": [],
+  "cpu_heavy_processes": [
+   {
+    "pid": 54133,
+    "name": "siriinferenced",
+    "cpu_pct": 57.9,
+    "mem_pct": 0.3
+   }
+  ],
   "gpu_device_utilization_pct": 0,
-  "gpu_in_use_system_memory_mb": 501.6
+  "gpu_in_use_system_memory_mb": 780.8
  },
  "caffeinate": "attached by bench.run"
 }

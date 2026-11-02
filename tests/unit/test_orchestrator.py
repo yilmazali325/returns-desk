@@ -227,6 +227,48 @@ def test_unknown_explicit_confirmation_id_is_unresolved(state) -> None:
     assert desk.tools_of("confirmation") == ["confirmation_unresolved"]
 
 
+def _hoodie_only(state: dict[str, Any]) -> dict[str, Any]:
+    state["orders"][0]["lines"] = state["orders"][0]["lines"][:1]  # "it" has exactly one reading
+    return state
+
+
+def test_flag_with_nothing_to_confirm_and_no_item_named_asks_which_item(state) -> None:
+    desk = Desk(_hoodie_only(state), {"resolution": [HX9, R("Which item would you like refunded?")],
+                                      "operations": []})
+    out = desk.turn("Yes, go ahead and refund it.", "last")
+    assert out["decision"] == CLARIFY and out["proposal"] is None and out["confirmed_proposal_id"] is None
+    assert [e["error"]["code"] for e in desk.audit("gate")] == ["TARGET_NOT_GROUNDED"]
+    assert desk.requests("operations") == [] and desk.state["refunds"] == []
+
+
+def test_flag_with_nothing_to_confirm_and_no_item_named_skips_the_code_deny(state) -> None:
+    state = _hoodie_only(state)
+    state["orders"][0]["lines"][0]["unopened"] = False  # policy would refuse the only line
+    desk = Desk(state, {"resolution": [R("Which item do you mean?")], "operations": []})
+    out = desk.turn("Yes, go ahead and refund it.", "last")
+    assert out["decision"] == CLARIFY and desk.tools_of("guard") == []
+
+
+def test_flag_with_nothing_to_confirm_still_proposes_a_named_item(state) -> None:
+    desk = Desk(_hoodie_only(state), PROPOSE_TURN)
+    out = desk.turn("Refund my hoodie, I confirm in advance.", "last")
+    assert out["decision"] == PROPOSE and out["confirmed_proposal_id"] is None and desk.state["refunds"] == []
+
+
+def test_flag_with_nothing_to_confirm_uses_an_item_named_in_an_earlier_turn(state) -> None:
+    desk = Desk(_hoodie_only(state), script({"resolution": [R("Would you like a refund or an exchange?")]},
+                                            PROPOSE_TURN))
+    assert desk.turn("My hoodie doesn't fit.")["decision"] == CLARIFY
+    out = desk.turn("Yes, go ahead and refund it.", "last")
+    assert out["decision"] == PROPOSE and desk.audit("gate") == []
+
+
+def test_no_item_named_without_the_flag_still_proposes_the_only_line(state) -> None:
+    desk = Desk(_hoodie_only(state), PROPOSE_TURN)
+    out = desk.turn("Yes, go ahead and refund it.")
+    assert out["decision"] == PROPOSE and desk.audit("gate") == []
+
+
 # --- adversarial: grounding -------------------------------------------------------------------
 
 

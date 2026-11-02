@@ -1,8 +1,8 @@
 # pid %cpu %mem name
-1 0.3 0.1 launchd
-356 0.2 0.1 logd
+1 0.4 0.0 launchd
+356 0.4 0.0 logd
 358 0.0 0.0 UserEventAgent
-360 0.2 0.0 fseventsd
+360 0.1 0.0 fseventsd
 361 0.0 0.0 mediaremoted
 364 0.0 0.0 systemstats
 368 0.1 0.0 configd
@@ -11,7 +11,7 @@
 375 0.0 0.0 remoted
 379 0.0 0.0 corespeechd_system
 381 0.0 0.0 watchdogd
-385 0.4 0.1 mds
+385 0.7 0.1 mds
 387 0.0 0.0 kernelmanagerd
 388 0.0 0.0 diskarbitrationd
 392 0.0 0.0 syslogd
@@ -24,9 +24,9 @@
 400 0.0 0.0 timed
 401 0.0 0.0 usbmuxd
 402 0.0 0.0 securityd
-404 0.0 0.1 locationd
+404 0.9 0.1 locationd
 407 0.0 0.0 autofsd
-408 0.0 0.1 dasd
+408 0.0 0.0 dasd
 409 0.0 0.0 corerepaird
 411 0.0 0.0 distnoted
 415 0.0 0.0 logind
@@ -36,9 +36,9 @@
 424 0.0 0.0 corebrightnessd
 425 0.0 0.0 AirPlayXPCHelper
 426 0.0 0.0 com.apple.cmio.registerassistantservice
-429 6.9 0.2 WindowServer
-431 0.2 0.0 cfprefsd
-432 0.0 0.0 loginwindow
+429 4.7 0.2 WindowServer
+431 0.3 0.0 cfprefsd
+432 0.0 0.1 loginwindow
 435 0.0 0.0 runningboardd
 437 0.0 0.0 coreservicesd
 439 0.0 0.0 analyticsd
@@ -53,11 +53,10 @@
 526 0.2 0.0 syspolicyd
 527 0.0 0.0 symptomsd
 528 0.0 0.0 distnoted
-533 0.0 0.0 coreduetd
-535 0.0 0.1 knowledge-agent
+535 0.0 0.0 knowledge-agent
 536 0.0 0.0 com.apple.cmio.videodriverkithostextension
-537 0.0 0.1 mDNSResponder
-538 0.0 0.0 mds_stores
+537 0.0 0.0 mDNSResponder
+538 0.3 0.0 mds_stores
 539 0.0 0.0 authd
 540 0.0 0.0 distnoted
 541 0.0 0.1 airportd
@@ -87,26 +86,27 @@
 653 0.0 0.0 WindowManager
 655 0.0 0.0 lsd
 663 0.0 0.0 nsurlsessiond
-664 0.1 0.0 rapportd
+664 0.0 0.0 rapportd
 665 0.0 0.1 usernoted
-671 0.0 0.0 chronod
-672 0.0 0.1 corespotlightd
+671 0.0 0.1 chronod
+672 0.0 0.0 corespotlightd
 679 0.0 0.0 distnoted
 681 0.0 0.0 usernotificationsd
-689 0.0 0.1 identityservicesd
+689 0.0 0.0 identityservicesd
 699 0.0 0.0 sharedfilelistd
 701 0.0 0.0 ctkd
-704 0.1 0.1 sharingd
+704 0.0 0.1 sharingd
 708 0.0 0.0 fileproviderd
 712 0.0 0.0 familycircled
+720 0.0 0.0 securityd
 731 0.0 0.0 filecoordinationd
 732 0.0 0.0 ContinuityCaptureAgent
 737 0.0 0.0 Dock
-738 0.0 0.2 ControlCenter
+738 0.0 0.1 ControlCenter
 739 0.0 0.0 corespeechd
 743 0.0 0.0 fontd
 744 0.0 0.0 SystemUIServer
-746 0.0 0.2 Finder
+746 0.1 0.1 Finder
 750 0.0 0.0 AccessibilityUIServer
 751 0.0 0.0 fontworker
 754 0.0 0.0 WallpaperAgent
@@ -119,8 +119,8 @@
 778 0.0 0.0 WallpaperAerialsExtension
 784 0.0 0.0 wifip2pd
 785 0.0 0.0 CMFSyncAgent
-791 0.1 0.0 nearbyd
-799 0.0 0.1 imagent
+791 0.0 0.0 nearbyd
+799 0.0 0.0 imagent
 802 0.0 0.0 oahd
 808 0.0 0.0 useractivityd
 829 0.0 0.0 UIKitSystem
@@ -137,7 +137,7 @@
 941 0.0 0.0 fairplayd
 950 0.0 0.0 com.apple.AmbientDisplayAgent
 955 0.0 0.0 simdiskimaged
-959 0.0 0.0 diskimagesiod
+959 0.0 0.1 diskimagesiod
 969 0.0 0.0 diskimagesiod
 977 0.0 0.0 distnoted
 982 0.0 0.0 icdd
@@ -176,58 +176,81 @@
 2118 0.0 0.0 peopled
 2286 0.0 0.0 DiskUnmountWatcher
 2375 0.0 0.0 distnoted
+2437 0.0 0.0 SetStoreUpdateService
+2519 0.0 0.0 SetStoreUpdateService
+2532 0.0 0.0 localspeechrecognition
+3078 0.0 0.0 nebulad
+3142 0.0 0.0 disclaimer
+3143 1.5 0.8 claude
+3368 0.1 0.0 diagnosticd
 3390 0.0 0.0 spotlightknowledged
-3913 0.0 0.2 Google Chrome Helper (Aperitif Renderer)
-3976 0.0 0.1 geod
-4360 0.2 0.3 Google Chrome Helper (Aperitif Renderer)
+3913 0.0 0.3 Google Chrome Helper (Aperitif Renderer)
+3976 0.0 0.2 geod
+4218 0.0 0.0 com.apple.appkit.xpc.openAndSavePanelService
+4360 0.7 0.4 Google Chrome Helper (Aperitif Renderer)
+4565 0.0 0.2 Google Chrome Helper (Aperitif Renderer)
 4576 0.0 0.0 disclaimer
-4577 0.0 0.5 claude
+4577 0.0 0.6 claude
 5371 0.0 0.0 akd
 5692 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
 5930 0.0 0.0 followupd
 5940 0.0 0.0 disclaimer
-5942 0.7 0.5 claude
-7197 0.0 0.1 pkd
-7309 0.0 0.2 PhotosReliveWidget
+5942 0.0 0.6 claude
 7744 0.0 0.0 Claude Helper
+8508 0.0 0.2 PhotosReliveWidget
 8656 0.0 0.0 crashpad_handler
 8664 0.0 0.0 ptpcamerad
 9109 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
-9703 0.0 0.0 node
-9711 0.0 0.1 node
-9716 0.0 0.0 esbuild
-9717 0.0 0.0 postgres: ali engineeringmax_dev ::1(64737) idle
+10794 0.0 0.0 log
 10820 0.0 0.0 mbuseragent
-11716 0.0 0.0 com.apple.CodeSigningHelper
-12391 4.1 0.2 Google Chrome Helper (Aperitif Renderer)
+11479 0.0 0.1 cloudd
+11483 0.0 0.0 usermanagerd
+11498 0.0 0.0 adid
+11615 0.0 0.1 searchpartyuseragent
+11634 0.0 0.0 secinitd
+11950 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
+12032 0.0 0.1 donotdisturbd
+12045 0.0 0.4 callservicesd
+12048 0.0 0.2 com.apple.FaceTime.FTConversationService
+12052 0.0 0.1 com.apple.CallKit.CallDirectoryMaintenance
+12391 3.5 0.2 Google Chrome Helper (Aperitif Renderer)
+12842 0.0 0.0 sensorkitd
+12851 0.0 0.0 IMAutomaticHistoryDeletionAgent
+12852 0.0 0.1 IntelligencePlatformComputeService
+12856 0.0 0.0 com.apple.CallKit.CallDirectory
+12865 0.0 0.0 IMDPersistenceAgent
+12887 0.0 0.0 companionmessagesd
+12903 0.0 0.0 HealthCycleTrackingWidgetExtension
+12994 0.0 0.0 rtcreportingd
+13114 0.0 0.0 AuthenticationServicesAgent
+14088 0.0 0.4 Google Chrome Helper (Aperitif Renderer)
+14092 0.0 0.4 Google Chrome Helper (Aperitif Renderer)
 14666 0.0 0.0 wifivelocityd
+14909 0.0 0.4 Google Chrome Helper (Aperitif Renderer)
 15343 0.0 0.0 heard
-18575 0.0 0.0 disclaimer
-18576 0.0 0.1 npm run dev --port 3017
-18593 0.0 0.0 node
-18602 0.0 0.1 next-server (v15.5.23)
-18634 0.0 0.0 disclaimer
-18635 0.0 0.1 node
+16716 0.0 0.0 osanalyticshelper
+17754 0.0 0.0 backupd-helper
+18802 0.0 0.0 com.apple.geod
 18843 0.0 0.0 SimRenderServer
 18844 0.0 0.0 SimMetalHost
 18845 0.0 0.0 SimMetalHost
 18846 0.0 0.0 SimMetalHost
 18847 0.0 0.0 launchd_sim
 18853 0.0 0.0 UserEventAgent
-18854 0.1 0.5 SpringBoard
+18854 0.1 0.4 SpringBoard
 18855 0.0 0.0 logd
-18856 0.0 0.0 assistantd
-18857 0.0 0.0 runningboardd
-18859 0.0 0.0 replicatord
+18856 0.0 0.1 assistantd
+18857 0.0 0.1 runningboardd
+18859 0.0 0.1 replicatord
 18860 0.0 0.1 accountsd
 18861 0.0 0.0 mediaremoted
 18865 0.0 0.0 ids_simd
-18866 0.0 0.0 tccd
+18866 0.0 0.1 tccd
 18870 0.0 0.0 identityservicesd
 18871 0.0 0.0 syslogd
-18875 0.0 0.0 backboardd
+18875 0.0 0.1 backboardd
 18876 0.0 0.0 sharingd
-18878 0.0 0.1 locationd
+18878 0.0 0.2 locationd
 18880 0.0 0.1 dasd
 18882 0.0 0.0 distnoted
 18883 0.0 0.0 passd
@@ -242,11 +265,11 @@
 18897 0.0 0.1 nsurlsessiond
 18898 0.0 0.0 eligibilityd
 18900 0.0 0.0 containermanagerd_system
-18902 0.0 0.0 lsd
+18902 0.0 0.1 lsd
 18915 0.0 0.1 cloudd
 18916 0.0 0.1 homed
 18918 0.0 0.1 mobileassetd
-18919 0.0 0.0 familycircled
+18919 0.0 0.1 familycircled
 18924 0.0 0.0 MTLCompilerService
 18944 0.0 0.0 assistant_cdmd
 18948 0.0 0.0 webbookmarksd
@@ -265,7 +288,7 @@
 19109 0.0 0.0 com.apple.MobileInstallationHelperService
 19112 0.0 0.0 nanoappregistryd
 19114 0.0 0.0 nanotimekitcompaniond
-19122 0.0 0.0 appstored
+19122 0.0 0.1 appstored
 19123 0.0 0.0 com.apple.MobileAsset.DownloadService.Builtin
 19137 0.0 0.0 SetStoreUpdateService
 19141 0.0 0.0 extensionkitservice
@@ -299,29 +322,39 @@
 19466 0.0 0.0 simctl
 19468 0.0 0.0 MTLCompilerService
 19491 0.0 0.0 log
+19933 0.0 0.1 VTDecoderXPCService
 20133 0.0 0.0 mdwrite
-21833 0.0 0.0 netbiosd
-22251 0.0 0.4 Google Chrome Helper (Aperitif Renderer)
+20605 0.0 0.2 sleepd
+20692 0.0 0.0 extensionkitservice
+20730 0.0 0.2 geoanalyticsd
+20796 0.0 0.3 mediaanalysisd
+21366 0.0 0.1 fontservicesd
+21372 0.0 0.1 UserFontManager
+21785 0.0 0.2 akd
+22134 0.0 0.5 maild
 22660 0.0 0.0 CoreDeviceService
-23764 0.0 0.2 Google Chrome Helper (Aperitif Renderer)
+23764 0.0 0.3 Google Chrome Helper (Aperitif Renderer)
+25975 0.0 0.0 findmylocateagent
 26660 0.0 0.0 disclaimer
-26664 0.7 0.5 claude
+26664 0.0 0.7 claude
 26900 0.0 0.0 passwordbreachd
 27008 0.0 0.0 storekitd
 27543 0.0 0.1 kbd
 27545 0.0 0.0 InputUI
+27651 0.0 0.3 SearchIndexer
 29554 0.0 0.0 PasswordBreachAgent
-32150 0.0 0.1 Messages
+30446 0.0 0.0 triald
+32150 1.5 0.1 Messages
 32324 0.0 0.0 gamecontrollerd
-33886 0.0 0.1 syncdefaultsd
-34254 0.0 0.0 limactl
-34265 0.0 0.0 limactl
-34283 0.8 1.5 com.apple.Virtualization.VirtualMachine
+34187 0.0 0.4 Google Chrome Helper (Aperitif Renderer)
+34254 0.0 0.1 limactl
+34265 0.0 0.1 limactl
+34283 1.1 1.7 com.apple.Virtualization.VirtualMachine
 34320 0.0 0.0 ssh-agent
 34325 0.0 0.0 ssh.sock [mux]
-34834 0.0 0.1 assistantd
+34521 0.0 0.1 syncdefaultsd
 34876 0.0 0.0 BiomeAgent
-34903 0.0 0.1 tccd
+34903 0.0 0.0 tccd
 34935 0.0 0.0 tccd
 34944 0.0 0.0 containermanagerd
 34979 0.0 0.0 backupd
@@ -332,407 +365,380 @@
 35010 0.0 0.0 secd
 35011 0.0 0.0 homed
 35108 0.0 0.0 coreauthd
-36837 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
+36837 0.0 0.3 Google Chrome Helper (Aperitif Renderer)
 36903 0.0 0.0 com.apple.Safari.SafeBrowsing.Service
-38161 0.0 0.0 disclaimer
-38162 0.0 0.0 sh
-38165 0.0 0.0 index.ts
-38200 0.0 0.0 node
-38203 0.0 0.0 node
-38212 0.0 0.0 esbuild
-39164 0.0 0.1 Claude Helper (Renderer)
+37285 0.0 0.0 deleted
+38224 0.0 0.0 node
+38239 0.0 0.0 node
+38245 0.0 0.1 node
+38247 0.0 0.0 esbuild
+38248 0.0 0.2 contactsd
+38249 0.0 0.0 postgres: ali engineeringmax_dev ::1(59573) idle
+38250 0.0 0.3 syncdefaultsd
+38251 0.0 0.3 liveactivitiesd
+38317 0.0 0.0 replayd
+38801 0.0 0.3 siriactionsd
+39034 0.0 0.0 mobileactivationd
+39035 0.0 0.0 securityd_system
+39047 0.0 0.1 networkserviceproxy
+39114 0.0 0.0 biometrickitd
+39115 0.0 0.0 storagekitd
+39798 0.0 0.0 suggestd
+39799 0.0 0.0 coreduetd
+39915 0.0 0.0 disclaimer
+39916 0.1 0.8 claude
 40107 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
 40115 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
 40129 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
+40841 0.0 0.0 amfid
+41062 0.0 0.0 mlhostd
+41109 0.0 0.0 coresymbolicationd
 42514 0.0 0.0 IMAutomaticHistoryDeletionAgent
-44468 0.0 0.1 CoreLocationAgent
-44680 0.0 0.1 UniversalControl
-45241 0.0 0.1 cloudd
-46288 0.0 0.2 Google Chrome Helper (Aperitif Renderer)
+43886 0.0 0.0 GameControllerConfigService
+44031 0.0 0.0 smd
+44258 0.0 0.1 CoreLocationAgent
+44474 0.0 0.0 systemstatusd
+44615 0.0 0.0 extensionkitservice
+44620 0.0 0.0 ReportCrash
+44625 0.0 0.0 diagnosticservicesd
+44725 0.0 0.0 zsh
+44726 0.0 0.0 bash
+44731 3.7 0.2 python
+44877 0.0 0.0 caffeinate
+44892 0.0 0.0 caffeinate
+45315 0.0 0.2 devicecheckd
+45329 0.0 0.0 intelligenceflowd
+45336 0.0 0.4 itunescloudd
+45343 0.0 0.0 feedbackd
+45348 0.0 0.0 commerce
+45352 0.0 0.0 swcd
+45358 0.0 0.3 medialibraryd
+45380 0.0 0.4 corespeechd
+45384 0.0 0.3 localspeechrecognition
+45398 0.0 0.0 gamecontrollerd
+45399 0.0 0.0 gamecontrolleragentd
+45401 0.0 0.0 proactived
+45402 0.0 0.1 calaccessd
+45404 0.0 0.0 communicationtrustd
+45413 0.0 0.0 Keychain Circle Notification
+45455 0.0 0.5 routined
+45508 0.0 0.1 mobileassetd
+45518 0.0 0.0 com.apple.MobileAsset.DownloadService.Builtin
+45520 0.0 0.0 softwareupdated
+45528 0.0 0.0 ManifestStorageService
+45530 0.0 0.0 modelcatalogd
+45531 0.0 0.0 softwareupdated
+45533 0.0 0.0 com.apple.MobileSoftwareUpdate.CleanupPreparePathService
+45543 0.0 0.0 PlugInLibraryService
+45559 0.0 0.0 deleted_helper
+45648 0.0 0.0 triald_system
+45649 0.0 0.0 installd
+45650 0.0 0.0 geodMachServiceBridge
+45651 0.0 0.0 cloudd
+45652 0.0 0.0 com.apple.quicklook.ThumbnailsAgent
+45653 0.0 0.0 system_installd
+45654 0.0 0.0 AssetCache
+45655 0.0 0.0 pkd
+45657 0.0 0.0 AssetCacheTetheratorService
+45722 0.0 0.0 nfcd
+45725 0.0 0.0 NFStorageServer
+45741 0.0 0.0 audioanalyticsd
+45743 0.0 0.0 CategoriesService
+45744 0.0 0.0 ContextService
+45745 0.0 0.0 ContextService
+45757 0.0 0.3 ManagedSettingsAgent
+45767 0.0 0.3 photoanalysisd
+46201 0.0 0.0 online-auth-agent
+46216 0.0 0.0 ospredictiond
+46242 0.0 0.4 calaccessd
+46249 0.0 0.2 appprotectiond
+46251 0.0 0.3 communicationtrustd
+46344 0.0 0.0 SidecarRelay
+46462 0.0 0.5 icloudmailagent
+46476 0.0 0.5 appleaccountd
+46479 0.0 0.4 siriinferenced
+46485 0.0 0.2 cdpd
+46489 0.0 0.2 followupd
+46538 0.0 0.0 Siri
+46552 0.0 0.0 WirelessRadioManagerd
+46578 0.0 0.0 CommCenter
+46584 0.0 0.0 historicalaudiod
+46590 0.0 0.2 merchantd
+46596 0.0 0.0 assessmentagent
+46615 0.0 0.0 findmybeaconingd
+46663 0.0 0.0 PowerUIAgent
+47159 0.0 0.1 SiriNCService
+47161 0.0 0.0 siriknowledged
+47162 0.0 0.0 CloudTelemetryService
+47163 0.0 0.0 assetsubscriptiond
+47165 0.0 0.0 AssetCacheLocatorService
+47172 0.0 0.0 installcoordinationd
+47198 0.0 0.0 generativeexperiencesd
+47213 0.0 0.0 logd_helper
+47214 0.0 0.0 FeatureAccessAgent
+47216 0.0 0.1 siriactionsd
+47217 0.0 0.0 iCloudNotificationAgent
+47218 0.0 0.0 analyticsagent
+47219 0.0 0.1 bird
+47220 0.0 0.0 appleaccountd
+47221 0.0 0.1 amsaccountsd
+47222 0.0 0.0 TrialArchivingService
+47224 0.0 0.0 amsengagementd
+47226 0.0 0.0 ContainerMetadataExtractor
+47234 0.0 0.0 mobiletimerd
+47264 0.0 0.0 ModelCatalogAgent
+47273 0.0 0.0 axassetsd
+47278 0.0 0.1 remindd
+47287 0.0 0.0 com.apple.iCloudHelper
+47311 0.0 0.0 ShortcutsViewService
+47312 0.0 0.0 liveactivitiesd
+47314 0.0 0.1 replicatord
+47515 0.0 0.0 centaurid
+47529 0.0 0.0 dmd
+47530 0.0 0.0 ManagedSettingsAgent
+47612 0.0 0.2 biomesyncd
+47664 0.0 0.3 Claude Helper (Renderer)
 47798 0.0 0.1 Preview
+47800 0.0 0.0 powerexperienced
 47825 0.0 0.0 mscamerad-xpc
+47903 0.0 0.0 zsh
+47983 0.0 0.1 gh
 48140 0.0 0.0 appleh16camerad
-49130 0.0 0.3 Google Chrome Helper (Aperitif Renderer)
+48244 0.0 0.0 sysmond
+48257 0.0 0.4 navd
+48259 0.0 0.2 filecoordinationd
+48260 0.0 0.5 newsd
 49364 0.0 0.0 nehelper
 49571 0.0 0.0 com.apple.AuthenticationServices.Helper
+49624 0.0 0.8 ScreenTimeAgent
+49982 0.0 0.0 Claude Helper
+50165 1.3 0.1 mdworker_shared
+50166 1.2 0.1 mdworker_shared
 50260 0.0 0.0 PowerChime
+50287 0.0 0.4 Google Chrome Helper (Aperitif Renderer)
+50298 0.0 0.4 Google Chrome Helper (Aperitif Renderer)
+50330 0.0 0.4 Google Chrome Helper (Aperitif Renderer)
 50407 0.0 0.0 distnoted
-51786 0.0 0.0 node
-51799 0.0 0.1 node
-51801 0.0 0.0 esbuild
-51810 0.0 0.0 postgres: ali engineeringmax_dev ::1(55030) idle
+50416 0.0 0.3 voicebankingd
+50459 0.0 0.3 nanomapscd
+50606 0.0 0.0 mdworker_shared
+50607 0.0 0.0 bash
+50608 0.0 0.0 mdworker_shared
+50609 0.0 0.0 mdworker_shared
+50610 0.0 0.0 mdworker_shared
+50613 0.0 0.0 bash
+50614 0.0 0.0 ps
+50615 0.0 0.0 awk
+50812 0.0 0.0 ctkd
+50854 0.0 0.0 contactsd
+50906 0.0 0.0 com.apple.geod
 51835 0.0 0.0 routined
-52028 0.0 0.3 Google Chrome Helper (Aperitif Renderer)
-52413 0.0 0.2 securityd
-52433 0.0 0.0 node
-52448 0.0 0.1 node
-52450 0.0 0.0 postgres: ali engineeringmax_dev ::1(54420) idle
+52028 0.0 0.4 Google Chrome Helper (Aperitif Renderer)
+52071 0.0 0.1 Notes
+52087 0.0 0.0 GroupSessionService
 53102 0.0 0.0 MobileDeviceUpdater
 53967 0.0 0.0 UsageTrackingAgent
-54736 0.0 0.0 ShipIt
-54838 1.5 0.0 Runner
+54838 0.6 0.0 Runner
 54845 0.0 0.0 MTLCompilerService
 54846 0.0 0.0 MTLCompilerService
-56253 0.0 0.1 PerfPowerServices
-56260 0.0 0.3 HealthBalanceWidgetExtension
-57683 0.0 0.0 sublime_text
+57683 0.0 0.1 sublime_text
 57691 0.0 0.0 crash_handler
 57704 0.0 0.0 com.apple.SafariPlatformSupport.Helper
 57707 0.0 0.0 plugin_host-3.3
 57708 0.0 0.0 plugin_host-3.8
 58109 0.0 0.0 coreautha
-59260 0.0 0.0 SidecarRelay
+58227 0.0 0.4 Google Chrome Helper (Aperitif Renderer)
 60365 0.0 0.0 containermanagerd
+61333 0.0 0.0 disclaimer
+61334 0.0 0.6 claude
 61604 0.0 0.0 disclaimer
 61605 0.0 0.5 claude
-62321 0.0 0.0 searchd
+62321 0.0 0.1 searchd
 62807 0.0 0.1 WeatherWidget
-63402 0.0 0.0 usbpowerd
-63652 0.0 0.2 contactsd
 63811 0.0 0.0 talagentd
-63942 0.0 0.0 syncdefaultsd
-64103 0.0 0.0 zsh
-64104 0.0 0.0 bash
-64113 4.0 0.2 python
-64259 0.0 0.0 caffeinate
-64282 0.0 0.0 caffeinate
-64526 0.0 0.0 aned
-66209 0.0 0.0 containermanagerd_system
-66230 0.0 0.0 biomed
-66384 0.0 0.0 spotlightknowledged.updater
-66404 0.0 0.1 suggestd
-66636 0.0 0.0 com.apple.hiservices-xpcservice
-66669 0.0 0.1 calaccessd
-66672 0.0 0.0 contactsd
-66888 0.0 0.0 commerce
-66987 0.0 0.3 mediaanalysisd
-66991 0.0 0.3 assetsd
-67013 0.0 0.1 mobileassetd
-67015 0.0 0.0 com.apple.MobileAsset.DownloadService.Builtin
-67071 0.0 0.1 ModelCatalogAgent
+64964 0.0 0.0 com.apple.hiservices-xpcservice
 67379 0.0 0.0 sandboxd
-67406 0.0 0.1 linkd
-67543 0.0 0.1 donotdisturbd
-67545 0.0 0.1 findmylocateagent
-67546 0.0 0.0 CloudTelemetryService
-67547 0.0 0.0 usermanagerd
-67549 0.0 0.0 osanalyticshelper
-67551 0.0 0.0 neagent
-67552 0.0 0.0 mobileactivationd
-67553 0.0 0.0 biometrickitd
-67556 0.0 0.0 securityd_system
-67557 0.0 0.0 adid
-67559 0.0 0.0 ctkd
-67561 0.0 0.1 pkd
-67579 0.0 0.0 systemstatusd
-67604 0.0 0.6 calaccessd
-67613 0.0 0.0 secinitd
-67848 0.0 0.1 photolibraryd
-67853 0.0 0.0 ManagedSettingsAgent
-67858 0.0 0.1 com.apple.geod
-67861 0.0 0.0 com.apple.geod
-67870 0.0 0.0 containermanagerd
-67872 0.0 0.0 containermanagerd
-68053 0.0 0.4 Claude Helper (Renderer)
-68073 0.0 0.2 Claude Helper (Renderer)
 68091 0.0 0.1 bluetoothd
-68094 0.0 0.2 Claude Helper (Renderer)
 68125 0.0 0.0 AppleCentauriControl
-68126 0.1 0.2 AppleCentauriAlpha
+68126 0.6 0.2 AppleCentauriAlpha
 68127 0.0 0.0 AppleCentauriBeta
 68246 0.0 0.0 IOUserBluetoothSerialDriver
-68305 0.0 0.1 siriactionsd
-68308 0.0 0.1 bird
-68309 0.0 0.0 appleaccountd
-68310 0.0 0.1 amsaccountsd
-68311 0.0 0.1 amsengagementd
-68312 0.0 0.0 ContainerMetadataExtractor
-68313 0.0 0.1 swcd
-68315 0.0 0.0 mobiletimerd
-68327 0.0 0.0 axassetsd
-68402 0.0 0.0 com.apple.iCloudHelper
-68480 0.0 0.6 maild
-68482 0.0 0.6 icloudmailagent
-68486 0.0 0.1 ShortcutsViewService
-68487 0.0 0.0 liveactivitiesd
-68488 0.0 0.4 appleaccountd
-68489 0.0 0.1 replicatord
-68503 0.0 0.2 akd
-68504 0.0 0.2 cdpd
-68507 0.0 0.4 suggestd
-68508 0.0 0.2 followupd
-68512 0.0 0.4 textunderstandingd
-68514 0.0 0.0 extensionkitservice
-68515 0.0 0.0 powerexperienced
-68520 0.0 0.2 appprotectiond
-68539 0.0 0.0 amfid
-68556 0.0 0.0 smd
-68557 0.0 0.0 CloudTelemetryService
-68558 0.0 0.0 XProtectBridgeService
-69105 0.0 0.1 Keychain Circle Notification
-69116 0.0 0.4 itunescloudd
-69123 0.0 0.2 medialibraryd
-69129 0.0 0.4 corespeechd
-69132 0.0 0.3 localspeechrecognition
-69144 0.0 0.0 dmd
-69145 0.0 0.1 aslmanager
-69147 0.0 0.0 aslmanager
-69162 0.0 0.5 routined
-69165 0.0 0.7 callservicesd
-69167 0.0 0.5 liveactivitiesd
-69169 0.0 0.4 profiled
-69171 0.0 0.6 gamed
-69172 0.0 0.2 com.apple.FaceTime.FTConversationService
-69174 0.0 0.0 ospredictiond
-69175 0.0 0.2 systemstatusd
-69176 0.0 0.2 com.apple.CallKit.CallDirectoryMaintenance
-69181 0.0 0.0 findmybeaconingd
-69183 0.0 0.6 siriinferenced
-69195 0.0 0.2 geoanalyticsd
-69201 0.0 0.0 WirelessRadioManagerd
-69202 0.0 0.3 sleepd
-69203 0.0 0.5 amsengagementd
-69204 0.0 0.3 UsageTrackingAgent
-69205 0.0 0.5 fitnesscoachingd
-69206 0.0 0.4 mobiletimerd
-69208 0.0 0.3 linkd
-69209 0.0 0.3 donotdisturbd
-69212 0.0 0.6 healthd
-69225 0.0 0.1 replayd
-69233 0.0 0.0 online-auth-agent
-69246 0.0 0.3 ManagedSettingsAgent
-69254 0.0 0.4 photoanalysisd
-69291 0.0 0.0 feedbackd
-69298 0.0 0.0 historicalaudiod
-69309 0.0 0.0 gamecontrollerd
-69310 0.0 0.0 gamecontrolleragentd
-69312 0.0 0.1 proactived
-69341 0.0 0.0 assessmentagent
-69355 0.0 0.0 diagnosticd
-69358 0.0 0.0 intelligenceflowd
-69366 0.0 0.0 nfcd
-69368 0.0 0.0 NFStorageServer
-69426 0.0 0.1 Google Chrome Helper (Aperitif)
-69451 0.0 0.0 audioanalyticsd
-69452 0.0 0.0 CategoriesService
-69453 0.0 0.0 rtcreportingd
-69455 0.0 0.0 ContextService
-69456 0.0 0.0 ContextService
-69487 0.0 0.1 Siri
-69526 0.0 0.1 CommCenter
-69528 0.0 0.1 callservicesd
-69530 0.0 0.0 com.apple.FaceTime.FTConversationService
-69531 0.0 0.2 sirittsd
-69532 0.0 0.0 localspeechrecognition
-69535 0.0 0.1 ScreenTimeAgent
-69537 0.0 0.1 postersyncd
-69538 0.0 0.0 recentsd
-69542 0.0 0.0 AudioComponentRegistrar
-69544 0.0 0.0 ecosystemanalyticsd
-69547 0.0 0.0 ecosystemd
-69554 0.0 0.1 GamePolicyAgent
-69556 0.0 0.0 PlugInLibraryService
-69559 0.0 0.0 com.apple.audio.SandboxHelper
-69560 0.0 0.0 com.apple.audio.SandboxHelper
-69665 0.0 0.2 localizationswitcherd
-69732 0.0 0.6 CalendarWidgetExtension
-69750 0.0 0.1 fontservicesd
-69754 0.0 0.1 UserFontManager
-69923 0.0 0.4 navd
-69969 0.0 0.2 biomesyncd
-70062 0.0 0.2 Google Chrome Helper (Aperitif Renderer)
-70065 0.0 0.1 mdworker_shared
-70066 0.0 0.1 mdworker_shared
-70069 0.4 0.1 mdworker_shared
-70178 0.0 0.1 mdworker_shared
-70251 0.0 0.0 mdworker_shared
-70285 0.0 0.1 SiriNCService
-70287 0.0 0.1 siriknowledged
-70290 0.0 0.1 assetsubscriptiond
-70291 0.0 0.0 AssetCacheLocatorService
-70293 0.0 0.0 bluetoothuserd
-70294 0.0 0.0 findmydeviced
-70295 0.0 0.0 findmydevice-user-agent
-70297 0.0 0.0 storagekitd
-70298 0.0 0.1 mdworker_shared
-70300 0.0 0.1 generativeexperiencesd
-70301 0.0 0.0 modelcatalogd
-70304 0.0 0.0 fskitd
-70307 0.0 0.1 deleted
-70309 0.0 0.0 deleted_helper
-70311 0.0 0.0 triald_system
-70312 0.0 0.0 backupd-helper
-70313 0.0 0.1 triald
-70314 0.0 0.0 geodMachServiceBridge
-70315 0.0 0.0 system_installd
-70316 0.0 0.0 installd
-70317 0.0 0.1 com.apple.quicklook.ThumbnailsAgent
-70318 0.0 0.0 cloudd
-70319 0.0 0.0 AssetCache
-70320 0.0 0.0 AssetCacheTetheratorService
-70322 0.0 0.0 TrialArchivingService
-70330 0.0 0.0 FeatureAccessAgent
-70364 0.0 0.0 centaurid
-70550 0.0 0.0 bash
-70553 0.0 0.0 bash
-70554 0.0 0.0 ps
-70555 0.0 0.0 awk
-70825 0.1 1.0 Claude
+70514 0.0 0.0 crashpad_handler
+70515 0.0 0.1 Google Drive
+70519 0.0 0.0 com.apple.WebKit.GPU
+70520 0.0 0.0 com.apple.WebKit.Networking
+70521 0.0 0.0 com.apple.WebKit.WebContent
+70523 0.0 0.0 mscamerad-xpc
+70528 0.0 0.0 FinderSyncExtension
+70542 0.0 0.0 DFSFileProviderExtension
+70825 4.6 0.8 Claude
 70845 0.0 0.0 chrome_crashpad_handler
-70846 0.2 0.2 Claude Helper
-70848 0.0 0.2 Claude Helper
+70846 0.1 0.2 Claude Helper
+70848 0.5 0.2 Claude Helper
 70862 0.0 0.1 Claude Helper (Renderer)
-70872 0.2 1.5 Claude Helper (Renderer)
-70879 0.0 0.2 Claude Helper
+70872 0.5 1.5 Claude Helper (Renderer)
+70879 0.0 0.1 Claude Helper
 70921 0.0 0.1 Claude Helper
-71001 0.0 0.1 Claude Helper
+71001 0.0 0.0 Claude Helper
 71002 0.0 0.0 Claude Helper
 71009 0.0 0.0 disclaimer
-71010 0.0 0.3 claude
+71010 0.1 0.3 claude
 71012 0.0 0.0 disclaimer
 71013 0.0 0.3 claude
-71055 0.0 0.0 Claude Helper
+71055 0.0 0.1 Claude Helper
 71154 0.0 0.0 disclaimer
-71155 0.1 0.5 claude
-72595 0.0 0.4 Google Chrome Helper (Aperitif)
+71155 0.0 0.6 claude
+72595 0.7 0.4 Google Chrome Helper (Aperitif)
 72617 0.0 0.0 chrome-native-host
-73341 0.0 0.5 Google Chrome Helper (Aperitif Renderer)
-73358 0.1 0.4 Google Chrome Helper (Aperitif Renderer)
-73359 0.0 0.2 Google Chrome Helper (Aperitif Renderer)
+73341 0.0 0.3 Google Chrome Helper (Aperitif Renderer)
+73359 0.0 0.3 Google Chrome Helper (Aperitif Renderer)
 73372 0.0 0.4 Google Chrome Helper (Aperitif Renderer)
-73375 0.0 0.5 Google Chrome Helper (Aperitif Renderer)
-73377 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
-73385 0.0 0.0 Google Chrome Helper (Aperitif Renderer)
+73375 0.0 0.3 Google Chrome Helper (Aperitif Renderer)
+73377 0.0 0.2 Google Chrome Helper (Aperitif Renderer)
+73385 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
 73394 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
-73425 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
-73453 0.0 0.0 Google Chrome Helper (Aperitif Renderer)
+73425 0.0 0.2 Google Chrome Helper (Aperitif Renderer)
+73453 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
 73455 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
 73456 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
-73485 0.0 0.0 Google Chrome Helper (Aperitif Renderer)
-73495 0.1 0.3 Google Chrome Helper (Aperitif Renderer)
+73485 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
+73495 0.0 0.4 Google Chrome Helper (Aperitif Renderer)
 73536 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
-73542 0.0 0.4 Google Chrome Helper (Aperitif Renderer)
+73542 0.0 0.3 Google Chrome Helper (Aperitif Renderer)
 73543 0.0 0.3 Google Chrome Helper (Aperitif Renderer)
 73545 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
 73550 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
 73587 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
 73643 0.0 0.0 disclaimer
-73644 0.0 0.5 claude
-73727 5.3 1.8 Google Chrome Helper (Aperitif Renderer)
+73644 0.0 0.6 claude
+73727 3.6 1.8 Google Chrome Helper (Aperitif Renderer)
 74873 0.0 0.0 disclaimer
-74874 0.2 1.0 claude
-77741 0.0 0.0 mdsync
+74874 0.1 1.4 claude
+76298 0.0 0.0 translationd
 77834 0.0 0.3 Google Chrome Helper (Aperitif Renderer)
-77849 0.0 0.3 Google Chrome Helper (Aperitif Renderer)
-78810 0.1 1.4 Google Chrome
+77849 0.1 0.4 Google Chrome Helper (Aperitif Renderer)
+78329 0.0 0.0 ShipIt
+78810 1.2 1.7 Google Chrome
 78813 0.0 0.0 chrome_crashpad_handler
-78817 4.7 0.3 Google Chrome Helper (Aperitif)
+78817 1.9 0.4 Google Chrome Helper (Aperitif)
 78819 0.0 0.1 Google Chrome Helper (Aperitif)
 78835 0.0 0.0 com.apple.SafariPlatformSupport.Helper
-78867 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
-78870 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
-78872 0.0 0.2 Google Chrome Helper (Aperitif Renderer)
-79596 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
+78867 0.0 0.2 Google Chrome Helper (Aperitif Renderer)
+78870 0.0 0.2 Google Chrome Helper (Aperitif Renderer)
+78872 0.0 0.3 Google Chrome Helper (Aperitif Renderer)
+79574 0.0 0.0 linkd
+79637 0.0 0.0 biomed
 79729 0.0 0.1 Google Chrome Helper (Aperitif)
 79730 0.0 0.1 Google Chrome Helper (Aperitif)
-79806 0.0 0.0 translationd
+79936 0.0 0.0 spotlightknowledged.updater
+80261 0.0 0.2 Google Chrome Helper (Aperitif Renderer)
+80603 0.0 0.0 UniversalControl
+80731 0.0 0.1 assistantd
 80794 0.0 0.0 crashpad_handler
 80843 0.0 0.0 crashpad_handler
-80847 0.0 0.2 Google Drive
-80851 0.0 0.0 com.apple.WebKit.GPU
-80852 0.0 0.0 com.apple.WebKit.Networking
-80853 0.0 0.0 com.apple.WebKit.WebContent
-80854 0.0 0.0 mscamerad-xpc
-80865 0.0 0.1 FinderSyncExtension
-80871 0.0 0.0 DFSFileProviderExtension
 80970 0.0 0.1 biomed
+81203 0.0 0.0 VDCAssistant
 81473 0.0 0.1 usernotificationsd
-81785 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
-82166 0.0 0.2 Google Chrome Helper (Aperitif Renderer)
+81785 0.0 0.2 Google Chrome Helper (Aperitif Renderer)
+82033 0.0 0.0 callservicesd
+82128 0.0 0.0 crashpad_handler
+82166 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
 82167 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
 82168 0.0 0.0 Google Chrome Helper (Aperitif Renderer)
-82558 0.0 0.0 trustd
-82665 0.0 0.1 Claude Helper
+82558 0.0 0.1 trustd
+82622 0.0 0.0 adb
+82665 0.0 0.0 Claude Helper
+82776 0.0 0.2 chronod
+82799 0.0 0.1 extensionkitservice
+82802 0.0 0.0 HealthPlansWidgetExtension
+82803 0.0 0.0 AccessibilityControlsExtension
 82819 0.0 0.1 AppleSpell
-82847 0.0 0.0 searchpartyuseragent
 82928 0.0 0.0 disclaimer
-82929 0.0 0.5 claude
-83175 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
-83182 0.0 0.0 Google Chrome Helper (Aperitif Renderer)
-83525 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
-83575 0.0 0.0 disclaimer
-83576 0.1 0.8 claude
-84284 0.0 0.0 Terminal
+82929 0.2 0.6 claude
+82974 0.0 0.4 NewsToday2
+83000 0.0 0.1 NewsScoringService
+83175 0.0 0.2 Google Chrome Helper (Aperitif Renderer)
+83182 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
+83213 0.0 0.1 BatteriesAvocadoWidgetExtension
+83214 0.0 0.3 GeneralMapsWidget
+83481 0.0 0.1 axassetsd
+83495 0.0 0.1 MacinTalkAUSP
+83496 0.0 0.1 MauiAUSP
+83498 0.0 0.1 SiriAUSP
+83502 0.0 0.1 KonaSynthesizer
+83995 0.0 0.1 HealthBalanceWidgetExtension
+84158 0.0 0.0 AMPIDService
+84284 0.0 0.1 Terminal
 84313 0.0 0.0 disclaimer
 84314 0.0 0.0 claude-ios-sim
 84331 0.0 0.0 com.apple.CoreSimulator.CoreSimulatorService
 84340 0.0 0.0 SimulatorTrampoline
+84414 0.7 0.4 Google Chrome Helper (Aperitif Renderer)
 84566 0.0 0.3 Google Chrome Helper (Aperitif Renderer)
-84984 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
+84637 0.0 0.2 ScreenTimeWidgetExtension
+84875 0.0 0.4 Google Chrome Helper (Aperitif Renderer)
+84905 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
+84984 0.0 0.2 Google Chrome Helper (Aperitif Renderer)
+85128 0.0 0.0 neagent
 85252 0.0 0.3 Google Chrome Helper (Aperitif Renderer)
 85374 0.0 0.0 crashpad_handler
-85600 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
+86515 0.0 0.4 Google Chrome Helper (Aperitif Renderer)
 86951 0.0 0.0 disclaimer
-86952 0.1 0.5 claude
-88240 0.0 0.2 Google Chrome Helper (Aperitif Renderer)
-88356 0.0 0.5 Google Chrome Helper (Aperitif Renderer)
-88373 0.0 0.3 Google Chrome Helper (Aperitif Renderer)
+86952 0.0 0.6 claude
+87792 0.0 0.0 trustd
+87821 0.0 0.0 trustd
+88240 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
+88356 0.0 0.4 Google Chrome Helper (Aperitif Renderer)
+88718 0.0 0.3 Google Chrome Helper (Aperitif Renderer)
+88723 0.0 0.2 Google Chrome Helper (Aperitif Renderer)
 89515 0.0 0.0 disclaimer
-89517 0.1 0.6 claude
+89517 0.0 0.6 claude
 89751 0.0 0.0 dartvm
 89753 0.0 0.0 head
 89754 0.0 0.0 ugrep
-89783 0.0 0.3 Google Chrome Helper (Aperitif Renderer)
-89810 0.0 0.3 Google Chrome Helper (Aperitif Renderer)
 89827 0.0 0.0 dartaotruntime
-90461 0.0 0.3 chronod
-90474 0.0 0.1 extensionkitservice
-90478 0.0 0.0 HealthPlansWidgetExtension
-90481 0.0 0.0 AccessibilityControlsExtension
 90786 0.0 0.0 SimLaunchHost.arm64
-90906 0.0 0.1 BatteriesAvocadoWidgetExtension
-90957 0.0 0.3 GeneralMapsWidget
-90983 0.0 0.1 duetexpertd
 91778 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
 91798 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
-91986 0.0 0.2 Google Chrome Helper (Aperitif Renderer)
-91990 0.0 0.0 Google Chrome Helper (Aperitif Renderer)
-91992 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
-92507 0.0 0.0 GSSCred
-92682 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
+91910 0.0 0.0 netbiosd
+91986 0.0 0.3 Google Chrome Helper (Aperitif Renderer)
+92132 0.0 0.0 com.apple.CodeSigningHelper
+92315 0.0 0.2 Google Chrome Helper (Aperitif Renderer)
+92407 0.0 0.4 Google Chrome Helper (Aperitif Renderer)
+92435 0.0 0.0 GSSCred
+92682 0.0 0.3 Google Chrome Helper (Aperitif Renderer)
 92719 0.0 0.0 com.microsoft.teams2.agent
-93411 0.0 0.2 NewsToday2
-93484 0.0 0.0 NewsScoringService
+93209 0.0 0.0 CalendarWidgetExtension
+93994 0.0 0.1 PerfPowerServices
 94788 0.0 0.2 node
+95063 0.0 0.3 Google Chrome Helper (Aperitif Renderer)
+95120 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
+95887 0.0 0.1 Google Chrome Helper (Aperitif Renderer)
 96448 0.0 0.4 Google Chrome Helper (Aperitif Renderer)
+96755 1.3 1.1 Google Chrome Helper (Aperitif Renderer)
 96842 0.0 0.0 crashpad_handler
-97082 0.0 0.3 Google Chrome Helper (Aperitif Renderer)
-97108 0.1 0.0 coreauthd
+97108 0.0 0.0 coreauthd
 97137 0.0 0.0 ContextStoreAgent
-97558 0.0 0.0 disclaimer
-97559 0.1 0.7 claude
-98299 0.0 0.1 ScreenTimeWidgetExtension
+98059 0.0 0.1 duetexpertd
 99527 0.0 0.0 SimStreamProcessorService
 99530 0.0 0.0 SimAudioProcessorService
 99667 0.0 0.0 remotepairingd
 99728 0.0 0.0 StatusKitAgent
-99829 0.0 0.0 trustd
-99840 0.0 0.0 trustd
 43540 0.0 0.0 login
 43541 0.0 0.0 -zsh
 73648 0.0 0.0 zsh
-71092 0.0 0.0 zsh
+88466 0.0 0.0 zsh
 89514 0.0 0.0 zsh
 97527 0.0 0.0 zsh
 82744 0.0 0.0 zsh
 83615 0.0 0.0 zsh
 84349 0.0 0.0 zsh
-5990 0.0 0.0 zsh
-42208 0.0 0.0 zsh
+49939 0.0 0.0 zsh
+82034 0.0 0.0 zsh
+96269 0.0 0.0 zsh
 5052 0.0 0.0 zsh
-82476 0.0 0.0 zsh
+79829 0.0 0.0 zsh
+98993 0.0 0.0 zsh
 83270 0.0 0.0 zsh
-97722 0.0 0.0 zsh
 59416 0.0 0.0 zsh
-86905 0.0 0.0 zsh
 55551 0.0 0.0 zsh

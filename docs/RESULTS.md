@@ -43,6 +43,12 @@ labels, with no invariant violation. Two "floors" run the same desk with no mode
   text in all 3 runs. The held-out sets and variants-B ran twice, three days apart (2026-10-29 on a
   busy GPU, 2026-11-01 on a clean machine): all 475 case-runs had identical decisions, text and
   final state. The first runs are archived in `results/evidence/bench_2026-10-29_busygpu/`.
+- **After the CLARIFICATIONS #18 change** (a confirm flag with nothing to confirm and no item named
+  now asks which item), the whole matrix ran again on a clean machine on 2026-11-01. All 878
+  case-runs made the same decisions and reached the same final state as before. The text differed
+  in 2: hx12 turn 2 in B and F ("gracias, sí confirmo"), the one stored turn where the new rule
+  fires, which was `clarify` before and still is. The previous runs are archived in
+  `results/evidence/bench_2026-11-01_pre_confirm_rule/`.
 
 Every failure in the final runs:
 
@@ -63,26 +69,26 @@ Other counts:
 
 | profile | case p50 | case p95 (= max, n=18) | turn p50 | turn p95 (n=39) | case mean |
 |---|---|---|---|---|---|
-| B | 11,434 ms | 13,205 ms | 4,784 ms | 8,249 ms | 11,128 ms |
-| **F** | **5,044 ms** | **5,894 ms** | **1,876 ms** | **3,910 ms** | **4,796 ms** |
-| B-repeat (A/A) | 11,095 ms | 12,451 ms | 4,584 ms | 8,350 ms | 10,920 ms |
+| B | 11,519 ms | 13,162 ms | 4,597 ms | 8,149 ms | 10,934 ms |
+| **F** | **5,034 ms** | **5,742 ms** | **1,878 ms** | **3,869 ms** | **4,767 ms** |
+| B-repeat (A/A) | 11,776 ms | 12,778 ms | 4,572 ms | 8,226 ms | 10,991 ms |
 
-- **Paired F/B ratio:** 0.425, 95% CI [0.398, 0.449], so F is **57.5% faster**. The A/A ratio
-  (B-repeat/B) is 0.982 [0.968, 0.996], so the effect is far outside the noise.
-- **Variants suite, F (clean):** p50 5,150 ms, p95 9,411 ms over 241 cases.
-- **Variants and held-out suites (one run each, clean machine):** paired F/B 0.460
-  [0.452, 0.468] on variants, 0.426 [0.415, 0.438] on holdout_v2 and 0.441 [0.431, 0.452] on
+- **Paired F/B ratio:** 0.429, 95% CI [0.397, 0.456], so F is **57.1% faster**. The A/A ratio
+  (B-repeat/B) is 1.005 [0.998, 1.014], so the effect is far outside the noise.
+- **Variants suite, F (clean):** p50 4,456 ms, p95 7,936 ms over 241 cases.
+- **Variants and held-out suites (one run each, clean machine):** paired F/B 0.409
+  [0.404, 0.415] on variants, 0.411 [0.400, 0.422] on holdout_v2 and 0.424 [0.414, 0.434] on
   holdout_v3. These suites have no A/A run, so their noise floor is not measured.
 
 ## 3. Throughput and where the time goes (public, means per case)
 
 | profile | LLM calls | completion tokens | decode tok/s | uncached prefill tok/s | prompt cache hit | decode share of case time | cases/min (serial, derived) |
 |---|---|---|---|---|---|---|---|
-| B | 9.33 | 475 | 51.0 | 1,079 | 89.5% | 83.6% | 5.4 |
-| F | 8.33 | 243 | 73.7 | 1,110 | 87.6% | 68.8% | 12.5 |
+| B | 9.33 | 475 | 51.6 | 1,101 | 89.5% | 84.1% | 5.5 |
+| F | 8.33 | 243 | 74.0 | 1,120 | 87.6% | 68.9% | 12.6 |
 
 - Token rates are token-weighted (total tokens / total time). They match the server's own
-  `/metrics` (F 73.8, B 51.0).
+  `/metrics` (F 74.0, B 51.7).
 - Cases per minute is 60 s / mean case time, one case at a time. Concurrent throughput was not
   measured.
 - Code is cheap: tools take under 1 ms per case and orchestration about 0.1 s. Decoding is most of
@@ -94,14 +100,16 @@ Each row is F with that one change put back to B's value, 3 runs each. Every row
 
 | F's change (B's value) | F faster by | 95% CI | other measured effect per case |
 |---|---|---|---|
-| tool calls by JSON-schema-constrained decoding (B: native tool calling) | 36.8% | 30.5–44.0% | −183 completion tokens, −0.8 LLM calls |
-| Q4_K_M weights (B: Q8_0) | 21.2% | 17.8–23.6% | −1,696 MiB peak GPU memory |
-| code-built Operations report (B: model free text) | 18.7% | 16.6–20.6% | −72 completion tokens |
-| prefetched account card (B: off) | 10.3% | 7.4–13.2% | −1.2 LLM calls |
-| `--cache-ram 2048` MiB (B: 8192) | **no effect** | −1.5% to +0.7% | −104 MiB peak GPU memory |
+| tool calls by JSON-schema-constrained decoding (B: native tool calling) | 35.8% | 30.0–42.3% | −183 completion tokens, −0.8 LLM calls |
+| Q4_K_M weights (B: Q8_0) | 22.3% | 19.4–25.2% | −1,687 MiB peak GPU memory |
+| code-built Operations report (B: model free text) | 17.6% | 15.1–19.6% | −72 completion tokens |
+| prefetched account card (B: off) | 9.7% | 6.5–12.9% | −1.2 LLM calls |
+| `--cache-ram 2048` MiB (B: 8192) | **no effect** | −0.3% to +1.0% | none measurable (+33 MiB peak GPU, −15 MiB peak RAM) |
 
-The effects overlap, so they don't add up to the 57.5% total. The prompt-cache change is a measured
-null result for speed; it stays in F because it uses less memory.
+The effects overlap, so they don't add up to the 57.1% total. The prompt-cache change is a measured
+null result for speed, and its memory effect is within run-to-run noise (−104 MiB peak GPU in the
+previous bench, +33 MiB in this one). It stays in F because it passes the gate and caps the host
+prompt cache at 2 GiB of RAM instead of 8.
 
 Pre-registered gate (SPEC §9): a change ships only if F ≥ B on public and on variants, with zero
 invariant violations, and F ≥ F-without-that-change on public. **Result: F as a whole and each of
@@ -111,15 +119,15 @@ the five changes pass.**
 
 | profile | peak RAM median (max) | peak unified GPU median (max) |
 |---|---|---|
-| B | 1,801 (1,932) | 4,800 (5,080) |
-| F | 2,107 (2,220) | 3,096 (3,235) |
+| B | 1,864 (2,080) | 4,792 (5,010) |
+| F | 1,970 (2,218) | 3,146 (3,278) |
 
 - **Peak RAM** is the sum of the kernel phys_footprint high-water marks of the adapter and
   `llama-server`.
 - **Peak GPU** is IOAccelerator in-use memory minus the idle baseline. It is system-wide and overlaps
   RAM.
-- F uses 1.7 GiB less GPU memory and about 0.3 GiB more RAM. The RAM increase comes with the Q4_K_M
-  weights: F-q8 is 1,842.
+- F uses 1.6 GiB less GPU memory and about 0.1 GiB more RAM (medians). The RAM increase comes with
+  the Q4_K_M weights: F-q8 is 1,786.
 - **Not measured:** per-process GPU memory and energy both need root, which the bench doesn't use.
   Apple Silicon has no separate VRAM.
 
@@ -127,10 +135,10 @@ the five changes pass.**
 
 | | F | B |
 |---|---|---|
-| `llama-server` spawn → ready, model file in page cache | 678–730 ms | — (every B run started cold) |
-| spawn → ready, model read from SSD | 1,725–1,926 ms | 2,150–2,506 ms |
-| first request (Metal pipeline compile) | 56–80 ms | 59–64 ms |
-| first case after start vs warm median, public runs | 5.5–5.7 s vs 5.0–5.1 s | 12.3–12.4 s vs 10.9–11.4 s |
+| `llama-server` spawn → ready, model file in page cache | 682–708 ms | — (every B run started cold) |
+| spawn → ready, model read from SSD (fully or partly) | 1,540–1,969 ms | 2,089–2,302 ms |
+| first request (Metal pipeline compile) | 56–60 ms | 59–63 ms |
+| first case after start vs warm median, public runs | 5.5–5.6 s vs 5.0–5.1 s | 12.1–12.6 s vs 10.8–11.5 s |
 
 The first case pays about 0.5 s (F) or 1 s (B) for a cold prompt cache. The server start is excluded
 from case latency.

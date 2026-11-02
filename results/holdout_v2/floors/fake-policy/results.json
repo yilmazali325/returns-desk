@@ -1039,7 +1039,7 @@
    ],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 9.1,
+    "elapsed_ms": 9.0,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -1058,8 +1058,8 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     6.7,
-     1.9
+     6.8,
+     1.8
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -1905,7 +1905,7 @@
    "proposals": [],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 5.7,
+    "elapsed_ms": 5.9,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -1924,7 +1924,7 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     2.4,
+     2.5,
      3.1
     ],
     "protocol_errors": 0,
@@ -2278,7 +2278,8 @@
       "confirm_proposal": "last"
      },
      "result": {
-      "presented": []
+      "presented": [],
+      "asks_which_item": false
      },
      "error": null,
      "committed_effects": [],
@@ -2498,7 +2499,7 @@
    "proposals": [],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 5.6,
+    "elapsed_ms": 5.8,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -2517,9 +2518,9 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     1.9,
      1.8,
-     1.8
+     1.7,
+     2.1
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -2787,7 +2788,8 @@
       "confirm_proposal": "last"
      },
      "result": {
-      "presented": []
+      "presented": [],
+      "asks_which_item": false
      },
      "error": null,
      "committed_effects": [],
@@ -2999,7 +3001,7 @@
    "proposals": [],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 4.4,
+    "elapsed_ms": 4.5,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -3018,7 +3020,7 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     2.2,
+     2.3,
      2.0
     ],
     "protocol_errors": 0,
@@ -3512,7 +3514,8 @@
       "confirm_proposal": "last"
      },
      "result": {
-      "presented": []
+      "presented": [],
+      "asks_which_item": true
      },
      "error": null,
      "committed_effects": [],
@@ -3557,231 +3560,30 @@
     {
      "seq": 15,
      "turn": 2,
-     "kind": "target",
+     "kind": "gate",
      "agent": "orchestrator",
-     "tool": "set_target",
+     "tool": "handoff_to_operations",
      "arguments": {
+      "intent": "propose_exchange",
       "order_id": "O-1201",
       "line_id": "L1",
-      "intent": "exchange",
-      "requested_sku": null,
-      "requested_size": null,
-      "requested_product": null,
-      "grounded_by": "only_line",
-      "evidence": null
+      "requested_size": "UNSPECIFIED",
+      "requested_product": "SAME"
      },
      "result": null,
-     "error": null,
+     "error": {
+      "code": "TARGET_NOT_GROUNDED",
+      "message": "We could not tell which item you mean.",
+      "hint": "The customer confirmed, but nothing has been proposed yet and they named no item. Ask which item they mean; do not hand off.",
+      "candidates": [
+       "order O-1201, line L1: HOODIE-L = product HOODIE (hoodie, hoody, sweatshirt, hooded sweatshirt), size L (large, lg), paid $54.00, delivered 2026-10-23"
+      ]
+     },
      "committed_effects": [],
      "visible_to_agent": true
     },
     {
      "seq": 16,
-     "turn": 2,
-     "kind": "llm_step",
-     "agent": "operations",
-     "tool": "list_exchange_options",
-     "arguments": {},
-     "result": {
-      "role": "operations",
-      "tool": "list_exchange_options",
-      "protocol_error": null,
-      "dropped_calls": 0,
-      "prompt_tokens": 402,
-      "cached_tokens": 0,
-      "prefill_tokens": 402,
-      "completion_tokens": 11,
-      "prompt_ms": 0.0,
-      "predicted_ms": 0.0,
-      "latency_ms": 0.0,
-      "finish_reason": "stop",
-      "http_attempts": 1
-     },
-     "error": null,
-     "committed_effects": [],
-     "visible_to_agent": true,
-     "allowed": [
-      "list_exchange_options",
-      "create_proposal",
-      "report_to_resolution"
-     ]
-    },
-    {
-     "seq": 17,
-     "turn": 2,
-     "kind": "tool",
-     "agent": "operations",
-     "tool": "list_exchange_options",
-     "arguments": {},
-     "result": {
-      "original_sku": "HOODIE-L",
-      "options": [
-       {
-        "sku": "HOODIE-S",
-        "size": "S",
-        "price_cents": 6000,
-        "stock": 0,
-        "valid": false,
-        "reasons": [
-         "OUT_OF_STOCK"
-        ]
-       },
-       {
-        "sku": "HOODIE-M",
-        "size": "M",
-        "price_cents": 6000,
-        "stock": 3,
-        "valid": true,
-        "reasons": []
-       },
-       {
-        "sku": "HOODIE-XL",
-        "size": "XL",
-        "price_cents": 6000,
-        "stock": 1,
-        "valid": true,
-        "reasons": []
-       }
-      ],
-      "valid_count": 2,
-      "requested_sku": null,
-      "requested_code": null,
-      "reasons": []
-     },
-     "error": null,
-     "committed_effects": [],
-     "visible_to_agent": true
-    },
-    {
-     "seq": 18,
-     "turn": 2,
-     "kind": "llm_step",
-     "agent": "operations",
-     "tool": "create_proposal",
-     "arguments": {
-      "remedy": "exchange"
-     },
-     "result": {
-      "role": "operations",
-      "tool": "create_proposal",
-      "protocol_error": null,
-      "dropped_calls": 0,
-      "prompt_tokens": 558,
-      "cached_tokens": 0,
-      "prefill_tokens": 558,
-      "completion_tokens": 14,
-      "prompt_ms": 0.0,
-      "predicted_ms": 0.0,
-      "latency_ms": 0.0,
-      "finish_reason": "stop",
-      "http_attempts": 1
-     },
-     "error": null,
-     "committed_effects": [],
-     "visible_to_agent": true,
-     "allowed": [
-      "list_exchange_options",
-      "create_proposal",
-      "report_to_resolution"
-     ]
-    },
-    {
-     "seq": 19,
-     "turn": 2,
-     "kind": "tool",
-     "agent": "operations",
-     "tool": "create_proposal",
-     "arguments": {
-      "remedy": "exchange",
-      "replacement_sku": null
-     },
-     "result": null,
-     "error": {
-      "code": "SIZE_UNSPECIFIED",
-      "message": "the customer has not chosen a size",
-      "details": {
-       "alternatives": [
-        {
-         "sku": "HOODIE-M",
-         "size": "M"
-        },
-        {
-         "sku": "HOODIE-XL",
-         "size": "XL"
-        }
-       ]
-      }
-     },
-     "committed_effects": [],
-     "visible_to_agent": true
-    },
-    {
-     "seq": 20,
-     "turn": 2,
-     "kind": "llm_step",
-     "agent": "operations",
-     "tool": "report_to_resolution",
-     "arguments": {
-      "outcome": "needs_info"
-     },
-     "result": {
-      "role": "operations",
-      "tool": "report_to_resolution",
-      "protocol_error": null,
-      "dropped_calls": 0,
-      "prompt_tokens": 618,
-      "cached_tokens": 0,
-      "prefill_tokens": 618,
-      "completion_tokens": 16,
-      "prompt_ms": 0.0,
-      "predicted_ms": 0.0,
-      "latency_ms": 0.0,
-      "finish_reason": "stop",
-      "http_attempts": 1
-     },
-     "error": null,
-     "committed_effects": [],
-     "visible_to_agent": true,
-     "allowed": [
-      "report_to_resolution"
-     ]
-    },
-    {
-     "seq": 21,
-     "turn": 2,
-     "kind": "ops_report",
-     "agent": "orchestrator",
-     "tool": "report_to_resolution",
-     "arguments": {
-      "intent": "propose_exchange"
-     },
-     "result": {
-      "intent": "propose_exchange",
-      "outcome": "needs_info",
-      "reason_codes": [
-       "SIZE_UNSPECIFIED"
-      ],
-      "proposal": null,
-      "transaction": null,
-      "replay": false,
-      "reconciled": false,
-      "alternatives": [
-       {
-        "sku": "HOODIE-M",
-        "size": "M"
-       },
-       {
-        "sku": "HOODIE-XL",
-        "size": "XL"
-       }
-      ]
-     },
-     "error": null,
-     "committed_effects": [],
-     "visible_to_agent": true
-    },
-    {
-     "seq": 22,
      "turn": 2,
      "kind": "llm_step",
      "agent": "resolution",
@@ -3794,9 +3596,9 @@
       "tool": "reply_to_customer",
       "protocol_error": null,
       "dropped_calls": 0,
-      "prompt_tokens": 1210,
+      "prompt_tokens": 1265,
       "cached_tokens": 0,
-      "prefill_tokens": 1210,
+      "prefill_tokens": 1265,
       "completion_tokens": 22,
       "prompt_ms": 0.0,
       "predicted_ms": 0.0,
@@ -3808,8 +3610,37 @@
      "committed_effects": [],
      "visible_to_agent": true,
      "allowed": [
+      "handoff_to_operations",
       "reply_to_customer"
      ]
+    },
+    {
+     "seq": 17,
+     "turn": 2,
+     "kind": "tool",
+     "agent": "orchestrator",
+     "tool": "check_eligibility",
+     "arguments": {
+      "order_id": "O-1201",
+      "line_id": "L1"
+     },
+     "result": {
+      "eligible": true,
+      "reasons": [],
+      "order_id": "O-1201",
+      "line_id": "L1",
+      "sku": "HOODIE-L",
+      "product_id": "HOODIE",
+      "size": "L",
+      "paid_cents": 5400,
+      "delivered_on": "2026-10-23",
+      "as_of": "2026-11-01",
+      "days_since_delivery": 9,
+      "window_days": 30
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
     }
    ],
    "final_state": {
@@ -3977,7 +3808,7 @@
    "proposals": [],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 4.5,
+    "elapsed_ms": 4.2,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -3986,23 +3817,23 @@
     "memory_notes": [
      "peak_ram_mb / peak_vram_mb are null: no memory probe was attached to this run."
     ],
-    "llm_calls": 10,
-    "prompt_tokens": 7902,
+    "llm_calls": 7,
+    "prompt_tokens": 6379,
     "cached_tokens": 0,
-    "completion_tokens": 212,
+    "completion_tokens": 171,
     "prefill_ms": 0.0,
     "decode_ms": 0.0,
-    "tool_ms": 0.4,
+    "tool_ms": 0.3,
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     2.3,
+     2.0,
      2.0
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
     "fallbacks": 0,
-    "gate_rejections": 0,
+    "gate_rejections": 1,
     "dropped_calls": 0,
     "llm_errors": 0,
     "first_case_after_start": false,
@@ -5358,7 +5189,7 @@
    ],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 6.1,
+    "elapsed_ms": 6.2,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -5377,8 +5208,8 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     2.2,
-     2.0,
+     2.3,
+     2.1,
      1.6
     ],
     "protocol_errors": 0,
@@ -6458,7 +6289,7 @@
    ],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 4.8,
+    "elapsed_ms": 4.4,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -6473,12 +6304,12 @@
     "completion_tokens": 198,
     "prefill_ms": 0.0,
     "decode_ms": 0.0,
-    "tool_ms": 0.6,
+    "tool_ms": 0.5,
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     2.8,
-     1.7
+     2.6,
+     1.6
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -7837,7 +7668,7 @@
    ],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 6.3,
+    "elapsed_ms": 6.7,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -7852,13 +7683,13 @@
     "completion_tokens": 274,
     "prefill_ms": 0.0,
     "decode_ms": 0.0,
-    "tool_ms": 0.5,
+    "tool_ms": 0.6,
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
      2.1,
-     2.2,
-     1.9
+     2.5,
+     2.0
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -9335,7 +9166,7 @@
    ],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 7.0,
+    "elapsed_ms": 7.3,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -9354,9 +9185,9 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     2.6,
+     2.9,
      2.5,
-     1.7
+     1.6
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -9903,7 +9734,8 @@
       "confirm_proposal": "last"
      },
      "result": {
-      "presented": []
+      "presented": [],
+      "asks_which_item": false
      },
      "error": null,
      "committed_effects": [],
@@ -10383,7 +10215,7 @@
    "proposals": [],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 4.8,
+    "elapsed_ms": 4.9,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -10402,8 +10234,8 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     2.5,
-     2.2
+     2.4,
+     2.3
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -11524,7 +11356,7 @@
     "prefill_tok_s": null,
     "turn_latency_ms": [
      3.3,
-     1.8
+     1.7
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -11786,7 +11618,8 @@
       "confirm_proposal": "last"
      },
      "result": {
-      "presented": []
+      "presented": [],
+      "asks_which_item": true
      },
      "error": null,
      "committed_effects": [],
@@ -12017,8 +11850,8 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     2.1,
-     1.9
+     2.0,
+     2.0
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -12293,7 +12126,8 @@
       "confirm_proposal": "last"
      },
      "result": {
-      "presented": []
+      "presented": [],
+      "asks_which_item": false
      },
      "error": null,
      "committed_effects": [],
@@ -12833,7 +12667,8 @@
       "confirm_proposal": "last"
      },
      "result": {
-      "presented": []
+      "presented": [],
+      "asks_which_item": false
      },
      "error": null,
      "committed_effects": [],
@@ -12998,7 +12833,7 @@
    "proposals": [],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 9.7,
+    "elapsed_ms": 9.9,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -13017,8 +12852,8 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     5.8,
-     3.7
+     5.9,
+     3.8
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -14366,7 +14201,7 @@
    ],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 6.0,
+    "elapsed_ms": 5.9,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -15933,13 +15768,13 @@
     "completion_tokens": 325,
     "prefill_ms": 0.0,
     "decode_ms": 0.0,
-    "tool_ms": 0.8,
+    "tool_ms": 0.7,
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
      2.4,
      2.5,
-     1.7
+     1.8
     ],
     "protocol_errors": 0,
     "guard_overrides": 1,
@@ -16624,7 +16459,7 @@
    ],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 3.8,
+    "elapsed_ms": 3.7,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -16643,8 +16478,8 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     2.0,
-     1.5
+     2.1,
+     1.4
     ],
     "protocol_errors": 0,
     "guard_overrides": 1,
@@ -17565,7 +17400,7 @@
    ],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 3.6,
+    "elapsed_ms": 3.5,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -17584,8 +17419,8 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     2.0,
-     1.5
+     1.9,
+     1.4
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -18723,7 +18558,7 @@
    ],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 5.7,
+    "elapsed_ms": 5.6,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -18742,7 +18577,7 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     1.8,
+     1.7,
      1.8,
      1.9
     ],
@@ -19741,7 +19576,7 @@
     "completion_tokens": 165,
     "prefill_ms": 0.0,
     "decode_ms": 0.0,
-    "tool_ms": 0.3,
+    "tool_ms": 0.4,
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
@@ -20688,7 +20523,7 @@
    ],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 5.6,
+    "elapsed_ms": 5.5,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -20708,7 +20543,7 @@
     "prefill_tok_s": null,
     "turn_latency_ms": [
      2.5,
-     2.9
+     2.8
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -21618,7 +21453,7 @@
    ],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 3.8,
+    "elapsed_ms": 3.6,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -21637,8 +21472,8 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     2.1,
-     1.5
+     2.0,
+     1.4
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -21986,7 +21821,7 @@
    "proposals": [],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 2.4,
+    "elapsed_ms": 2.3,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -22005,7 +21840,7 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     2.2
+     2.1
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -22532,7 +22367,7 @@
     "completion_tokens": 84,
     "prefill_ms": 0.0,
     "decode_ms": 0.0,
-    "tool_ms": 0.2,
+    "tool_ms": 0.1,
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
@@ -23050,7 +22885,7 @@
    "proposals": [],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 2.1,
+    "elapsed_ms": 2.0,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -23069,7 +22904,7 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     1.9
+     1.8
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -23519,7 +23354,7 @@
    "proposals": [],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 2.1,
+    "elapsed_ms": 2.0,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -23538,7 +23373,7 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     1.9
+     1.8
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -24994,7 +24829,7 @@
    ],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 4.0,
+    "elapsed_ms": 3.9,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -25014,7 +24849,7 @@
     "prefill_tok_s": null,
     "turn_latency_ms": [
      2.2,
-     1.6
+     1.5
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -26554,7 +26389,7 @@
    ],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 3.9,
+    "elapsed_ms": 4.1,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -26569,12 +26404,12 @@
     "completion_tokens": 198,
     "prefill_ms": 0.0,
     "decode_ms": 0.0,
-    "tool_ms": 0.4,
+    "tool_ms": 0.5,
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
      2.3,
-     1.5
+     1.6
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -27564,7 +27399,7 @@
    ],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 4.0,
+    "elapsed_ms": 4.3,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -27583,7 +27418,7 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     2.2,
+     2.5,
      1.6
     ],
     "protocol_errors": 0,
@@ -28627,7 +28462,7 @@
    ],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 6.0,
+    "elapsed_ms": 5.9,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -29064,7 +28899,7 @@
    "proposals": [],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 3.1,
+    "elapsed_ms": 3.3,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -29083,8 +28918,8 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     1.5,
-     1.4
+     1.7,
+     1.3
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -30178,7 +30013,7 @@
    ],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 5.6,
+    "elapsed_ms": 5.4,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -30197,9 +30032,9 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     1.3,
+     1.2,
      1.1,
-     1.7,
+     1.6,
      1.3
     ],
     "protocol_errors": 0,
@@ -31397,10 +31232,10 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     1.5,
+     1.4,
      1.9,
      1.4,
-     1.5
+     1.4
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -32769,7 +32604,7 @@
    ],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 7.0,
+    "elapsed_ms": 6.8,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -32790,8 +32625,8 @@
     "turn_latency_ms": [
      2.0,
      1.5,
-     1.6,
-     1.6
+     1.5,
+     1.5
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -34007,13 +33842,13 @@
     "completion_tokens": 203,
     "prefill_ms": 0.0,
     "decode_ms": 0.0,
-    "tool_ms": 0.4,
+    "tool_ms": 0.5,
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     2.4,
+     2.3,
      1.6,
-     1.5
+     1.7
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -35665,7 +35500,7 @@
    ],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 10.0,
+    "elapsed_ms": 9.7,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -35684,11 +35519,11 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     2.1,
-     2.0,
+     2.4,
+     1.8,
      1.7,
-     1.7,
-     2.1
+     1.6,
+     2.0
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -37053,7 +36888,7 @@
    ],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 6.4,
+    "elapsed_ms": 6.0,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -37072,9 +36907,9 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     2.5,
-     1.9,
-     1.8
+     2.4,
+     1.8,
+     1.6
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -38894,7 +38729,7 @@
     }
    ],
    "metrics": {
-    "elapsed_ms": 8.6,
+    "elapsed_ms": 8.9,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -38913,10 +38748,10 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     2.5,
-     1.7,
-     2.5,
-     1.7
+     2.4,
+     1.8,
+     2.6,
+     1.8
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -40384,7 +40219,7 @@
     }
    ],
    "metrics": {
-    "elapsed_ms": 6.6,
+    "elapsed_ms": 6.7,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -40399,13 +40234,13 @@
     "completion_tokens": 313,
     "prefill_ms": 0.0,
     "decode_ms": 0.0,
-    "tool_ms": 0.6,
+    "tool_ms": 0.7,
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
      2.1,
-     2.5,
-     1.7
+     2.7,
+     1.8
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -41749,7 +41584,7 @@
     }
    ],
    "metrics": {
-    "elapsed_ms": 5.7,
+    "elapsed_ms": 5.9,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -41764,11 +41599,11 @@
     "completion_tokens": 261,
     "prefill_ms": 0.0,
     "decode_ms": 0.0,
-    "tool_ms": 0.4,
+    "tool_ms": 0.5,
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     2.0,
+     2.1,
      2.0,
      1.5
     ],
@@ -43828,8 +43663,8 @@
     "turn_latency_ms": [
      2.2,
      2.1,
-     1.4,
-     2.0,
+     1.5,
+     1.9,
      1.5
     ],
     "protocol_errors": 0,
@@ -43970,7 +43805,8 @@
       "confirm_proposal": "last"
      },
      "result": {
-      "presented": []
+      "presented": [],
+      "asks_which_item": false
      },
      "error": null,
      "committed_effects": [],
@@ -45278,7 +45114,8 @@
       "confirm_proposal": "last"
      },
      "result": {
-      "presented": []
+      "presented": [],
+      "asks_which_item": false
      },
      "error": null,
      "committed_effects": [],
@@ -45663,7 +45500,7 @@
    "proposals": [],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 3.5,
+    "elapsed_ms": 3.4,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -45682,7 +45519,7 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     1.7,
+     1.6,
      1.6
     ],
     "protocol_errors": 0,
@@ -47984,13 +47821,13 @@
     "completion_tokens": 225,
     "prefill_ms": 0.0,
     "decode_ms": 0.0,
-    "tool_ms": 0.4,
+    "tool_ms": 0.5,
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     1.9,
+     1.8,
      2.2,
-     1.5
+     1.6
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -49348,7 +49185,7 @@
    ],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 5.8,
+    "elapsed_ms": 5.9,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -49363,13 +49200,13 @@
     "completion_tokens": 303,
     "prefill_ms": 0.0,
     "decode_ms": 0.0,
-    "tool_ms": 0.5,
+    "tool_ms": 0.6,
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     1.9,
-     2.1,
-     1.6
+     2.0,
+     2.2,
+     1.5
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -50371,7 +50208,7 @@
    ],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 3.9,
+    "elapsed_ms": 3.7,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -50390,8 +50227,8 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     2.2,
-     1.5
+     2.1,
+     1.4
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -51014,7 +50851,7 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     2.1
+     2.2
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -51633,7 +51470,7 @@
     "completion_tokens": 116,
     "prefill_ms": 0.0,
     "decode_ms": 0.0,
-    "tool_ms": 0.2,
+    "tool_ms": 0.3,
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
@@ -52110,7 +51947,7 @@
    "proposals": [],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 2.0,
+    "elapsed_ms": 1.9,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -52129,7 +51966,7 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     1.9
+     1.8
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -52783,7 +52620,7 @@
    "proposals": [],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 2.1,
+    "elapsed_ms": 2.2,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -52802,7 +52639,7 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     1.9
+     2.0
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -53146,7 +52983,7 @@
    "proposals": [],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 1.7,
+    "elapsed_ms": 1.8,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -54206,7 +54043,7 @@
    ],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 3.8,
+    "elapsed_ms": 3.9,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -54225,8 +54062,8 @@
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     2.1,
-     1.5
+     2.2,
+     1.6
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,
@@ -56187,7 +56024,7 @@
    ],
    "external_events": [],
    "metrics": {
-    "elapsed_ms": 13.5,
+    "elapsed_ms": 14.5,
     "peak_ram_mb": null,
     "peak_vram_mb": null,
     "peak_unified_gpu_mb": null,
@@ -56202,16 +56039,16 @@
     "completion_tokens": 421,
     "prefill_ms": 0.0,
     "decode_ms": 0.0,
-    "tool_ms": 0.8,
+    "tool_ms": 0.9,
     "decode_tok_s": null,
     "prefill_tok_s": null,
     "turn_latency_ms": [
-     1.7,
-     1.7,
-     2.9,
-     3.1,
-     1.9,
-     1.9
+     1.8,
+     1.8,
+     3.2,
+     3.4,
+     2.1,
+     2.0
     ],
     "protocol_errors": 0,
     "guard_overrides": 0,

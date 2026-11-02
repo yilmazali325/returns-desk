@@ -170,6 +170,7 @@ class Turn:
     confirmed_id: str | None = None  # what the flag resolved to (even if withheld)
     grant: dict[str, Any] | None = None  # the confirmed proposal, when the grant stands
     withheld: str | None = None  # why the flag did not execute (cancel or change wording)
+    unanchored: bool = False  # the flag found nothing ever proposed, and no customer message names an item
     pure_cancel: bool = False
     desk_note: str | None = None
     preamble: HandoffFacts | None = None
@@ -278,8 +279,12 @@ class Desk:
         proposal_id = (presented[-1] if presented else None) if confirm == "last" else (confirm if confirm in presented else None)
         proposal = self.tools.get_proposal(proposal_id) if proposal_id else None
         if proposal is None:
+            # "Yes, refund it" confirms something the customer thinks was offered: with nothing ever
+            # proposed and no item named, "it" is not a request to guess at (CLARIFICATIONS #18).
+            turn.unanchored = not presented and not _names_an_item(turn.analysis)
             self.tools.audit.record(kind="confirmation", agent="orchestrator", tool="confirmation_unresolved",
-                                    arguments={"confirm_proposal": confirm}, result={"presented": presented})
+                                    arguments={"confirm_proposal": confirm},
+                                    result={"presented": presented, "asks_which_item": turn.unanchored})
             return
         turn.confirmed_id = proposal_id
         conflict = self._grant_conflict(turn, proposal)
@@ -476,6 +481,8 @@ class Desk:
     def _check_propose(self, turn: Turn, args: dict[str, Any]) -> tuple[Handoff | None, dict[str, Any] | None]:
         """Facts can block the agent's propose handoff; they never replace its reading (SPEC §6.0)."""
         a = turn.analysis
+        if turn.unanchored:
+            return None, self._gate_feedback(turn, TARGET_NOT_GROUNDED)
         intent = args["intent"]
         verdict = check_target(a, args.get("order_id"), args.get("line_id"), args.get("evidence"))
         if not verdict.ok:
@@ -509,6 +516,8 @@ class Desk:
             AMBIGUOUS_TARGET: ("More than one line could fit. If the customer's words pick one, hand off again with "
                                "evidence set to their exact words; otherwise ask which line they mean."),
             TARGET_MISMATCH: "That line does not fit what the customer typed. Use the line they named, or ask.",
+            TARGET_NOT_GROUNDED: ("The customer confirmed, but nothing has been proposed yet and they named no item. "
+                                  "Ask which item they mean; do not hand off."),
             REMEDY_UNCLEAR: "The customer mentioned both a refund and an exchange. Ask which one they want.",
             REMEDY_MISMATCH: f"The customer's latest words ask for a {a.stated_remedy}, not that.",
             SIZE_UNSPECIFIED: ("The customer named more than one size. Ask which one they want." if len(a.requested_sizes) > 1
@@ -567,12 +576,13 @@ class Desk:
         """The handoff the conversation suggests, when the agent's question looks unnecessary.
 
         Feedback only: the agent decides. Never for a question about rules or status, after the
-        agent checked the status, or when both remedies (or no remedy) were mentioned
-        (CLARIFICATIONS #4). Exchange without a size follows CLARIFICATIONS #5: with 2+ valid
+        agent checked the status, when both remedies (or no remedy) were mentioned
+        (CLARIFICATIONS #4), or when the flag had nothing to confirm and no item is named (#18). Exchange without a size follows CLARIFICATIONS #5: with 2+ valid
         sizes asking is right, unless policy already refuses the line (then Operations must say so).
         """
         a = turn.analysis
-        if a.unique_target is None or a.inquiry or turn.status_checked or turn.withheld == UNREAD_SIZE:
+        if a.unique_target is None or a.inquiry or turn.status_checked or turn.withheld == UNREAD_SIZE \
+                or turn.unanchored:
             return None
         target = turn.line(*a.unique_target)
         if a.remedy_cue == REFUND:
@@ -670,7 +680,8 @@ class Desk:
         asked for a refund or exchange, and policy refuses the line. Then a question is pointless
         and asking about sizes would advertise an exchange that cannot happen (review B3)."""
         a = turn.analysis
-        if turn.mode != NORMAL or turn.acted or a.inquiry or a.remedy_cue == NONE or len(a.id_candidates) != 1:
+        if turn.mode != NORMAL or turn.acted or turn.unanchored or a.inquiry or a.remedy_cue == NONE \
+                or len(a.id_candidates) != 1:
             return
         key = a.id_candidate_keys[0]
         verdict = check_target(a, *key)

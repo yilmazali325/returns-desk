@@ -290,7 +290,9 @@ summary, intent, requested size/product, grant flag) — no customer text.
 Turn pipeline:
 1. Apply faults for this turn. Resolve `confirm_proposal:"last"` → the proposal_id of the latest
    EARLIER turn output with non-null proposal → ConfirmationGrant (this turn only). None → no grant
-   (audit `confirmation_unresolved`). The grant is withheld (audit `guard/grant_withheld`) only for a
+   (audit `confirmation_unresolved`); when nothing was ever proposed and no customer message names an
+   item, code blocks every propose handoff and the code deny, so the turn asks which item
+   (CLARIFICATIONS #18). The grant is withheld (audit `guard/grant_withheld`) only for a
    real cancel or change (CLARIFICATIONS #9): the cancel cue (§5); both remedies; a STRONG cue for the
    other remedy; a requested size that resolves to another replacement; an exchange message naming a
    size that is neither the item's nor the replacement's, or a refund message naming the size of

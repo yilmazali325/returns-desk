@@ -68,39 +68,39 @@ Engine flags (llama-server argv after the model path and port):
 
 | run | before | after | load 1/5/15 before | preflight | sleep |
 |---|---|---|---|---|---|
-| holdout_v2/B/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.82, 3.31, 5.12 | passed | attached by bench.run |
-| holdout_v2/F/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 2.37, 7.05, 6.84 | passed | attached by bench.run |
-| holdout_v3/B/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 3.14, 3.64, 3.62 | passed | attached by bench.run |
-| holdout_v3/F/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.74, 2.01, 3.29 | passed | attached by bench.run |
-| public/B/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.53, 1.68, 1.61 | passed | attached by bench.run |
-| public/B/run-2 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.4, 1.62, 1.61 | passed | attached by bench.run |
-| public/B/run-3 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.27, 1.49, 1.59 | passed | attached by bench.run |
-| public/F/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.69, 1.75, 1.64 | passed | attached by bench.run |
-| public/F/run-2 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.96, 1.89, 1.73 | passed | attached by bench.run |
-| public/F/run-3 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.03, 1.52, 1.61 | passed | attached by bench.run |
-| public/F-cacheram-default/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.27, 1.71, 1.6 | passed | attached by bench.run |
-| public/F-cacheram-default/run-2 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.59, 1.69, 1.64 | passed | attached by bench.run |
-| public/F-cacheram-default/run-3 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.34, 1.64, 1.66 | passed | attached by bench.run |
-| public/F-freetext/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.65, 1.63, 1.58 | passed | attached by bench.run |
-| public/F-freetext/run-2 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.26, 1.66, 1.62 | passed | attached by bench.run |
-| public/F-freetext/run-3 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 2.09, 1.85, 1.72 | passed | attached by bench.run |
-| public/F-native/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.45, 1.78, 1.62 | passed | attached by bench.run |
-| public/F-native/run-2 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.76, 1.67, 1.63 | passed | attached by bench.run |
-| public/F-native/run-3 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 2.11, 1.68, 1.65 | passed | attached by bench.run |
-| public/F-noprefetch/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.06, 1.54, 1.55 | passed | attached by bench.run |
-| public/F-noprefetch/run-2 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 2.85, 1.98, 1.75 | passed | attached by bench.run |
-| public/F-noprefetch/run-3 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.04, 1.47, 1.59 | passed | attached by bench.run |
-| public/F-q8/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.54, 1.59, 1.56 | passed | attached by bench.run |
-| public/F-q8/run-2 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.57, 1.75, 1.65 | passed | attached by bench.run |
-| public/F-q8/run-3 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.74, 1.77, 1.69 | passed | attached by bench.run |
-| public/B-q4/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.5, 1.7, 1.6 | passed | attached by bench.run |
-| public/B-q4/run-2 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.98, 1.82, 1.67 | passed | attached by bench.run |
-| public/B-q4/run-3 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.82, 1.82, 1.72 | passed | attached by bench.run |
-| public/B-repeat/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.09, 1.48, 1.52 | passed | attached by bench.run |
-| public/B-repeat/run-2 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.37, 1.76, 1.69 | passed | attached by bench.run |
-| public/B-repeat/run-3 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.4, 1.71, 1.68 | passed | attached by bench.run |
-| variants/B/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.94, 2.49, 2.99 | passed | attached by bench.run |
-| variants/F/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.59, 1.6, 1.62 | passed | attached by bench.run |
+| holdout_v2/B/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.68, 1.56, 3.87 | passed | attached by bench.run |
+| holdout_v2/F/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.82, 1.95, 4.94 | passed | attached by bench.run |
+| holdout_v3/B/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.67, 2.87, 3.73 | passed | attached by bench.run |
+| holdout_v3/F/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 2.6, 5.37, 4.75 | passed | attached by bench.run |
+| public/B/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 2.01, 1.8, 2.36 | passed | attached by bench.run |
+| public/B/run-2 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.6, 1.72, 2.17 | passed | attached by bench.run |
+| public/B/run-3 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.62, 2.19, 2.36 | passed | attached by bench.run |
+| public/F/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 2.07, 1.86, 2.33 | passed | attached by bench.run |
+| public/F/run-2 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.55, 1.99, 2.23 | passed | attached by bench.run |
+| public/F/run-3 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.6, 2.35, 2.43 | passed | attached by bench.run |
+| public/F-cacheram-default/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.79, 1.78, 2.59 | passed | attached by bench.run |
+| public/F-cacheram-default/run-2 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.47, 1.72, 2.19 | passed | attached by bench.run |
+| public/F-cacheram-default/run-3 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.23, 2.35, 2.43 | passed | attached by bench.run |
+| public/F-freetext/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.73, 1.73, 2.36 | passed | attached by bench.run |
+| public/F-freetext/run-2 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 2.05, 1.85, 2.25 | passed | attached by bench.run |
+| public/F-freetext/run-3 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 3.63, 3.19, 2.69 | passed | attached by bench.run |
+| public/F-native/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.56, 1.77, 2.64 | passed | attached by bench.run |
+| public/F-native/run-2 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 3.06, 2.31, 2.36 | passed | attached by bench.run |
+| public/F-native/run-3 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.5, 2.03, 2.28 | passed | attached by bench.run |
+| public/F-noprefetch/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.6, 1.71, 2.48 | passed | attached by bench.run |
+| public/F-noprefetch/run-2 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.84, 2.1, 2.28 | passed | attached by bench.run |
+| public/F-noprefetch/run-3 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.54, 2.27, 2.39 | passed | attached by bench.run |
+| public/F-q8/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.91, 1.76, 2.4 | passed | attached by bench.run |
+| public/F-q8/run-2 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.61, 1.72, 2.23 | passed | attached by bench.run |
+| public/F-q8/run-3 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 4.02, 2.6, 2.42 | passed | attached by bench.run |
+| public/B-q4/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.67, 1.75, 2.55 | passed | attached by bench.run |
+| public/B-q4/run-2 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.36, 1.71, 2.26 | passed | attached by bench.run |
+| public/B-q4/run-3 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 2.51, 2.95, 2.62 | passed | attached by bench.run |
+| public/B-repeat/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.39, 1.65, 2.43 | passed | attached by bench.run |
+| public/B-repeat/run-2 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 2.01, 2.03, 2.23 | passed | attached by bench.run |
+| public/B-repeat/run-3 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 2.14, 2.73, 2.56 | passed | attached by bench.run |
+| variants/B/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 1.51, 1.77, 1.74 | passed | attached by bench.run |
+| variants/F/run-1 | AC Power, powermode 0, no thermal warning, sleep prevented | AC Power, powermode 0, no thermal warning, sleep prevented | 2.0, 1.45, 1.46 | passed | attached by bench.run |
 
 ### Reproduce
 
@@ -186,220 +186,220 @@ Case latency = `metrics.elapsed_ms` (state reset + every turn; server start excl
 
 | profile | successful | case p50 | case p95 | case sample | turn p50 | turn p95 | turn sample | all-attempts p50 | all-attempts p95 | first case after start (median) | warm cases (median) | conditions |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| B | 18/18 | 11,434 | 13,205 | n=18, p95 = max | 4,784 | 8,249 | n=39 | 11,434 | 13,205 | 12,328 | 11,357 |  |
-| F | 18/18 | 5,044 | 5,894 | n=18, p95 = max | 1,876 | 3,910 | n=39 | 5,044 | 5,894 | 5,585 | 5,008 |  |
-| F-cacheram-default | 18/18 | 4,990 | 6,028 | n=18, p95 = max | 1,922 | 3,887 | n=39 | 4,990 | 6,028 | 5,550 | 4,982 |  |
-| F-freetext | 18/18 | 6,149 | 7,461 | n=18, p95 = max | 2,528 | 4,610 | n=39 | 6,149 | 7,461 | 7,049 | 6,073 |  |
-| F-native | 18/18 | 7,973 | 10,818 | n=18, p95 = max | 3,465 | 6,254 | n=39 | 7,973 | 10,818 | 8,126 | 7,886 |  |
-| F-noprefetch | 18/18 | 5,540 | 6,962 | n=18, p95 = max | 2,073 | 4,209 | n=39 | 5,540 | 6,962 | 5,956 | 5,487 |  |
-| F-q8 | 18/18 | 6,475 | 7,786 | n=18, p95 = max | 2,423 | 4,752 | n=39 | 6,475 | 7,786 | 6,944 | 6,408 |  |
-| B-q4 | 18/18 | 8,490 | 10,027 | n=18, p95 = max | 3,696 | 6,446 | n=39 | 8,490 | 10,027 | 9,721 | 8,488 |  |
-| B-repeat | 18/18 | 11,095 | 12,451 | n=18, p95 = max | 4,584 | 8,350 | n=39 | 11,095 | 12,451 | 12,451 | 11,003 |  |
+| B | 18/18 | 11,519 | 13,162 | n=18, p95 = max | 4,597 | 8,149 | n=39 | 11,519 | 13,162 | 12,088 | 10,997 |  |
+| F | 18/18 | 5,034 | 5,742 | n=18, p95 = max | 1,878 | 3,869 | n=39 | 5,034 | 5,742 | 5,552 | 4,979 |  |
+| F-cacheram-default | 18/18 | 4,974 | 5,790 | n=18, p95 = max | 1,896 | 3,948 | n=39 | 4,974 | 5,790 | 5,603 | 4,972 |  |
+| F-freetext | 18/18 | 5,958 | 7,117 | n=18, p95 = max | 2,440 | 4,542 | n=39 | 5,958 | 7,117 | 6,945 | 5,926 |  |
+| F-native | 18/18 | 7,723 | 10,182 | n=18, p95 = max | 3,272 | 5,881 | n=39 | 7,723 | 10,182 | 8,172 | 7,559 |  |
+| F-noprefetch | 18/18 | 5,456 | 6,844 | n=18, p95 = max | 2,064 | 4,222 | n=39 | 5,456 | 6,844 | 5,952 | 5,364 |  |
+| F-q8 | 18/18 | 6,477 | 8,105 | n=18, p95 = max | 2,406 | 4,722 | n=39 | 6,477 | 8,105 | 6,850 | 6,455 |  |
+| B-q4 | 18/18 | 8,577 | 10,097 | n=18, p95 = max | 3,583 | 6,558 | n=39 | 8,577 | 10,097 | 9,903 | 8,457 |  |
+| B-repeat | 18/18 | 11,776 | 12,778 | n=18, p95 = max | 4,572 | 8,226 | n=39 | 11,776 | 12,778 | 12,285 | 11,020 |  |
 
 Per-scenario median case latency, ms (successful/attempted) — suite `public`
 
 | scenario | B | F | F-cacheram-default | F-freetext | F-native | F-noprefetch | F-q8 | B-q4 | B-repeat |
 |---|---|---|---|---|---|---|---|---|---|
-| public_01_refund_boundary | 12,328 (3/3) | 5,585 (3/3) | 5,550 (3/3) | 7,049 (3/3) | 8,126 (3/3) | 5,956 (3/3) | 6,944 (3/3) | 9,721 (3/3) | 12,451 (3/3) |
-| public_02_exchange | 10,866 (3/3) | 4,724 (3/3) | 4,747 (3/3) | 5,909 (3/3) | 6,366 (3/3) | 5,049 (3/3) | 6,295 (3/3) | 8,849 (3/3) | 10,939 (3/3) |
-| public_03_expired | 6,990 (3/3) | 2,516 (3/3) | 2,487 (3/3) | 3,015 (3/3) | 4,087 (3/3) | 2,954 (3/3) | 2,947 (3/3) | 4,488 (3/3) | 6,908 (3/3) |
-| public_04_clarify | 12,852 (3/3) | 5,766 (3/3) | 5,701 (3/3) | 7,382 (3/3) | 9,525 (3/3) | 6,842 (3/3) | 7,597 (3/3) | 9,892 (3/3) | 12,294 (3/3) |
-| public_05_stale_stock | 11,357 (3/3) | 5,056 (3/3) | 5,007 (3/3) | 6,073 (3/3) | 10,736 (3/3) | 5,487 (3/3) | 6,499 (3/3) | 8,413 (3/3) | 10,908 (3/3) |
-| public_06_timeout_replay | 12,675 (3/3) | 5,008 (3/3) | 4,982 (3/3) | 6,246 (3/3) | 7,886 (3/3) | 5,731 (3/3) | 6,408 (3/3) | 8,488 (3/3) | 12,144 (3/3) |
+| public_01_refund_boundary | 12,088 (3/3) | 5,552 (3/3) | 5,603 (3/3) | 6,945 (3/3) | 8,172 (3/3) | 5,952 (3/3) | 6,850 (3/3) | 9,903 (3/3) | 12,285 (3/3) |
+| public_02_exchange | 10,641 (3/3) | 4,735 (3/3) | 4,769 (3/3) | 5,984 (3/3) | 6,280 (3/3) | 5,090 (3/3) | 6,455 (3/3) | 8,796 (3/3) | 10,987 (3/3) |
+| public_03_expired | 6,826 (3/3) | 2,487 (3/3) | 2,491 (3/3) | 3,007 (3/3) | 3,890 (3/3) | 2,943 (3/3) | 3,042 (3/3) | 4,408 (3/3) | 6,965 (3/3) |
+| public_04_clarify | 12,200 (3/3) | 5,688 (3/3) | 5,659 (3/3) | 7,064 (3/3) | 8,931 (3/3) | 6,688 (3/3) | 7,614 (3/3) | 9,877 (3/3) | 12,356 (3/3) |
+| public_05_stale_stock | 10,798 (3/3) | 5,034 (3/3) | 4,993 (3/3) | 5,723 (3/3) | 10,074 (3/3) | 5,508 (3/3) | 6,477 (3/3) | 8,391 (3/3) | 10,920 (3/3) |
+| public_06_timeout_replay | 12,180 (3/3) | 5,051 (3/3) | 4,972 (3/3) | 5,958 (3/3) | 7,559 (3/3) | 5,456 (3/3) | 6,349 (3/3) | 8,402 (3/3) | 12,005 (3/3) |
 
 Intersection of successes — suite `public`: 6 of 6 cases were strict successes in every run of every profile listed; latency over exactly those case-runs, ms
 
 | profile | case-runs | p50 | p95 | mean |
 |---|---|---|---|---|
-| B | 18 | 11,434 | 13,205 | 11,128 |
-| F | 18 | 5,044 | 5,894 | 4,796 |
-| F-cacheram-default | 18 | 4,990 | 6,028 | 4,795 |
-| F-freetext | 18 | 6,149 | 7,461 | 5,926 |
-| F-native | 18 | 7,973 | 10,818 | 7,686 |
-| F-noprefetch | 18 | 5,540 | 6,962 | 5,338 |
-| F-q8 | 18 | 6,475 | 7,786 | 6,141 |
-| B-q4 | 18 | 8,490 | 10,027 | 8,322 |
-| B-repeat | 18 | 11,095 | 12,451 | 10,920 |
+| B | 18 | 11,519 | 13,162 | 10,934 |
+| F | 18 | 5,034 | 5,742 | 4,767 |
+| F-cacheram-default | 18 | 4,974 | 5,790 | 4,784 |
+| F-freetext | 18 | 5,958 | 7,117 | 5,794 |
+| F-native | 18 | 7,723 | 10,182 | 7,490 |
+| F-noprefetch | 18 | 5,456 | 6,844 | 5,260 |
+| F-q8 | 18 | 6,477 | 8,105 | 6,185 |
+| B-q4 | 18 | 8,577 | 10,097 | 8,337 |
+| B-repeat | 18 | 11,776 | 12,778 | 10,991 |
 
 ### Suite `variants`: successful cases, ms
 
 | profile | successful | case p50 | case p95 | case sample | turn p50 | turn p95 | turn sample | all-attempts p50 | all-attempts p95 | first case after start (median) | warm cases (median) | conditions |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| B | 241/241 | 11,192 | 20,270 | n=241 | 6,184 | 8,221 | n=486 | 11,192 | 20,270 | 12,158 | 11,180 |  |
-| F | 241/241 | 5,150 | 9,411 | n=241 | 2,617 | 3,786 | n=486 | 5,150 | 9,411 | 5,959 | 5,144 |  |
+| B | 241/241 | 11,143 | 19,920 | n=241 | 6,107 | 8,239 | n=486 | 11,143 | 19,920 | 11,781 | 11,121 |  |
+| F | 241/241 | 4,456 | 7,936 | n=241 | 2,378 | 3,310 | n=486 | 4,456 | 7,936 | 5,789 | 4,434 |  |
 
 Per-scenario median case latency, ms (successful/attempted) — suite `variants`
 
 | scenario | B | F |
 |---|---|---|
-| already_returned | 6,445 (3/3) | 2,452 (3/3) |
-| amount_injection | 11,082 (4/4) | 4,716 (4/4) |
-| cancel_with_flag | 8,116 (3/3) | 3,625 (3/3) |
-| change_exchange_to_refund | 17,857 (3/3) | 8,012 (3/3) |
-| change_refund_to_exchange | 17,035 (3/3) | 8,512 (3/3) |
-| change_with_flag | 18,410 (3/3) | 8,850 (3/3) |
-| claims_contradict_state | 7,382 (3/3) | 3,034 (3/3) |
-| clarify_duplicate_line_id | 14,661 (3/3) | 7,135 (3/3) |
-| clarify_multi_line | 15,062 (3/3) | 6,832 (3/3) |
-| clarify_multi_order | 14,080 (3/3) | 6,844 (3/3) |
-| clarify_partial_eligibility | 13,900 (3/3) | 7,137 (3/3) |
-| confirm_on_first_turn | 7,168 (3/3) | 3,204 (3/3) |
-| confirm_without_proposal | 14,777 (3/3) | 6,454 (3/3) |
-| contractions_clarify | 3,600 (3/3) | 2,089 (3/3) |
-| description_ambiguous | 3,619 (4/4) | 2,036 (4/4) |
-| description_unique | 10,588 (4/4) | 5,547 (4/4) |
-| discontinued_sku | 6,485 (3/3) | 3,132 (3/3) |
-| double_stock_change | 11,524 (3/3) | 5,415 (3/3) |
-| duplicate_confirm | 12,279 (3/3) | 5,456 (3/3) |
-| duplicate_text_request | 12,249 (3/3) | 5,566 (3/3) |
-| exchange_different_product | 10,206 (3/3) | 3,792 (3/3) |
-| exchange_no_size_multi | 20,270 (3/3) | 8,585 (3/3) |
-| exchange_no_size_none | 7,948 (3/3) | 3,267 (3/3) |
-| exchange_no_size_single | 13,290 (3/3) | 5,198 (3/3) |
-| exchange_out_of_stock | 8,450 (3/3) | 3,709 (3/3) |
-| exchange_price_mismatch | 7,972 (3/3) | 3,814 (3/3) |
-| exchange_relative_size | 12,308 (4/4) | 5,603 (4/4) |
-| exchange_same_size | 7,998 (3/3) | 3,595 (3/3) |
-| exchange_size_not_offered | 8,581 (3/3) | 4,106 (3/3) |
-| exchange_valid | 11,845 (6/6) | 5,388 (6/6) |
-| final_sale | 6,622 (3/3) | 2,768 (3/3) |
-| foreign_order | 4,783 (3/3) | 1,955 (3/3) |
-| future_delivery | 6,196 (5/5) | 2,738 (5/5) |
-| id_formatting | 11,124 (4/4) | 4,600 (4/4) |
-| injection_eligible | 9,074 (5/5) | 3,244 (5/5) |
-| injection_ineligible | 6,760 (4/4) | 2,969 (4/4) |
-| large_account | 11,412 (3/3) | 5,316 (3/3) |
-| long_conversation | 23,728 (6/6) | 10,568 (6/6) |
-| metamorphic_dateshift | 11,199 (18/18) | 5,561 (18/18) |
-| metamorphic_rename | 12,246 (18/18) | 5,503 (18/18) |
-| multi_customer_state | 10,615 (3/3) | 4,693 (3/3) |
-| nonexistent_line | 4,072 (3/3) | 2,004 (3/3) |
-| nonexistent_order | 4,127 (3/3) | 1,941 (3/3) |
-| not_delivered | 6,402 (3/3) | 2,763 (3/3) |
-| opened | 6,116 (3/3) | 2,698 (3/3) |
-| refund_day0 | 11,192 (3/3) | 4,394 (3/3) |
-| refund_day30 | 10,810 (4/4) | 4,458 (4/4) |
-| refund_expired | 7,111 (5/5) | 2,766 (5/5) |
-| refund_mid_window | 10,990 (3/3) | 4,423 (3/3) |
-| restock_between_turns | 20,601 (3/3) | 12,967 (3/3) |
-| same_request_different_line | 13,246 (3/3) | 5,649 (3/3) |
-| single_line_no_ids | 10,499 (3/3) | 5,130 (3/3) |
-| stale_stock_positive | 11,444 (3/3) | 5,808 (3/3) |
-| stale_stock_to_zero | 12,339 (3/3) | 5,935 (3/3) |
-| stale_then_alternative | 23,099 (3/3) | 13,818 (3/3) |
-| stale_then_reconfirm | 15,979 (3/3) | 8,156 (3/3) |
-| stock_change_refund | 10,764 (3/3) | 4,967 (3/3) |
-| stock_zero_before_turn1 | 7,603 (3/3) | 3,816 (3/3) |
-| timeout_exchange_replay | 13,009 (3/3) | 6,561 (3/3) |
-| timeout_refund_replay | 12,154 (3/3) | 5,813 (3/3) |
-| timeout_revalidation_fails | 12,599 (3/3) | 5,928 (3/3) |
-| timeout_then_status | 12,916 (3/3) | 5,506 (3/3) |
-| timeout_two_turns | 11,169 (3/3) | 5,046 (3/3) |
-| verbal_yes_no_flag | 13,997 (3/3) | 6,863 (3/3) |
+| already_returned | 6,422 (3/3) | 2,326 (3/3) |
+| amount_injection | 10,568 (4/4) | 4,180 (4/4) |
+| cancel_with_flag | 7,639 (3/3) | 3,227 (3/3) |
+| change_exchange_to_refund | 16,990 (3/3) | 7,087 (3/3) |
+| change_refund_to_exchange | 16,683 (3/3) | 7,058 (3/3) |
+| change_with_flag | 17,944 (3/3) | 7,674 (3/3) |
+| claims_contradict_state | 7,115 (3/3) | 2,741 (3/3) |
+| clarify_duplicate_line_id | 14,710 (3/3) | 6,015 (3/3) |
+| clarify_multi_line | 16,080 (3/3) | 5,937 (3/3) |
+| clarify_multi_order | 14,845 (3/3) | 5,970 (3/3) |
+| clarify_partial_eligibility | 14,499 (3/3) | 5,841 (3/3) |
+| confirm_on_first_turn | 6,881 (3/3) | 2,683 (3/3) |
+| confirm_without_proposal | 13,899 (3/3) | 5,359 (3/3) |
+| contractions_clarify | 3,835 (3/3) | 1,814 (3/3) |
+| description_ambiguous | 3,636 (4/4) | 1,703 (4/4) |
+| description_unique | 10,728 (4/4) | 4,346 (4/4) |
+| discontinued_sku | 7,003 (3/3) | 2,853 (3/3) |
+| double_stock_change | 11,357 (3/3) | 4,670 (3/3) |
+| duplicate_confirm | 11,893 (3/3) | 4,962 (3/3) |
+| duplicate_text_request | 11,996 (3/3) | 4,810 (3/3) |
+| exchange_different_product | 9,996 (3/3) | 3,334 (3/3) |
+| exchange_no_size_multi | 19,608 (3/3) | 7,936 (3/3) |
+| exchange_no_size_none | 7,986 (3/3) | 2,881 (3/3) |
+| exchange_no_size_single | 13,070 (3/3) | 4,774 (3/3) |
+| exchange_out_of_stock | 8,375 (3/3) | 3,392 (3/3) |
+| exchange_price_mismatch | 8,687 (3/3) | 3,446 (3/3) |
+| exchange_relative_size | 12,369 (4/4) | 4,966 (4/4) |
+| exchange_same_size | 9,024 (3/3) | 3,266 (3/3) |
+| exchange_size_not_offered | 10,350 (3/3) | 3,486 (3/3) |
+| exchange_valid | 11,782 (6/6) | 4,797 (6/6) |
+| final_sale | 6,619 (3/3) | 2,618 (3/3) |
+| foreign_order | 4,866 (3/3) | 1,844 (3/3) |
+| future_delivery | 6,264 (5/5) | 2,604 (5/5) |
+| id_formatting | 10,090 (4/4) | 4,218 (4/4) |
+| injection_eligible | 8,231 (5/5) | 2,887 (5/5) |
+| injection_ineligible | 6,167 (4/4) | 2,644 (4/4) |
+| large_account | 10,269 (3/3) | 4,910 (3/3) |
+| long_conversation | 21,734 (6/6) | 9,461 (6/6) |
+| metamorphic_dateshift | 10,576 (18/18) | 4,783 (18/18) |
+| metamorphic_rename | 11,516 (18/18) | 4,876 (18/18) |
+| multi_customer_state | 10,395 (3/3) | 4,397 (3/3) |
+| nonexistent_line | 4,184 (3/3) | 1,819 (3/3) |
+| nonexistent_order | 4,180 (3/3) | 1,783 (3/3) |
+| not_delivered | 7,037 (3/3) | 2,580 (3/3) |
+| opened | 6,479 (3/3) | 2,576 (3/3) |
+| refund_day0 | 11,205 (3/3) | 4,401 (3/3) |
+| refund_day30 | 11,113 (4/4) | 4,309 (4/4) |
+| refund_expired | 7,480 (5/5) | 2,659 (5/5) |
+| refund_mid_window | 10,677 (3/3) | 4,234 (3/3) |
+| restock_between_turns | 20,013 (3/3) | 8,081 (3/3) |
+| same_request_different_line | 13,140 (3/3) | 5,060 (3/3) |
+| single_line_no_ids | 10,784 (3/3) | 4,224 (3/3) |
+| stale_stock_positive | 11,455 (3/3) | 4,941 (3/3) |
+| stale_stock_to_zero | 12,306 (3/3) | 5,112 (3/3) |
+| stale_then_alternative | 21,653 (3/3) | 10,276 (3/3) |
+| stale_then_reconfirm | 14,692 (3/3) | 7,190 (3/3) |
+| stock_change_refund | 11,543 (3/3) | 4,310 (3/3) |
+| stock_zero_before_turn1 | 8,372 (3/3) | 3,344 (3/3) |
+| timeout_exchange_replay | 12,523 (3/3) | 5,657 (3/3) |
+| timeout_refund_replay | 12,274 (3/3) | 5,206 (3/3) |
+| timeout_revalidation_fails | 12,920 (3/3) | 4,975 (3/3) |
+| timeout_then_status | 12,882 (3/3) | 4,877 (3/3) |
+| timeout_two_turns | 11,346 (3/3) | 4,502 (3/3) |
+| verbal_yes_no_flag | 13,266 (3/3) | 5,613 (3/3) |
 
 Intersection of successes — suite `variants`: 241 of 241 cases were strict successes in every run of every profile listed; latency over exactly those case-runs, ms
 
 | profile | case-runs | p50 | p95 | mean |
 |---|---|---|---|---|
-| B | 241 | 11,192 | 20,270 | 11,332 |
-| F | 241 | 5,150 | 9,411 | 5,275 |
+| B | 241 | 11,143 | 19,920 | 11,139 |
+| F | 241 | 4,456 | 7,936 | 4,578 |
 
 ### Suite `holdout_v2`: successful cases, ms
 
 | profile | successful | case p50 | case p95 | case sample | turn p50 | turn p95 | turn sample | all-attempts p50 | all-attempts p95 | first case after start (median) | warm cases (median) | conditions |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| B | 56/57 | 12,020 | 22,326 | n=56 | 5,912 | 7,928 | n=133 | 12,020 | 22,326 | 12,020 | 12,250 |  |
-| F | 56/57 | 5,163 | 10,762 | n=56 | 2,390 | 3,511 | n=133 | 5,163 | 10,762 | 6,144 | 5,163 |  |
+| B | 56/57 | 11,419 | 22,884 | n=56 | 5,409 | 7,712 | n=133 | 11,419 | 22,884 | 12,205 | 11,419 |  |
+| F | 56/57 | 4,705 | 9,922 | n=56 | 2,204 | 3,209 | n=133 | 4,705 | 9,922 | 6,122 | 4,705 |  |
 
 Per-scenario median case latency, ms (successful/attempted) — suite `holdout_v2`
 
 | scenario | B | F |
 |---|---|---|
-| boundary | 11,244 (3/3) | 4,469 (3/3) |
-| chit_chat | 4,299 (1/1) | 1,377 (1/1) |
-| confirm_after_deny | 16,505 (1/1) | 6,123 (1/1) |
-| confirm_first_turn | 10,167 (1/1) | 4,218 (1/1) |
-| correction | 17,977 (1/1) | 7,738 (1/1) |
-| cross_customer | 3,625 (1/1) | 1,781 (1/1) |
-| discount | 11,252 (1/1) | 4,598 (1/1) |
-| duplicate | 13,606 (2/2) | 5,815 (2/2) |
-| empty | 15,089 (1/1) | 5,398 (1/1) |
-| exchange_invalid | 7,326 (3/3) | 3,447 (3/3) |
-| exchange_no_size | 15,879 (2/2) | 6,413 (2/2) |
-| flag_benign_wording | 10,919 (1/1) | 4,546 (1/1) |
-| flag_cancel | 7,726 (1/1) | 3,237 (1/1) |
-| flag_change | 18,673 (1/1) | 8,263 (1/1) |
-| id_format | 12,411 (1/1) | 4,717 (1/1) |
-| indirect_ref | 12,727 (2/2) | 5,661 (2/2) |
-| ineligible | 6,492 (3/3) | 2,718 (3/3) |
-| injection | 11,173 (3/3) | 5,087 (3/3) |
-| line_not_found | 4,150 (1/1) | 2,035 (1/1) |
-| long_conversation | 25,075 (1/1) | 12,191 (1/1) |
-| long_rambling | 12,858 (1/1) | 5,767 (1/1) |
-| mixed_language | 11,942 (1/2) | 5,163 (1/2) |
-| multi_item | 11,209 (1/1) | 4,941 (1/1) |
-| multi_order | 13,934 (1/1) | 5,586 (1/1) |
-| not_on_account | 4,500 (1/1) | 1,877 (1/1) |
-| partial_eligibility | 17,264 (1/1) | 5,958 (1/1) |
-| policy_question | 12,886 (1/1) | 5,107 (1/1) |
-| relative_size | 18,216 (5/5) | 7,420 (5/5) |
-| remedy_unclear | 15,150 (1/1) | 6,380 (1/1) |
-| size_hint | 10,432 (1/1) | 4,057 (1/1) |
-| social_engineering | 5,655 (2/2) | 2,514 (2/2) |
-| status | 17,302 (1/1) | 6,864 (1/1) |
-| stock_change | 20,296 (4/4) | 9,193 (4/4) |
-| timeout | 14,057 (2/2) | 6,729 (2/2) |
-| typo_slang | 11,206 (1/1) | 4,727 (1/1) |
-| verbal_yes | 18,413 (1/1) | 8,691 (1/1) |
+| boundary | 11,036 (3/3) | 4,125 (3/3) |
+| chit_chat | 3,983 (1/1) | 1,290 (1/1) |
+| confirm_after_deny | 15,462 (1/1) | 5,619 (1/1) |
+| confirm_first_turn | 9,630 (1/1) | 3,916 (1/1) |
+| correction | 16,454 (1/1) | 7,107 (1/1) |
+| cross_customer | 3,487 (1/1) | 1,611 (1/1) |
+| discount | 10,360 (1/1) | 4,268 (1/1) |
+| duplicate | 13,911 (2/2) | 5,305 (2/2) |
+| empty | 14,213 (1/1) | 4,928 (1/1) |
+| exchange_invalid | 6,848 (3/3) | 3,164 (3/3) |
+| exchange_no_size | 14,790 (2/2) | 5,920 (2/2) |
+| flag_benign_wording | 10,105 (1/1) | 4,243 (1/1) |
+| flag_cancel | 7,159 (1/1) | 2,983 (1/1) |
+| flag_change | 17,329 (1/1) | 7,617 (1/1) |
+| id_format | 11,330 (1/1) | 4,247 (1/1) |
+| indirect_ref | 12,837 (2/2) | 5,683 (2/2) |
+| ineligible | 6,441 (3/3) | 2,513 (3/3) |
+| injection | 10,760 (3/3) | 4,626 (3/3) |
+| line_not_found | 4,006 (1/1) | 1,820 (1/1) |
+| long_conversation | 23,137 (1/1) | 11,203 (1/1) |
+| long_rambling | 11,928 (1/1) | 5,316 (1/1) |
+| mixed_language | 11,194 (1/2) | 4,727 (1/2) |
+| multi_item | 10,592 (1/1) | 4,600 (1/1) |
+| multi_order | 13,270 (1/1) | 5,608 (1/1) |
+| not_on_account | 4,288 (1/1) | 1,739 (1/1) |
+| partial_eligibility | 16,251 (1/1) | 5,550 (1/1) |
+| policy_question | 12,048 (1/1) | 4,689 (1/1) |
+| relative_size | 16,907 (5/5) | 6,968 (5/5) |
+| remedy_unclear | 14,502 (1/1) | 5,968 (1/1) |
+| size_hint | 9,820 (1/1) | 3,985 (1/1) |
+| social_engineering | 5,508 (2/2) | 2,302 (2/2) |
+| status | 16,110 (1/1) | 6,242 (1/1) |
+| stock_change | 20,862 (4/4) | 8,394 (4/4) |
+| timeout | 14,065 (2/2) | 6,116 (2/2) |
+| typo_slang | 10,844 (1/1) | 4,630 (1/1) |
+| verbal_yes | 16,950 (1/1) | 7,987 (1/1) |
 
 Intersection of successes — suite `holdout_v2`: 56 of 57 cases were strict successes in every run of every profile listed; latency over exactly those case-runs, ms
 
 | profile | case-runs | p50 | p95 | mean |
 |---|---|---|---|---|
-| B | 56 | 12,020 | 22,326 | 12,750 |
-| F | 56 | 5,163 | 10,762 | 5,473 |
+| B | 56 | 11,419 | 22,884 | 12,229 |
+| F | 56 | 4,705 | 9,922 | 5,062 |
 
 ### Suite `holdout_v3`: successful cases, ms
 
 | profile | successful | case p50 | case p95 | case sample | turn p50 | turn p95 | turn sample | all-attempts p50 | all-attempts p95 | first case after start (median) | warm cases (median) | conditions |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| B | 57/60 | 12,280 | 23,425 | n=57 | 6,184 | 8,299 | n=130 | 12,376 | 23,425 | 12,626 | 12,277 |  |
-| F | 58/60 | 5,539 | 11,752 | n=58 | 2,531 | 3,809 | n=134 | 5,545 | 11,752 | 6,108 | 5,539 |  |
+| B | 57/60 | 11,460 | 22,062 | n=57 | 5,739 | 7,772 | n=130 | 11,490 | 22,062 | 12,036 | 11,439 |  |
+| F | 58/60 | 4,953 | 10,429 | n=58 | 2,220 | 3,384 | n=134 | 4,979 | 10,429 | 6,027 | 4,953 |  |
 
 Per-scenario median case latency, ms (successful/attempted) — suite `holdout_v3`
 
 | scenario | B | F |
 |---|---|---|
-| natural_chitchat | 13,140 (1/1) | 5,718 (1/1) |
-| natural_clarify | 12,910 (1/1) | 6,088 (1/1) |
-| natural_confirmation | 15,972 (3/3) | 7,726 (3/3) |
-| natural_correction | 17,707 (3/4) | 7,880 (3/4) |
-| natural_fault | 19,697 (2/2) | 8,724 (2/2) |
-| natural_injection | 11,468 (3/3) | 4,681 (3/3) |
+| natural_chitchat | 12,557 (1/1) | 5,146 (1/1) |
+| natural_clarify | 12,099 (1/1) | 5,545 (1/1) |
+| natural_confirmation | 15,034 (3/3) | 6,902 (3/3) |
+| natural_correction | 17,429 (3/4) | 7,116 (3/4) |
+| natural_fault | 18,265 (2/2) | 7,727 (2/2) |
+| natural_injection | 10,446 (3/3) | 4,274 (3/3) |
 | natural_long | n/a (0/1) | n/a (0/1) |
-| natural_reference | 13,363 (4/4) | 6,135 (4/4) |
-| natural_relative_size | 12,376 (3/3) | 4,877 (3/3) |
-| natural_replay | 13,220 (1/1) | 5,602 (1/1) |
-| natural_social_engineering | 6,473 (3/3) | 3,023 (3/3) |
-| natural_status_policy | 14,155 (2/3) | 6,359 (3/3) |
-| natural_typo | 12,117 (1/1) | 4,889 (1/1) |
-| terse_clarify | 14,727 (2/2) | 6,020 (2/2) |
-| terse_exchange | 12,210 (2/2) | 5,542 (2/2) |
-| terse_exchange_deny | 8,124 (5/5) | 3,801 (5/5) |
-| terse_exchange_size_choice | 12,550 (3/3) | 5,385 (3/3) |
-| terse_ownership | 8,684 (1/1) | 3,871 (1/1) |
-| terse_policy_deny | 6,729 (4/4) | 2,957 (4/4) |
-| terse_refund_window | 12,592 (4/4) | 5,542 (4/4) |
-| terse_replay | 12,275 (1/1) | 5,650 (1/1) |
-| terse_stock_fault | 11,980 (5/5) | 5,424 (5/5) |
-| terse_timeout | 13,527 (3/3) | 6,515 (3/3) |
+| natural_reference | 12,749 (4/4) | 5,791 (4/4) |
+| natural_relative_size | 12,044 (3/3) | 4,809 (3/3) |
+| natural_replay | 12,314 (1/1) | 5,067 (1/1) |
+| natural_social_engineering | 6,301 (3/3) | 2,756 (3/3) |
+| natural_status_policy | 13,409 (2/3) | 5,703 (3/3) |
+| natural_typo | 11,312 (1/1) | 4,979 (1/1) |
+| terse_clarify | 13,742 (2/2) | 5,471 (2/2) |
+| terse_exchange | 11,168 (2/2) | 4,973 (2/2) |
+| terse_exchange_deny | 7,462 (5/5) | 3,426 (5/5) |
+| terse_exchange_size_choice | 11,383 (3/3) | 4,849 (3/3) |
+| terse_ownership | 8,157 (1/1) | 3,531 (1/1) |
+| terse_policy_deny | 6,269 (4/4) | 2,648 (4/4) |
+| terse_refund_window | 11,667 (4/4) | 4,313 (4/4) |
+| terse_replay | 11,622 (1/1) | 4,985 (1/1) |
+| terse_stock_fault | 11,278 (5/5) | 4,953 (5/5) |
+| terse_timeout | 12,522 (3/3) | 5,950 (3/3) |
 
 Intersection of successes — suite `holdout_v3`: 57 of 60 cases were strict successes in every run of every profile listed; latency over exactly those case-runs, ms
 
 | profile | case-runs | p50 | p95 | mean |
 |---|---|---|---|---|
-| B | 57 | 12,280 | 23,425 | 12,767 |
-| F | 57 | 5,539 | 10,875 | 5,645 |
+| B | 57 | 11,460 | 22,062 | 11,980 |
+| F | 57 | 4,953 | 9,727 | 5,079 |
 
 ## Paired latency comparisons
 
@@ -407,23 +407,23 @@ Ratio = geometric mean over (case, run k) pairs of profile/reference case latenc
 
 | suite | profile | vs | pairs | excluded | geo-mean ratio | 95% CI | verdict |
 |---|---|---|---|---|---|---|---|
-| public | F | B | 18 | 0 | 0.425 | [0.398, 0.449] | 57.5% faster |
-| public | F-cacheram-default | B | 18 | 0 | 0.424 | [0.393, 0.449] | 57.6% faster |
-| public | F-freetext | B | 18 | 0 | 0.523 | [0.482, 0.560] | 47.7% faster |
-| public | F-native | B | 18 | 0 | 0.674 | [0.601, 0.779] | 32.6% faster |
-| public | F-noprefetch | B | 18 | 0 | 0.474 | [0.449, 0.500] | 52.6% faster |
-| public | F-q8 | B | 18 | 0 | 0.540 | [0.486, 0.584] | 46.0% faster |
-| public | B-q4 | B | 18 | 0 | 0.739 | [0.689, 0.789] | 26.1% faster |
-| public | B-repeat | B | 18 | 0 | 0.982 | [0.968, 0.996] | A/A noise floor |
-| public | F | F-cacheram-default | 18 | 0 | 1.003 | [0.993, 1.015] | no effect (CI includes 1) |
-| public | F | F-freetext | 18 | 0 | 0.813 | [0.794, 0.834] | 18.7% faster |
-| public | F | F-native | 18 | 0 | 0.632 | [0.560, 0.695] | 36.8% faster |
-| public | F | F-noprefetch | 18 | 0 | 0.897 | [0.868, 0.926] | 10.3% faster |
-| public | F | F-q8 | 18 | 0 | 0.788 | [0.764, 0.822] | 21.2% faster |
-| public | F | B-q4 | 18 | 0 | 0.576 | [0.558, 0.592] | 42.4% faster |
-| variants | F | B | 241 | 0 | 0.460 | [0.452, 0.468] | 54.0% faster (no A/A noise floor measured) |
-| holdout_v2 | F | B | 56 | 1 | 0.426 | [0.415, 0.438] | 57.4% faster (no A/A noise floor measured) |
-| holdout_v3 | F | B | 57 | 3 | 0.441 | [0.431, 0.452] | 55.9% faster (no A/A noise floor measured) |
+| public | F | B | 18 | 0 | 0.429 | [0.397, 0.456] | 57.1% faster |
+| public | F-cacheram-default | B | 18 | 0 | 0.431 | [0.398, 0.457] | 56.9% faster |
+| public | F-freetext | B | 18 | 0 | 0.521 | [0.479, 0.556] | 47.9% faster |
+| public | F-native | B | 18 | 0 | 0.669 | [0.595, 0.772] | 33.1% faster |
+| public | F-noprefetch | B | 18 | 0 | 0.475 | [0.448, 0.505] | 52.5% faster |
+| public | F-q8 | B | 18 | 0 | 0.553 | [0.497, 0.601] | 44.7% faster |
+| public | B-q4 | B | 18 | 0 | 0.751 | [0.694, 0.804] | 24.9% faster |
+| public | B-repeat | B | 18 | 0 | 1.005 | [0.998, 1.014] | A/A noise floor |
+| public | F | F-cacheram-default | 18 | 0 | 0.997 | [0.990, 1.003] | no effect (CI includes 1) |
+| public | F | F-freetext | 18 | 0 | 0.824 | [0.804, 0.849] | 17.6% faster |
+| public | F | F-native | 18 | 0 | 0.642 | [0.577, 0.700] | 35.8% faster |
+| public | F | F-noprefetch | 18 | 0 | 0.903 | [0.871, 0.935] | 9.7% faster |
+| public | F | F-q8 | 18 | 0 | 0.777 | [0.748, 0.806] | 22.3% faster |
+| public | F | B-q4 | 18 | 0 | 0.571 | [0.554, 0.589] | 42.9% faster |
+| variants | F | B | 241 | 0 | 0.409 | [0.404, 0.415] | 59.1% faster (no A/A noise floor measured) |
+| holdout_v2 | F | B | 56 | 1 | 0.411 | [0.400, 0.422] | 58.9% faster (no A/A noise floor measured) |
+| holdout_v3 | F | B | 57 | 3 | 0.424 | [0.414, 0.434] | 57.6% faster (no A/A noise floor measured) |
 
 ## Per-change leave-one-out (public suite)
 
@@ -431,11 +431,11 @@ Each row is F with exactly one switch reverted to B's value. Latency ratio = F /
 
 | change (F value) | without it | F strict | without strict | latency F/without | 95% CI | latency verdict | Δ LLM calls | Δ completion tokens | Δ peak RAM MiB | Δ peak unified GPU MiB | gate |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| host prompt cache (--cache-ram MiB): 2048 (B: 8192) | F-cacheram-default | 18/18 | 18/18 | 1.003 | [0.993, 1.015] | no effect (CI includes 1) | +0.0 | +0.0 | +1.6 | -104.5 | PASS: ships in F |
-| code-built ops report: True (B: False) | F-freetext | 18/18 | 18/18 | 0.813 | [0.794, 0.834] | 18.7% faster | +0.0 | -71.8 | -6.9 | -29.7 | PASS: ships in F |
-| tool-call protocol: constrained (B: native) | F-native | 18/18 | 18/18 | 0.632 | [0.560, 0.695] | 36.8% faster | -0.8 | -182.8 | +148.1 | -83.4 | PASS: ships in F |
-| prefetched account card: True (B: False) | F-noprefetch | 18/18 | 18/18 | 0.897 | [0.868, 0.926] | 10.3% faster | -1.2 | -26.2 | +84.8 | -63.3 | PASS: ships in F |
-| weights quantization: Q4_K_M (B: Q8_0) | F-q8 | 18/18 | 18/18 | 0.788 | [0.764, 0.822] | 21.2% faster | +0.0 | +6.5 | +262.8 | -1,695.6 | PASS: ships in F |
+| host prompt cache (--cache-ram MiB): 2048 (B: 8192) | F-cacheram-default | 18/18 | 18/18 | 0.997 | [0.990, 1.003] | no effect (CI includes 1) | +0.0 | +0.0 | -14.7 | +32.5 | PASS: ships in F |
+| code-built ops report: True (B: False) | F-freetext | 18/18 | 18/18 | 0.824 | [0.804, 0.849] | 17.6% faster | +0.0 | -71.8 | +98.2 | -5.5 | PASS: ships in F |
+| tool-call protocol: constrained (B: native) | F-native | 18/18 | 18/18 | 0.642 | [0.577, 0.700] | 35.8% faster | -0.8 | -182.8 | +38.5 | +6.4 | PASS: ships in F |
+| prefetched account card: True (B: False) | F-noprefetch | 18/18 | 18/18 | 0.903 | [0.871, 0.935] | 9.7% faster | -1.2 | -26.2 | +34.0 | +31.0 | PASS: ships in F |
+| weights quantization: Q4_K_M (B: Q8_0) | F-q8 | 18/18 | 18/18 | 0.777 | [0.748, 0.806] | 22.3% faster | +0.0 | +6.5 | +197.8 | -1,686.7 | PASS: ships in F |
 
 ## Per-LLM-step latency distribution
 
@@ -445,167 +445,167 @@ One sample per LLM call (`llm_step` audit entries; failed HTTP calls have no tim
 
 | profile | agent | steps | p50 ms | p95 ms | max ms | mean prefill ms | mean decode ms | mean completion tokens |
 |---|---|---|---|---|---|---|---|---|
-| B | all | 168 | 1,045 | 2,121 | 2,497 | 151 | 997 | 50.9 |
-| B | resolution | 93 | 1,076 | 2,323 | 2,497 | 152 | 1,023 | 52.1 |
-| B | operations | 75 | 1,002 | 2,115 | 2,161 | 150 | 965 | 49.4 |
-| F | all | 150 | 433 | 1,231 | 1,949 | 155 | 396 | 29.2 |
-| F | resolution | 75 | 680 | 1,264 | 1,949 | 170 | 557 | 40.5 |
-| F | operations | 75 | 391 | 534 | 846 | 140 | 234 | 17.9 |
-| F-cacheram-default | all | 150 | 432 | 1,227 | 1,963 | 155 | 398 | 29.2 |
-| F-cacheram-default | resolution | 75 | 680 | 1,306 | 1,963 | 170 | 561 | 40.5 |
-| F-cacheram-default | operations | 75 | 389 | 545 | 788 | 139 | 235 | 17.9 |
-| F-freetext | all | 150 | 655 | 1,239 | 1,964 | 158 | 528 | 37.8 |
-| F-freetext | resolution | 75 | 658 | 1,329 | 1,964 | 172 | 583 | 41.3 |
-| F-freetext | operations | 75 | 552 | 1,102 | 1,161 | 144 | 474 | 34.3 |
-| F-native | all | 165 | 678 | 1,822 | 2,426 | 155 | 660 | 46.5 |
-| F-native | resolution | 78 | 836 | 1,945 | 2,426 | 171 | 860 | 60.0 |
-| F-native | operations | 87 | 542 | 1,100 | 2,020 | 141 | 481 | 34.3 |
-| F-noprefetch | all | 171 | 434 | 1,155 | 1,435 | 147 | 393 | 28.4 |
-| F-noprefetch | resolution | 96 | 614 | 1,219 | 1,435 | 150 | 512 | 36.5 |
-| F-noprefetch | operations | 75 | 394 | 620 | 790 | 142 | 240 | 17.9 |
-| F-q8 | all | 150 | 563 | 1,670 | 2,342 | 156 | 547 | 28.4 |
-| F-q8 | resolution | 75 | 916 | 1,694 | 2,342 | 171 | 760 | 38.9 |
-| F-q8 | operations | 75 | 489 | 697 | 959 | 140 | 334 | 17.9 |
-| B-q4 | all | 183 | 769 | 1,610 | 1,718 | 141 | 654 | 48.0 |
-| B-q4 | resolution | 96 | 786 | 1,685 | 1,718 | 147 | 733 | 53.4 |
-| B-q4 | operations | 87 | 534 | 1,272 | 1,557 | 135 | 567 | 42.0 |
-| B-repeat | all | 168 | 1,017 | 2,130 | 2,358 | 147 | 981 | 50.9 |
-| B-repeat | resolution | 93 | 1,028 | 2,319 | 2,358 | 149 | 1,007 | 52.1 |
-| B-repeat | operations | 75 | 971 | 2,095 | 2,188 | 146 | 948 | 49.4 |
+| B | all | 168 | 1,013 | 2,129 | 2,457 | 148 | 985 | 50.9 |
+| B | resolution | 93 | 1,033 | 2,320 | 2,457 | 149 | 1,011 | 52.1 |
+| B | operations | 75 | 978 | 2,093 | 2,246 | 147 | 954 | 49.4 |
+| F | all | 150 | 434 | 1,226 | 1,955 | 154 | 394 | 29.2 |
+| F | resolution | 75 | 676 | 1,255 | 1,955 | 170 | 556 | 40.5 |
+| F | operations | 75 | 388 | 516 | 796 | 138 | 233 | 17.9 |
+| F-cacheram-default | all | 150 | 434 | 1,223 | 1,960 | 154 | 395 | 29.2 |
+| F-cacheram-default | resolution | 75 | 677 | 1,257 | 1,960 | 170 | 556 | 40.5 |
+| F-cacheram-default | operations | 75 | 389 | 520 | 825 | 138 | 233 | 17.9 |
+| F-freetext | all | 150 | 650 | 1,225 | 1,968 | 156 | 516 | 37.8 |
+| F-freetext | resolution | 75 | 655 | 1,266 | 1,968 | 170 | 566 | 41.3 |
+| F-freetext | operations | 75 | 533 | 1,066 | 1,100 | 141 | 465 | 34.3 |
+| F-native | all | 165 | 658 | 1,785 | 2,452 | 150 | 640 | 46.5 |
+| F-native | resolution | 78 | 828 | 1,861 | 2,452 | 165 | 834 | 60.0 |
+| F-native | operations | 87 | 535 | 1,075 | 1,867 | 136 | 465 | 34.3 |
+| F-noprefetch | all | 171 | 433 | 1,151 | 1,443 | 144 | 385 | 28.4 |
+| F-noprefetch | resolution | 96 | 605 | 1,174 | 1,443 | 148 | 502 | 36.5 |
+| F-noprefetch | operations | 75 | 393 | 516 | 841 | 138 | 235 | 17.9 |
+| F-q8 | all | 150 | 567 | 1,650 | 2,277 | 157 | 547 | 28.4 |
+| F-q8 | resolution | 75 | 913 | 1,776 | 2,277 | 172 | 760 | 38.9 |
+| F-q8 | operations | 75 | 495 | 716 | 933 | 142 | 334 | 17.9 |
+| B-q4 | all | 183 | 760 | 1,599 | 1,716 | 141 | 653 | 48.0 |
+| B-q4 | resolution | 96 | 798 | 1,680 | 1,716 | 147 | 732 | 53.4 |
+| B-q4 | operations | 87 | 550 | 1,250 | 1,557 | 136 | 566 | 42.0 |
+| B-repeat | all | 168 | 1,008 | 2,141 | 2,387 | 148 | 990 | 50.9 |
+| B-repeat | resolution | 93 | 1,034 | 2,328 | 2,387 | 149 | 1,017 | 52.1 |
+| B-repeat | operations | 75 | 974 | 2,129 | 2,149 | 147 | 957 | 49.4 |
 
 By tool, profile `B`, suite `public`
 
 | agent.tool | steps | p50 ms | p95 ms | mean completion tokens | protocol errors |
 |---|---|---|---|---|---|
-| operations.create_proposal | 18 | 807 | 1,353 | 32.7 | 0 |
-| operations.execute_proposal | 15 | 450 | 478 | 16.0 | 0 |
-| operations.get_request_status | 3 | 383 | 397 | 15.0 | 0 |
-| operations.list_exchange_options | 6 | 504 | 564 | 15.0 | 0 |
-| operations.report_to_resolution | 33 | 1,812 | 2,161 | 83.1 | 0 |
-| resolution.find_order_lines | 21 | 710 | 1,716 | 31.0 | 0 |
-| resolution.handoff_to_operations | 33 | 1,722 | 2,431 | 66.2 | 0 |
-| resolution.reply_to_customer | 39 | 1,192 | 1,692 | 51.5 | 0 |
+| operations.create_proposal | 18 | 834 | 1,277 | 32.7 | 0 |
+| operations.execute_proposal | 15 | 414 | 587 | 16.0 | 0 |
+| operations.get_request_status | 3 | 373 | 382 | 15.0 | 0 |
+| operations.list_exchange_options | 6 | 450 | 533 | 15.0 | 0 |
+| operations.report_to_resolution | 33 | 1,762 | 2,201 | 83.1 | 0 |
+| resolution.find_order_lines | 21 | 700 | 1,732 | 31.0 | 0 |
+| resolution.handoff_to_operations | 33 | 1,735 | 2,382 | 66.2 | 0 |
+| resolution.reply_to_customer | 39 | 1,160 | 1,601 | 51.5 | 0 |
 
 By tool, profile `F`, suite `public`
 
 | agent.tool | steps | p50 ms | p95 ms | mean completion tokens | protocol errors |
 |---|---|---|---|---|---|
-| operations.create_proposal | 18 | 461 | 846 | 21.7 | 0 |
-| operations.execute_proposal | 15 | 288 | 335 | 14.0 | 0 |
-| operations.get_request_status | 3 | 269 | 270 | 14.0 | 0 |
-| operations.list_exchange_options | 6 | 301 | 320 | 14.0 | 0 |
-| operations.report_to_resolution | 33 | 400 | 418 | 18.6 | 0 |
-| resolution.handoff_to_operations | 36 | 892 | 1,943 | 45.0 | 0 |
-| resolution.reply_to_customer | 39 | 671 | 813 | 36.3 | 0 |
+| operations.create_proposal | 18 | 383 | 796 | 21.7 | 0 |
+| operations.execute_proposal | 15 | 291 | 321 | 14.0 | 0 |
+| operations.get_request_status | 3 | 270 | 276 | 14.0 | 0 |
+| operations.list_exchange_options | 6 | 299 | 319 | 14.0 | 0 |
+| operations.report_to_resolution | 33 | 396 | 403 | 18.6 | 0 |
+| resolution.handoff_to_operations | 36 | 854 | 1,942 | 45.0 | 0 |
+| resolution.reply_to_customer | 39 | 665 | 810 | 36.3 | 0 |
 
 ### Suite `variants`
 
 | profile | agent | steps | p50 ms | p95 ms | max ms | mean prefill ms | mean decode ms | mean completion tokens |
 |---|---|---|---|---|---|---|---|---|
-| B | all | 2216 | 1,093 | 2,295 | 3,405 | 135 | 1,049 | 51.6 |
-| B | resolution | 1259 | 1,117 | 2,445 | 3,405 | 130 | 1,108 | 54.3 |
-| B | operations | 957 | 1,039 | 1,973 | 2,513 | 140 | 972 | 48.0 |
-| F | all | 1913 | 509 | 1,260 | 2,601 | 153 | 473 | 30.5 |
-| F | resolution | 961 | 812 | 1,373 | 2,601 | 158 | 667 | 42.5 |
-| F | operations | 952 | 441 | 652 | 1,006 | 147 | 278 | 18.4 |
+| B | all | 2216 | 1,063 | 2,237 | 3,166 | 125 | 1,043 | 51.6 |
+| B | resolution | 1259 | 1,089 | 2,437 | 3,166 | 121 | 1,102 | 54.3 |
+| B | operations | 957 | 1,028 | 1,969 | 2,500 | 130 | 964 | 48.0 |
+| F | all | 1913 | 442 | 1,109 | 2,250 | 131 | 419 | 30.5 |
+| F | resolution | 961 | 702 | 1,219 | 2,250 | 137 | 593 | 42.5 |
+| F | operations | 952 | 392 | 560 | 796 | 124 | 244 | 18.4 |
 
 By tool, profile `B`, suite `variants`
 
 | agent.tool | steps | p50 ms | p95 ms | mean completion tokens | protocol errors |
 |---|---|---|---|---|---|
-| operations.create_proposal | 258 | 859 | 1,153 | 34.6 | 0 |
-| operations.execute_proposal | 150 | 467 | 584 | 16.0 | 0 |
-| operations.get_request_status | 28 | 397 | 432 | 15.0 | 8 |
-| operations.list_exchange_options | 112 | 539 | 756 | 15.0 | 0 |
-| operations.report_to_resolution | 409 | 1,818 | 2,154 | 79.6 | 1 |
-| resolution.find_order_lines | 295 | 752 | 832 | 31.1 | 3 |
-| resolution.handoff_to_operations | 478 | 1,807 | 2,625 | 72.0 | 13 |
-| resolution.reply_to_customer | 486 | 1,198 | 1,622 | 51.0 | 0 |
+| operations.create_proposal | 258 | 828 | 1,176 | 34.6 | 0 |
+| operations.execute_proposal | 150 | 447 | 543 | 16.0 | 0 |
+| operations.get_request_status | 28 | 379 | 444 | 15.0 | 8 |
+| operations.list_exchange_options | 112 | 488 | 678 | 15.0 | 0 |
+| operations.report_to_resolution | 409 | 1,770 | 2,133 | 79.6 | 1 |
+| resolution.find_order_lines | 295 | 735 | 861 | 31.1 | 3 |
+| resolution.handoff_to_operations | 478 | 1,789 | 2,674 | 72.0 | 13 |
+| resolution.reply_to_customer | 486 | 1,183 | 1,620 | 51.0 | 0 |
 
 By tool, profile `F`, suite `variants`
 
 | agent.tool | steps | p50 ms | p95 ms | mean completion tokens | protocol errors |
 |---|---|---|---|---|---|
-| operations.create_proposal | 258 | 470 | 705 | 23.0 | 0 |
-| operations.execute_proposal | 150 | 339 | 466 | 14.0 | 0 |
-| operations.get_request_status | 19 | 309 | 385 | 14.0 | 0 |
-| operations.list_exchange_options | 114 | 352 | 571 | 14.0 | 0 |
-| operations.report_to_resolution | 411 | 457 | 513 | 18.7 | 0 |
-| resolution.handoff_to_operations | 470 | 1,041 | 1,470 | 47.9 | 0 |
-| resolution.reply_to_customer | 491 | 771 | 1,006 | 37.3 | 0 |
+| operations.create_proposal | 258 | 391 | 588 | 23.0 | 0 |
+| operations.execute_proposal | 150 | 288 | 346 | 14.0 | 0 |
+| operations.get_request_status | 19 | 271 | 281 | 14.0 | 0 |
+| operations.list_exchange_options | 114 | 304 | 362 | 14.0 | 0 |
+| operations.report_to_resolution | 411 | 401 | 416 | 18.7 | 0 |
+| resolution.handoff_to_operations | 470 | 941 | 1,301 | 47.9 | 0 |
+| resolution.reply_to_customer | 491 | 673 | 847 | 37.3 | 0 |
 
 ### Suite `holdout_v2`
 
 | profile | agent | steps | p50 ms | p95 ms | max ms | mean prefill ms | mean decode ms | mean completion tokens |
 |---|---|---|---|---|---|---|---|---|
-| B | all | 593 | 1,086 | 2,228 | 3,463 | 135 | 1,041 | 51.2 |
-| B | resolution | 344 | 1,102 | 2,314 | 3,272 | 132 | 1,061 | 52.0 |
-| B | operations | 249 | 1,073 | 2,059 | 3,463 | 140 | 1,013 | 50.0 |
-| F | all | 513 | 478 | 1,154 | 2,238 | 144 | 442 | 30.3 |
-| F | resolution | 265 | 737 | 1,223 | 2,238 | 151 | 612 | 41.4 |
-| F | operations | 248 | 397 | 592 | 830 | 137 | 261 | 18.5 |
+| B | all | 593 | 1,052 | 2,164 | 3,297 | 124 | 1,008 | 51.2 |
+| B | resolution | 344 | 1,059 | 2,258 | 3,050 | 120 | 1,026 | 52.0 |
+| B | operations | 249 | 1,033 | 2,052 | 3,297 | 129 | 983 | 50.0 |
+| F | all | 513 | 436 | 1,073 | 2,231 | 130 | 410 | 30.3 |
+| F | resolution | 265 | 683 | 1,124 | 2,231 | 137 | 568 | 41.3 |
+| F | operations | 248 | 389 | 547 | 835 | 124 | 242 | 18.5 |
 
 By tool, profile `B`, suite `holdout_v2`
 
 | agent.tool | steps | p50 ms | p95 ms | mean completion tokens | protocol errors |
 |---|---|---|---|---|---|
-| operations.(none) | 1 | 3,463 | 3,463 | 160.0 | 1 |
-| operations.create_proposal | 68 | 836 | 1,120 | 34.2 | 0 |
-| operations.execute_proposal | 40 | 454 | 544 | 16.0 | 0 |
-| operations.get_request_status | 3 | 397 | 612 | 15.0 | 0 |
-| operations.list_exchange_options | 28 | 485 | 658 | 15.0 | 0 |
-| operations.report_to_resolution | 109 | 1,846 | 2,168 | 81.4 | 0 |
-| resolution.find_order_lines | 85 | 684 | 761 | 28.4 | 2 |
-| resolution.handoff_to_operations | 122 | 1,754 | 2,460 | 70.3 | 1 |
-| resolution.reply_to_customer | 137 | 1,181 | 1,537 | 50.3 | 0 |
+| operations.(none) | 1 | 3,297 | 3,297 | 160.0 | 1 |
+| operations.create_proposal | 68 | 786 | 1,110 | 34.2 | 0 |
+| operations.execute_proposal | 40 | 418 | 522 | 16.0 | 0 |
+| operations.get_request_status | 3 | 438 | 611 | 15.0 | 0 |
+| operations.list_exchange_options | 28 | 422 | 594 | 15.0 | 0 |
+| operations.report_to_resolution | 109 | 1,786 | 2,095 | 81.4 | 0 |
+| resolution.find_order_lines | 85 | 650 | 745 | 28.4 | 2 |
+| resolution.handoff_to_operations | 122 | 1,676 | 2,389 | 70.3 | 1 |
+| resolution.reply_to_customer | 137 | 1,122 | 1,475 | 50.3 | 0 |
 
 By tool, profile `F`, suite `holdout_v2`
 
 | agent.tool | steps | p50 ms | p95 ms | mean completion tokens | protocol errors |
 |---|---|---|---|---|---|
-| operations.create_proposal | 68 | 394 | 631 | 22.8 | 0 |
-| operations.execute_proposal | 40 | 307 | 317 | 14.0 | 0 |
-| operations.get_request_status | 3 | 299 | 299 | 14.0 | 0 |
-| operations.list_exchange_options | 28 | 320 | 344 | 14.0 | 0 |
-| operations.report_to_resolution | 109 | 435 | 454 | 18.7 | 0 |
-| resolution.handoff_to_operations | 125 | 932 | 1,257 | 45.4 | 0 |
-| resolution.reply_to_customer | 140 | 695 | 905 | 37.8 | 0 |
+| operations.create_proposal | 68 | 360 | 578 | 22.8 | 0 |
+| operations.execute_proposal | 40 | 281 | 286 | 14.0 | 0 |
+| operations.get_request_status | 3 | 274 | 276 | 14.0 | 0 |
+| operations.list_exchange_options | 28 | 293 | 302 | 14.0 | 0 |
+| operations.report_to_resolution | 109 | 398 | 408 | 18.7 | 0 |
+| resolution.handoff_to_operations | 125 | 855 | 1,159 | 45.4 | 0 |
+| resolution.reply_to_customer | 140 | 650 | 824 | 37.7 | 0 |
 
 ### Suite `holdout_v3`
 
 | profile | agent | steps | p50 ms | p95 ms | max ms | mean prefill ms | mean decode ms | mean completion tokens |
 |---|---|---|---|---|---|---|---|---|
-| B | all | 650 | 1,109 | 2,332 | 2,807 | 138 | 1,056 | 51.7 |
-| B | resolution | 373 | 1,150 | 2,524 | 2,807 | 134 | 1,109 | 54.1 |
-| B | operations | 277 | 1,086 | 2,044 | 2,545 | 143 | 985 | 48.4 |
-| F | all | 561 | 492 | 1,199 | 2,142 | 151 | 459 | 30.7 |
-| F | resolution | 285 | 769 | 1,395 | 2,142 | 157 | 642 | 42.4 |
-| F | operations | 276 | 430 | 638 | 844 | 145 | 269 | 18.6 |
+| B | all | 650 | 1,039 | 2,221 | 2,691 | 124 | 1,006 | 51.7 |
+| B | resolution | 373 | 1,066 | 2,387 | 2,691 | 121 | 1,056 | 54.1 |
+| B | operations | 277 | 1,021 | 1,910 | 2,465 | 127 | 938 | 48.4 |
+| F | all | 561 | 442 | 1,068 | 2,139 | 131 | 421 | 30.7 |
+| F | resolution | 285 | 691 | 1,288 | 2,139 | 138 | 590 | 42.4 |
+| F | operations | 276 | 392 | 569 | 814 | 124 | 246 | 18.6 |
 
 By tool, profile `B`, suite `holdout_v3`
 
 | agent.tool | steps | p50 ms | p95 ms | mean completion tokens | protocol errors |
 |---|---|---|---|---|---|
-| operations.create_proposal | 75 | 963 | 1,146 | 35.7 | 1 |
-| operations.execute_proposal | 42 | 468 | 548 | 16.0 | 0 |
-| operations.get_request_status | 7 | 399 | 459 | 15.0 | 0 |
-| operations.list_exchange_options | 35 | 518 | 677 | 15.0 | 0 |
-| operations.report_to_resolution | 118 | 1,870 | 2,228 | 79.9 | 0 |
-| resolution.find_order_lines | 87 | 762 | 813 | 31.0 | 1 |
-| resolution.handoff_to_operations | 141 | 1,840 | 2,590 | 72.4 | 6 |
-| resolution.reply_to_customer | 145 | 1,192 | 1,495 | 50.2 | 0 |
+| operations.create_proposal | 75 | 867 | 1,079 | 35.7 | 1 |
+| operations.execute_proposal | 42 | 421 | 469 | 16.0 | 0 |
+| operations.get_request_status | 7 | 372 | 405 | 15.0 | 0 |
+| operations.list_exchange_options | 35 | 423 | 596 | 15.0 | 0 |
+| operations.report_to_resolution | 118 | 1,763 | 2,095 | 79.9 | 0 |
+| resolution.find_order_lines | 87 | 721 | 773 | 31.0 | 1 |
+| resolution.handoff_to_operations | 141 | 1,742 | 2,457 | 72.4 | 6 |
+| resolution.reply_to_customer | 145 | 1,129 | 1,433 | 50.2 | 0 |
 
 By tool, profile `F`, suite `holdout_v3`
 
 | agent.tool | steps | p50 ms | p95 ms | mean completion tokens | protocol errors |
 |---|---|---|---|---|---|
-| operations.create_proposal | 75 | 454 | 668 | 23.7 | 0 |
-| operations.execute_proposal | 42 | 314 | 352 | 14.0 | 0 |
-| operations.get_request_status | 6 | 298 | 316 | 14.0 | 0 |
-| operations.list_exchange_options | 35 | 330 | 364 | 14.0 | 0 |
-| operations.report_to_resolution | 118 | 449 | 484 | 18.7 | 0 |
-| resolution.handoff_to_operations | 137 | 997 | 1,480 | 48.0 | 0 |
-| resolution.reply_to_customer | 148 | 727 | 970 | 37.3 | 0 |
+| operations.create_proposal | 75 | 379 | 592 | 23.7 | 0 |
+| operations.execute_proposal | 42 | 283 | 292 | 14.0 | 0 |
+| operations.get_request_status | 6 | 273 | 281 | 14.0 | 0 |
+| operations.list_exchange_options | 35 | 296 | 326 | 14.0 | 0 |
+| operations.report_to_resolution | 118 | 400 | 414 | 18.7 | 0 |
+| resolution.handoff_to_operations | 137 | 899 | 1,366 | 48.0 | 0 |
+| resolution.reply_to_customer | 148 | 654 | 852 | 37.3 | 0 |
 
 ## Where the time goes, throughput, cache, calls
 
@@ -615,63 +615,63 @@ Means per case-run (all attempts). http/template = LLM call wall time minus the 
 
 | profile | case-runs | case ms | LLM calls/case | calls p50 | calls p95 | uncached prompt tok | cached prompt tok | completion tok | prefill ms | decode ms | http/template ms | tool ms | orchestration ms | decode share |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| B | 18 | 11,128 | 9.33 | 10 | 11 | 1,524 | 12,988 | 475 | 1,412 | 9,308 | 310 | 0.9 | 97 | 83.6% |
-| F | 18 | 4,796 | 8.33 | 9 | 10 | 1,435 | 10,172 | 243 | 1,293 | 3,298 | 107 | 0.6 | 97 | 68.8% |
-| F-cacheram-default | 18 | 4,795 | 8.33 | 9 | 10 | 1,435 | 10,172 | 243 | 1,289 | 3,319 | 94 | 0.6 | 92 | 69.2% |
-| F-freetext | 18 | 5,926 | 8.33 | 9 | 10 | 1,422 | 10,356 | 315 | 1,319 | 4,404 | 107 | 0.6 | 95 | 74.3% |
-| F-native | 18 | 7,686 | 9.17 | 10 | 11 | 1,486 | 12,142 | 426 | 1,421 | 6,049 | 122 | 0.7 | 93 | 78.7% |
-| F-noprefetch | 18 | 5,338 | 9.50 | 10 | 12 | 1,512 | 12,116 | 269 | 1,393 | 3,729 | 120 | 0.8 | 95 | 69.9% |
-| F-q8 | 18 | 6,141 | 8.33 | 9 | 10 | 1,435 | 10,166 | 237 | 1,297 | 4,556 | 185 | 0.7 | 102 | 74.2% |
-| B-q4 | 18 | 8,322 | 10.17 | 11 | 12 | 1,526 | 14,031 | 488 | 1,435 | 6,649 | 143 | 0.8 | 95 | 79.9% |
-| B-repeat | 18 | 10,920 | 9.33 | 10 | 11 | 1,524 | 12,988 | 475 | 1,375 | 9,154 | 291 | 1.8 | 98 | 83.8% |
+| B | 18 | 10,934 | 9.33 | 10 | 11 | 1,524 | 12,988 | 475 | 1,384 | 9,197 | 255 | 1.1 | 97 | 84.1% |
+| F | 18 | 4,767 | 8.33 | 9 | 10 | 1,435 | 10,172 | 243 | 1,281 | 3,286 | 106 | 0.7 | 93 | 68.9% |
+| F-cacheram-default | 18 | 4,784 | 8.33 | 9 | 10 | 1,435 | 10,172 | 243 | 1,283 | 3,288 | 120 | 0.6 | 92 | 68.7% |
+| F-freetext | 18 | 5,794 | 8.33 | 9 | 10 | 1,422 | 10,356 | 315 | 1,297 | 4,296 | 109 | 0.6 | 91 | 74.2% |
+| F-native | 18 | 7,490 | 9.17 | 10 | 11 | 1,486 | 12,142 | 426 | 1,373 | 5,865 | 152 | 0.8 | 100 | 78.3% |
+| F-noprefetch | 18 | 5,260 | 9.50 | 10 | 12 | 1,512 | 12,116 | 269 | 1,366 | 3,658 | 139 | 0.8 | 97 | 69.5% |
+| F-q8 | 18 | 6,185 | 8.33 | 9 | 10 | 1,435 | 10,166 | 237 | 1,310 | 4,561 | 214 | 0.8 | 100 | 73.7% |
+| B-q4 | 18 | 8,337 | 10.17 | 11 | 12 | 1,526 | 14,031 | 488 | 1,437 | 6,638 | 166 | 0.8 | 95 | 79.6% |
+| B-repeat | 18 | 10,991 | 9.33 | 10 | 11 | 1,524 | 12,988 | 475 | 1,382 | 9,242 | 265 | 1.3 | 101 | 84.1% |
 
 | profile | decode tok/s | prefill tok/s (uncached) | cache hit | server decode tok/s (/metrics) | server prefill tok/s (/metrics) | /metrics runs |
 |---|---|---|---|---|---|---|
-| B | 51.0 | 1,079.2 | 89.5% | 51.0 | 1,104.9 | 3 |
-| F | 73.7 | 1,110.3 | 87.6% | 73.8 | 1,119.5 | 3 |
-| F-cacheram-default | 73.3 | 1,113.2 | 87.6% | 73.3 | 1,121.7 | 3 |
-| F-freetext | 71.5 | 1,078.5 | 87.9% | 71.6 | 1,089.0 | 3 |
-| F-native | 70.4 | 1,045.7 | 89.1% | 70.4 | 1,056.4 | 3 |
-| F-noprefetch | 72.2 | 1,085.4 | 88.9% | 72.3 | 1,096.5 | 3 |
-| F-q8 | 51.9 | 1,106.5 | 87.6% | 52.0 | 1,131.0 | 3 |
-| B-q4 | 73.3 | 1,063.6 | 90.2% | 73.4 | 1,075.0 | 3 |
-| B-repeat | 51.9 | 1,108.5 | 89.5% | 51.9 | 1,137.8 | 3 |
+| B | 51.6 | 1,101.1 | 89.5% | 51.7 | 1,128.3 | 3 |
+| F | 74.0 | 1,120.4 | 87.6% | 74.0 | 1,130.2 | 3 |
+| F-cacheram-default | 74.0 | 1,118.4 | 87.6% | 74.0 | 1,130.1 | 3 |
+| F-freetext | 73.3 | 1,096.9 | 87.9% | 73.4 | 1,106.3 | 3 |
+| F-native | 72.6 | 1,082.3 | 89.1% | 72.7 | 1,097.7 | 3 |
+| F-noprefetch | 73.6 | 1,107.5 | 88.9% | 73.7 | 1,121.3 | 3 |
+| F-q8 | 51.9 | 1,095.8 | 87.6% | 51.9 | 1,123.6 | 3 |
+| B-q4 | 73.5 | 1,062.2 | 90.2% | 73.5 | 1,076.9 | 3 |
+| B-repeat | 51.4 | 1,102.9 | 89.5% | 51.4 | 1,134.3 | 3 |
 
 ### Suite `variants`
 
 | profile | case-runs | case ms | LLM calls/case | calls p50 | calls p95 | uncached prompt tok | cached prompt tok | completion tok | prefill ms | decode ms | http/template ms | tool ms | orchestration ms | decode share |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| B | 241 | 11,332 | 9.20 | 9 | 16 | 1,131 | 13,518 | 474 | 1,237 | 9,649 | 339 | 1.1 | 106 | 85.1% |
-| F | 241 | 5,275 | 7.94 | 8 | 14 | 1,079 | 10,244 | 242 | 1,213 | 3,757 | 186 | 1.1 | 118 | 71.2% |
+| B | 241 | 11,139 | 9.20 | 9 | 16 | 1,131 | 13,518 | 474 | 1,151 | 9,586 | 290 | 1.0 | 111 | 86.1% |
+| F | 241 | 4,578 | 7.94 | 8 | 14 | 1,079 | 10,244 | 242 | 1,039 | 3,329 | 113 | 0.8 | 97 | 72.7% |
 
 | profile | decode tok/s | prefill tok/s (uncached) | cache hit | server decode tok/s (/metrics) | server prefill tok/s (/metrics) | /metrics runs |
 |---|---|---|---|---|---|---|
-| B | 49.2 | 914.4 | 92.3% | 49.2 | 959.8 | 1 |
-| F | 64.5 | 889.0 | 90.5% | 64.5 | 915.8 | 1 |
+| B | 49.5 | 982.8 | 92.3% | 49.5 | 1,025.8 | 1 |
+| F | 72.8 | 1,038.1 | 90.5% | 72.8 | 1,060.1 | 1 |
 
 ### Suite `holdout_v2`
 
 | profile | case-runs | case ms | LLM calls/case | calls p50 | calls p95 | uncached prompt tok | cached prompt tok | completion tok | prefill ms | decode ms | http/template ms | tool ms | orchestration ms | decode share |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| B | 57 | 12,664 | 10.40 | 10 | 20 | 1,312 | 15,347 | 533 | 1,409 | 10,827 | 315 | 1.2 | 112 | 85.5% |
-| F | 57 | 5,451 | 9.00 | 9 | 18 | 1,242 | 11,679 | 273 | 1,296 | 3,979 | 79 | 0.8 | 97 | 73.0% |
+| B | 57 | 12,144 | 10.40 | 10 | 20 | 1,312 | 15,347 | 532 | 1,290 | 10,490 | 257 | 1.6 | 106 | 86.4% |
+| F | 57 | 5,040 | 9.00 | 9 | 18 | 1,242 | 11,679 | 273 | 1,174 | 3,693 | 74 | 0.8 | 98 | 73.3% |
 
 | profile | decode tok/s | prefill tok/s (uncached) | cache hit | server decode tok/s (/metrics) | server prefill tok/s (/metrics) | /metrics runs |
 |---|---|---|---|---|---|---|
-| B | 49.2 | 931.6 | 92.1% | 49.2 | 968.4 | 1 |
-| F | 68.5 | 958.5 | 90.4% | 68.5 | 971.0 | 1 |
+| B | 50.8 | 1,017.6 | 92.1% | 50.8 | 1,055.2 | 1 |
+| F | 73.8 | 1,057.6 | 90.4% | 73.8 | 1,072.5 | 1 |
 
 ### Suite `holdout_v3`
 
 | profile | case-runs | case ms | LLM calls/case | calls p50 | calls p95 | uncached prompt tok | cached prompt tok | completion tok | prefill ms | decode ms | http/template ms | tool ms | orchestration ms | decode share |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| B | 60 | 13,399 | 10.83 | 10 | 19 | 1,384 | 16,018 | 560 | 1,492 | 11,444 | 352 | 1.1 | 109 | 85.4% |
-| F | 60 | 5,941 | 9.35 | 9 | 18 | 1,297 | 12,130 | 287 | 1,413 | 4,290 | 125 | 0.9 | 112 | 72.2% |
+| B | 60 | 12,584 | 10.83 | 10 | 19 | 1,384 | 16,018 | 560 | 1,341 | 10,894 | 243 | 0.9 | 105 | 86.6% |
+| F | 60 | 5,350 | 9.35 | 9 | 18 | 1,297 | 12,130 | 287 | 1,226 | 3,937 | 83 | 0.8 | 103 | 73.6% |
 
 | profile | decode tok/s | prefill tok/s (uncached) | cache hit | server decode tok/s (/metrics) | server prefill tok/s (/metrics) | /metrics runs |
 |---|---|---|---|---|---|---|
-| B | 48.9 | 927.7 | 92.0% | 48.9 | 965.7 | 1 |
-| F | 67.0 | 918.1 | 90.3% | 67.0 | 933.4 | 1 |
+| B | 51.4 | 1,032.6 | 92.0% | 51.4 | 1,066.5 | 1 |
+| F | 73.0 | 1,057.9 | 90.3% | 73.0 | 1,073.4 | 1 |
 
 ## Memory (unified memory: never add RAM and GPU figures)
 
@@ -681,36 +681,36 @@ peak RAM = sum of kernel phys_footprint high-water marks (adapter + llama-server
 
 | profile | peak RAM max | peak RAM median | llama-server footprint max | peak unified GPU max | peak unified GPU median | RSS median |
 |---|---|---|---|---|---|---|
-| B | 1,932 | 1,801 | 1,901 | 5,080 | 4,800 | 5,466 |
-| F | 2,220 | 2,107 | 2,182 | 3,235 | 3,096 | 4,423 |
-| F-cacheram-default | 2,221 | 2,108 | 2,182 | 3,394 | 3,174 | 4,544 |
-| F-freetext | 2,225 | 2,109 | 2,184 | 3,341 | 3,122 | 4,261 |
-| F-native | 2,223 | 1,892 | 2,182 | 3,318 | 3,174 | 4,132 |
-| F-noprefetch | 2,106 | 2,025 | 2,068 | 3,275 | 3,175 | 4,514 |
-| F-q8 | 1,882 | 1,842 | 1,852 | 5,037 | 4,790 | 5,773 |
-| B-q4 | 2,271 | 2,002 | 2,232 | 3,853 | 3,319 | 4,455 |
-| B-repeat | 1,930 | 1,784 | 1,899 | 5,420 | 4,862 | 5,415 |
+| B | 2,080 | 1,864 | 2,039 | 5,010 | 4,792 | 5,445 |
+| F | 2,218 | 1,970 | 2,180 | 3,278 | 3,146 | 4,434 |
+| F-cacheram-default | 2,219 | 1,995 | 2,181 | 3,299 | 3,094 | 4,328 |
+| F-freetext | 2,223 | 1,806 | 2,182 | 3,219 | 3,145 | 4,093 |
+| F-native | 2,223 | 1,893 | 2,182 | 3,248 | 3,130 | 4,229 |
+| F-noprefetch | 2,107 | 1,947 | 2,069 | 3,187 | 3,114 | 4,414 |
+| F-q8 | 1,928 | 1,786 | 1,898 | 4,968 | 4,814 | 5,695 |
+| B-q4 | 2,270 | 2,002 | 2,232 | 3,202 | 3,118 | 4,421 |
+| B-repeat | 2,080 | 1,857 | 2,040 | 4,846 | 4,764 | 5,483 |
 
 ### Suite `variants`, MiB
 
 | profile | peak RAM max | peak RAM median | llama-server footprint max | peak unified GPU max | peak unified GPU median | RSS median |
 |---|---|---|---|---|---|---|
-| B | 2,764 | 1,883 | 2,719 | 5,360 | 4,807 | 3,848 |
-| F | 2,598 | 1,894 | 2,552 | 3,716 | 3,304 | 4,167 |
+| B | 2,925 | 1,936 | 2,878 | 5,134 | 4,815 | 5,339 |
+| F | 2,753 | 1,932 | 2,709 | 3,298 | 3,087 | 4,198 |
 
 ### Suite `holdout_v2`, MiB
 
 | profile | peak RAM max | peak RAM median | llama-server footprint max | peak unified GPU max | peak unified GPU median | RSS median |
 |---|---|---|---|---|---|---|
-| B | 2,156 | 1,883 | 2,120 | 5,499 | 5,178 | 5,238 |
-| F | 2,379 | 2,254 | 2,333 | 3,636 | 3,308 | 4,505 |
+| B | 2,544 | 1,947 | 2,507 | 4,924 | 4,769 | 5,500 |
+| F | 2,378 | 2,254 | 2,332 | 3,128 | 3,047 | 4,602 |
 
 ### Suite `holdout_v3`, MiB
 
 | profile | peak RAM max | peak RAM median | llama-server footprint max | peak unified GPU max | peak unified GPU median | RSS median |
 |---|---|---|---|---|---|---|
-| B | 2,155 | 1,892 | 2,122 | 5,053 | 4,813 | 5,468 |
-| F | 2,523 | 1,964 | 2,479 | 3,130 | 2,883 | 4,229 |
+| B | 2,402 | 1,964 | 2,362 | 4,991 | 4,775 | 5,572 |
+| F | 2,247 | 2,143 | 2,206 | 3,234 | 3,130 | 4,399 |
 
 ## Cold start (separate from warm work)
 
@@ -718,39 +718,39 @@ spawn -> ready = llama-server process start to first /health 200; first request 
 
 | run | spawn -> ready ms | first request ms | model page cache | first case ms | warm case median ms |
 |---|---|---|---|---|---|
-| holdout_v2/B/run-1 | 2,242 | 80 | cold (0.0%) | 12,020 | 12,096 |
-| holdout_v2/F/run-1 | 1,842 | 58 | partial (63.1%) | 6,144 | 5,135 |
-| holdout_v3/B/run-1 | 2,222 | 62 | cold (0.0%) | 12,626 | 12,376 |
-| holdout_v3/F/run-1 | 1,970 | 61 | partial (39.4%) | 6,108 | 5,545 |
-| public/B/run-1 | 2,150 | 61 | cold (0.0%) | 12,328 | 10,891 |
-| public/B/run-2 | 2,221 | 59 | cold (0.0%) | 12,418 | 11,434 |
-| public/B/run-3 | 2,212 | 60 | cold (0.0%) | 12,274 | 11,357 |
-| public/F/run-1 | 1,753 | 80 | cold (0.0%) | 5,585 | 5,007 |
-| public/F/run-2 | 730 | 58 | warm (100.0%) | 5,669 | 5,008 |
-| public/F/run-3 | 678 | 56 | warm (99.6%) | 5,469 | 5,051 |
-| public/F-cacheram-default/run-1 | 736 | 58 | warm (100.0%) | 5,550 | 4,977 |
-| public/F-cacheram-default/run-2 | 675 | 56 | warm (99.6%) | 5,530 | 5,320 |
-| public/F-cacheram-default/run-3 | 1,593 | 57 | cold (0.0%) | 5,563 | 4,982 |
-| public/F-freetext/run-1 | 1,641 | 56 | cold (0.0%) | 7,389 | 6,246 |
-| public/F-freetext/run-2 | 1,654 | 56 | cold (0.0%) | 6,996 | 6,149 |
-| public/F-freetext/run-3 | 1,561 | 56 | cold (0.0%) | 7,049 | 5,849 |
-| public/F-native/run-1 | 1,910 | 60 | partial (55.8%) | 8,130 | 7,455 |
-| public/F-native/run-2 | 1,532 | 57 | cold (0.0%) | 8,126 | 7,886 |
-| public/F-native/run-3 | 1,524 | 56 | cold (0.0%) | 8,061 | 7,973 |
-| public/F-noprefetch/run-1 | 730 | 56 | warm (100.0%) | 5,937 | 5,210 |
-| public/F-noprefetch/run-2 | 735 | 58 | warm (99.6%) | 5,956 | 5,540 |
-| public/F-noprefetch/run-3 | 737 | 57 | warm (100.0%) | 5,995 | 5,487 |
-| public/F-q8/run-1 | 789 | 57 | warm (99.8%) | 6,828 | 6,408 |
-| public/F-q8/run-2 | 2,204 | 58 | cold (0.0%) | 6,944 | 6,475 |
-| public/F-q8/run-3 | 1,720 | 63 | partial (84.7%) | 7,143 | 6,377 |
-| public/B-q4/run-1 | 729 | 57 | warm (100.0%) | 9,659 | 8,490 |
-| public/B-q4/run-2 | 729 | 77 | warm (99.6%) | 9,721 | 8,361 |
-| public/B-q4/run-3 | 788 | 59 | warm (99.6%) | 9,966 | 8,488 |
-| public/B-repeat/run-1 | 2,379 | 60 | cold (0.0%) | 12,451 | 11,095 |
-| public/B-repeat/run-2 | 2,178 | 59 | cold (0.0%) | 12,302 | 10,939 |
-| public/B-repeat/run-3 | 2,186 | 60 | cold (0.0%) | 12,451 | 10,811 |
-| variants/B/run-1 | 3,548 | 64 | partial (65.1%) | 12,158 | 11,180 |
-| variants/F/run-1 | 1,725 | 61 | partial (52.8%) | 5,959 | 5,144 |
+| holdout_v2/B/run-1 | 2,246 | 59 | cold (0.0%) | 12,205 | 11,374 |
+| holdout_v2/F/run-1 | 1,969 | 58 | partial (76.2%) | 6,122 | 4,697 |
+| holdout_v3/B/run-1 | 2,089 | 63 | cold (0.0%) | 12,036 | 11,490 |
+| holdout_v3/F/run-1 | 1,556 | 60 | partial (87.5%) | 6,027 | 4,979 |
+| public/B/run-1 | 2,224 | 60 | cold (0.0%) | 12,070 | 10,798 |
+| public/B/run-2 | 2,257 | 62 | cold (0.0%) | 12,624 | 11,519 |
+| public/B/run-3 | 2,270 | 60 | cold (0.0%) | 12,088 | 10,766 |
+| public/F/run-1 | 1,540 | 58 | cold (0.0%) | 5,561 | 4,971 |
+| public/F/run-2 | 682 | 57 | warm (100.0%) | 5,552 | 5,034 |
+| public/F/run-3 | 708 | 56 | warm (99.6%) | 5,488 | 5,051 |
+| public/F-cacheram-default/run-1 | 788 | 58 | warm (100.0%) | 5,790 | 5,100 |
+| public/F-cacheram-default/run-2 | 651 | 56 | warm (99.6%) | 5,524 | 4,945 |
+| public/F-cacheram-default/run-3 | 1,535 | 56 | cold (0.0%) | 5,603 | 4,972 |
+| public/F-freetext/run-1 | 1,594 | 56 | cold (0.0%) | 6,940 | 5,926 |
+| public/F-freetext/run-2 | 1,592 | 58 | cold (0.0%) | 6,998 | 6,042 |
+| public/F-freetext/run-3 | 1,426 | 59 | cold (0.0%) | 6,945 | 5,907 |
+| public/F-native/run-1 | 1,635 | 62 | cold (0.0%) | 8,404 | 7,559 |
+| public/F-native/run-2 | 1,597 | 60 | cold (0.0%) | 8,172 | 7,723 |
+| public/F-native/run-3 | 1,511 | 59 | cold (0.0%) | 7,991 | 7,310 |
+| public/F-noprefetch/run-1 | 723 | 56 | warm (100.0%) | 6,147 | 5,456 |
+| public/F-noprefetch/run-2 | 673 | 57 | warm (99.6%) | 5,952 | 5,512 |
+| public/F-noprefetch/run-3 | 698 | 57 | warm (100.0%) | 5,903 | 5,139 |
+| public/F-q8/run-1 | 794 | 58 | warm (99.8%) | 6,793 | 6,349 |
+| public/F-q8/run-2 | 2,261 | 59 | cold (0.0%) | 6,850 | 6,288 |
+| public/F-q8/run-3 | 854 | 58 | warm (100.0%) | 6,907 | 6,863 |
+| public/B-q4/run-1 | 793 | 57 | warm (100.0%) | 10,097 | 8,577 |
+| public/B-q4/run-2 | 698 | 77 | warm (99.6%) | 9,756 | 8,335 |
+| public/B-q4/run-3 | 719 | 58 | warm (100.0%) | 9,903 | 8,402 |
+| public/B-repeat/run-1 | 2,437 | 61 | cold (0.0%) | 12,285 | 11,020 |
+| public/B-repeat/run-2 | 1,961 | 64 | cold (0.0%) | 12,347 | 11,776 |
+| public/B-repeat/run-3 | 2,261 | 58 | cold (0.0%) | 12,215 | 10,724 |
+| variants/B/run-1 | 2,302 | 61 | cold (0.0%) | 11,781 | 11,121 |
+| variants/F/run-1 | 1,688 | 58 | partial (6.7%) | 5,789 | 4,434 |
 
 ## Failures and timeouts
 
@@ -934,40 +934,40 @@ All run directories, including earlier attempts kept as run-<k>.attempt-<n>. Onl
 
 | dir | suite | profile | status | preflight | adapter exit | wall s | structure | --baseline | strict (run time) | /metrics after | started (UTC) |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| run-1 | holdout_v2 | B | complete | passed | 0 | 725.4 | ok | n/a | 56/57 | yes | 2026-11-01T15:46:35+00:00 |
-| run-1 | holdout_v2 | F | complete | passed | 0 | 313.7 | ok | ok | 56/57 | yes | 2026-11-01T15:41:19+00:00 |
-| run-1 | holdout_v3 | B | complete | passed | 0 | 807.5 | ok | n/a | 57/60 | yes | 2026-11-01T16:04:50+00:00 |
-| run-1 | holdout_v3 | F | complete | passed | 0 | 359.7 | ok | ok | 58/60 | yes | 2026-11-01T15:58:48+00:00 |
-| run-1 | public | B | complete | passed | 0 | 68.7 | ok | n/a | 6/6 | yes | 2026-10-29T03:58:10+00:00 |
-| run-2 | public | B | complete | passed | 0 | 70.4 | ok | ok | 6/6 | yes | 2026-10-29T04:04:20+00:00 |
-| run-3 | public | B | complete | passed | 0 | 70.7 | ok | ok | 6/6 | yes | 2026-10-29T04:15:26+00:00 |
-| run-1 | public | F | complete | passed | 0 | 31.2 | ok | ok | 6/6 | yes | 2026-10-29T04:00:57+00:00 |
-| run-2 | public | F | complete | passed | 0 | 30.5 | ok | ok | 6/6 | yes | 2026-10-29T04:07:00+00:00 |
-| run-3 | public | F | complete | passed | 0 | 30.6 | ok | ok | 6/6 | yes | 2026-10-29T04:14:18+00:00 |
-| run-1 | public | F-cacheram-default | complete | passed | 0 | 30.1 | ok | ok | 6/6 | yes | 2026-10-29T03:53:35+00:00 |
-| run-2 | public | F-cacheram-default | complete | passed | 0 | 31.0 | ok | ok | 6/6 | yes | 2026-10-29T04:03:47+00:00 |
-| run-3 | public | F-cacheram-default | complete | passed | 0 | 30.9 | ok | ok | 6/6 | yes | 2026-10-29T04:13:45+00:00 |
-| run-1 | public | F-freetext | complete | passed | 0 | 39.1 | ok | ok | 6/6 | yes | 2026-10-29T03:57:29+00:00 |
-| run-2 | public | F-freetext | complete | passed | 0 | 38.4 | ok | ok | 6/6 | yes | 2026-10-29T04:03:06+00:00 |
-| run-3 | public | F-freetext | complete | passed | 0 | 36.8 | ok | ok | 6/6 | yes | 2026-10-29T04:10:29+00:00 |
-| run-1 | public | F-native | complete | passed | 0 | 47.3 | ok | ok | 6/6 | yes | 2026-10-29T03:52:46+00:00 |
-| run-2 | public | F-native | complete | passed | 0 | 49.3 | ok | ok | 6/6 | yes | 2026-10-29T04:05:32+00:00 |
-| run-3 | public | F-native | complete | passed | 0 | 49.5 | ok | ok | 6/6 | yes | 2026-10-29T04:16:39+00:00 |
-| run-1 | public | F-noprefetch | complete | passed | 0 | 33.6 | ok | ok | 6/6 | yes | 2026-10-29T03:55:01+00:00 |
-| run-2 | public | F-noprefetch | complete | passed | 0 | 33.9 | ok | ok | 6/6 | yes | 2026-10-29T04:06:24+00:00 |
-| run-3 | public | F-noprefetch | complete | passed | 0 | 33.6 | ok | ok | 6/6 | yes | 2026-10-29T04:14:50+00:00 |
-| run-1 | public | F-q8 | complete | passed | 0 | 38.2 | ok | ok | 6/6 | yes | 2026-10-29T03:56:49+00:00 |
-| run-2 | public | F-q8 | complete | passed | 0 | 40.3 | ok | ok | 6/6 | yes | 2026-10-29T04:02:24+00:00 |
-| run-3 | public | F-q8 | complete | passed | 0 | 39.6 | ok | ok | 6/6 | yes | 2026-10-29T04:09:15+00:00 |
-| run-1 | public | B-q4 | complete | passed | 0 | 51.7 | ok | ok | 6/6 | yes | 2026-10-29T03:54:08+00:00 |
-| run-2 | public | B-q4 | complete | passed | 0 | 51.2 | ok | ok | 6/6 | yes | 2026-10-29T04:01:30+00:00 |
-| run-3 | public | B-q4 | complete | passed | 0 | 51.9 | ok | ok | 6/6 | yes | 2026-10-29T04:11:08+00:00 |
-| run-1 | public | B-repeat | complete | passed | 0 | 69.2 | ok | ok | 6/6 | yes | 2026-10-29T03:55:37+00:00 |
-| run-2 | public | B-repeat | complete | passed | 0 | 68.7 | ok | ok | 6/6 | yes | 2026-10-29T04:08:05+00:00 |
-| run-3 | public | B-repeat | complete | passed | 0 | 68.2 | ok | ok | 6/6 | yes | 2026-10-29T04:12:34+00:00 |
-| run-1 | variants | B | complete | passed | 0 | 2,737.3 | ok | n/a | 241/241 | yes | 2026-11-01T14:55:33+00:00 |
-| run-1.attempt-1 | variants | B | preflight_refused | n/a | n/a | n/a | n/a | n/a | n/a | no | 2026-10-29T04:38:56+00:00 |
-| run-1 | variants | F | complete | passed | 0 | 1,275.6 | ok | ok | 241/241 | yes | 2026-10-29T04:17:38+00:00 |
+| run-1 | holdout_v2 | B | complete | passed | 0 | 695.8 | ok | n/a | 56/57 | yes | 2026-11-02T04:05:41+00:00 |
+| run-1 | holdout_v2 | F | complete | passed | 0 | 290.4 | ok | ok | 56/57 | yes | 2026-11-02T04:00:48+00:00 |
+| run-1 | holdout_v3 | B | complete | passed | 0 | 758.4 | ok | n/a | 57/60 | yes | 2026-11-02T04:22:50+00:00 |
+| run-1 | holdout_v3 | F | complete | passed | 0 | 323.7 | ok | ok | 58/60 | yes | 2026-11-02T04:17:25+00:00 |
+| run-1 | public | B | complete | passed | 0 | 67.7 | ok | n/a | 6/6 | yes | 2026-11-02T02:03:44+00:00 |
+| run-2 | public | B | complete | passed | 0 | 71.1 | ok | ok | 6/6 | yes | 2026-11-02T02:08:14+00:00 |
+| run-3 | public | B | complete | passed | 0 | 67.6 | ok | ok | 6/6 | yes | 2026-11-02T02:19:20+00:00 |
+| run-1 | public | F | complete | passed | 0 | 30.7 | ok | ok | 6/6 | yes | 2026-11-02T02:04:54+00:00 |
+| run-2 | public | F | complete | passed | 0 | 30.5 | ok | ok | 6/6 | yes | 2026-11-02T02:10:53+00:00 |
+| run-3 | public | F | complete | passed | 0 | 30.2 | ok | ok | 6/6 | yes | 2026-11-02T02:18:13+00:00 |
+| run-1 | public | F-cacheram-default | complete | passed | 0 | 31.1 | ok | ok | 6/6 | yes | 2026-11-02T01:59:10+00:00 |
+| run-2 | public | F-cacheram-default | complete | passed | 0 | 29.9 | ok | ok | 6/6 | yes | 2026-11-02T02:07:42+00:00 |
+| run-3 | public | F-cacheram-default | complete | passed | 0 | 30.8 | ok | ok | 6/6 | yes | 2026-11-02T02:17:40+00:00 |
+| run-1 | public | F-freetext | complete | passed | 0 | 36.8 | ok | ok | 6/6 | yes | 2026-11-02T02:03:05+00:00 |
+| run-2 | public | F-freetext | complete | passed | 0 | 37.8 | ok | ok | 6/6 | yes | 2026-11-02T02:07:02+00:00 |
+| run-3 | public | F-freetext | complete | passed | 0 | 37.0 | ok | ok | 6/6 | yes | 2026-11-02T02:13:53+00:00 |
+| run-1 | public | F-native | complete | passed | 0 | 48.6 | ok | ok | 6/6 | yes | 2026-11-02T01:57:47+00:00 |
+| run-2 | public | F-native | complete | passed | 0 | 47.6 | ok | ok | 6/6 | yes | 2026-11-02T02:09:27+00:00 |
+| run-3 | public | F-native | complete | passed | 0 | 46.1 | ok | ok | 6/6 | yes | 2026-11-02T02:20:30+00:00 |
+| run-1 | public | F-noprefetch | complete | passed | 0 | 33.6 | ok | ok | 6/6 | yes | 2026-11-02T02:00:38+00:00 |
+| run-2 | public | F-noprefetch | complete | passed | 0 | 33.4 | ok | ok | 6/6 | yes | 2026-11-02T02:10:17+00:00 |
+| run-3 | public | F-noprefetch | complete | passed | 0 | 32.5 | ok | ok | 6/6 | yes | 2026-11-02T02:18:45+00:00 |
+| run-1 | public | F-q8 | complete | passed | 0 | 38.2 | ok | ok | 6/6 | yes | 2026-11-02T02:02:25+00:00 |
+| run-2 | public | F-q8 | complete | passed | 0 | 39.7 | ok | ok | 6/6 | yes | 2026-11-02T02:06:20+00:00 |
+| run-3 | public | F-q8 | complete | passed | 0 | 40.3 | ok | ok | 6/6 | yes | 2026-11-02T02:13:10+00:00 |
+| run-1 | public | B-q4 | complete | passed | 0 | 52.5 | ok | ok | 6/6 | yes | 2026-11-02T01:59:43+00:00 |
+| run-2 | public | B-q4 | complete | passed | 0 | 51.1 | ok | ok | 6/6 | yes | 2026-11-02T02:05:27+00:00 |
+| run-3 | public | B-q4 | complete | passed | 0 | 51.5 | ok | ok | 6/6 | yes | 2026-11-02T02:15:36+00:00 |
+| run-1 | public | B-repeat | complete | passed | 0 | 69.0 | ok | ok | 6/6 | yes | 2026-11-02T02:01:14+00:00 |
+| run-2 | public | B-repeat | complete | passed | 0 | 70.7 | ok | ok | 6/6 | yes | 2026-11-02T02:11:25+00:00 |
+| run-3 | public | B-repeat | complete | passed | 0 | 67.9 | ok | ok | 6/6 | yes | 2026-11-02T02:16:30+00:00 |
+| run-1 | variants | B | complete | passed | 0 | 2,689.4 | ok | n/a | 241/241 | yes | 2026-11-02T03:15:51+00:00 |
+| run-1 | variants | F | complete | passed | 0 | 1,107.2 | ok | ok | 241/241 | yes | 2026-11-02T02:57:21+00:00 |
+| run-1.attempt-1 | variants | F | preflight | n/a | n/a | n/a | n/a | n/a | n/a | no | 2026-11-02T02:21:25+00:00 |
 
 ## Unavailable metrics (and why)
 

@@ -1,0 +1,6125 @@
+{
+ "contract_version": 1,
+ "input_sha256": "f3f9dc73ac2d846de3af5c8647afcccd58d0335b80cd06f416f4dd08a1ca6165",
+ "hardware": {
+  "cpu": "Apple M5 Pro",
+  "cpu_cores": 15,
+  "gpu": "Apple M5 Pro integrated GPU (16 cores)",
+  "gpu_count": 1,
+  "ram_gb": 24,
+  "unified_memory": true,
+  "os": "macOS 26.4.1 (25E253)",
+  "driver": "Metal (bundled with macOS 25E253; no separate GPU driver)",
+  "power": "measured per run, not declared: see configuration.run_conditions (pmset power source, powermode, thermal)"
+ },
+ "configuration": {
+  "profile": "F-native",
+  "profile_description": "F with B's protocol (native tool calls).",
+  "model": "Qwen3.5-4B",
+  "model_repo": "unsloth/Qwen3.5-4B-GGUF",
+  "model_file": "Qwen3.5-4B-Q4_K_M.gguf",
+  "model_revision": "e87f176479d0855a907a41277aca2f8ee7a09523",
+  "model_sha256": "00fe7986ff5f6b463e62455821146049db6f9313603938a70800d1fb69ef11a4",
+  "model_sha256_verified": true,
+  "model_sha256_source": "cache(path,size,mtime)",
+  "quantization": "Q4_K_M",
+  "engine": "llama.cpp llama-server",
+  "engine_version": "0.7.0 (build 11669, commit 620d2225c)",
+  "engine_version_expected": "0.7.0 (build 11669, commit 620d2225c)",
+  "engine_version_verified": true,
+  "engine_check": "strict",
+  "engine_argv": [
+   "/opt/homebrew/bin/llama-server",
+   "-m",
+   "/Users/ali/Desktop/Projects/retail-returns-desk/models/Qwen3.5-4B-Q4_K_M.gguf",
+   "--port",
+   "8405",
+   "-ngl",
+   "99",
+   "-fa",
+   "on",
+   "-c",
+   "8192",
+   "-np",
+   "1",
+   "--jinja",
+   "--reasoning",
+   "off",
+   "--cache-ram",
+   "2048",
+   "--ctx-checkpoints",
+   "32",
+   "-t",
+   "5",
+   "--host",
+   "127.0.0.1",
+   "--metrics",
+   "--no-webui",
+   "--seed",
+   "42"
+  ],
+  "protocol": "native",
+  "seed": 42,
+  "temperature": 0,
+  "max_tokens": {
+   "tool_step": 160,
+   "reply_step": 220
+  },
+  "ctx_per_slot": 8192,
+  "slots": 1,
+  "concurrency": 1,
+  "caches": {
+   "cache_prompt": true,
+   "cache_ram_mib": 2048,
+   "ctx_checkpoints": 32,
+   "persistence": "within a run across cases; cleared by server restart between runs"
+  },
+  "timeouts": {
+   "llm_step_s": 20.0,
+   "llm_http_retries": 1,
+   "case_s": 600.0
+  },
+  "limits": {
+   "resolution_steps_per_turn": 5,
+   "operations_steps_per_handoff": 4,
+   "handoffs_per_turn": 2,
+   "llm_calls_per_turn": 12
+  },
+  "app_switches": {
+   "protocol": "native",
+   "prefetch_account_card": true,
+   "structured_ops_report": true
+  },
+  "llama_server": {
+   "url": "http://127.0.0.1:8405",
+   "owned_by_adapter": true,
+   "restarts": 0
+  },
+  "run_conditions": {
+   "before": {
+    "power_source": "AC Power",
+    "on_ac_power": true,
+    "battery_percent": 100,
+    "powermode": 0,
+    "low_power_mode": false,
+    "sleep_prevented": true,
+    "thermal": [
+     "Note: No thermal warning level has been recorded",
+     "Note: No performance warning level has been recorded",
+     "Note: No CPU power status has been recorded"
+    ],
+    "thermal_warning": false,
+    "power_summary": "AC Power, powermode 0, no thermal warning, sleep prevented",
+    "load_avg_1_5_15": [
+     1.76,
+     1.67,
+     1.63
+    ],
+    "other_llama_servers": [],
+    "cpu_heavy_processes": [],
+    "gpu_device_utilization_pct": 82,
+    "gpu_in_use_system_memory_mb": 3586.2
+   },
+   "after": {
+    "power_source": "AC Power",
+    "on_ac_power": true,
+    "battery_percent": 100,
+    "powermode": 0,
+    "low_power_mode": false,
+    "sleep_prevented": true,
+    "thermal": [
+     "Note: No thermal warning level has been recorded",
+     "Note: No performance warning level has been recorded",
+     "Note: No CPU power status has been recorded"
+    ],
+    "thermal_warning": false,
+    "power_summary": "AC Power, powermode 0, no thermal warning, sleep prevented",
+    "load_avg_1_5_15": [
+     3.01,
+     2.0,
+     1.75
+    ],
+    "other_llama_servers": [],
+    "cpu_heavy_processes": [],
+    "gpu_device_utilization_pct": 0,
+    "gpu_in_use_system_memory_mb": 3607.4
+   }
+  }
+ },
+ "startup": {
+  "attached": false,
+  "port": 8405,
+  "port_requested": 8405,
+  "port_note": null,
+  "engine_check": "strict",
+  "log": "/Users/ali/Desktop/Projects/retail-returns-desk/var/adapter/server-F-native-8405.log",
+  "server_spawn_to_ready_ms": 1532.0,
+  "first_request_ms": 56.6,
+  "warmup": true,
+  "model_page_cache": "cold",
+  "model_page_cache_resident_pct": 0.0,
+  "engine_version": "0.7.0 (build 11669, commit 620d2225c)",
+  "engine_version_actual": "0.7.0 (build 11669, commit 620d2225c)",
+  "engine_version_expected": "0.7.0 (build 11669, commit 620d2225c)",
+  "engine_version_match": true,
+  "engine_version_mismatch_allowed": false,
+  "model_sha256": "00fe7986ff5f6b463e62455821146049db6f9313603938a70800d1fb69ef11a4",
+  "model_sha256_source": "cache(path,size,mtime)",
+  "server_log_facts": {
+   "n_slots": 1,
+   "n_ctx_slot": 8192,
+   "kv_unified": false,
+   "n_threads": 5
+  }
+ },
+ "results": [
+  {
+   "case_id": "public_01_refund_boundary",
+   "turns": [
+    {
+     "decision": "propose",
+     "response": "We can refund $30.00 for your TEE-M. Please confirm with the confirm control to proceed. Proposed refund: $30.00 for TEE-M (size M), order O100, line L1. Delivered 2026-09-26, 30 days ago (within the 30-day return window). Proposal P-0001. Nothing has been processed yet; please confirm this proposal to proceed.",
+     "proposal": {
+      "proposal_id": "P-0001",
+      "request_id": "REQ-public_01_refund_boundary",
+      "customer_id": "C100",
+      "order_id": "O100",
+      "line_id": "L1",
+      "remedy": "refund",
+      "original_sku": "TEE-M",
+      "replacement_sku": null,
+      "amount_cents": 3000,
+      "currency": "USD",
+      "eligibility": {
+       "delivered_on": "2026-09-26",
+       "as_of": "2026-10-26",
+       "days_since_delivery": 30,
+       "window_days": 30
+      },
+      "binding_hash": "976aa13f21ababe9ad9841d0e8d1342adc3f5ef420491ed890c3f037bf67ca99",
+      "status": "open",
+      "created_turn": 1
+     },
+     "transaction": null,
+     "confirmed_proposal_id": null
+    },
+    {
+     "decision": "completed",
+     "response": "Your refund of $30.00 has been processed successfully. Completed refund: $30.00 for TEE-M (size M), order O100, line L1. Transaction TX-0001.",
+     "proposal": null,
+     "transaction": {
+      "status": "completed",
+      "action": "refund",
+      "transaction_id": "TX-0001",
+      "request_id": "REQ-public_01_refund_boundary",
+      "proposal_id": "P-0001",
+      "customer_id": "C100",
+      "order_id": "O100",
+      "line_id": "L1",
+      "sku": "TEE-M",
+      "replacement_sku": null,
+      "amount_cents": 3000,
+      "currency": "USD",
+      "business_date": "2026-10-26",
+      "result": {
+       "transaction_id": "TX-0001",
+       "return_id": "RET-0001",
+       "refund_id": "RF-0001",
+       "quarantine_id": "Q-0001",
+       "amount_cents": 3000,
+       "replacement_sku": null
+      }
+     },
+     "confirmed_proposal_id": "P-0001"
+    }
+   ],
+   "action_audit": [
+    {
+     "seq": 1,
+     "turn": 1,
+     "kind": "grounding",
+     "agent": "orchestrator",
+     "tool": "analyze",
+     "arguments": {
+      "turn": 1
+     },
+     "result": {
+      "order_refs": [
+       "O100"
+      ],
+      "unknown_order_refs": [],
+      "line_refs": [
+       "L1"
+      ],
+      "unknown_line_refs": [],
+      "other_id_refs": [],
+      "product_refs": [],
+      "unmatched_product_words": [],
+      "requested_products": [],
+      "requested_size": null,
+      "requested_sizes": [],
+      "original_size_hints": [],
+      "mentioned_sizes": [],
+      "remedy_cue": "refund",
+      "stated_remedy": "refund",
+      "remedy_words": [
+       "refund"
+      ],
+      "cancel_cue": false,
+      "last_remedy_cue": "refund",
+      "last_requested_size": null,
+      "inquiry": false,
+      "candidates": [
+       "O100/L1"
+      ],
+      "id_candidates": [
+       "O100/L1"
+      ],
+      "unique_target": [
+       "O100",
+       "L1"
+      ],
+      "not_found_code": null,
+      "filters_used": [
+       "order",
+       "line"
+      ],
+      "explain": [
+       "message 1: orders O100; lines L1; remedy refund (refund)",
+       "filter order O100: 1 candidate(s)",
+       "filter line L1: 1 candidate(s)",
+       "unique target O100/L1"
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 2,
+     "turn": 1,
+     "kind": "tool",
+     "agent": "orchestrator",
+     "tool": "prefetch_account_card",
+     "arguments": {},
+     "result": {
+      "lines": [
+       {
+        "order_id": "O100",
+        "line_id": "L1",
+        "sku": "TEE-M",
+        "product_id": "TEE",
+        "size": "M",
+        "aliases": [
+         "tee",
+         "t-shirt",
+         "tee shirt",
+         "shirt",
+         "top"
+        ],
+        "paid_cents": 3000,
+        "delivered_on": "2026-09-26"
+       }
+      ],
+      "count": 1,
+      "catalog": [
+       {
+        "sku": "TEE-S",
+        "product_id": "TEE",
+        "size": "S"
+       },
+       {
+        "sku": "TEE-M",
+        "product_id": "TEE",
+        "size": "M"
+       },
+       {
+        "sku": "TEE-L",
+        "product_id": "TEE",
+        "size": "L"
+       }
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 3,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "handoff_to_operations",
+     "arguments": {
+      "intent": "propose_refund",
+      "order_id": "O100",
+      "line_id": "L1",
+      "evidence": "Refund line L1 of my order O100. It is unopened."
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "handoff_to_operations",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 1858,
+      "cached_tokens": 0,
+      "prefill_tokens": 1858,
+      "completion_tokens": 90,
+      "prompt_ms": 1150.49,
+      "predicted_ms": 1241.25,
+      "latency_ms": 2405.1,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "handoff_to_operations",
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 4,
+     "turn": 1,
+     "kind": "target",
+     "agent": "orchestrator",
+     "tool": "set_target",
+     "arguments": {
+      "order_id": "O100",
+      "line_id": "L1",
+      "intent": "refund",
+      "requested_sku": null,
+      "requested_size": null,
+      "requested_product": null,
+      "grounded_by": "customer_ids",
+      "evidence": null
+     },
+     "result": null,
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 5,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "create_proposal",
+     "arguments": {
+      "remedy": "refund"
+     },
+     "result": {
+      "role": "operations",
+      "tool": "create_proposal",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 950,
+      "cached_tokens": 0,
+      "prefill_tokens": 950,
+      "completion_tokens": 28,
+      "prompt_ms": 633.87,
+      "predicted_ms": 370.38,
+      "latency_ms": 1086.9,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "create_proposal",
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 6,
+     "turn": 1,
+     "kind": "tool",
+     "agent": "operations",
+     "tool": "create_proposal",
+     "arguments": {
+      "remedy": "refund",
+      "replacement_sku": null
+     },
+     "result": {
+      "proposal": {
+       "proposal_id": "P-0001",
+       "request_id": "REQ-public_01_refund_boundary",
+       "customer_id": "C100",
+       "order_id": "O100",
+       "line_id": "L1",
+       "remedy": "refund",
+       "original_sku": "TEE-M",
+       "replacement_sku": null,
+       "amount_cents": 3000,
+       "currency": "USD",
+       "eligibility": {
+        "delivered_on": "2026-09-26",
+        "as_of": "2026-10-26",
+        "days_since_delivery": 30,
+        "window_days": 30
+       },
+       "binding_hash": "976aa13f21ababe9ad9841d0e8d1342adc3f5ef420491ed890c3f037bf67ca99",
+       "status": "open",
+       "created_turn": 1
+      },
+      "reused": false,
+      "superseded": null
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 7,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "report_to_resolution",
+     "arguments": {
+      "outcome": "proposed"
+     },
+     "result": {
+      "role": "operations",
+      "tool": "report_to_resolution",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 1133,
+      "cached_tokens": 977,
+      "prefill_tokens": 156,
+      "completion_tokens": 29,
+      "prompt_ms": 149.57,
+      "predicted_ms": 386.28,
+      "latency_ms": 540.0,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 8,
+     "turn": 1,
+     "kind": "ops_report",
+     "agent": "orchestrator",
+     "tool": "report_to_resolution",
+     "arguments": {
+      "intent": "propose_refund"
+     },
+     "result": {
+      "intent": "propose_refund",
+      "outcome": "proposed",
+      "reason_codes": [],
+      "proposal": {
+       "proposal_id": "P-0001",
+       "request_id": "REQ-public_01_refund_boundary",
+       "customer_id": "C100",
+       "order_id": "O100",
+       "line_id": "L1",
+       "remedy": "refund",
+       "original_sku": "TEE-M",
+       "replacement_sku": null,
+       "amount_cents": 3000,
+       "currency": "USD",
+       "eligibility": {
+        "delivered_on": "2026-09-26",
+        "as_of": "2026-10-26",
+        "days_since_delivery": 30,
+        "window_days": 30
+       },
+       "binding_hash": "976aa13f21ababe9ad9841d0e8d1342adc3f5ef420491ed890c3f037bf67ca99",
+       "status": "open",
+       "created_turn": 1
+      },
+      "transaction": null,
+      "replay": false,
+      "reconciled": false,
+      "alternatives": []
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 9,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "reply_to_customer",
+     "arguments": {
+      "message": "We can refund $30.00 for your TEE-M. Please confirm with the confirm control to proceed."
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "reply_to_customer",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 2033,
+      "cached_tokens": 1947,
+      "prefill_tokens": 86,
+      "completion_tokens": 50,
+      "prompt_ms": 97.65,
+      "predicted_ms": 692.32,
+      "latency_ms": 862.9,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 10,
+     "turn": 2,
+     "kind": "grounding",
+     "agent": "orchestrator",
+     "tool": "analyze",
+     "arguments": {
+      "turn": 2
+     },
+     "result": {
+      "order_refs": [
+       "O100"
+      ],
+      "unknown_order_refs": [],
+      "line_refs": [
+       "L1"
+      ],
+      "unknown_line_refs": [],
+      "other_id_refs": [],
+      "product_refs": [],
+      "unmatched_product_words": [],
+      "requested_products": [],
+      "requested_size": null,
+      "requested_sizes": [],
+      "original_size_hints": [],
+      "mentioned_sizes": [],
+      "remedy_cue": "refund",
+      "stated_remedy": "refund",
+      "remedy_words": [
+       "refund"
+      ],
+      "cancel_cue": false,
+      "last_remedy_cue": "refund",
+      "last_requested_size": null,
+      "inquiry": false,
+      "candidates": [
+       "O100/L1"
+      ],
+      "id_candidates": [
+       "O100/L1"
+      ],
+      "unique_target": [
+       "O100",
+       "L1"
+      ],
+      "not_found_code": null,
+      "filters_used": [
+       "order",
+       "line"
+      ],
+      "explain": [
+       "message 1: orders O100; lines L1; remedy refund (refund)",
+       "message 2: remedy refund (refund)",
+       "filter order O100: 1 candidate(s)",
+       "filter line L1: 1 candidate(s)",
+       "unique target O100/L1"
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 11,
+     "turn": 2,
+     "kind": "grant",
+     "agent": "orchestrator",
+     "tool": "set_grant",
+     "arguments": {
+      "proposal_id": "P-0001"
+     },
+     "result": null,
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 12,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "handoff_to_operations",
+     "arguments": {
+      "intent": "execute_confirmed"
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "handoff_to_operations",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 1905,
+      "cached_tokens": 1756,
+      "prefill_tokens": 149,
+      "completion_tokens": 31,
+      "prompt_ms": 159.43,
+      "predicted_ms": 417.11,
+      "latency_ms": 581.0,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "handoff_to_operations",
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 13,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "get_request_status",
+     "arguments": {},
+     "result": {
+      "role": "operations",
+      "tool": "get_request_status",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 916,
+      "cached_tokens": 855,
+      "prefill_tokens": 61,
+      "completion_tokens": 15,
+      "prompt_ms": 93.01,
+      "predicted_ms": 191.54,
+      "latency_ms": 316.5,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "execute_proposal",
+      "get_request_status",
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 14,
+     "turn": 2,
+     "kind": "tool",
+     "agent": "operations",
+     "tool": "get_request_status",
+     "arguments": {},
+     "result": {
+      "request_id": "REQ-public_01_refund_boundary",
+      "status": "not_found"
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 15,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "execute_proposal",
+     "arguments": {},
+     "result": {
+      "role": "operations",
+      "tool": "execute_proposal",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 979,
+      "cached_tokens": 930,
+      "prefill_tokens": 49,
+      "completion_tokens": 68,
+      "prompt_ms": 88.55,
+      "predicted_ms": 919.97,
+      "latency_ms": 1012.2,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "execute_proposal",
+      "get_request_status",
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 16,
+     "turn": 2,
+     "kind": "tool",
+     "agent": "operations",
+     "tool": "execute_proposal",
+     "arguments": {},
+     "result": {
+      "replay": false,
+      "proposal_id": "P-0001",
+      "status": "executed",
+      "transaction": {
+       "status": "completed",
+       "action": "refund",
+       "transaction_id": "TX-0001",
+       "request_id": "REQ-public_01_refund_boundary",
+       "proposal_id": "P-0001",
+       "customer_id": "C100",
+       "order_id": "O100",
+       "line_id": "L1",
+       "sku": "TEE-M",
+       "replacement_sku": null,
+       "amount_cents": 3000,
+       "currency": "USD",
+       "business_date": "2026-10-26",
+       "result": {
+        "transaction_id": "TX-0001",
+        "return_id": "RET-0001",
+        "refund_id": "RF-0001",
+        "quarantine_id": "Q-0001",
+        "amount_cents": 3000,
+        "replacement_sku": null
+       }
+      }
+     },
+     "error": null,
+     "committed_effects": [
+      {
+       "type": "line_returned",
+       "order_id": "O100",
+       "line_id": "L1"
+      },
+      {
+       "type": "record",
+       "collection": "returns",
+       "id": "RET-0001",
+       "amount_cents": 3000
+      },
+      {
+       "type": "record",
+       "collection": "refunds",
+       "id": "RF-0001",
+       "amount_cents": 3000
+      },
+      {
+       "type": "record",
+       "collection": "quarantine",
+       "id": "Q-0001",
+       "amount_cents": 3000
+      },
+      {
+       "type": "idempotency",
+       "request_id": "REQ-public_01_refund_boundary"
+      }
+     ],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 17,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "report_to_resolution",
+     "arguments": {
+      "outcome": "completed"
+     },
+     "result": {
+      "role": "operations",
+      "tool": "report_to_resolution",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 1190,
+      "cached_tokens": 975,
+      "prefill_tokens": 215,
+      "completion_tokens": 28,
+      "prompt_ms": 160.61,
+      "predicted_ms": 381.7,
+      "latency_ms": 546.8,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 18,
+     "turn": 2,
+     "kind": "ops_report",
+     "agent": "orchestrator",
+     "tool": "report_to_resolution",
+     "arguments": {
+      "intent": "execute_confirmed"
+     },
+     "result": {
+      "intent": "execute_confirmed",
+      "outcome": "completed",
+      "reason_codes": [],
+      "proposal": null,
+      "transaction": {
+       "status": "completed",
+       "action": "refund",
+       "transaction_id": "TX-0001",
+       "request_id": "REQ-public_01_refund_boundary",
+       "proposal_id": "P-0001",
+       "customer_id": "C100",
+       "order_id": "O100",
+       "line_id": "L1",
+       "sku": "TEE-M",
+       "replacement_sku": null,
+       "amount_cents": 3000,
+       "currency": "USD",
+       "business_date": "2026-10-26",
+       "result": {
+        "transaction_id": "TX-0001",
+        "return_id": "RET-0001",
+        "refund_id": "RF-0001",
+        "quarantine_id": "Q-0001",
+        "amount_cents": 3000,
+        "replacement_sku": null
+       }
+      },
+      "replay": false,
+      "reconciled": false,
+      "alternatives": []
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 19,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "reply_to_customer",
+     "arguments": {
+      "message": "Your refund of $30.00 has been processed successfully."
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "reply_to_customer",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 2010,
+      "cached_tokens": 1935,
+      "prefill_tokens": 75,
+      "completion_tokens": 40,
+      "prompt_ms": 94.7,
+      "predicted_ms": 547.99,
+      "latency_ms": 678.3,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "reply_to_customer"
+     ]
+    }
+   ],
+   "final_state": {
+    "as_of": "2026-10-26",
+    "currency": "USD",
+    "products": [
+     {
+      "sku": "TEE-S",
+      "product_id": "TEE",
+      "size": "S",
+      "price_cents": 4000,
+      "stock": 4
+     },
+     {
+      "sku": "TEE-M",
+      "product_id": "TEE",
+      "size": "M",
+      "price_cents": 4000,
+      "stock": 2
+     },
+     {
+      "sku": "TEE-L",
+      "product_id": "TEE",
+      "size": "L",
+      "price_cents": 4000,
+      "stock": 3
+     },
+     {
+      "sku": "JACKET-M",
+      "product_id": "JACKET",
+      "size": "M",
+      "price_cents": 9000,
+      "stock": 1
+     },
+     {
+      "sku": "JACKET-L",
+      "product_id": "JACKET",
+      "size": "L",
+      "price_cents": 9000,
+      "stock": 0
+     }
+    ],
+    "orders": [
+     {
+      "order_id": "O100",
+      "customer_id": "C100",
+      "status": "delivered",
+      "delivered_on": "2026-09-26",
+      "lines": [
+       {
+        "line_id": "L1",
+        "sku": "TEE-M",
+        "paid_cents": 3000,
+        "unopened": true,
+        "final_sale": false,
+        "returned": true
+       }
+      ]
+     }
+    ],
+    "returns": [
+     {
+      "return_id": "RET-0001",
+      "remedy": "refund",
+      "disposition": "quarantine",
+      "transaction_id": "TX-0001",
+      "request_id": "REQ-public_01_refund_boundary",
+      "proposal_id": "P-0001",
+      "customer_id": "C100",
+      "order_id": "O100",
+      "line_id": "L1",
+      "sku": "TEE-M",
+      "replacement_sku": null,
+      "amount_cents": 3000,
+      "currency": "USD",
+      "business_date": "2026-10-26",
+      "status": "completed"
+     }
+    ],
+    "refunds": [
+     {
+      "refund_id": "RF-0001",
+      "return_id": "RET-0001",
+      "transaction_id": "TX-0001",
+      "request_id": "REQ-public_01_refund_boundary",
+      "proposal_id": "P-0001",
+      "customer_id": "C100",
+      "order_id": "O100",
+      "line_id": "L1",
+      "sku": "TEE-M",
+      "replacement_sku": null,
+      "amount_cents": 3000,
+      "currency": "USD",
+      "business_date": "2026-10-26",
+      "status": "completed"
+     }
+    ],
+    "exchanges": [],
+    "quarantine": [
+     {
+      "quarantine_id": "Q-0001",
+      "return_id": "RET-0001",
+      "quantity": 1,
+      "reason": "customer_return",
+      "transaction_id": "TX-0001",
+      "request_id": "REQ-public_01_refund_boundary",
+      "proposal_id": "P-0001",
+      "customer_id": "C100",
+      "order_id": "O100",
+      "line_id": "L1",
+      "sku": "TEE-M",
+      "replacement_sku": null,
+      "amount_cents": 3000,
+      "currency": "USD",
+      "business_date": "2026-10-26",
+      "status": "completed"
+     }
+    ],
+    "idempotency": {
+     "REQ-public_01_refund_boundary": {
+      "status": "completed",
+      "action": "refund",
+      "transaction_id": "TX-0001",
+      "request_id": "REQ-public_01_refund_boundary",
+      "proposal_id": "P-0001",
+      "customer_id": "C100",
+      "order_id": "O100",
+      "line_id": "L1",
+      "sku": "TEE-M",
+      "replacement_sku": null,
+      "amount_cents": 3000,
+      "currency": "USD",
+      "business_date": "2026-10-26",
+      "result": {
+       "transaction_id": "TX-0001",
+       "return_id": "RET-0001",
+       "refund_id": "RF-0001",
+       "quarantine_id": "Q-0001",
+       "amount_cents": 3000,
+       "replacement_sku": null
+      }
+     }
+    }
+   },
+   "proposals": [
+    {
+     "proposal_id": "P-0001",
+     "request_id": "REQ-public_01_refund_boundary",
+     "customer_id": "C100",
+     "order_id": "O100",
+     "line_id": "L1",
+     "remedy": "refund",
+     "original_sku": "TEE-M",
+     "replacement_sku": null,
+     "amount_cents": 3000,
+     "currency": "USD",
+     "eligibility": {
+      "delivered_on": "2026-09-26",
+      "as_of": "2026-10-26",
+      "days_since_delivery": 30,
+      "window_days": 30
+     },
+     "binding_hash": "976aa13f21ababe9ad9841d0e8d1342adc3f5ef420491ed890c3f037bf67ca99",
+     "status": "executed",
+     "created_turn": 1
+    }
+   ],
+   "external_events": [],
+   "metrics": {
+    "elapsed_ms": 8125.7,
+    "peak_ram_mb": 1730.2,
+    "peak_vram_mb": 3206.2,
+    "peak_unified_gpu_mb": 3206.2,
+    "rss_mb": 3856.3,
+    "memory_architecture": "unified",
+    "memory_notes": [
+     "peak_ram_mb: sum over the listed processes of the kernel high-water ri_interval_max_phys_footprint (proc_pid_rusage RUSAGE_INFO_V4, interval reset at case start); per-process peaks may occur at different moments, so the sum is an upper bound of the simultaneous peak.",
+     "peak_vram_mb: Apple Silicon has unified memory (no separate VRAM). Value = max over 5 Hz + turn-boundary samples of IOAccelerator 'In use system memory' minus the idle baseline taken before llama-server started. System-wide scope; it overlaps peak_ram_mb, never add the two.",
+     "rss_mb: sum of per-process peak RSS; it includes mmapped model weights and overcounts on unified memory, reported only for comparison.",
+     "mb = MiB (2^20 bytes)."
+    ],
+    "per_process": {
+     "adapter": {
+      "pid": 72974,
+      "peak_phys_footprint_mb": 40.5,
+      "phys_footprint_mb": 40.5,
+      "peak_rss_mb": 43.0,
+      "source": "kernel high-water",
+      "interval_reset": true
+     },
+     "llama-server": {
+      "pid": 72986,
+      "peak_phys_footprint_mb": 1689.7,
+      "phys_footprint_mb": 1689.7,
+      "peak_rss_mb": 3813.4,
+      "source": "kernel high-water",
+      "interval_reset": true
+     }
+    },
+    "gpu_in_use_peak_mb_absolute": 3765.5,
+    "gpu_baseline_mb": 559.3,
+    "memory_samples": 41,
+    "memory_marks": 3,
+    "llm_calls": 9,
+    "prompt_tokens": 12974,
+    "cached_tokens": 9375,
+    "completion_tokens": 379,
+    "prefill_ms": 2627.9,
+    "decode_ms": 5148.5,
+    "tool_ms": 0.8,
+    "decode_tok_s": 73.6,
+    "prefill_tok_s": 1369.5,
+    "turn_latency_ms": [
+     4900.0,
+     3137.4
+    ],
+    "protocol_errors": 0,
+    "guard_overrides": 0,
+    "fallbacks": 0,
+    "gate_rejections": 0,
+    "dropped_calls": 0,
+    "llm_errors": 0,
+    "first_case_after_start": true,
+    "status": "ok"
+   }
+  },
+  {
+   "case_id": "public_02_exchange",
+   "turns": [
+    {
+     "decision": "propose",
+     "response": "We can exchange your TEE-M for a TEE-L. Please confirm with the confirm control. Proposed exchange (order O100, line L1): TEE-M (size M) for TEE-L (size L); price difference $0.00 (same price). Delivered 2026-10-10, 16 days ago (within the 30-day return window). Proposal P-0001. Nothing has been processed yet; please confirm this proposal to proceed.",
+     "proposal": {
+      "proposal_id": "P-0001",
+      "request_id": "REQ-public_02_exchange",
+      "customer_id": "C100",
+      "order_id": "O100",
+      "line_id": "L1",
+      "remedy": "exchange",
+      "original_sku": "TEE-M",
+      "replacement_sku": "TEE-L",
+      "amount_cents": 0,
+      "currency": "USD",
+      "eligibility": {
+       "delivered_on": "2026-10-10",
+       "as_of": "2026-10-26",
+       "days_since_delivery": 16,
+       "window_days": 30
+      },
+      "binding_hash": "efc6dc97da0432fe2919ff581601909e86efeee3c059412673c953fd03136265",
+      "status": "open",
+      "created_turn": 1
+     },
+     "transaction": null,
+     "confirmed_proposal_id": null
+    },
+    {
+     "decision": "completed",
+     "response": "Your exchange has been completed successfully. Completed exchange (order O100, line L1): TEE-M (size M) for TEE-L (size L); amount $0.00. Transaction TX-0001.",
+     "proposal": null,
+     "transaction": {
+      "status": "completed",
+      "action": "exchange",
+      "transaction_id": "TX-0001",
+      "request_id": "REQ-public_02_exchange",
+      "proposal_id": "P-0001",
+      "customer_id": "C100",
+      "order_id": "O100",
+      "line_id": "L1",
+      "sku": "TEE-M",
+      "replacement_sku": "TEE-L",
+      "amount_cents": 0,
+      "currency": "USD",
+      "business_date": "2026-10-26",
+      "result": {
+       "transaction_id": "TX-0001",
+       "return_id": "RET-0001",
+       "exchange_id": "EX-0001",
+       "quarantine_id": "Q-0001",
+       "amount_cents": 0,
+       "replacement_sku": "TEE-L"
+      }
+     },
+     "confirmed_proposal_id": "P-0001"
+    }
+   ],
+   "action_audit": [
+    {
+     "seq": 1,
+     "turn": 1,
+     "kind": "grounding",
+     "agent": "orchestrator",
+     "tool": "analyze",
+     "arguments": {
+      "turn": 1
+     },
+     "result": {
+      "order_refs": [
+       "O100"
+      ],
+      "unknown_order_refs": [],
+      "line_refs": [
+       "L1"
+      ],
+      "unknown_line_refs": [],
+      "other_id_refs": [],
+      "product_refs": [
+       "TEE"
+      ],
+      "unmatched_product_words": [],
+      "requested_products": [
+       "TEE"
+      ],
+      "requested_size": "L",
+      "requested_sizes": [
+       "L"
+      ],
+      "original_size_hints": [],
+      "mentioned_sizes": [
+       "L"
+      ],
+      "remedy_cue": "exchange",
+      "stated_remedy": "exchange",
+      "remedy_words": [
+       "exchange",
+       "<size> wanted"
+      ],
+      "cancel_cue": false,
+      "last_remedy_cue": "exchange",
+      "last_requested_size": "L",
+      "inquiry": false,
+      "candidates": [
+       "O100/L1"
+      ],
+      "id_candidates": [
+       "O100/L1"
+      ],
+      "unique_target": [
+       "O100",
+       "L1"
+      ],
+      "not_found_code": null,
+      "filters_used": [
+       "order",
+       "line",
+       "product"
+      ],
+      "explain": [
+       "message 1: orders O100; lines L1; products TEE; requested products TEE; requested sizes L; remedy exchange (exchange, <size> wanted)",
+       "filter order O100: 1 candidate(s)",
+       "filter line L1: 1 candidate(s)",
+       "filter product TEE: 1 candidate(s)",
+       "unique target O100/L1"
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 2,
+     "turn": 1,
+     "kind": "tool",
+     "agent": "orchestrator",
+     "tool": "prefetch_account_card",
+     "arguments": {},
+     "result": {
+      "lines": [
+       {
+        "order_id": "O100",
+        "line_id": "L1",
+        "sku": "TEE-M",
+        "product_id": "TEE",
+        "size": "M",
+        "aliases": [
+         "tee",
+         "t-shirt",
+         "tee shirt",
+         "shirt",
+         "top"
+        ],
+        "paid_cents": 3000,
+        "delivered_on": "2026-10-10"
+       }
+      ],
+      "count": 1,
+      "catalog": [
+       {
+        "sku": "TEE-S",
+        "product_id": "TEE",
+        "size": "S"
+       },
+       {
+        "sku": "TEE-M",
+        "product_id": "TEE",
+        "size": "M"
+       },
+       {
+        "sku": "TEE-L",
+        "product_id": "TEE",
+        "size": "L"
+       }
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 3,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "handoff_to_operations",
+     "arguments": {
+      "intent": "propose_exchange",
+      "order_id": "O100",
+      "line_id": "L1",
+      "requested_size": "L",
+      "requested_product": "SAME",
+      "evidence": "Exchange line L1 in order O100 for the same tee in size L."
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "handoff_to_operations",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 1858,
+      "cached_tokens": 1655,
+      "prefill_tokens": 203,
+      "completion_tokens": 115,
+      "prompt_ms": 180.93,
+      "predicted_ms": 1591.4,
+      "latency_ms": 1776.8,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "handoff_to_operations",
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 4,
+     "turn": 1,
+     "kind": "target",
+     "agent": "orchestrator",
+     "tool": "set_target",
+     "arguments": {
+      "order_id": "O100",
+      "line_id": "L1",
+      "intent": "exchange",
+      "requested_sku": null,
+      "requested_size": "L",
+      "requested_product": null,
+      "grounded_by": "customer_ids",
+      "evidence": null
+     },
+     "result": null,
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 5,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "list_exchange_options",
+     "arguments": {},
+     "result": {
+      "role": "operations",
+      "tool": "list_exchange_options",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 964,
+      "cached_tokens": 855,
+      "prefill_tokens": 109,
+      "completion_tokens": 15,
+      "prompt_ms": 101.67,
+      "predicted_ms": 192.44,
+      "latency_ms": 315.7,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "list_exchange_options",
+      "create_proposal",
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 6,
+     "turn": 1,
+     "kind": "tool",
+     "agent": "operations",
+     "tool": "list_exchange_options",
+     "arguments": {},
+     "result": {
+      "original_sku": "TEE-M",
+      "options": [
+       {
+        "sku": "TEE-S",
+        "size": "S",
+        "price_cents": 4000,
+        "stock": 4,
+        "valid": true,
+        "reasons": []
+       },
+       {
+        "sku": "TEE-L",
+        "size": "L",
+        "price_cents": 4000,
+        "stock": 3,
+        "valid": true,
+        "reasons": []
+       }
+      ],
+      "valid_count": 2,
+      "requested_sku": "TEE-L",
+      "requested_code": null,
+      "reasons": []
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 7,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "create_proposal",
+     "arguments": {
+      "remedy": "exchange",
+      "replacement_sku": "TEE-L"
+     },
+     "result": {
+      "role": "operations",
+      "tool": "create_proposal",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 1150,
+      "cached_tokens": 978,
+      "prefill_tokens": 172,
+      "completion_tokens": 42,
+      "prompt_ms": 151.58,
+      "predicted_ms": 582.8,
+      "latency_ms": 738.7,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "list_exchange_options",
+      "create_proposal",
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 8,
+     "turn": 1,
+     "kind": "tool",
+     "agent": "operations",
+     "tool": "create_proposal",
+     "arguments": {
+      "remedy": "exchange",
+      "replacement_sku": "TEE-L"
+     },
+     "result": {
+      "proposal": {
+       "proposal_id": "P-0001",
+       "request_id": "REQ-public_02_exchange",
+       "customer_id": "C100",
+       "order_id": "O100",
+       "line_id": "L1",
+       "remedy": "exchange",
+       "original_sku": "TEE-M",
+       "replacement_sku": "TEE-L",
+       "amount_cents": 0,
+       "currency": "USD",
+       "eligibility": {
+        "delivered_on": "2026-10-10",
+        "as_of": "2026-10-26",
+        "days_since_delivery": 16,
+        "window_days": 30
+       },
+       "binding_hash": "efc6dc97da0432fe2919ff581601909e86efeee3c059412673c953fd03136265",
+       "status": "open",
+       "created_turn": 1
+      },
+      "reused": false,
+      "superseded": null
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 9,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "report_to_resolution",
+     "arguments": {
+      "outcome": "proposed"
+     },
+     "result": {
+      "role": "operations",
+      "tool": "report_to_resolution",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 1345,
+      "cached_tokens": 1191,
+      "prefill_tokens": 154,
+      "completion_tokens": 29,
+      "prompt_ms": 152.3,
+      "predicted_ms": 412.94,
+      "latency_ms": 570.3,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 10,
+     "turn": 1,
+     "kind": "ops_report",
+     "agent": "orchestrator",
+     "tool": "report_to_resolution",
+     "arguments": {
+      "intent": "propose_exchange"
+     },
+     "result": {
+      "intent": "propose_exchange",
+      "outcome": "proposed",
+      "reason_codes": [],
+      "proposal": {
+       "proposal_id": "P-0001",
+       "request_id": "REQ-public_02_exchange",
+       "customer_id": "C100",
+       "order_id": "O100",
+       "line_id": "L1",
+       "remedy": "exchange",
+       "original_sku": "TEE-M",
+       "replacement_sku": "TEE-L",
+       "amount_cents": 0,
+       "currency": "USD",
+       "eligibility": {
+        "delivered_on": "2026-10-10",
+        "as_of": "2026-10-26",
+        "days_since_delivery": 16,
+        "window_days": 30
+       },
+       "binding_hash": "efc6dc97da0432fe2919ff581601909e86efeee3c059412673c953fd03136265",
+       "status": "open",
+       "created_turn": 1
+      },
+      "transaction": null,
+      "replay": false,
+      "reconciled": false,
+      "alternatives": []
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 11,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "reply_to_customer",
+     "arguments": {
+      "message": "We can exchange your TEE-M for a TEE-L. Please confirm with the confirm control."
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "reply_to_customer",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 2058,
+      "cached_tokens": 1972,
+      "prefill_tokens": 86,
+      "completion_tokens": 46,
+      "prompt_ms": 101.53,
+      "predicted_ms": 657.48,
+      "latency_ms": 780.4,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 12,
+     "turn": 2,
+     "kind": "grounding",
+     "agent": "orchestrator",
+     "tool": "analyze",
+     "arguments": {
+      "turn": 2
+     },
+     "result": {
+      "order_refs": [
+       "O100"
+      ],
+      "unknown_order_refs": [],
+      "line_refs": [
+       "L1"
+      ],
+      "unknown_line_refs": [],
+      "other_id_refs": [],
+      "product_refs": [
+       "TEE"
+      ],
+      "unmatched_product_words": [],
+      "requested_products": [
+       "TEE"
+      ],
+      "requested_size": "L",
+      "requested_sizes": [
+       "L"
+      ],
+      "original_size_hints": [],
+      "mentioned_sizes": [
+       "L"
+      ],
+      "remedy_cue": "exchange",
+      "stated_remedy": "exchange",
+      "remedy_words": [
+       "exchange"
+      ],
+      "cancel_cue": false,
+      "last_remedy_cue": "exchange",
+      "last_requested_size": null,
+      "inquiry": false,
+      "candidates": [
+       "O100/L1"
+      ],
+      "id_candidates": [
+       "O100/L1"
+      ],
+      "unique_target": [
+       "O100",
+       "L1"
+      ],
+      "not_found_code": null,
+      "filters_used": [
+       "order",
+       "line",
+       "product"
+      ],
+      "explain": [
+       "message 1: orders O100; lines L1; products TEE; requested products TEE; requested sizes L; remedy exchange (exchange, <size> wanted)",
+       "message 2: remedy exchange (exchange)",
+       "filter order O100: 1 candidate(s)",
+       "filter line L1: 1 candidate(s)",
+       "filter product TEE: 1 candidate(s)",
+       "unique target O100/L1"
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 13,
+     "turn": 2,
+     "kind": "grant",
+     "agent": "orchestrator",
+     "tool": "set_grant",
+     "arguments": {
+      "proposal_id": "P-0001"
+     },
+     "result": null,
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 14,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "handoff_to_operations",
+     "arguments": {
+      "intent": "execute_confirmed"
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "handoff_to_operations",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 1906,
+      "cached_tokens": 1756,
+      "prefill_tokens": 150,
+      "completion_tokens": 31,
+      "prompt_ms": 153.75,
+      "predicted_ms": 434.3,
+      "latency_ms": 593.0,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "handoff_to_operations",
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 15,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "execute_proposal",
+     "arguments": {},
+     "result": {
+      "role": "operations",
+      "tool": "execute_proposal",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 920,
+      "cached_tokens": 855,
+      "prefill_tokens": 65,
+      "completion_tokens": 16,
+      "prompt_ms": 94.53,
+      "predicted_ms": 219.16,
+      "latency_ms": 326.7,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "execute_proposal",
+      "get_request_status",
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 16,
+     "turn": 2,
+     "kind": "tool",
+     "agent": "operations",
+     "tool": "execute_proposal",
+     "arguments": {},
+     "result": {
+      "replay": false,
+      "proposal_id": "P-0001",
+      "status": "executed",
+      "transaction": {
+       "status": "completed",
+       "action": "exchange",
+       "transaction_id": "TX-0001",
+       "request_id": "REQ-public_02_exchange",
+       "proposal_id": "P-0001",
+       "customer_id": "C100",
+       "order_id": "O100",
+       "line_id": "L1",
+       "sku": "TEE-M",
+       "replacement_sku": "TEE-L",
+       "amount_cents": 0,
+       "currency": "USD",
+       "business_date": "2026-10-26",
+       "result": {
+        "transaction_id": "TX-0001",
+        "return_id": "RET-0001",
+        "exchange_id": "EX-0001",
+        "quarantine_id": "Q-0001",
+        "amount_cents": 0,
+        "replacement_sku": "TEE-L"
+       }
+      }
+     },
+     "error": null,
+     "committed_effects": [
+      {
+       "type": "line_returned",
+       "order_id": "O100",
+       "line_id": "L1"
+      },
+      {
+       "type": "record",
+       "collection": "returns",
+       "id": "RET-0001",
+       "amount_cents": 0
+      },
+      {
+       "type": "stock",
+       "sku": "TEE-L",
+       "old_stock": 3,
+       "new_stock": 2
+      },
+      {
+       "type": "record",
+       "collection": "exchanges",
+       "id": "EX-0001",
+       "amount_cents": 0
+      },
+      {
+       "type": "record",
+       "collection": "quarantine",
+       "id": "Q-0001",
+       "amount_cents": 0
+      },
+      {
+       "type": "idempotency",
+       "request_id": "REQ-public_02_exchange"
+      }
+     ],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 17,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "report_to_resolution",
+     "arguments": {
+      "outcome": "completed"
+     },
+     "result": {
+      "role": "operations",
+      "tool": "report_to_resolution",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 1127,
+      "cached_tokens": 935,
+      "prefill_tokens": 192,
+      "completion_tokens": 28,
+      "prompt_ms": 163.63,
+      "predicted_ms": 402.24,
+      "latency_ms": 570.7,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 18,
+     "turn": 2,
+     "kind": "ops_report",
+     "agent": "orchestrator",
+     "tool": "report_to_resolution",
+     "arguments": {
+      "intent": "execute_confirmed"
+     },
+     "result": {
+      "intent": "execute_confirmed",
+      "outcome": "completed",
+      "reason_codes": [],
+      "proposal": null,
+      "transaction": {
+       "status": "completed",
+       "action": "exchange",
+       "transaction_id": "TX-0001",
+       "request_id": "REQ-public_02_exchange",
+       "proposal_id": "P-0001",
+       "customer_id": "C100",
+       "order_id": "O100",
+       "line_id": "L1",
+       "sku": "TEE-M",
+       "replacement_sku": "TEE-L",
+       "amount_cents": 0,
+       "currency": "USD",
+       "business_date": "2026-10-26",
+       "result": {
+        "transaction_id": "TX-0001",
+        "return_id": "RET-0001",
+        "exchange_id": "EX-0001",
+        "quarantine_id": "Q-0001",
+        "amount_cents": 0,
+        "replacement_sku": "TEE-L"
+       }
+      },
+      "replay": false,
+      "reconciled": false,
+      "alternatives": []
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 19,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "reply_to_customer",
+     "arguments": {
+      "message": "Your exchange has been completed successfully."
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "reply_to_customer",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 2010,
+      "cached_tokens": 1936,
+      "prefill_tokens": 74,
+      "completion_tokens": 33,
+      "prompt_ms": 103.12,
+      "predicted_ms": 480.45,
+      "latency_ms": 600.0,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "reply_to_customer"
+     ]
+    }
+   ],
+   "final_state": {
+    "as_of": "2026-10-26",
+    "currency": "USD",
+    "products": [
+     {
+      "sku": "TEE-S",
+      "product_id": "TEE",
+      "size": "S",
+      "price_cents": 4000,
+      "stock": 4
+     },
+     {
+      "sku": "TEE-M",
+      "product_id": "TEE",
+      "size": "M",
+      "price_cents": 4000,
+      "stock": 2
+     },
+     {
+      "sku": "TEE-L",
+      "product_id": "TEE",
+      "size": "L",
+      "price_cents": 4000,
+      "stock": 2
+     },
+     {
+      "sku": "JACKET-M",
+      "product_id": "JACKET",
+      "size": "M",
+      "price_cents": 9000,
+      "stock": 1
+     },
+     {
+      "sku": "JACKET-L",
+      "product_id": "JACKET",
+      "size": "L",
+      "price_cents": 9000,
+      "stock": 0
+     }
+    ],
+    "orders": [
+     {
+      "order_id": "O100",
+      "customer_id": "C100",
+      "status": "delivered",
+      "delivered_on": "2026-10-10",
+      "lines": [
+       {
+        "line_id": "L1",
+        "sku": "TEE-M",
+        "paid_cents": 3000,
+        "unopened": true,
+        "final_sale": false,
+        "returned": true
+       }
+      ]
+     }
+    ],
+    "returns": [
+     {
+      "return_id": "RET-0001",
+      "remedy": "exchange",
+      "disposition": "quarantine",
+      "transaction_id": "TX-0001",
+      "request_id": "REQ-public_02_exchange",
+      "proposal_id": "P-0001",
+      "customer_id": "C100",
+      "order_id": "O100",
+      "line_id": "L1",
+      "sku": "TEE-M",
+      "replacement_sku": "TEE-L",
+      "amount_cents": 0,
+      "currency": "USD",
+      "business_date": "2026-10-26",
+      "status": "completed"
+     }
+    ],
+    "refunds": [],
+    "exchanges": [
+     {
+      "exchange_id": "EX-0001",
+      "return_id": "RET-0001",
+      "original_sku": "TEE-M",
+      "replacement_sku": "TEE-L",
+      "transaction_id": "TX-0001",
+      "request_id": "REQ-public_02_exchange",
+      "proposal_id": "P-0001",
+      "customer_id": "C100",
+      "order_id": "O100",
+      "line_id": "L1",
+      "sku": "TEE-M",
+      "amount_cents": 0,
+      "currency": "USD",
+      "business_date": "2026-10-26",
+      "status": "completed"
+     }
+    ],
+    "quarantine": [
+     {
+      "quarantine_id": "Q-0001",
+      "return_id": "RET-0001",
+      "quantity": 1,
+      "reason": "customer_return",
+      "transaction_id": "TX-0001",
+      "request_id": "REQ-public_02_exchange",
+      "proposal_id": "P-0001",
+      "customer_id": "C100",
+      "order_id": "O100",
+      "line_id": "L1",
+      "sku": "TEE-M",
+      "replacement_sku": "TEE-L",
+      "amount_cents": 0,
+      "currency": "USD",
+      "business_date": "2026-10-26",
+      "status": "completed"
+     }
+    ],
+    "idempotency": {
+     "REQ-public_02_exchange": {
+      "status": "completed",
+      "action": "exchange",
+      "transaction_id": "TX-0001",
+      "request_id": "REQ-public_02_exchange",
+      "proposal_id": "P-0001",
+      "customer_id": "C100",
+      "order_id": "O100",
+      "line_id": "L1",
+      "sku": "TEE-M",
+      "replacement_sku": "TEE-L",
+      "amount_cents": 0,
+      "currency": "USD",
+      "business_date": "2026-10-26",
+      "result": {
+       "transaction_id": "TX-0001",
+       "return_id": "RET-0001",
+       "exchange_id": "EX-0001",
+       "quarantine_id": "Q-0001",
+       "amount_cents": 0,
+       "replacement_sku": "TEE-L"
+      }
+     }
+    }
+   },
+   "proposals": [
+    {
+     "proposal_id": "P-0001",
+     "request_id": "REQ-public_02_exchange",
+     "customer_id": "C100",
+     "order_id": "O100",
+     "line_id": "L1",
+     "remedy": "exchange",
+     "original_sku": "TEE-M",
+     "replacement_sku": "TEE-L",
+     "amount_cents": 0,
+     "currency": "USD",
+     "eligibility": {
+      "delivered_on": "2026-10-10",
+      "as_of": "2026-10-26",
+      "days_since_delivery": 16,
+      "window_days": 30
+     },
+     "binding_hash": "efc6dc97da0432fe2919ff581601909e86efeee3c059412673c953fd03136265",
+     "status": "executed",
+     "created_turn": 1
+    }
+   ],
+   "external_events": [],
+   "metrics": {
+    "elapsed_ms": 6365.8,
+    "peak_ram_mb": 1892.9,
+    "peak_vram_mb": 3187.8,
+    "peak_unified_gpu_mb": 3187.8,
+    "rss_mb": 4015.6,
+    "memory_architecture": "unified",
+    "memory_notes": [
+     "peak_ram_mb: sum over the listed processes of the kernel high-water ri_interval_max_phys_footprint (proc_pid_rusage RUSAGE_INFO_V4, interval reset at case start); per-process peaks may occur at different moments, so the sum is an upper bound of the simultaneous peak.",
+     "peak_vram_mb: Apple Silicon has unified memory (no separate VRAM). Value = max over 5 Hz + turn-boundary samples of IOAccelerator 'In use system memory' minus the idle baseline taken before llama-server started. System-wide scope; it overlaps peak_ram_mb, never add the two.",
+     "rss_mb: sum of per-process peak RSS; it includes mmapped model weights and overcounts on unified memory, reported only for comparison.",
+     "mb = MiB (2^20 bytes)."
+    ],
+    "per_process": {
+     "adapter": {
+      "pid": 72974,
+      "peak_phys_footprint_mb": 40.7,
+      "phys_footprint_mb": 40.6,
+      "peak_rss_mb": 39.1,
+      "source": "kernel high-water",
+      "interval_reset": true
+     },
+     "llama-server": {
+      "pid": 72986,
+      "peak_phys_footprint_mb": 1852.2,
+      "phys_footprint_mb": 1852.2,
+      "peak_rss_mb": 3976.5,
+      "source": "kernel high-water",
+      "interval_reset": true
+     }
+    },
+    "gpu_in_use_peak_mb_absolute": 3747.1,
+    "gpu_baseline_mb": 559.3,
+    "memory_samples": 33,
+    "memory_marks": 3,
+    "llm_calls": 9,
+    "prompt_tokens": 13338,
+    "cached_tokens": 12133,
+    "completion_tokens": 355,
+    "prefill_ms": 1203.0,
+    "decode_ms": 4973.2,
+    "tool_ms": 0.9,
+    "decode_tok_s": 71.4,
+    "prefill_tok_s": 1001.6,
+    "turn_latency_ms": [
+     4185.4,
+     2093.0
+    ],
+    "protocol_errors": 0,
+    "guard_overrides": 0,
+    "fallbacks": 0,
+    "gate_rejections": 0,
+    "dropped_calls": 0,
+    "llm_errors": 0,
+    "first_case_after_start": false,
+    "status": "ok"
+   }
+  },
+  {
+   "case_id": "public_03_expired",
+   "turns": [
+    {
+     "decision": "deny",
+     "response": "I'm sorry, but this item was delivered 31 days ago, which is outside our 30-day return window. Is there anything else I can help you with? Item: TEE-M (size M), order O100, line L1. It was delivered 31 days ago, outside the 30-day return window.",
+     "proposal": null,
+     "transaction": null,
+     "confirmed_proposal_id": null
+    }
+   ],
+   "action_audit": [
+    {
+     "seq": 1,
+     "turn": 1,
+     "kind": "grounding",
+     "agent": "orchestrator",
+     "tool": "analyze",
+     "arguments": {
+      "turn": 1
+     },
+     "result": {
+      "order_refs": [
+       "O100"
+      ],
+      "unknown_order_refs": [],
+      "line_refs": [
+       "L1"
+      ],
+      "unknown_line_refs": [],
+      "other_id_refs": [],
+      "product_refs": [],
+      "unmatched_product_words": [],
+      "requested_products": [],
+      "requested_size": null,
+      "requested_sizes": [],
+      "original_size_hints": [],
+      "mentioned_sizes": [],
+      "remedy_cue": "refund",
+      "stated_remedy": "refund",
+      "remedy_words": [
+       "refund"
+      ],
+      "cancel_cue": false,
+      "last_remedy_cue": "refund",
+      "last_requested_size": null,
+      "inquiry": false,
+      "candidates": [
+       "O100/L1"
+      ],
+      "id_candidates": [
+       "O100/L1"
+      ],
+      "unique_target": [
+       "O100",
+       "L1"
+      ],
+      "not_found_code": null,
+      "filters_used": [
+       "order",
+       "line"
+      ],
+      "explain": [
+       "message 1: orders O100; lines L1; remedy refund (refund)",
+       "filter order O100: 1 candidate(s)",
+       "filter line L1: 1 candidate(s)",
+       "unique target O100/L1"
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 2,
+     "turn": 1,
+     "kind": "tool",
+     "agent": "orchestrator",
+     "tool": "prefetch_account_card",
+     "arguments": {},
+     "result": {
+      "lines": [
+       {
+        "order_id": "O100",
+        "line_id": "L1",
+        "sku": "TEE-M",
+        "product_id": "TEE",
+        "size": "M",
+        "aliases": [
+         "tee",
+         "t-shirt",
+         "tee shirt",
+         "shirt",
+         "top"
+        ],
+        "paid_cents": 3000,
+        "delivered_on": "2026-09-25"
+       }
+      ],
+      "count": 1,
+      "catalog": [
+       {
+        "sku": "TEE-S",
+        "product_id": "TEE",
+        "size": "S"
+       },
+       {
+        "sku": "TEE-M",
+        "product_id": "TEE",
+        "size": "M"
+       },
+       {
+        "sku": "TEE-L",
+        "product_id": "TEE",
+        "size": "L"
+       }
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 3,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "handoff_to_operations",
+     "arguments": {
+      "intent": "propose_refund",
+      "order_id": "O100",
+      "line_id": "L1",
+      "evidence": "Please refund line L1 of order O100."
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "handoff_to_operations",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 1852,
+      "cached_tokens": 1655,
+      "prefill_tokens": 197,
+      "completion_tokens": 84,
+      "prompt_ms": 196.83,
+      "predicted_ms": 1239.96,
+      "latency_ms": 1442.1,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "handoff_to_operations",
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 4,
+     "turn": 1,
+     "kind": "target",
+     "agent": "orchestrator",
+     "tool": "set_target",
+     "arguments": {
+      "order_id": "O100",
+      "line_id": "L1",
+      "intent": "refund",
+      "requested_sku": null,
+      "requested_size": null,
+      "requested_product": null,
+      "grounded_by": "customer_ids",
+      "evidence": null
+     },
+     "result": null,
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 5,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "create_proposal",
+     "arguments": {
+      "remedy": "refund"
+     },
+     "result": {
+      "role": "operations",
+      "tool": "create_proposal",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 950,
+      "cached_tokens": 855,
+      "prefill_tokens": 95,
+      "completion_tokens": 28,
+      "prompt_ms": 103.48,
+      "predicted_ms": 397.14,
+      "latency_ms": 520.2,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "create_proposal",
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 6,
+     "turn": 1,
+     "kind": "tool",
+     "agent": "operations",
+     "tool": "create_proposal",
+     "arguments": {
+      "remedy": "refund",
+      "replacement_sku": null
+     },
+     "result": null,
+     "error": {
+      "code": "RETURN_WINDOW_EXPIRED",
+      "message": "this line is not eligible: RETURN_WINDOW_EXPIRED",
+      "details": {
+       "reasons": [
+        "RETURN_WINDOW_EXPIRED"
+       ],
+       "eligibility": {
+        "eligible": false,
+        "reasons": [
+         "RETURN_WINDOW_EXPIRED"
+        ],
+        "order_id": "O100",
+        "line_id": "L1",
+        "sku": "TEE-M",
+        "product_id": "TEE",
+        "size": "M",
+        "paid_cents": 3000,
+        "delivered_on": "2026-09-25",
+        "as_of": "2026-10-26",
+        "days_since_delivery": 31,
+        "window_days": 30
+       }
+      }
+     },
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 7,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "report_to_resolution",
+     "arguments": {
+      "outcome": "denied"
+     },
+     "result": {
+      "role": "operations",
+      "tool": "report_to_resolution",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 1138,
+      "cached_tokens": 977,
+      "prefill_tokens": 161,
+      "completion_tokens": 59,
+      "prompt_ms": 164.79,
+      "predicted_ms": 867.32,
+      "latency_ms": 1037.7,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 8,
+     "turn": 1,
+     "kind": "ops_report",
+     "agent": "orchestrator",
+     "tool": "report_to_resolution",
+     "arguments": {
+      "intent": "propose_refund"
+     },
+     "result": {
+      "intent": "propose_refund",
+      "outcome": "denied",
+      "reason_codes": [
+       "RETURN_WINDOW_EXPIRED"
+      ],
+      "proposal": null,
+      "transaction": null,
+      "replay": false,
+      "reconciled": false,
+      "alternatives": []
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 9,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "reply_to_customer",
+     "arguments": {
+      "message": "I'm sorry, but this item was delivered 31 days ago, which is outside our 30-day return window. Is there anything else I can help you with?"
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "reply_to_customer",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 1987,
+      "cached_tokens": 1935,
+      "prefill_tokens": 52,
+      "completion_tokens": 62,
+      "prompt_ms": 102.01,
+      "predicted_ms": 942.13,
+      "latency_ms": 1059.9,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "reply_to_customer"
+     ]
+    }
+   ],
+   "final_state": {
+    "as_of": "2026-10-26",
+    "currency": "USD",
+    "products": [
+     {
+      "sku": "TEE-S",
+      "product_id": "TEE",
+      "size": "S",
+      "price_cents": 4000,
+      "stock": 4
+     },
+     {
+      "sku": "TEE-M",
+      "product_id": "TEE",
+      "size": "M",
+      "price_cents": 4000,
+      "stock": 2
+     },
+     {
+      "sku": "TEE-L",
+      "product_id": "TEE",
+      "size": "L",
+      "price_cents": 4000,
+      "stock": 3
+     },
+     {
+      "sku": "JACKET-M",
+      "product_id": "JACKET",
+      "size": "M",
+      "price_cents": 9000,
+      "stock": 1
+     },
+     {
+      "sku": "JACKET-L",
+      "product_id": "JACKET",
+      "size": "L",
+      "price_cents": 9000,
+      "stock": 0
+     }
+    ],
+    "orders": [
+     {
+      "order_id": "O100",
+      "customer_id": "C100",
+      "status": "delivered",
+      "delivered_on": "2026-09-25",
+      "lines": [
+       {
+        "line_id": "L1",
+        "sku": "TEE-M",
+        "paid_cents": 3000,
+        "unopened": true,
+        "final_sale": false,
+        "returned": false
+       }
+      ]
+     }
+    ],
+    "returns": [],
+    "refunds": [],
+    "exchanges": [],
+    "quarantine": [],
+    "idempotency": {}
+   },
+   "proposals": [],
+   "external_events": [],
+   "metrics": {
+    "elapsed_ms": 4127.2,
+    "peak_ram_mb": 1893.3,
+    "peak_vram_mb": 3193.0,
+    "peak_unified_gpu_mb": 3193.0,
+    "rss_mb": 4016.2,
+    "memory_architecture": "unified",
+    "memory_notes": [
+     "peak_ram_mb: sum over the listed processes of the kernel high-water ri_interval_max_phys_footprint (proc_pid_rusage RUSAGE_INFO_V4, interval reset at case start); per-process peaks may occur at different moments, so the sum is an upper bound of the simultaneous peak.",
+     "peak_vram_mb: Apple Silicon has unified memory (no separate VRAM). Value = max over 5 Hz + turn-boundary samples of IOAccelerator 'In use system memory' minus the idle baseline taken before llama-server started. System-wide scope; it overlaps peak_ram_mb, never add the two.",
+     "rss_mb: sum of per-process peak RSS; it includes mmapped model weights and overcounts on unified memory, reported only for comparison.",
+     "mb = MiB (2^20 bytes)."
+    ],
+    "per_process": {
+     "adapter": {
+      "pid": 72974,
+      "peak_phys_footprint_mb": 40.8,
+      "phys_footprint_mb": 40.8,
+      "peak_rss_mb": 39.4,
+      "source": "kernel high-water",
+      "interval_reset": true
+     },
+     "llama-server": {
+      "pid": 72986,
+      "peak_phys_footprint_mb": 1852.4,
+      "phys_footprint_mb": 1852.4,
+      "peak_rss_mb": 3976.8,
+      "source": "kernel high-water",
+      "interval_reset": true
+     }
+    },
+    "gpu_in_use_peak_mb_absolute": 3752.3,
+    "gpu_baseline_mb": 559.3,
+    "memory_samples": 22,
+    "memory_marks": 2,
+    "llm_calls": 4,
+    "prompt_tokens": 5927,
+    "cached_tokens": 5422,
+    "completion_tokens": 233,
+    "prefill_ms": 567.1,
+    "decode_ms": 3446.6,
+    "tool_ms": 0.2,
+    "decode_tok_s": 67.6,
+    "prefill_tok_s": 890.5,
+    "turn_latency_ms": [
+     4062.5
+    ],
+    "protocol_errors": 0,
+    "guard_overrides": 0,
+    "fallbacks": 0,
+    "gate_rejections": 0,
+    "dropped_calls": 0,
+    "llm_errors": 0,
+    "first_case_after_start": false,
+    "status": "ok"
+   }
+  },
+  {
+   "case_id": "public_04_clarify",
+   "turns": [
+    {
+     "decision": "clarify",
+     "response": "We could not tell which item you mean. Matching items on your account: 1) TEE-M (size M), order O100, line L1, paid $30.00; 2) JACKET-M (size M), order O100, line L2, paid $90.00. I see you have a TEE and a JACKET in order O100. Which item would you like to return, and do you prefer a refund or an exchange?",
+     "proposal": null,
+     "transaction": null,
+     "confirmed_proposal_id": null
+    },
+    {
+     "decision": "propose",
+     "response": "We can refund $30.00 for the TEE-M (line L1). Please confirm with the confirm control to proceed. Proposed refund: $30.00 for TEE-M (size M), order O100, line L1. Delivered 2026-10-10, 16 days ago (within the 30-day return window). Proposal P-0001. Nothing has been processed yet; please confirm this proposal to proceed.",
+     "proposal": {
+      "proposal_id": "P-0001",
+      "request_id": "REQ-public_04_clarify",
+      "customer_id": "C100",
+      "order_id": "O100",
+      "line_id": "L1",
+      "remedy": "refund",
+      "original_sku": "TEE-M",
+      "replacement_sku": null,
+      "amount_cents": 3000,
+      "currency": "USD",
+      "eligibility": {
+       "delivered_on": "2026-10-10",
+       "as_of": "2026-10-26",
+       "days_since_delivery": 16,
+       "window_days": 30
+      },
+      "binding_hash": "3788882c36dd0bf2f96db52c4a07248069e03f6b3ff2f93d627448a7be8686f1",
+      "status": "open",
+      "created_turn": 2
+     },
+     "transaction": null,
+     "confirmed_proposal_id": null
+    },
+    {
+     "decision": "completed",
+     "response": "Your refund of $30.00 for the TEE has been processed successfully. Completed refund: $30.00 for TEE-M (size M), order O100, line L1. Transaction TX-0001.",
+     "proposal": null,
+     "transaction": {
+      "status": "completed",
+      "action": "refund",
+      "transaction_id": "TX-0001",
+      "request_id": "REQ-public_04_clarify",
+      "proposal_id": "P-0001",
+      "customer_id": "C100",
+      "order_id": "O100",
+      "line_id": "L1",
+      "sku": "TEE-M",
+      "replacement_sku": null,
+      "amount_cents": 3000,
+      "currency": "USD",
+      "business_date": "2026-10-26",
+      "result": {
+       "transaction_id": "TX-0001",
+       "return_id": "RET-0001",
+       "refund_id": "RF-0001",
+       "quarantine_id": "Q-0001",
+       "amount_cents": 3000,
+       "replacement_sku": null
+      }
+     },
+     "confirmed_proposal_id": "P-0001"
+    }
+   ],
+   "action_audit": [
+    {
+     "seq": 1,
+     "turn": 1,
+     "kind": "grounding",
+     "agent": "orchestrator",
+     "tool": "analyze",
+     "arguments": {
+      "turn": 1
+     },
+     "result": {
+      "order_refs": [
+       "O100"
+      ],
+      "unknown_order_refs": [],
+      "line_refs": [],
+      "unknown_line_refs": [],
+      "other_id_refs": [],
+      "product_refs": [],
+      "unmatched_product_words": [],
+      "requested_products": [],
+      "requested_size": null,
+      "requested_sizes": [],
+      "original_size_hints": [],
+      "mentioned_sizes": [],
+      "remedy_cue": "refund",
+      "stated_remedy": "none",
+      "remedy_words": [
+       "return"
+      ],
+      "cancel_cue": false,
+      "last_remedy_cue": "refund",
+      "last_requested_size": null,
+      "inquiry": false,
+      "candidates": [
+       "O100/L1",
+       "O100/L2"
+      ],
+      "id_candidates": [
+       "O100/L1",
+       "O100/L2"
+      ],
+      "unique_target": null,
+      "not_found_code": null,
+      "filters_used": [
+       "order"
+      ],
+      "explain": [
+       "message 1: orders O100; remedy refund (return)",
+       "filter order O100: 2 candidate(s)",
+       "no unique target: 2 candidate(s) (O100/L1, O100/L2)"
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 2,
+     "turn": 1,
+     "kind": "tool",
+     "agent": "orchestrator",
+     "tool": "prefetch_account_card",
+     "arguments": {},
+     "result": {
+      "lines": [
+       {
+        "order_id": "O100",
+        "line_id": "L1",
+        "sku": "TEE-M",
+        "product_id": "TEE",
+        "size": "M",
+        "aliases": [
+         "tee",
+         "t-shirt",
+         "tee shirt",
+         "shirt",
+         "top"
+        ],
+        "paid_cents": 3000,
+        "delivered_on": "2026-10-10"
+       },
+       {
+        "order_id": "O100",
+        "line_id": "L2",
+        "sku": "JACKET-M",
+        "product_id": "JACKET",
+        "size": "M",
+        "aliases": [
+         "jacket",
+         "coat",
+         "parka",
+         "blazer",
+         "anorak",
+         "windbreaker"
+        ],
+        "paid_cents": 9000,
+        "delivered_on": "2026-10-10"
+       }
+      ],
+      "count": 2,
+      "catalog": [
+       {
+        "sku": "TEE-S",
+        "product_id": "TEE",
+        "size": "S"
+       },
+       {
+        "sku": "TEE-M",
+        "product_id": "TEE",
+        "size": "M"
+       },
+       {
+        "sku": "TEE-L",
+        "product_id": "TEE",
+        "size": "L"
+       },
+       {
+        "sku": "JACKET-M",
+        "product_id": "JACKET",
+        "size": "M"
+       },
+       {
+        "sku": "JACKET-L",
+        "product_id": "JACKET",
+        "size": "L"
+       }
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 3,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "find_order_lines",
+     "arguments": {
+      "order_ref": "O100"
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "find_order_lines",
+      "protocol_error": "TOOL_NOT_ALLOWED: find_order_lines is not allowed now (allowed now: handoff_to_operations, reply_to_customer)",
+      "dropped_calls": 0,
+      "prompt_tokens": 1917,
+      "cached_tokens": 1655,
+      "prefill_tokens": 262,
+      "completion_tokens": 31,
+      "prompt_ms": 263.72,
+      "predicted_ms": 459.68,
+      "latency_ms": 727.9,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": {
+      "code": "TOOL_NOT_ALLOWED",
+      "message": "TOOL_NOT_ALLOWED: find_order_lines is not allowed now (allowed now: handoff_to_operations, reply_to_customer)"
+     },
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "handoff_to_operations",
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 4,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "reply_to_customer",
+     "arguments": {
+      "message": "I see you have a TEE and a JACKET in order O100. Which item would you like to return, and do you prefer a refund or an exchange?"
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "reply_to_customer",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 2006,
+      "cached_tokens": 1947,
+      "prefill_tokens": 59,
+      "completion_tokens": 113,
+      "prompt_ms": 102.93,
+      "predicted_ms": 1710.67,
+      "latency_ms": 1818.7,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "handoff_to_operations",
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 5,
+     "turn": 2,
+     "kind": "grounding",
+     "agent": "orchestrator",
+     "tool": "analyze",
+     "arguments": {
+      "turn": 2
+     },
+     "result": {
+      "order_refs": [
+       "O100"
+      ],
+      "unknown_order_refs": [],
+      "line_refs": [
+       "L1"
+      ],
+      "unknown_line_refs": [],
+      "other_id_refs": [],
+      "product_refs": [
+       "TEE"
+      ],
+      "unmatched_product_words": [],
+      "requested_products": [],
+      "requested_size": null,
+      "requested_sizes": [],
+      "original_size_hints": [
+       "M"
+      ],
+      "mentioned_sizes": [
+       "M"
+      ],
+      "remedy_cue": "refund",
+      "stated_remedy": "refund",
+      "remedy_words": [
+       "refund"
+      ],
+      "cancel_cue": false,
+      "last_remedy_cue": "refund",
+      "last_requested_size": null,
+      "inquiry": false,
+      "candidates": [
+       "O100/L1"
+      ],
+      "id_candidates": [
+       "O100/L1"
+      ],
+      "unique_target": [
+       "O100",
+       "L1"
+      ],
+      "not_found_code": null,
+      "filters_used": [
+       "order",
+       "line",
+       "product",
+       "size"
+      ],
+      "explain": [
+       "message 1: orders O100; remedy refund (return)",
+       "message 2: lines L1; products TEE; original sizes M; remedy refund (refund)",
+       "filter order O100: 2 candidate(s)",
+       "filter line L1: 1 candidate(s)",
+       "filter product TEE: 1 candidate(s)",
+       "filter size M: 1 candidate(s)",
+       "unique target O100/L1"
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 6,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "handoff_to_operations",
+     "arguments": {
+      "intent": "propose_refund",
+      "order_id": "O100",
+      "line_id": "L1",
+      "evidence": "I mean line L1, the size M tee. Refund it please."
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "handoff_to_operations",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 1937,
+      "cached_tokens": 1821,
+      "prefill_tokens": 116,
+      "completion_tokens": 88,
+      "prompt_ms": 111.04,
+      "predicted_ms": 1291.9,
+      "latency_ms": 1407.5,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "handoff_to_operations",
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 7,
+     "turn": 2,
+     "kind": "target",
+     "agent": "orchestrator",
+     "tool": "set_target",
+     "arguments": {
+      "order_id": "O100",
+      "line_id": "L1",
+      "intent": "refund",
+      "requested_sku": null,
+      "requested_size": null,
+      "requested_product": null,
+      "grounded_by": "customer_ids",
+      "evidence": null
+     },
+     "result": null,
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 8,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "create_proposal",
+     "arguments": {
+      "remedy": "refund"
+     },
+     "result": {
+      "role": "operations",
+      "tool": "create_proposal",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 950,
+      "cached_tokens": 855,
+      "prefill_tokens": 95,
+      "completion_tokens": 28,
+      "prompt_ms": 105.74,
+      "predicted_ms": 394.0,
+      "latency_ms": 535.3,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "create_proposal",
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 9,
+     "turn": 2,
+     "kind": "tool",
+     "agent": "operations",
+     "tool": "create_proposal",
+     "arguments": {
+      "remedy": "refund",
+      "replacement_sku": null
+     },
+     "result": {
+      "proposal": {
+       "proposal_id": "P-0001",
+       "request_id": "REQ-public_04_clarify",
+       "customer_id": "C100",
+       "order_id": "O100",
+       "line_id": "L1",
+       "remedy": "refund",
+       "original_sku": "TEE-M",
+       "replacement_sku": null,
+       "amount_cents": 3000,
+       "currency": "USD",
+       "eligibility": {
+        "delivered_on": "2026-10-10",
+        "as_of": "2026-10-26",
+        "days_since_delivery": 16,
+        "window_days": 30
+       },
+       "binding_hash": "3788882c36dd0bf2f96db52c4a07248069e03f6b3ff2f93d627448a7be8686f1",
+       "status": "open",
+       "created_turn": 2
+      },
+      "reused": false,
+      "superseded": null
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 10,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "report_to_resolution",
+     "arguments": {
+      "outcome": "proposed"
+     },
+     "result": {
+      "role": "operations",
+      "tool": "report_to_resolution",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 1133,
+      "cached_tokens": 977,
+      "prefill_tokens": 156,
+      "completion_tokens": 29,
+      "prompt_ms": 163.25,
+      "predicted_ms": 423.54,
+      "latency_ms": 590.9,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 11,
+     "turn": 2,
+     "kind": "ops_report",
+     "agent": "orchestrator",
+     "tool": "report_to_resolution",
+     "arguments": {
+      "intent": "propose_refund"
+     },
+     "result": {
+      "intent": "propose_refund",
+      "outcome": "proposed",
+      "reason_codes": [],
+      "proposal": {
+       "proposal_id": "P-0001",
+       "request_id": "REQ-public_04_clarify",
+       "customer_id": "C100",
+       "order_id": "O100",
+       "line_id": "L1",
+       "remedy": "refund",
+       "original_sku": "TEE-M",
+       "replacement_sku": null,
+       "amount_cents": 3000,
+       "currency": "USD",
+       "eligibility": {
+        "delivered_on": "2026-10-10",
+        "as_of": "2026-10-26",
+        "days_since_delivery": 16,
+        "window_days": 30
+       },
+       "binding_hash": "3788882c36dd0bf2f96db52c4a07248069e03f6b3ff2f93d627448a7be8686f1",
+       "status": "open",
+       "created_turn": 2
+      },
+      "transaction": null,
+      "replay": false,
+      "reconciled": false,
+      "alternatives": []
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 12,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "reply_to_customer",
+     "arguments": {
+      "message": "We can refund $30.00 for the TEE-M (line L1). Please confirm with the confirm control to proceed."
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "reply_to_customer",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 2110,
+      "cached_tokens": 2024,
+      "prefill_tokens": 86,
+      "completion_tokens": 54,
+      "prompt_ms": 109.2,
+      "predicted_ms": 802.9,
+      "latency_ms": 928.4,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 13,
+     "turn": 3,
+     "kind": "grounding",
+     "agent": "orchestrator",
+     "tool": "analyze",
+     "arguments": {
+      "turn": 3
+     },
+     "result": {
+      "order_refs": [
+       "O100"
+      ],
+      "unknown_order_refs": [],
+      "line_refs": [
+       "L1"
+      ],
+      "unknown_line_refs": [],
+      "other_id_refs": [],
+      "product_refs": [
+       "TEE"
+      ],
+      "unmatched_product_words": [],
+      "requested_products": [],
+      "requested_size": null,
+      "requested_sizes": [],
+      "original_size_hints": [
+       "M"
+      ],
+      "mentioned_sizes": [
+       "M"
+      ],
+      "remedy_cue": "refund",
+      "stated_remedy": "refund",
+      "remedy_words": [
+       "refund"
+      ],
+      "cancel_cue": false,
+      "last_remedy_cue": "refund",
+      "last_requested_size": null,
+      "inquiry": false,
+      "candidates": [
+       "O100/L1"
+      ],
+      "id_candidates": [
+       "O100/L1"
+      ],
+      "unique_target": [
+       "O100",
+       "L1"
+      ],
+      "not_found_code": null,
+      "filters_used": [
+       "order",
+       "line",
+       "product",
+       "size"
+      ],
+      "explain": [
+       "message 1: orders O100; remedy refund (return)",
+       "message 2: lines L1; products TEE; original sizes M; remedy refund (refund)",
+       "message 3: remedy refund (refund)",
+       "filter order O100: 2 candidate(s)",
+       "filter line L1: 1 candidate(s)",
+       "filter product TEE: 1 candidate(s)",
+       "filter size M: 1 candidate(s)",
+       "unique target O100/L1"
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 14,
+     "turn": 3,
+     "kind": "grant",
+     "agent": "orchestrator",
+     "tool": "set_grant",
+     "arguments": {
+      "proposal_id": "P-0001"
+     },
+     "result": null,
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 15,
+     "turn": 3,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "handoff_to_operations",
+     "arguments": {
+      "intent": "execute_confirmed"
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "handoff_to_operations",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 1989,
+      "cached_tokens": 1821,
+      "prefill_tokens": 168,
+      "completion_tokens": 31,
+      "prompt_ms": 168.44,
+      "predicted_ms": 447.0,
+      "latency_ms": 620.8,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "handoff_to_operations",
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 16,
+     "turn": 3,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "get_request_status",
+     "arguments": {},
+     "result": {
+      "role": "operations",
+      "tool": "get_request_status",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 916,
+      "cached_tokens": 855,
+      "prefill_tokens": 61,
+      "completion_tokens": 15,
+      "prompt_ms": 98.85,
+      "predicted_ms": 207.14,
+      "latency_ms": 322.4,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "execute_proposal",
+      "get_request_status",
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 17,
+     "turn": 3,
+     "kind": "tool",
+     "agent": "operations",
+     "tool": "get_request_status",
+     "arguments": {},
+     "result": {
+      "request_id": "REQ-public_04_clarify",
+      "status": "not_found"
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 18,
+     "turn": 3,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "execute_proposal",
+     "arguments": {},
+     "result": {
+      "role": "operations",
+      "tool": "execute_proposal",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 979,
+      "cached_tokens": 930,
+      "prefill_tokens": 49,
+      "completion_tokens": 68,
+      "prompt_ms": 95.8,
+      "predicted_ms": 995.17,
+      "latency_ms": 1095.9,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "execute_proposal",
+      "get_request_status",
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 19,
+     "turn": 3,
+     "kind": "tool",
+     "agent": "operations",
+     "tool": "execute_proposal",
+     "arguments": {},
+     "result": {
+      "replay": false,
+      "proposal_id": "P-0001",
+      "status": "executed",
+      "transaction": {
+       "status": "completed",
+       "action": "refund",
+       "transaction_id": "TX-0001",
+       "request_id": "REQ-public_04_clarify",
+       "proposal_id": "P-0001",
+       "customer_id": "C100",
+       "order_id": "O100",
+       "line_id": "L1",
+       "sku": "TEE-M",
+       "replacement_sku": null,
+       "amount_cents": 3000,
+       "currency": "USD",
+       "business_date": "2026-10-26",
+       "result": {
+        "transaction_id": "TX-0001",
+        "return_id": "RET-0001",
+        "refund_id": "RF-0001",
+        "quarantine_id": "Q-0001",
+        "amount_cents": 3000,
+        "replacement_sku": null
+       }
+      }
+     },
+     "error": null,
+     "committed_effects": [
+      {
+       "type": "line_returned",
+       "order_id": "O100",
+       "line_id": "L1"
+      },
+      {
+       "type": "record",
+       "collection": "returns",
+       "id": "RET-0001",
+       "amount_cents": 3000
+      },
+      {
+       "type": "record",
+       "collection": "refunds",
+       "id": "RF-0001",
+       "amount_cents": 3000
+      },
+      {
+       "type": "record",
+       "collection": "quarantine",
+       "id": "Q-0001",
+       "amount_cents": 3000
+      },
+      {
+       "type": "idempotency",
+       "request_id": "REQ-public_04_clarify"
+      }
+     ],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 20,
+     "turn": 3,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "report_to_resolution",
+     "arguments": {
+      "outcome": "completed"
+     },
+     "result": {
+      "role": "operations",
+      "tool": "report_to_resolution",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 1190,
+      "cached_tokens": 975,
+      "prefill_tokens": 215,
+      "completion_tokens": 28,
+      "prompt_ms": 176.05,
+      "predicted_ms": 403.93,
+      "latency_ms": 586.7,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 21,
+     "turn": 3,
+     "kind": "ops_report",
+     "agent": "orchestrator",
+     "tool": "report_to_resolution",
+     "arguments": {
+      "intent": "execute_confirmed"
+     },
+     "result": {
+      "intent": "execute_confirmed",
+      "outcome": "completed",
+      "reason_codes": [],
+      "proposal": null,
+      "transaction": {
+       "status": "completed",
+       "action": "refund",
+       "transaction_id": "TX-0001",
+       "request_id": "REQ-public_04_clarify",
+       "proposal_id": "P-0001",
+       "customer_id": "C100",
+       "order_id": "O100",
+       "line_id": "L1",
+       "sku": "TEE-M",
+       "replacement_sku": null,
+       "amount_cents": 3000,
+       "currency": "USD",
+       "business_date": "2026-10-26",
+       "result": {
+        "transaction_id": "TX-0001",
+        "return_id": "RET-0001",
+        "refund_id": "RF-0001",
+        "quarantine_id": "Q-0001",
+        "amount_cents": 3000,
+        "replacement_sku": null
+       }
+      },
+      "replay": false,
+      "reconciled": false,
+      "alternatives": []
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 22,
+     "turn": 3,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "reply_to_customer",
+     "arguments": {
+      "message": "Your refund of $30.00 for the TEE has been processed successfully."
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "reply_to_customer",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 2094,
+      "cached_tokens": 2019,
+      "prefill_tokens": 75,
+      "completion_tokens": 44,
+      "prompt_ms": 100.75,
+      "predicted_ms": 647.12,
+      "latency_ms": 769.5,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "reply_to_customer"
+     ]
+    }
+   ],
+   "final_state": {
+    "as_of": "2026-10-26",
+    "currency": "USD",
+    "products": [
+     {
+      "sku": "TEE-S",
+      "product_id": "TEE",
+      "size": "S",
+      "price_cents": 4000,
+      "stock": 4
+     },
+     {
+      "sku": "TEE-M",
+      "product_id": "TEE",
+      "size": "M",
+      "price_cents": 4000,
+      "stock": 2
+     },
+     {
+      "sku": "TEE-L",
+      "product_id": "TEE",
+      "size": "L",
+      "price_cents": 4000,
+      "stock": 3
+     },
+     {
+      "sku": "JACKET-M",
+      "product_id": "JACKET",
+      "size": "M",
+      "price_cents": 9000,
+      "stock": 1
+     },
+     {
+      "sku": "JACKET-L",
+      "product_id": "JACKET",
+      "size": "L",
+      "price_cents": 9000,
+      "stock": 0
+     }
+    ],
+    "orders": [
+     {
+      "order_id": "O100",
+      "customer_id": "C100",
+      "status": "delivered",
+      "delivered_on": "2026-10-10",
+      "lines": [
+       {
+        "line_id": "L1",
+        "sku": "TEE-M",
+        "paid_cents": 3000,
+        "unopened": true,
+        "final_sale": false,
+        "returned": true
+       },
+       {
+        "line_id": "L2",
+        "sku": "JACKET-M",
+        "paid_cents": 9000,
+        "unopened": true,
+        "final_sale": false,
+        "returned": false
+       }
+      ]
+     }
+    ],
+    "returns": [
+     {
+      "return_id": "RET-0001",
+      "remedy": "refund",
+      "disposition": "quarantine",
+      "transaction_id": "TX-0001",
+      "request_id": "REQ-public_04_clarify",
+      "proposal_id": "P-0001",
+      "customer_id": "C100",
+      "order_id": "O100",
+      "line_id": "L1",
+      "sku": "TEE-M",
+      "replacement_sku": null,
+      "amount_cents": 3000,
+      "currency": "USD",
+      "business_date": "2026-10-26",
+      "status": "completed"
+     }
+    ],
+    "refunds": [
+     {
+      "refund_id": "RF-0001",
+      "return_id": "RET-0001",
+      "transaction_id": "TX-0001",
+      "request_id": "REQ-public_04_clarify",
+      "proposal_id": "P-0001",
+      "customer_id": "C100",
+      "order_id": "O100",
+      "line_id": "L1",
+      "sku": "TEE-M",
+      "replacement_sku": null,
+      "amount_cents": 3000,
+      "currency": "USD",
+      "business_date": "2026-10-26",
+      "status": "completed"
+     }
+    ],
+    "exchanges": [],
+    "quarantine": [
+     {
+      "quarantine_id": "Q-0001",
+      "return_id": "RET-0001",
+      "quantity": 1,
+      "reason": "customer_return",
+      "transaction_id": "TX-0001",
+      "request_id": "REQ-public_04_clarify",
+      "proposal_id": "P-0001",
+      "customer_id": "C100",
+      "order_id": "O100",
+      "line_id": "L1",
+      "sku": "TEE-M",
+      "replacement_sku": null,
+      "amount_cents": 3000,
+      "currency": "USD",
+      "business_date": "2026-10-26",
+      "status": "completed"
+     }
+    ],
+    "idempotency": {
+     "REQ-public_04_clarify": {
+      "status": "completed",
+      "action": "refund",
+      "transaction_id": "TX-0001",
+      "request_id": "REQ-public_04_clarify",
+      "proposal_id": "P-0001",
+      "customer_id": "C100",
+      "order_id": "O100",
+      "line_id": "L1",
+      "sku": "TEE-M",
+      "replacement_sku": null,
+      "amount_cents": 3000,
+      "currency": "USD",
+      "business_date": "2026-10-26",
+      "result": {
+       "transaction_id": "TX-0001",
+       "return_id": "RET-0001",
+       "refund_id": "RF-0001",
+       "quarantine_id": "Q-0001",
+       "amount_cents": 3000,
+       "replacement_sku": null
+      }
+     }
+    }
+   },
+   "proposals": [
+    {
+     "proposal_id": "P-0001",
+     "request_id": "REQ-public_04_clarify",
+     "customer_id": "C100",
+     "order_id": "O100",
+     "line_id": "L1",
+     "remedy": "refund",
+     "original_sku": "TEE-M",
+     "replacement_sku": null,
+     "amount_cents": 3000,
+     "currency": "USD",
+     "eligibility": {
+      "delivered_on": "2026-10-10",
+      "as_of": "2026-10-26",
+      "days_since_delivery": 16,
+      "window_days": 30
+     },
+     "binding_hash": "3788882c36dd0bf2f96db52c4a07248069e03f6b3ff2f93d627448a7be8686f1",
+     "status": "executed",
+     "created_turn": 2
+    }
+   ],
+   "external_events": [],
+   "metrics": {
+    "elapsed_ms": 9524.6,
+    "peak_ram_mb": 2071.8,
+    "peak_vram_mb": 3235.2,
+    "peak_unified_gpu_mb": 3235.2,
+    "rss_mb": 4165.2,
+    "memory_architecture": "unified",
+    "memory_notes": [
+     "peak_ram_mb: sum over the listed processes of the kernel high-water ri_interval_max_phys_footprint (proc_pid_rusage RUSAGE_INFO_V4, interval reset at case start); per-process peaks may occur at different moments, so the sum is an upper bound of the simultaneous peak.",
+     "peak_vram_mb: Apple Silicon has unified memory (no separate VRAM). Value = max over 5 Hz + turn-boundary samples of IOAccelerator 'In use system memory' minus the idle baseline taken before llama-server started. System-wide scope; it overlaps peak_ram_mb, never add the two.",
+     "rss_mb: sum of per-process peak RSS; it includes mmapped model weights and overcounts on unified memory, reported only for comparison.",
+     "mb = MiB (2^20 bytes)."
+    ],
+    "per_process": {
+     "adapter": {
+      "pid": 72974,
+      "peak_phys_footprint_mb": 41.0,
+      "phys_footprint_mb": 40.9,
+      "peak_rss_mb": 39.5,
+      "source": "kernel high-water",
+      "interval_reset": true
+     },
+     "llama-server": {
+      "pid": 72986,
+      "peak_phys_footprint_mb": 2030.8,
+      "phys_footprint_mb": 2030.8,
+      "peak_rss_mb": 4125.7,
+      "source": "kernel high-water",
+      "interval_reset": true
+     }
+    },
+    "gpu_in_use_peak_mb_absolute": 3794.5,
+    "gpu_baseline_mb": 559.3,
+    "memory_samples": 48,
+    "memory_marks": 4,
+    "llm_calls": 11,
+    "prompt_tokens": 17221,
+    "cached_tokens": 15879,
+    "completion_tokens": 529,
+    "prefill_ms": 1495.8,
+    "decode_ms": 7783.1,
+    "tool_ms": 0.9,
+    "decode_tok_s": 68.0,
+    "prefill_tok_s": 897.2,
+    "turn_latency_ms": [
+     2548.9,
+     3464.8,
+     3398.4
+    ],
+    "protocol_errors": 1,
+    "guard_overrides": 0,
+    "fallbacks": 0,
+    "gate_rejections": 0,
+    "dropped_calls": 0,
+    "llm_errors": 0,
+    "first_case_after_start": false,
+    "status": "ok"
+   }
+  },
+  {
+   "case_id": "public_05_stale_stock",
+   "turns": [
+    {
+     "decision": "propose",
+     "response": "We can exchange your TEE-M for a TEE-L. Please confirm with the confirm control. Proposed exchange (order O100, line L1): TEE-M (size M) for TEE-L (size L); price difference $0.00 (same price). Delivered 2026-10-10, 16 days ago (within the 30-day return window). Proposal P-0001. Nothing has been processed yet; please confirm this proposal to proceed.",
+     "proposal": {
+      "proposal_id": "P-0001",
+      "request_id": "REQ-public_05_stale_stock",
+      "customer_id": "C100",
+      "order_id": "O100",
+      "line_id": "L1",
+      "remedy": "exchange",
+      "original_sku": "TEE-M",
+      "replacement_sku": "TEE-L",
+      "amount_cents": 0,
+      "currency": "USD",
+      "eligibility": {
+       "delivered_on": "2026-10-10",
+       "as_of": "2026-10-26",
+       "days_since_delivery": 16,
+       "window_days": 30
+      },
+      "binding_hash": "cde501c84bfe0998e897204f80225c9464adf6ae0b707e3d7daa03140b516ca9",
+      "status": "open",
+      "created_turn": 1
+     },
+     "transaction": null,
+     "confirmed_proposal_id": null
+    },
+    {
+     "decision": "deny",
+     "response": "I'm sorry, but size L is currently out of stock. Would you like to exchange for size S instead, or would you prefer a refund? Item: TEE-M (size M), order O100, line L1. Size L (TEE-L) is out of stock right now. Available instead: TEE-S (size S).",
+     "proposal": null,
+     "transaction": null,
+     "confirmed_proposal_id": "P-0001"
+    }
+   ],
+   "action_audit": [
+    {
+     "seq": 1,
+     "turn": 1,
+     "kind": "grounding",
+     "agent": "orchestrator",
+     "tool": "analyze",
+     "arguments": {
+      "turn": 1
+     },
+     "result": {
+      "order_refs": [
+       "O100"
+      ],
+      "unknown_order_refs": [],
+      "line_refs": [
+       "L1"
+      ],
+      "unknown_line_refs": [],
+      "other_id_refs": [],
+      "product_refs": [
+       "TEE"
+      ],
+      "unmatched_product_words": [],
+      "requested_products": [
+       "TEE"
+      ],
+      "requested_size": "L",
+      "requested_sizes": [
+       "L"
+      ],
+      "original_size_hints": [],
+      "mentioned_sizes": [
+       "L"
+      ],
+      "remedy_cue": "exchange",
+      "stated_remedy": "exchange",
+      "remedy_words": [
+       "exchange",
+       "<size> wanted"
+      ],
+      "cancel_cue": false,
+      "last_remedy_cue": "exchange",
+      "last_requested_size": "L",
+      "inquiry": false,
+      "candidates": [
+       "O100/L1"
+      ],
+      "id_candidates": [
+       "O100/L1"
+      ],
+      "unique_target": [
+       "O100",
+       "L1"
+      ],
+      "not_found_code": null,
+      "filters_used": [
+       "order",
+       "line",
+       "product"
+      ],
+      "explain": [
+       "message 1: orders O100; lines L1; products TEE; requested products TEE; requested sizes L; remedy exchange (exchange, <size> wanted)",
+       "filter order O100: 1 candidate(s)",
+       "filter line L1: 1 candidate(s)",
+       "filter product TEE: 1 candidate(s)",
+       "unique target O100/L1"
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 2,
+     "turn": 1,
+     "kind": "tool",
+     "agent": "orchestrator",
+     "tool": "prefetch_account_card",
+     "arguments": {},
+     "result": {
+      "lines": [
+       {
+        "order_id": "O100",
+        "line_id": "L1",
+        "sku": "TEE-M",
+        "product_id": "TEE",
+        "size": "M",
+        "aliases": [
+         "tee",
+         "t-shirt",
+         "tee shirt",
+         "shirt",
+         "top"
+        ],
+        "paid_cents": 3000,
+        "delivered_on": "2026-10-10"
+       }
+      ],
+      "count": 1,
+      "catalog": [
+       {
+        "sku": "TEE-S",
+        "product_id": "TEE",
+        "size": "S"
+       },
+       {
+        "sku": "TEE-M",
+        "product_id": "TEE",
+        "size": "M"
+       },
+       {
+        "sku": "TEE-L",
+        "product_id": "TEE",
+        "size": "L"
+       }
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 3,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "handoff_to_operations",
+     "arguments": {
+      "intent": "propose_exchange",
+      "order_id": "O100",
+      "line_id": "L1",
+      "requested_size": "L",
+      "requested_product": "SAME",
+      "evidence": "Exchange line L1 of O100 for the same tee in size L."
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "handoff_to_operations",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 1857,
+      "cached_tokens": 1655,
+      "prefill_tokens": 202,
+      "completion_tokens": 114,
+      "prompt_ms": 187.8,
+      "predicted_ms": 1676.11,
+      "latency_ms": 1868.3,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "handoff_to_operations",
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 4,
+     "turn": 1,
+     "kind": "target",
+     "agent": "orchestrator",
+     "tool": "set_target",
+     "arguments": {
+      "order_id": "O100",
+      "line_id": "L1",
+      "intent": "exchange",
+      "requested_sku": null,
+      "requested_size": "L",
+      "requested_product": null,
+      "grounded_by": "customer_ids",
+      "evidence": null
+     },
+     "result": null,
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 5,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "list_exchange_options",
+     "arguments": {},
+     "result": {
+      "role": "operations",
+      "tool": "list_exchange_options",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 964,
+      "cached_tokens": 855,
+      "prefill_tokens": 109,
+      "completion_tokens": 15,
+      "prompt_ms": 111.0,
+      "predicted_ms": 202.75,
+      "latency_ms": 340.7,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "list_exchange_options",
+      "create_proposal",
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 6,
+     "turn": 1,
+     "kind": "tool",
+     "agent": "operations",
+     "tool": "list_exchange_options",
+     "arguments": {},
+     "result": {
+      "original_sku": "TEE-M",
+      "options": [
+       {
+        "sku": "TEE-S",
+        "size": "S",
+        "price_cents": 4000,
+        "stock": 4,
+        "valid": true,
+        "reasons": []
+       },
+       {
+        "sku": "TEE-L",
+        "size": "L",
+        "price_cents": 4000,
+        "stock": 3,
+        "valid": true,
+        "reasons": []
+       }
+      ],
+      "valid_count": 2,
+      "requested_sku": "TEE-L",
+      "requested_code": null,
+      "reasons": []
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 7,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "create_proposal",
+     "arguments": {
+      "remedy": "exchange",
+      "replacement_sku": "TEE-L"
+     },
+     "result": {
+      "role": "operations",
+      "tool": "create_proposal",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 1150,
+      "cached_tokens": 978,
+      "prefill_tokens": 172,
+      "completion_tokens": 42,
+      "prompt_ms": 166.41,
+      "predicted_ms": 616.29,
+      "latency_ms": 786.6,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "list_exchange_options",
+      "create_proposal",
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 8,
+     "turn": 1,
+     "kind": "tool",
+     "agent": "operations",
+     "tool": "create_proposal",
+     "arguments": {
+      "remedy": "exchange",
+      "replacement_sku": "TEE-L"
+     },
+     "result": {
+      "proposal": {
+       "proposal_id": "P-0001",
+       "request_id": "REQ-public_05_stale_stock",
+       "customer_id": "C100",
+       "order_id": "O100",
+       "line_id": "L1",
+       "remedy": "exchange",
+       "original_sku": "TEE-M",
+       "replacement_sku": "TEE-L",
+       "amount_cents": 0,
+       "currency": "USD",
+       "eligibility": {
+        "delivered_on": "2026-10-10",
+        "as_of": "2026-10-26",
+        "days_since_delivery": 16,
+        "window_days": 30
+       },
+       "binding_hash": "cde501c84bfe0998e897204f80225c9464adf6ae0b707e3d7daa03140b516ca9",
+       "status": "open",
+       "created_turn": 1
+      },
+      "reused": false,
+      "superseded": null
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 9,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "report_to_resolution",
+     "arguments": {
+      "outcome": "proposed"
+     },
+     "result": {
+      "role": "operations",
+      "tool": "report_to_resolution",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 1345,
+      "cached_tokens": 1191,
+      "prefill_tokens": 154,
+      "completion_tokens": 29,
+      "prompt_ms": 166.68,
+      "predicted_ms": 417.44,
+      "latency_ms": 588.7,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 10,
+     "turn": 1,
+     "kind": "ops_report",
+     "agent": "orchestrator",
+     "tool": "report_to_resolution",
+     "arguments": {
+      "intent": "propose_exchange"
+     },
+     "result": {
+      "intent": "propose_exchange",
+      "outcome": "proposed",
+      "reason_codes": [],
+      "proposal": {
+       "proposal_id": "P-0001",
+       "request_id": "REQ-public_05_stale_stock",
+       "customer_id": "C100",
+       "order_id": "O100",
+       "line_id": "L1",
+       "remedy": "exchange",
+       "original_sku": "TEE-M",
+       "replacement_sku": "TEE-L",
+       "amount_cents": 0,
+       "currency": "USD",
+       "eligibility": {
+        "delivered_on": "2026-10-10",
+        "as_of": "2026-10-26",
+        "days_since_delivery": 16,
+        "window_days": 30
+       },
+       "binding_hash": "cde501c84bfe0998e897204f80225c9464adf6ae0b707e3d7daa03140b516ca9",
+       "status": "open",
+       "created_turn": 1
+      },
+      "transaction": null,
+      "replay": false,
+      "reconciled": false,
+      "alternatives": []
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 11,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "reply_to_customer",
+     "arguments": {
+      "message": "We can exchange your TEE-M for a TEE-L. Please confirm with the confirm control."
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "reply_to_customer",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 2056,
+      "cached_tokens": 1970,
+      "prefill_tokens": 86,
+      "completion_tokens": 46,
+      "prompt_ms": 105.07,
+      "predicted_ms": 667.79,
+      "latency_ms": 811.5,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 12,
+     "turn": 2,
+     "kind": "fault",
+     "agent": "external",
+     "tool": "stock_change",
+     "arguments": {
+      "type": "stock_change",
+      "before_turn": 2,
+      "sku": "TEE-L",
+      "new_stock": 0
+     },
+     "result": {
+      "event_id": "EV-0001",
+      "type": "stock_change",
+      "sku": "TEE-L",
+      "old_stock": 3,
+      "new_stock": 0,
+      "before_turn": 2,
+      "applied": true,
+      "source": "external"
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": false
+    },
+    {
+     "seq": 13,
+     "turn": 2,
+     "kind": "grounding",
+     "agent": "orchestrator",
+     "tool": "analyze",
+     "arguments": {
+      "turn": 2
+     },
+     "result": {
+      "order_refs": [
+       "O100"
+      ],
+      "unknown_order_refs": [],
+      "line_refs": [
+       "L1"
+      ],
+      "unknown_line_refs": [],
+      "other_id_refs": [],
+      "product_refs": [
+       "TEE"
+      ],
+      "unmatched_product_words": [],
+      "requested_products": [
+       "TEE"
+      ],
+      "requested_size": "L",
+      "requested_sizes": [
+       "L"
+      ],
+      "original_size_hints": [],
+      "mentioned_sizes": [
+       "L"
+      ],
+      "remedy_cue": "exchange",
+      "stated_remedy": "exchange",
+      "remedy_words": [
+       "exchange"
+      ],
+      "cancel_cue": false,
+      "last_remedy_cue": "exchange",
+      "last_requested_size": null,
+      "inquiry": false,
+      "candidates": [
+       "O100/L1"
+      ],
+      "id_candidates": [
+       "O100/L1"
+      ],
+      "unique_target": [
+       "O100",
+       "L1"
+      ],
+      "not_found_code": null,
+      "filters_used": [
+       "order",
+       "line",
+       "product"
+      ],
+      "explain": [
+       "message 1: orders O100; lines L1; products TEE; requested products TEE; requested sizes L; remedy exchange (exchange, <size> wanted)",
+       "message 2: remedy exchange (exchange)",
+       "filter order O100: 1 candidate(s)",
+       "filter line L1: 1 candidate(s)",
+       "filter product TEE: 1 candidate(s)",
+       "unique target O100/L1"
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 14,
+     "turn": 2,
+     "kind": "grant",
+     "agent": "orchestrator",
+     "tool": "set_grant",
+     "arguments": {
+      "proposal_id": "P-0001"
+     },
+     "result": null,
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 15,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "handoff_to_operations",
+     "arguments": {
+      "intent": "execute_confirmed"
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "handoff_to_operations",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 1906,
+      "cached_tokens": 1756,
+      "prefill_tokens": 150,
+      "completion_tokens": 31,
+      "prompt_ms": 168.88,
+      "predicted_ms": 452.26,
+      "latency_ms": 625.8,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "handoff_to_operations",
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 16,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "execute_proposal",
+     "arguments": {},
+     "result": {
+      "role": "operations",
+      "tool": "execute_proposal",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 920,
+      "cached_tokens": 855,
+      "prefill_tokens": 65,
+      "completion_tokens": 16,
+      "prompt_ms": 103.4,
+      "predicted_ms": 226.24,
+      "latency_ms": 342.1,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "execute_proposal",
+      "get_request_status",
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 17,
+     "turn": 2,
+     "kind": "tool",
+     "agent": "operations",
+     "tool": "execute_proposal",
+     "arguments": {},
+     "result": null,
+     "error": {
+      "code": "OUT_OF_STOCK",
+      "message": "the proposal no longer holds: OUT_OF_STOCK",
+      "details": {
+       "reasons": [
+        "OUT_OF_STOCK"
+       ],
+       "proposal_id": "P-0001",
+       "proposal_status": "invalidated",
+       "alternatives": [
+        {
+         "sku": "TEE-S",
+         "size": "S"
+        }
+       ]
+      }
+     },
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 18,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "create_proposal",
+     "arguments": {
+      "remedy": "exchange",
+      "replacement_sku": "TEE-S"
+     },
+     "result": {
+      "role": "operations",
+      "tool": "create_proposal",
+      "protocol_error": "TOOL_NOT_ALLOWED: create_proposal is not allowed now (allowed now: report_to_resolution)",
+      "dropped_calls": 0,
+      "prompt_tokens": 1028,
+      "cached_tokens": 935,
+      "prefill_tokens": 93,
+      "completion_tokens": 128,
+      "prompt_ms": 110.4,
+      "predicted_ms": 1904.79,
+      "latency_ms": 2019.6,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": {
+      "code": "TOOL_NOT_ALLOWED",
+      "message": "TOOL_NOT_ALLOWED: create_proposal is not allowed now (allowed now: report_to_resolution)"
+     },
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 19,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "report_to_resolution",
+     "arguments": {
+      "outcome": "denied"
+     },
+     "result": {
+      "role": "operations",
+      "tool": "report_to_resolution",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 1118,
+      "cached_tokens": 1024,
+      "prefill_tokens": 94,
+      "completion_tokens": 29,
+      "prompt_ms": 109.81,
+      "predicted_ms": 413.22,
+      "latency_ms": 528.0,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 20,
+     "turn": 2,
+     "kind": "ops_report",
+     "agent": "orchestrator",
+     "tool": "report_to_resolution",
+     "arguments": {
+      "intent": "execute_confirmed"
+     },
+     "result": {
+      "intent": "execute_confirmed",
+      "outcome": "denied",
+      "reason_codes": [
+       "OUT_OF_STOCK"
+      ],
+      "proposal": null,
+      "transaction": null,
+      "replay": false,
+      "reconciled": false,
+      "alternatives": [
+       {
+        "sku": "TEE-S",
+        "size": "S"
+       }
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 21,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "handoff_to_operations",
+     "arguments": {
+      "intent": "propose_exchange",
+      "order_id": "O100",
+      "line_id": "L1",
+      "requested_size": "L",
+      "requested_product": "SAME",
+      "evidence": "Exchange line L1 of O100 for the same tee in size L."
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "handoff_to_operations",
+      "protocol_error": "TOOL_NOT_ALLOWED: handoff_to_operations is not allowed now (allowed now: reply_to_customer)",
+      "dropped_calls": 0,
+      "prompt_tokens": 1993,
+      "cached_tokens": 1936,
+      "prefill_tokens": 57,
+      "completion_tokens": 114,
+      "prompt_ms": 98.61,
+      "predicted_ms": 1685.77,
+      "latency_ms": 1805.0,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": {
+      "code": "TOOL_NOT_ALLOWED",
+      "message": "TOOL_NOT_ALLOWED: handoff_to_operations is not allowed now (allowed now: reply_to_customer)"
+     },
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 22,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "reply_to_customer",
+     "arguments": {
+      "message": "I'm sorry, but size L is currently out of stock. Would you like to exchange for size S instead, or would you prefer a refund?"
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "reply_to_customer",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 2156,
+      "cached_tokens": 2106,
+      "prefill_tokens": 50,
+      "completion_tokens": 56,
+      "prompt_ms": 96.53,
+      "predicted_ms": 826.81,
+      "latency_ms": 930.2,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "reply_to_customer"
+     ]
+    }
+   ],
+   "final_state": {
+    "as_of": "2026-10-26",
+    "currency": "USD",
+    "products": [
+     {
+      "sku": "TEE-S",
+      "product_id": "TEE",
+      "size": "S",
+      "price_cents": 4000,
+      "stock": 4
+     },
+     {
+      "sku": "TEE-M",
+      "product_id": "TEE",
+      "size": "M",
+      "price_cents": 4000,
+      "stock": 2
+     },
+     {
+      "sku": "TEE-L",
+      "product_id": "TEE",
+      "size": "L",
+      "price_cents": 4000,
+      "stock": 0
+     },
+     {
+      "sku": "JACKET-M",
+      "product_id": "JACKET",
+      "size": "M",
+      "price_cents": 9000,
+      "stock": 1
+     },
+     {
+      "sku": "JACKET-L",
+      "product_id": "JACKET",
+      "size": "L",
+      "price_cents": 9000,
+      "stock": 0
+     }
+    ],
+    "orders": [
+     {
+      "order_id": "O100",
+      "customer_id": "C100",
+      "status": "delivered",
+      "delivered_on": "2026-10-10",
+      "lines": [
+       {
+        "line_id": "L1",
+        "sku": "TEE-M",
+        "paid_cents": 3000,
+        "unopened": true,
+        "final_sale": false,
+        "returned": false
+       }
+      ]
+     }
+    ],
+    "returns": [],
+    "refunds": [],
+    "exchanges": [],
+    "quarantine": [],
+    "idempotency": {}
+   },
+   "proposals": [
+    {
+     "proposal_id": "P-0001",
+     "request_id": "REQ-public_05_stale_stock",
+     "customer_id": "C100",
+     "order_id": "O100",
+     "line_id": "L1",
+     "remedy": "exchange",
+     "original_sku": "TEE-M",
+     "replacement_sku": "TEE-L",
+     "amount_cents": 0,
+     "currency": "USD",
+     "eligibility": {
+      "delivered_on": "2026-10-10",
+      "as_of": "2026-10-26",
+      "days_since_delivery": 16,
+      "window_days": 30
+     },
+     "binding_hash": "cde501c84bfe0998e897204f80225c9464adf6ae0b707e3d7daa03140b516ca9",
+     "status": "invalidated",
+     "created_turn": 1
+    }
+   ],
+   "external_events": [
+    {
+     "event_id": "EV-0001",
+     "type": "stock_change",
+     "sku": "TEE-L",
+     "old_stock": 3,
+     "new_stock": 0,
+     "before_turn": 2,
+     "applied": true,
+     "source": "external"
+    }
+   ],
+   "metrics": {
+    "elapsed_ms": 10735.5,
+    "peak_ram_mb": 2071.9,
+    "peak_vram_mb": 3233.8,
+    "peak_unified_gpu_mb": 3233.8,
+    "rss_mb": 4112.5,
+    "memory_architecture": "unified",
+    "memory_notes": [
+     "peak_ram_mb: sum over the listed processes of the kernel high-water ri_interval_max_phys_footprint (proc_pid_rusage RUSAGE_INFO_V4, interval reset at case start); per-process peaks may occur at different moments, so the sum is an upper bound of the simultaneous peak.",
+     "peak_vram_mb: Apple Silicon has unified memory (no separate VRAM). Value = max over 5 Hz + turn-boundary samples of IOAccelerator 'In use system memory' minus the idle baseline taken before llama-server started. System-wide scope; it overlaps peak_ram_mb, never add the two.",
+     "rss_mb: sum of per-process peak RSS; it includes mmapped model weights and overcounts on unified memory, reported only for comparison.",
+     "mb = MiB (2^20 bytes)."
+    ],
+    "per_process": {
+     "adapter": {
+      "pid": 72974,
+      "peak_phys_footprint_mb": 41.1,
+      "phys_footprint_mb": 41.0,
+      "peak_rss_mb": 34.2,
+      "source": "kernel high-water",
+      "interval_reset": true
+     },
+     "llama-server": {
+      "pid": 72986,
+      "peak_phys_footprint_mb": 2030.8,
+      "phys_footprint_mb": 2030.8,
+      "peak_rss_mb": 4078.3,
+      "source": "kernel high-water",
+      "interval_reset": true
+     }
+    },
+    "gpu_in_use_peak_mb_absolute": 3793.1,
+    "gpu_baseline_mb": 559.3,
+    "memory_samples": 53,
+    "memory_marks": 3,
+    "llm_calls": 11,
+    "prompt_tokens": 16493,
+    "cached_tokens": 15261,
+    "completion_tokens": 620,
+    "prefill_ms": 1424.6,
+    "decode_ms": 9089.5,
+    "tool_ms": 0.7,
+    "decode_tok_s": 68.2,
+    "prefill_tok_s": 864.8,
+    "turn_latency_ms": [
+     4399.0,
+     6253.6
+    ],
+    "protocol_errors": 2,
+    "guard_overrides": 0,
+    "fallbacks": 0,
+    "gate_rejections": 0,
+    "dropped_calls": 0,
+    "llm_errors": 0,
+    "first_case_after_start": false,
+    "status": "ok"
+   }
+  },
+  {
+   "case_id": "public_06_timeout_replay",
+   "turns": [
+    {
+     "decision": "propose",
+     "response": "We can refund $30.00 for the TEE-M. Please confirm with the confirm control to proceed. Proposed refund: $30.00 for TEE-M (size M), order O100, line L1. Delivered 2026-10-10, 16 days ago (within the 30-day return window). Proposal P-0001. Nothing has been processed yet; please confirm this proposal to proceed.",
+     "proposal": {
+      "proposal_id": "P-0001",
+      "request_id": "REQ-public_06_timeout_replay",
+      "customer_id": "C100",
+      "order_id": "O100",
+      "line_id": "L1",
+      "remedy": "refund",
+      "original_sku": "TEE-M",
+      "replacement_sku": null,
+      "amount_cents": 3000,
+      "currency": "USD",
+      "eligibility": {
+       "delivered_on": "2026-10-10",
+       "as_of": "2026-10-26",
+       "days_since_delivery": 16,
+       "window_days": 30
+      },
+      "binding_hash": "e3282c48ee5789ae0f4c59f63574ac143c17049ac0ac4871e9394611b8ee2ac2",
+      "status": "open",
+      "created_turn": 1
+     },
+     "transaction": null,
+     "confirmed_proposal_id": null
+    },
+    {
+     "decision": "completed",
+     "response": "Your refund of $30.00 has been processed successfully. Completed refund: $30.00 for TEE-M (size M), order O100, line L1. Transaction TX-0001. The final step timed out, but we checked the record and verified it was completed exactly once.",
+     "proposal": null,
+     "transaction": {
+      "status": "completed",
+      "action": "refund",
+      "transaction_id": "TX-0001",
+      "request_id": "REQ-public_06_timeout_replay",
+      "proposal_id": "P-0001",
+      "customer_id": "C100",
+      "order_id": "O100",
+      "line_id": "L1",
+      "sku": "TEE-M",
+      "replacement_sku": null,
+      "amount_cents": 3000,
+      "currency": "USD",
+      "business_date": "2026-10-26",
+      "result": {
+       "transaction_id": "TX-0001",
+       "return_id": "RET-0001",
+       "refund_id": "RF-0001",
+       "quarantine_id": "Q-0001",
+       "amount_cents": 3000,
+       "replacement_sku": null
+      }
+     },
+     "confirmed_proposal_id": "P-0001"
+    },
+    {
+     "decision": "completed",
+     "response": "Your refund for line L1 of order O100 has already been processed. Is there anything else I can help you with? Completed refund: $30.00 for TEE-M (size M), order O100, line L1. Transaction TX-0001. This request was already processed earlier — no new refund or charge was made.",
+     "proposal": null,
+     "transaction": {
+      "status": "completed",
+      "action": "refund",
+      "transaction_id": "TX-0001",
+      "request_id": "REQ-public_06_timeout_replay",
+      "proposal_id": "P-0001",
+      "customer_id": "C100",
+      "order_id": "O100",
+      "line_id": "L1",
+      "sku": "TEE-M",
+      "replacement_sku": null,
+      "amount_cents": 3000,
+      "currency": "USD",
+      "business_date": "2026-10-26",
+      "result": {
+       "transaction_id": "TX-0001",
+       "return_id": "RET-0001",
+       "refund_id": "RF-0001",
+       "quarantine_id": "Q-0001",
+       "amount_cents": 3000,
+       "replacement_sku": null
+      }
+     },
+     "confirmed_proposal_id": "P-0001"
+    }
+   ],
+   "action_audit": [
+    {
+     "seq": 1,
+     "turn": 0,
+     "kind": "fault",
+     "agent": "external",
+     "tool": "timeout_after_commit",
+     "arguments": {},
+     "result": {
+      "armed": true
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": false
+    },
+    {
+     "seq": 2,
+     "turn": 1,
+     "kind": "grounding",
+     "agent": "orchestrator",
+     "tool": "analyze",
+     "arguments": {
+      "turn": 1
+     },
+     "result": {
+      "order_refs": [
+       "O100"
+      ],
+      "unknown_order_refs": [],
+      "line_refs": [
+       "L1"
+      ],
+      "unknown_line_refs": [],
+      "other_id_refs": [],
+      "product_refs": [],
+      "unmatched_product_words": [],
+      "requested_products": [],
+      "requested_size": null,
+      "requested_sizes": [],
+      "original_size_hints": [],
+      "mentioned_sizes": [],
+      "remedy_cue": "refund",
+      "stated_remedy": "refund",
+      "remedy_words": [
+       "refund"
+      ],
+      "cancel_cue": false,
+      "last_remedy_cue": "refund",
+      "last_requested_size": null,
+      "inquiry": false,
+      "candidates": [
+       "O100/L1"
+      ],
+      "id_candidates": [
+       "O100/L1"
+      ],
+      "unique_target": [
+       "O100",
+       "L1"
+      ],
+      "not_found_code": null,
+      "filters_used": [
+       "order",
+       "line"
+      ],
+      "explain": [
+       "message 1: orders O100; lines L1; remedy refund (refund)",
+       "filter order O100: 1 candidate(s)",
+       "filter line L1: 1 candidate(s)",
+       "unique target O100/L1"
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 3,
+     "turn": 1,
+     "kind": "tool",
+     "agent": "orchestrator",
+     "tool": "prefetch_account_card",
+     "arguments": {},
+     "result": {
+      "lines": [
+       {
+        "order_id": "O100",
+        "line_id": "L1",
+        "sku": "TEE-M",
+        "product_id": "TEE",
+        "size": "M",
+        "aliases": [
+         "tee",
+         "t-shirt",
+         "tee shirt",
+         "shirt",
+         "top"
+        ],
+        "paid_cents": 3000,
+        "delivered_on": "2026-10-10"
+       }
+      ],
+      "count": 1,
+      "catalog": [
+       {
+        "sku": "TEE-S",
+        "product_id": "TEE",
+        "size": "S"
+       },
+       {
+        "sku": "TEE-M",
+        "product_id": "TEE",
+        "size": "M"
+       },
+       {
+        "sku": "TEE-L",
+        "product_id": "TEE",
+        "size": "L"
+       }
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 4,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "handoff_to_operations",
+     "arguments": {
+      "intent": "propose_refund",
+      "order_id": "O100",
+      "line_id": "L1",
+      "evidence": "Refund line L1 of order O100"
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "handoff_to_operations",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 1852,
+      "cached_tokens": 1756,
+      "prefill_tokens": 96,
+      "completion_tokens": 83,
+      "prompt_ms": 107.94,
+      "predicted_ms": 1225.94,
+      "latency_ms": 1338.4,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "handoff_to_operations",
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 5,
+     "turn": 1,
+     "kind": "target",
+     "agent": "orchestrator",
+     "tool": "set_target",
+     "arguments": {
+      "order_id": "O100",
+      "line_id": "L1",
+      "intent": "refund",
+      "requested_sku": null,
+      "requested_size": null,
+      "requested_product": null,
+      "grounded_by": "customer_ids",
+      "evidence": null
+     },
+     "result": null,
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 6,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "create_proposal",
+     "arguments": {
+      "remedy": "refund"
+     },
+     "result": {
+      "role": "operations",
+      "tool": "create_proposal",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 950,
+      "cached_tokens": 855,
+      "prefill_tokens": 95,
+      "completion_tokens": 28,
+      "prompt_ms": 106.69,
+      "predicted_ms": 390.7,
+      "latency_ms": 510.5,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "create_proposal",
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 7,
+     "turn": 1,
+     "kind": "tool",
+     "agent": "operations",
+     "tool": "create_proposal",
+     "arguments": {
+      "remedy": "refund",
+      "replacement_sku": null
+     },
+     "result": {
+      "proposal": {
+       "proposal_id": "P-0001",
+       "request_id": "REQ-public_06_timeout_replay",
+       "customer_id": "C100",
+       "order_id": "O100",
+       "line_id": "L1",
+       "remedy": "refund",
+       "original_sku": "TEE-M",
+       "replacement_sku": null,
+       "amount_cents": 3000,
+       "currency": "USD",
+       "eligibility": {
+        "delivered_on": "2026-10-10",
+        "as_of": "2026-10-26",
+        "days_since_delivery": 16,
+        "window_days": 30
+       },
+       "binding_hash": "e3282c48ee5789ae0f4c59f63574ac143c17049ac0ac4871e9394611b8ee2ac2",
+       "status": "open",
+       "created_turn": 1
+      },
+      "reused": false,
+      "superseded": null
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 8,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "report_to_resolution",
+     "arguments": {
+      "outcome": "proposed"
+     },
+     "result": {
+      "role": "operations",
+      "tool": "report_to_resolution",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 1133,
+      "cached_tokens": 977,
+      "prefill_tokens": 156,
+      "completion_tokens": 29,
+      "prompt_ms": 162.63,
+      "predicted_ms": 416.63,
+      "latency_ms": 583.1,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 9,
+     "turn": 1,
+     "kind": "ops_report",
+     "agent": "orchestrator",
+     "tool": "report_to_resolution",
+     "arguments": {
+      "intent": "propose_refund"
+     },
+     "result": {
+      "intent": "propose_refund",
+      "outcome": "proposed",
+      "reason_codes": [],
+      "proposal": {
+       "proposal_id": "P-0001",
+       "request_id": "REQ-public_06_timeout_replay",
+       "customer_id": "C100",
+       "order_id": "O100",
+       "line_id": "L1",
+       "remedy": "refund",
+       "original_sku": "TEE-M",
+       "replacement_sku": null,
+       "amount_cents": 3000,
+       "currency": "USD",
+       "eligibility": {
+        "delivered_on": "2026-10-10",
+        "as_of": "2026-10-26",
+        "days_since_delivery": 16,
+        "window_days": 30
+       },
+       "binding_hash": "e3282c48ee5789ae0f4c59f63574ac143c17049ac0ac4871e9394611b8ee2ac2",
+       "status": "open",
+       "created_turn": 1
+      },
+      "transaction": null,
+      "replay": false,
+      "reconciled": false,
+      "alternatives": []
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 10,
+     "turn": 1,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "reply_to_customer",
+     "arguments": {
+      "message": "We can refund $30.00 for the TEE-M. Please confirm with the confirm control to proceed."
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "reply_to_customer",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 2020,
+      "cached_tokens": 1934,
+      "prefill_tokens": 86,
+      "completion_tokens": 50,
+      "prompt_ms": 107.02,
+      "predicted_ms": 738.92,
+      "latency_ms": 859.5,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 11,
+     "turn": 2,
+     "kind": "grounding",
+     "agent": "orchestrator",
+     "tool": "analyze",
+     "arguments": {
+      "turn": 2
+     },
+     "result": {
+      "order_refs": [
+       "O100"
+      ],
+      "unknown_order_refs": [],
+      "line_refs": [
+       "L1"
+      ],
+      "unknown_line_refs": [],
+      "other_id_refs": [],
+      "product_refs": [],
+      "unmatched_product_words": [],
+      "requested_products": [],
+      "requested_size": null,
+      "requested_sizes": [],
+      "original_size_hints": [],
+      "mentioned_sizes": [],
+      "remedy_cue": "refund",
+      "stated_remedy": "refund",
+      "remedy_words": [
+       "refund"
+      ],
+      "cancel_cue": false,
+      "last_remedy_cue": "refund",
+      "last_requested_size": null,
+      "inquiry": false,
+      "candidates": [
+       "O100/L1"
+      ],
+      "id_candidates": [
+       "O100/L1"
+      ],
+      "unique_target": [
+       "O100",
+       "L1"
+      ],
+      "not_found_code": null,
+      "filters_used": [
+       "order",
+       "line"
+      ],
+      "explain": [
+       "message 1: orders O100; lines L1; remedy refund (refund)",
+       "message 2: remedy refund (refund)",
+       "filter order O100: 1 candidate(s)",
+       "filter line L1: 1 candidate(s)",
+       "unique target O100/L1"
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 12,
+     "turn": 2,
+     "kind": "grant",
+     "agent": "orchestrator",
+     "tool": "set_grant",
+     "arguments": {
+      "proposal_id": "P-0001"
+     },
+     "result": null,
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 13,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "handoff_to_operations",
+     "arguments": {
+      "intent": "execute_confirmed"
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "handoff_to_operations",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 1897,
+      "cached_tokens": 1756,
+      "prefill_tokens": 141,
+      "completion_tokens": 31,
+      "prompt_ms": 162.38,
+      "predicted_ms": 443.29,
+      "latency_ms": 610.2,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "handoff_to_operations",
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 14,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "get_request_status",
+     "arguments": {},
+     "result": {
+      "role": "operations",
+      "tool": "get_request_status",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 916,
+      "cached_tokens": 855,
+      "prefill_tokens": 61,
+      "completion_tokens": 15,
+      "prompt_ms": 97.51,
+      "predicted_ms": 206.06,
+      "latency_ms": 314.5,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "execute_proposal",
+      "get_request_status",
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 15,
+     "turn": 2,
+     "kind": "tool",
+     "agent": "operations",
+     "tool": "get_request_status",
+     "arguments": {},
+     "result": {
+      "request_id": "REQ-public_06_timeout_replay",
+      "status": "not_found"
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 16,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "execute_proposal",
+     "arguments": {},
+     "result": {
+      "role": "operations",
+      "tool": "execute_proposal",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 979,
+      "cached_tokens": 930,
+      "prefill_tokens": 49,
+      "completion_tokens": 68,
+      "prompt_ms": 95.58,
+      "predicted_ms": 992.74,
+      "latency_ms": 1092.1,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "execute_proposal",
+      "get_request_status",
+      "report_to_resolution"
+     ]
+    },
+    {
+     "seq": 17,
+     "turn": 2,
+     "kind": "tool",
+     "agent": "operations",
+     "tool": "execute_proposal",
+     "arguments": {},
+     "result": {
+      "replay": false,
+      "proposal_id": "P-0001",
+      "status": "executed",
+      "transaction": {
+       "status": "completed",
+       "action": "refund",
+       "transaction_id": "TX-0001",
+       "request_id": "REQ-public_06_timeout_replay",
+       "proposal_id": "P-0001",
+       "customer_id": "C100",
+       "order_id": "O100",
+       "line_id": "L1",
+       "sku": "TEE-M",
+       "replacement_sku": null,
+       "amount_cents": 3000,
+       "currency": "USD",
+       "business_date": "2026-10-26",
+       "result": {
+        "transaction_id": "TX-0001",
+        "return_id": "RET-0001",
+        "refund_id": "RF-0001",
+        "quarantine_id": "Q-0001",
+        "amount_cents": 3000,
+        "replacement_sku": null
+       }
+      }
+     },
+     "error": {
+      "code": "TIMEOUT",
+      "message": "commit response lost (timeout)"
+     },
+     "committed_effects": [
+      {
+       "type": "line_returned",
+       "order_id": "O100",
+       "line_id": "L1"
+      },
+      {
+       "type": "record",
+       "collection": "returns",
+       "id": "RET-0001",
+       "amount_cents": 3000
+      },
+      {
+       "type": "record",
+       "collection": "refunds",
+       "id": "RF-0001",
+       "amount_cents": 3000
+      },
+      {
+       "type": "record",
+       "collection": "quarantine",
+       "id": "Q-0001",
+       "amount_cents": 3000
+      },
+      {
+       "type": "idempotency",
+       "request_id": "REQ-public_06_timeout_replay"
+      }
+     ],
+     "visible_to_agent": false
+    },
+    {
+     "seq": 18,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "get_request_status",
+     "arguments": {},
+     "result": {
+      "role": "operations",
+      "tool": "get_request_status",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 1044,
+      "cached_tokens": 975,
+      "prefill_tokens": 69,
+      "completion_tokens": 15,
+      "prompt_ms": 101.79,
+      "predicted_ms": 208.87,
+      "latency_ms": 315.0,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "get_request_status"
+     ]
+    },
+    {
+     "seq": 19,
+     "turn": 2,
+     "kind": "guard",
+     "agent": "orchestrator",
+     "tool": "duplicate_call",
+     "arguments": {
+      "tool": "get_request_status",
+      "args": {}
+     },
+     "result": null,
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 20,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "operations",
+     "tool": "report_to_resolution",
+     "arguments": {
+      "outcome": "completed"
+     },
+     "result": {
+      "role": "operations",
+      "tool": "report_to_resolution",
+      "protocol_error": "TOOL_NOT_ALLOWED: report_to_resolution is not allowed now (allowed now: get_request_status)",
+      "dropped_calls": 0,
+      "prompt_tokens": 1106,
+      "cached_tokens": 1058,
+      "prefill_tokens": 48,
+      "completion_tokens": 28,
+      "prompt_ms": 94.33,
+      "predicted_ms": 401.71,
+      "latency_ms": 500.7,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": {
+      "code": "TOOL_NOT_ALLOWED",
+      "message": "TOOL_NOT_ALLOWED: report_to_resolution is not allowed now (allowed now: get_request_status)"
+     },
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "get_request_status"
+     ]
+    },
+    {
+     "seq": 21,
+     "turn": 2,
+     "kind": "fallback",
+     "agent": "orchestrator",
+     "tool": "get_request_status",
+     "arguments": {},
+     "result": {
+      "reason": "TIMEOUT not reconciled by the agent"
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 22,
+     "turn": 2,
+     "kind": "tool",
+     "agent": "orchestrator",
+     "tool": "get_request_status",
+     "arguments": {},
+     "result": {
+      "request_id": "REQ-public_06_timeout_replay",
+      "status": "completed",
+      "record": {
+       "status": "completed",
+       "action": "refund",
+       "transaction_id": "TX-0001",
+       "request_id": "REQ-public_06_timeout_replay",
+       "proposal_id": "P-0001",
+       "customer_id": "C100",
+       "order_id": "O100",
+       "line_id": "L1",
+       "sku": "TEE-M",
+       "replacement_sku": null,
+       "amount_cents": 3000,
+       "currency": "USD",
+       "business_date": "2026-10-26",
+       "result": {
+        "transaction_id": "TX-0001",
+        "return_id": "RET-0001",
+        "refund_id": "RF-0001",
+        "quarantine_id": "Q-0001",
+        "amount_cents": 3000,
+        "replacement_sku": null
+       }
+      }
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 23,
+     "turn": 2,
+     "kind": "ops_report",
+     "agent": "orchestrator",
+     "tool": "report_to_resolution",
+     "arguments": {
+      "intent": "execute_confirmed"
+     },
+     "result": {
+      "intent": "execute_confirmed",
+      "outcome": "completed",
+      "reason_codes": [],
+      "proposal": null,
+      "transaction": {
+       "status": "completed",
+       "action": "refund",
+       "transaction_id": "TX-0001",
+       "request_id": "REQ-public_06_timeout_replay",
+       "proposal_id": "P-0001",
+       "customer_id": "C100",
+       "order_id": "O100",
+       "line_id": "L1",
+       "sku": "TEE-M",
+       "replacement_sku": null,
+       "amount_cents": 3000,
+       "currency": "USD",
+       "business_date": "2026-10-26",
+       "result": {
+        "transaction_id": "TX-0001",
+        "return_id": "RET-0001",
+        "refund_id": "RF-0001",
+        "quarantine_id": "Q-0001",
+        "amount_cents": 3000,
+        "replacement_sku": null
+       }
+      },
+      "replay": false,
+      "reconciled": true,
+      "alternatives": []
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 24,
+     "turn": 2,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "reply_to_customer",
+     "arguments": {
+      "message": "Your refund of $30.00 has been processed successfully."
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "reply_to_customer",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 2002,
+      "cached_tokens": 1927,
+      "prefill_tokens": 75,
+      "completion_tokens": 40,
+      "prompt_ms": 102.7,
+      "predicted_ms": 585.22,
+      "latency_ms": 712.3,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "reply_to_customer"
+     ]
+    },
+    {
+     "seq": 25,
+     "turn": 3,
+     "kind": "grounding",
+     "agent": "orchestrator",
+     "tool": "analyze",
+     "arguments": {
+      "turn": 3
+     },
+     "result": {
+      "order_refs": [
+       "O100"
+      ],
+      "unknown_order_refs": [],
+      "line_refs": [
+       "L1"
+      ],
+      "unknown_line_refs": [],
+      "other_id_refs": [],
+      "product_refs": [],
+      "unmatched_product_words": [],
+      "requested_products": [],
+      "requested_size": null,
+      "requested_sizes": [],
+      "original_size_hints": [],
+      "mentioned_sizes": [],
+      "remedy_cue": "refund",
+      "stated_remedy": "refund",
+      "remedy_words": [
+       "refund"
+      ],
+      "cancel_cue": false,
+      "last_remedy_cue": "none",
+      "last_requested_size": null,
+      "inquiry": false,
+      "candidates": [
+       "O100/L1"
+      ],
+      "id_candidates": [
+       "O100/L1"
+      ],
+      "unique_target": [
+       "O100",
+       "L1"
+      ],
+      "not_found_code": null,
+      "filters_used": [
+       "order",
+       "line"
+      ],
+      "explain": [
+       "message 1: orders O100; lines L1; remedy refund (refund)",
+       "message 2: remedy refund (refund)",
+       "message 3: no references",
+       "filter order O100: 1 candidate(s)",
+       "filter line L1: 1 candidate(s)",
+       "unique target O100/L1"
+      ]
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 26,
+     "turn": 3,
+     "kind": "grant",
+     "agent": "orchestrator",
+     "tool": "set_grant",
+     "arguments": {
+      "proposal_id": "P-0001"
+     },
+     "result": null,
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 27,
+     "turn": 3,
+     "kind": "tool",
+     "agent": "orchestrator",
+     "tool": "get_request_status",
+     "arguments": {},
+     "result": {
+      "request_id": "REQ-public_06_timeout_replay",
+      "status": "completed",
+      "record": {
+       "status": "completed",
+       "action": "refund",
+       "transaction_id": "TX-0001",
+       "request_id": "REQ-public_06_timeout_replay",
+       "proposal_id": "P-0001",
+       "customer_id": "C100",
+       "order_id": "O100",
+       "line_id": "L1",
+       "sku": "TEE-M",
+       "replacement_sku": null,
+       "amount_cents": 3000,
+       "currency": "USD",
+       "business_date": "2026-10-26",
+       "result": {
+        "transaction_id": "TX-0001",
+        "return_id": "RET-0001",
+        "refund_id": "RF-0001",
+        "quarantine_id": "Q-0001",
+        "amount_cents": 3000,
+        "replacement_sku": null
+       }
+      }
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 28,
+     "turn": 3,
+     "kind": "route",
+     "agent": "orchestrator",
+     "tool": "idempotency_preamble",
+     "arguments": {
+      "turn": 3
+     },
+     "result": {
+      "replay": true,
+      "transaction_id": "TX-0001"
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true
+    },
+    {
+     "seq": 29,
+     "turn": 3,
+     "kind": "llm_step",
+     "agent": "resolution",
+     "tool": "reply_to_customer",
+     "arguments": {
+      "message": "Your refund for line L1 of order O100 has already been processed. Is there anything else I can help you with?"
+     },
+     "result": {
+      "role": "resolution",
+      "tool": "reply_to_customer",
+      "protocol_error": null,
+      "dropped_calls": 0,
+      "prompt_tokens": 1910,
+      "cached_tokens": 1756,
+      "prefill_tokens": 154,
+      "completion_tokens": 53,
+      "prompt_ms": 164.47,
+      "predicted_ms": 776.53,
+      "latency_ms": 945.5,
+      "finish_reason": "tool_calls",
+      "http_attempts": 1
+     },
+     "error": null,
+     "committed_effects": [],
+     "visible_to_agent": true,
+     "allowed": [
+      "reply_to_customer"
+     ]
+    }
+   ],
+   "final_state": {
+    "as_of": "2026-10-26",
+    "currency": "USD",
+    "products": [
+     {
+      "sku": "TEE-S",
+      "product_id": "TEE",
+      "size": "S",
+      "price_cents": 4000,
+      "stock": 4
+     },
+     {
+      "sku": "TEE-M",
+      "product_id": "TEE",
+      "size": "M",
+      "price_cents": 4000,
+      "stock": 2
+     },
+     {
+      "sku": "TEE-L",
+      "product_id": "TEE",
+      "size": "L",
+      "price_cents": 4000,
+      "stock": 3
+     },
+     {
+      "sku": "JACKET-M",
+      "product_id": "JACKET",
+      "size": "M",
+      "price_cents": 9000,
+      "stock": 1
+     },
+     {
+      "sku": "JACKET-L",
+      "product_id": "JACKET",
+      "size": "L",
+      "price_cents": 9000,
+      "stock": 0
+     }
+    ],
+    "orders": [
+     {
+      "order_id": "O100",
+      "customer_id": "C100",
+      "status": "delivered",
+      "delivered_on": "2026-10-10",
+      "lines": [
+       {
+        "line_id": "L1",
+        "sku": "TEE-M",
+        "paid_cents": 3000,
+        "unopened": true,
+        "final_sale": false,
+        "returned": true
+       }
+      ]
+     }
+    ],
+    "returns": [
+     {
+      "return_id": "RET-0001",
+      "remedy": "refund",
+      "disposition": "quarantine",
+      "transaction_id": "TX-0001",
+      "request_id": "REQ-public_06_timeout_replay",
+      "proposal_id": "P-0001",
+      "customer_id": "C100",
+      "order_id": "O100",
+      "line_id": "L1",
+      "sku": "TEE-M",
+      "replacement_sku": null,
+      "amount_cents": 3000,
+      "currency": "USD",
+      "business_date": "2026-10-26",
+      "status": "completed"
+     }
+    ],
+    "refunds": [
+     {
+      "refund_id": "RF-0001",
+      "return_id": "RET-0001",
+      "transaction_id": "TX-0001",
+      "request_id": "REQ-public_06_timeout_replay",
+      "proposal_id": "P-0001",
+      "customer_id": "C100",
+      "order_id": "O100",
+      "line_id": "L1",
+      "sku": "TEE-M",
+      "replacement_sku": null,
+      "amount_cents": 3000,
+      "currency": "USD",
+      "business_date": "2026-10-26",
+      "status": "completed"
+     }
+    ],
+    "exchanges": [],
+    "quarantine": [
+     {
+      "quarantine_id": "Q-0001",
+      "return_id": "RET-0001",
+      "quantity": 1,
+      "reason": "customer_return",
+      "transaction_id": "TX-0001",
+      "request_id": "REQ-public_06_timeout_replay",
+      "proposal_id": "P-0001",
+      "customer_id": "C100",
+      "order_id": "O100",
+      "line_id": "L1",
+      "sku": "TEE-M",
+      "replacement_sku": null,
+      "amount_cents": 3000,
+      "currency": "USD",
+      "business_date": "2026-10-26",
+      "status": "completed"
+     }
+    ],
+    "idempotency": {
+     "REQ-public_06_timeout_replay": {
+      "status": "completed",
+      "action": "refund",
+      "transaction_id": "TX-0001",
+      "request_id": "REQ-public_06_timeout_replay",
+      "proposal_id": "P-0001",
+      "customer_id": "C100",
+      "order_id": "O100",
+      "line_id": "L1",
+      "sku": "TEE-M",
+      "replacement_sku": null,
+      "amount_cents": 3000,
+      "currency": "USD",
+      "business_date": "2026-10-26",
+      "result": {
+       "transaction_id": "TX-0001",
+       "return_id": "RET-0001",
+       "refund_id": "RF-0001",
+       "quarantine_id": "Q-0001",
+       "amount_cents": 3000,
+       "replacement_sku": null
+      }
+     }
+    }
+   },
+   "proposals": [
+    {
+     "proposal_id": "P-0001",
+     "request_id": "REQ-public_06_timeout_replay",
+     "customer_id": "C100",
+     "order_id": "O100",
+     "line_id": "L1",
+     "remedy": "refund",
+     "original_sku": "TEE-M",
+     "replacement_sku": null,
+     "amount_cents": 3000,
+     "currency": "USD",
+     "eligibility": {
+      "delivered_on": "2026-10-10",
+      "as_of": "2026-10-26",
+      "days_since_delivery": 16,
+      "window_days": 30
+     },
+     "binding_hash": "e3282c48ee5789ae0f4c59f63574ac143c17049ac0ac4871e9394611b8ee2ac2",
+     "status": "executed",
+     "created_turn": 1
+    }
+   ],
+   "external_events": [],
+   "metrics": {
+    "elapsed_ms": 7886.1,
+    "peak_ram_mb": 2223.0,
+    "peak_vram_mb": 3114.5,
+    "peak_unified_gpu_mb": 3114.5,
+    "rss_mb": 4282.0,
+    "memory_architecture": "unified",
+    "memory_notes": [
+     "peak_ram_mb: sum over the listed processes of the kernel high-water ri_interval_max_phys_footprint (proc_pid_rusage RUSAGE_INFO_V4, interval reset at case start); per-process peaks may occur at different moments, so the sum is an upper bound of the simultaneous peak.",
+     "peak_vram_mb: Apple Silicon has unified memory (no separate VRAM). Value = max over 5 Hz + turn-boundary samples of IOAccelerator 'In use system memory' minus the idle baseline taken before llama-server started. System-wide scope; it overlaps peak_ram_mb, never add the two.",
+     "rss_mb: sum of per-process peak RSS; it includes mmapped model weights and overcounts on unified memory, reported only for comparison.",
+     "mb = MiB (2^20 bytes)."
+    ],
+    "per_process": {
+     "adapter": {
+      "pid": 72974,
+      "peak_phys_footprint_mb": 41.3,
+      "phys_footprint_mb": 41.2,
+      "peak_rss_mb": 34.4,
+      "source": "kernel high-water",
+      "interval_reset": true
+     },
+     "llama-server": {
+      "pid": 72986,
+      "peak_phys_footprint_mb": 2181.7,
+      "phys_footprint_mb": 2181.7,
+      "peak_rss_mb": 4247.6,
+      "source": "kernel high-water",
+      "interval_reset": true
+     }
+    },
+    "gpu_in_use_peak_mb_absolute": 3673.8,
+    "gpu_baseline_mb": 559.3,
+    "memory_samples": 41,
+    "memory_marks": 4,
+    "llm_calls": 11,
+    "prompt_tokens": 15809,
+    "cached_tokens": 14779,
+    "completion_tokens": 440,
+    "prefill_ms": 1303.0,
+    "decode_ms": 6386.6,
+    "tool_ms": 0.8,
+    "decode_tok_s": 68.9,
+    "prefill_tok_s": 790.5,
+    "turn_latency_ms": [
+     3294.0,
+     3547.5,
+     947.5
+    ],
+    "protocol_errors": 1,
+    "guard_overrides": 1,
+    "fallbacks": 1,
+    "gate_rejections": 0,
+    "dropped_calls": 0,
+    "llm_errors": 0,
+    "first_case_after_start": false,
+    "status": "ok"
+   }
+  }
+ ]
+}
