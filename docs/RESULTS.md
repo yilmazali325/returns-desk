@@ -73,7 +73,7 @@ Other counts:
 | **F** | **5,034 ms** | **5,742 ms** | **1,878 ms** | **3,869 ms** | **4,767 ms** |
 | B-repeat (A/A) | 11,776 ms | 12,778 ms | 4,572 ms | 8,226 ms | 10,991 ms |
 
-- **Paired F/B ratio:** 0.429, 95% CI [0.397, 0.456], so F is **57.1% faster**. The A/A ratio
+- **Paired F/B ratio:** 0.429, 95% confidence interval (CI) [0.397, 0.456], so F is **57.1% faster**. The A/A ratio
   (B-repeat/B) is 1.005 [0.998, 1.014], so the effect is far outside the noise.
 - **Variants suite, F (clean):** p50 4,456 ms, p95 7,936 ms over 241 cases.
 - **Variants and held-out suites (one run each, clean machine):** paired F/B 0.409
@@ -110,6 +110,16 @@ The effects overlap, so they don't add up to the 57.1% total. The prompt-cache c
 null result for speed, and its memory effect is within run-to-run noise (−104 MiB peak GPU in the
 previous bench, +33 MiB in this one). It stays in F because it passes the gate and caps the host
 prompt cache at 2 GiB of RAM instead of 8.
+
+**Every `configuration` field that differs between B's and F's `results.json`**, and why:
+
+- `protocol`: `constrained` (B: `native`), the JSON-schema tool calls above: 35.8% faster.
+- `app_switches`: `protocol` (35.8% faster), `structured_ops_report` (17.6% faster) and `prefetch_account_card` (9.7% faster).
+- `quantization`, `model_file`, `model_sha256`: the Q4_K_M file instead of Q8_0, so another file hash: 22.3% faster, 1,687 MiB less peak GPU memory.
+- `engine_argv`: only `-m` (the model file above, 22.3% faster) and `--cache-ram` (below) differ.
+- `caches`: `cache_ram_mib` 2048 (B: 8192), no measurable speed effect; kept because it caps the host prompt cache at less RAM.
+- `profile`, `profile_description`: the profile's name and one-line summary; they differ because the five changes above differ, and have no effect of their own.
+- `run_conditions`: not a setting; each run records its own machine state (power, thermal, load), so it differs because it is a measurement. Every run passed the clean-machine check.
 
 Pre-registered gate (SPEC §9): a change ships only if F ≥ B on public and on variants, with zero
 invariant violations, and F ≥ F-without-that-change on public. **Result: F as a whole and each of

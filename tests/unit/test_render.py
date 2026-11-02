@@ -177,7 +177,7 @@ def test_propose_delivery_wording(eligibility: dict[str, Any], expected: str | N
 
 
 def test_propose_without_details_still_asks_to_confirm() -> None:
-    assert facts_line(PROPOSE) == "A proposal is being prepared. Nothing has been processed yet; please confirm this proposal to proceed."
+    assert facts_line(PROPOSE) == "A proposal is being prepared. Nothing has changed yet; please confirm this proposal to proceed."
     facts = facts_line(PROPOSE, proposal={"remedy": "refund", "original_sku": "TEE-M", "amount_cents": "30"})
     assert "Proposed refund: an amount to be confirmed for TEE-M." in facts
     assert "Proposed exchange (): the item for the item" in facts_line(PROPOSE, proposal={"remedy": "exchange"})

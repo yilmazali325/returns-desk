@@ -608,7 +608,7 @@
         branch.kind = "recovered";
       }
     }
-    steps.push({ id: "completed", label: branch.kind === "denied" ? "Denied" : "Completed", state: completed ? "done" : branch.kind === "denied" ? "failed" : output ? "failed" : "pending" });
+    steps.push({ id: "completed", label: branch.kind === "denied" ? "Denied" : output ? "Completed" : "Outcome", state: completed ? "done" : branch.kind === "denied" ? "failed" : output ? "failed" : "pending" });
     return { steps, branch: branch.kind, execute, status, preamble, completed };
   }
 
@@ -714,7 +714,7 @@
     { id: "approval", name: "Approval gate", kind: "code", badge: "CODE", goal: "nothing moves without a confirmation", job: "Ties Confirm to one exact proposal. Typing \"yes\" alone runs nothing.", icon: "M6 11h12v10H6zM9 11V7a3 3 0 016 0v4" },
     { id: "gateway", name: "Transaction gateway", kind: "code", badge: "CODE", goal: "one atomic commit, never applied twice", job: "The only door to the data. Every business tool goes through it.", icon: "M4 8h13l-3-3M20 16H7l3 3" },
     { id: "recovery", name: "Recovery", kind: "code", badge: "CODE", goal: "after a timeout, checks records first", job: "After a timeout, reads the database first. Never retries a refund blindly.", icon: "M20 12a8 8 0 11-3-6.3M20 4v5h-5" },
-    { id: "replyguard", name: "Reply guard", kind: "code", badge: "CODE", goal: "replies never claim what records lack", job: "Stops the AI from stating a number or success the data doesn't back.", icon: "M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z" },
+    { id: "replyguard", name: "Reply guard", kind: "code", badge: "CODE", goal: "replies never claim what records lack", job: "Stops the AI from stating a number or result the data doesn't back.", icon: "M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z" },
     { id: "store", name: "Store (SQLite)", kind: "data", badge: "DATA", goal: "holds every committed effect", job: "The SQLite database: orders, stock, refunds.", icon: "M5 6c0-2 14-2 14 0v12c0 2-14 2-14 0zM5 6c0 2 14 2 14 0M5 12c0 2 14 2 14 0" },
     { id: "warehouse", name: "Warehouse", kind: "actor", badge: "EXTERNAL", goal: "outside events, e.g. stock changes", job: "Changes from outside the desk, such as stock selling out.", icon: "M3 9l9-5 9 5v11H3zM8 20v-6h8v6" },
   ];

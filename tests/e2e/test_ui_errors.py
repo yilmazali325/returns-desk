@@ -337,3 +337,13 @@ def test_audit_titles_name_the_important_facts(desk: Any) -> None:
     assert got["guard"] == "reply_guard: success_claim:done"
     assert got["deny"].startswith("code_deny: The item has been opened")
     assert got["unknown"] == "x"
+
+
+def test_the_last_step_names_no_outcome_until_the_turn_has_one(desk: Any) -> None:
+    labels = """([entries, output]) => window.ReturnsDesk.executionSteps(entries, output).steps
+        .map(s => s.label + ':' + s.state)"""
+    grant = entry("grant", "set_grant", arguments={"proposal_id": "P-0001"})
+    running = desk.page.evaluate(labels, [[grant], None])
+    assert running[-1] == "Outcome:pending" and not any(re.search(r"complet", s, re.I) for s in running), running
+    done = desk.page.evaluate(labels, [[grant], {"decision": "completed"}])
+    assert done[-1] == "Completed:done", done

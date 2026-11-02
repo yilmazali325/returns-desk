@@ -25,7 +25,7 @@ from desk.sanitize import injection_markers
 
 MAX_LLM_CHARS = 400
 
-CONFIRM_TEXT = "Nothing has been processed yet; please confirm this proposal to proceed."
+CONFIRM_TEXT = "Nothing has changed yet; please confirm this proposal to proceed."
 
 
 def money(cents: int) -> str:
