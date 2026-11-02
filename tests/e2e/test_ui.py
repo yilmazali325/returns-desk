@@ -9,6 +9,7 @@ Screenshots of the key states are written to var/screenshots/ for the presentati
 
 from __future__ import annotations
 
+import re
 from typing import Any
 
 import pytest
@@ -240,6 +241,23 @@ def test_audit_entries_stream_in_while_the_turn_is_still_running(desk: Any) -> N
         "() => document.querySelector('[data-testid=desk-message][data-decision=working]') "
         "&& document.querySelectorAll('[data-turn-group=\"1\"] [data-testid=audit-entry]').length >= 3")
     assert desk.wait_turn(1) == "propose"
+
+
+JARGON = re.compile(r"\b\w+_\w+\b|\w\(\)")  # snake_case names, CODE_NAMES and tool() calls
+
+
+def test_every_audit_step_says_what_it_does_in_plain_words(desk: Any) -> None:
+    desk.open("exchange")
+    assert desk.fill_and_send(1) == "propose"
+    desk.page.click('[data-testid="tab-audit"]')
+    entries = desk.page.locator('[data-turn-group="1"] [data-testid="audit-entry"]')
+    plain = [entries.nth(i).locator('[data-testid="entry-plain"]') for i in range(entries.count())]
+    assert len(plain) >= 5
+    for line in plain:
+        text = line.inner_text()
+        assert line.is_visible() and text.endswith(".") and not JARGON.search(text), text
+    texts = " ".join(line.inner_text() for line in plain)
+    assert "Resolution passes the case to Operations" in texts and "Operations reports back to Resolution" in texts
 
 
 def test_audit_trail_groups_turns_and_highlights_effects(desk: Any) -> None:

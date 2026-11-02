@@ -86,6 +86,17 @@ def test_replay_steps_through_exactly_the_audit_entries_of_the_turn(desk: Any) -
     assert position.get_attribute("data-step") == str(audit_count - 1)
 
 
+def test_the_slowest_replay_speed_moves_each_handoff_ten_times_slower(desk: Any) -> None:
+    desk.open("refund_boundary")
+    desk.run_script()
+    desk.wait_team_caught_up()
+    desk.page.select_option('[data-testid="replay-speed"]', "0.1")
+    desk.page.wait_for_function("() => !document.querySelector('.team-packets .packet')")  # the live run's last hop is gone
+    desk.page.click('[data-testid="replay-play"]')
+    motion = desk.page.wait_for_selector(".team-packets .packet animateMotion", state="attached", timeout=60_000)
+    assert motion.get_attribute("dur") == "3500ms"  # DWELL_MS 350 at 0.1x
+
+
 def test_theater_toggle_widens_the_team_view(desk: Any) -> None:
     desk.open("timeout_replay")
     desk.run_script()

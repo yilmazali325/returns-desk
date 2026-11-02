@@ -11,6 +11,7 @@ Two techniques, both against the real page:
 from __future__ import annotations
 
 import json
+import re
 from typing import Any
 
 import httpx
@@ -308,6 +309,12 @@ def test_team_view_maps_every_kind_of_audit_entry(desk: Any, audit: dict[str, An
     assert described["narration"]
     title = desk.page.evaluate("e => window.ReturnsDesk.entryTitle(e)", audit)
     assert title  # every entry gets a readable one-line title in the audit trail
+
+
+@pytest.mark.parametrize("audit", [m[0] for m in MAPPING], ids=[f"{m[0]['kind']}-{m[0]['tool']}-{i}" for i, m in enumerate(MAPPING)])
+def test_every_kind_of_audit_entry_gets_a_plain_sentence(desk: Any, audit: dict[str, Any]) -> None:
+    plain = desk.page.evaluate("e => window.ReturnsDesk.plainStep(e)", audit)
+    assert plain.endswith(".") and not re.search(r"\b\w+_\w+\b|\w\(\)", plain), plain
 
 
 def test_audit_titles_name_the_important_facts(desk: Any) -> None:

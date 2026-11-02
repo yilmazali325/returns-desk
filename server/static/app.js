@@ -1337,6 +1337,126 @@
     return [`${e.tool}${e.error ? `: ${reasonText(e.error.code)}` : ""}`];
   }
 
+  // Plain words: what each step does, for a reader who doesn't know the code. The technical title stays below it.
+  const itemWords = (order, line) => (order && line ? `line ${line} of order ${order}` : order ? `order ${order}` : "the item");
+  const sizeWords = (size) => (size ? ` for size ${size}` : "");
+  /** Known reason codes as their customer-facing sentences; unknown codes add nothing rather than jargon. */
+  const why = (codes) => (codes || []).map((c) => app.meta.reason_text[c]).filter(Boolean).map((t) => ` ${t.replace(/\.$/, "")}.`).join("");
+  const OUTCOME_WORDS = { proposed: "an offer is ready", denied: "it is not possible", completed: "it is done", needs_info: "more information is needed", failed: "something went wrong" };
+  const AGENT_STEP = {
+    find_order_lines: () => "look up the customer's orders",
+    reply_to_customer: () => "write the reply to the customer",
+    check_eligibility: () => "check the store rules for this item",
+    list_exchange_options: () => "check which sizes are in stock",
+    create_proposal: (a) => (a.remedy === "exchange" ? `prepare an exchange offer${a.replacement_sku ? ` for ${a.replacement_sku}` : ""}` : "prepare a refund offer"),
+    execute_proposal: () => "carry out the offer the customer confirmed",
+    get_request_status: () => "check whether the request was already saved",
+    report_to_resolution: (a) => `report back to Resolution: ${OUTCOME_WORDS[a.outcome] || "its result"}`,
+  };
+  const HANDOFF_WORDS = {
+    propose_exchange: (a) => `exchange ${itemWords(a.order_id, a.line_id)}${sizeWords(a.requested_size)}`,
+    propose_refund: (a) => `refund ${itemWords(a.order_id, a.line_id)}`,
+    check_status: () => "check what happened to the earlier request",
+    execute_confirmed: () => "carry out the offer the customer confirmed",
+  };
+  const GUARD_WORDS = {
+    clarify_veto: "Code overrules the question: the item and the remedy are already clear, so the case goes to Operations.",
+    grant_withheld: "Code does not count this as a confirmation, because the message changes the request.",
+    reply_guard: "Code replaces the AI's reply with a safe one, because it claimed something the records don't show.",
+    report_mismatch: "Code corrects the report from Operations to match the records.",
+    duplicate_call: "The agent repeated a step; code answers from the earlier result.",
+    dropped_calls: "The agent asked for several steps at once; code keeps only the first.",
+    handoffs_closed: "Too many handoffs were sent back, so the agent may only ask the customer a question now.",
+  };
+
+  function plainStep(e) {
+    const args = e.arguments || {};
+    const result = e.result || {};
+    const code = e.error ? e.error.code : null;
+    const who = e.agent === "operations" ? "Operations" : "Resolution";
+    switch (e.kind) {
+      case "llm_step":
+        if (code === "LLM_ERROR") return "The AI model did not answer, so this step failed.";
+        if (code) return `${who} gave an answer code could not use, so it was rejected.`;
+        if (e.tool === "handoff_to_operations") return `Resolution passes the case to Operations: ${(HANDOFF_WORDS[args.intent] || (() => "work on the request"))(args)}.`;
+        return `${who} decides to ${(AGENT_STEP[e.tool] || (() => "take its next step"))(args)}.`;
+      case "ops_report": {
+        const pid = result.proposal ? ` (${result.proposal.proposal_id})` : "";
+        return `Operations reports back to Resolution: ${OUTCOME_WORDS[result.outcome] || "here is the result"}${pid}.${why(result.reason_codes)}`;
+      }
+      case "grounding": {
+        if (result.unique_target) {
+          const cue = { exchange: "asks for an exchange", refund: "asks for a refund", both: "mentions both a refund and an exchange" }[result.remedy_cue] || "does not say refund or exchange yet";
+          return `Code checks the message: it names one item, ${itemWords(...result.unique_target)}, and ${cue}.`;
+        }
+        if (result.not_found_code) return "Code checks the message: the order or line it names is not on this account.";
+        return `Code checks the message: it does not point to one item yet (${plural((result.candidates || []).length, "possible line")}).`;
+      }
+      case "target":
+        return `Code confirms the agent's choice matches what the customer wrote: ${args.intent === "exchange" ? "exchange" : "refund"} ${itemWords(args.order_id, args.line_id)}${sizeWords(args.requested_size)}.`;
+      case "gate":
+        return `Code sends the handoff back to Resolution to try again.${why([code])}`;
+      case "grant":
+        return `The customer pressed Confirm: offer ${args.proposal_id} may now be carried out, in this turn only.`;
+      case "confirmation":
+        return "The customer said yes, but there is no earlier offer to confirm.";
+      case "route":
+        return result.replay ? `This request was already done (${result.transaction_id}); the same result is shown again, with no new change.`
+          : "This request was already done for another item, so the desk says no.";
+      case "fallback":
+        return "The agent stopped without a decision, so code checks the facts itself, without changing anything.";
+      case "guard":
+        if (e.tool === "code_deny") return `Code says no, based on the facts.${why(result.reasons)}`;
+        return GUARD_WORDS[e.tool] || "A safety check by code stepped in.";
+      case "fault":
+        if (e.tool === "stock_change" && result.applied) return `Outside the desk, stock of ${result.sku} changes from ${result.old_stock} to ${result.new_stock}.`;
+        if (result.armed) return "Test setup: the next save will lose its answer, like a network timeout.";
+        return "An outside event was ignored.";
+      case "tool":
+        return plainTool(e, args, result, code);
+      default:
+        return "A step was recorded.";
+    }
+  }
+
+  function plainTool(e, args, result, code) {
+    const reasons = (e.error && e.error.details && e.error.details.reasons) || [code];
+    switch (e.tool) {
+      case "prefetch_account_card":
+        return `Code loads the customer's orders up front (${plural(result.count || 0, "order line")}), so the agent doesn't have to look them up.`;
+      case "find_order_lines":
+        return `Code looks up the customer's orders: ${plural(result.count || 0, "line")} found.${result.order_not_on_account ? " That order is not on this account." : ""}`;
+      case "check_eligibility":
+        if (code) return `Code could not check the store rules.${why([code])}`;
+        return result.eligible ? `The store rules allow it: day ${result.days_since_delivery} of the ${result.window_days}-day return window.`
+          : `The store rules say no.${why(result.reasons)}`;
+      case "check_proposal":
+        return code ? `Code checks what would happen, without making an offer: not possible.${why(reasons)}`
+          : "Code checks what would happen, without making an offer: it would be allowed.";
+      case "list_exchange_options":
+        return code ? `Code could not list the sizes.${why([code])}` : `Code lists the sizes: ${plural(result.valid_count || 0, "size")} in stock and allowed.`;
+      case "create_proposal": {
+        if (code) return `Code refuses to create the offer, so nothing changes.${why(reasons)}`;
+        const p = result.proposal || {};
+        const what = p.remedy === "refund" && Number.isInteger(p.amount_cents) ? ` for a refund of ${money(p.amount_cents)}` : "";
+        return `Code ${result.reused ? "shows the same offer again" : "creates the offer"} ${p.proposal_id}${what} after checking the rules. Nothing has changed yet.`;
+      }
+      case "execute_proposal": {
+        const tx = result.transaction ? result.transaction.transaction_id : "";
+        if (!code && result.replay) return `Code finds this was already done (${tx}) and returns the same result. No second refund.`;
+        if (!code) return `Code checks the rules and stock once more, then saves everything in one go (${tx}).`;
+        if (code === "TIMEOUT") return `Code saved everything (${tx}), but the answer was lost on the way back, like a network timeout.`;
+        if (code === "CONFIRMATION_REQUIRED") return "Code refuses: the customer has not pressed Confirm in this turn.";
+        return `Code refuses to carry it out, so nothing changes.${why(reasons)}`;
+      }
+      case "get_request_status":
+        return result.status === "completed" ? `Code checks the records: ${result.record ? result.record.transaction_id : "the request"} was already saved, so nothing runs twice.`
+          : "Code checks the records: nothing was saved yet.";
+      default:
+        return code ? "Code refused this step, so nothing changes." : "Code ran a check.";
+    }
+  }
+
   function entryBadges(e) {
     const badges = [];
     if (e.kind === "llm_step" && e.result) {
@@ -1361,7 +1481,8 @@
     details.append(el("summary", {},
       el("span", { class: "seq", text: `#${e.seq}` }),
       el("span", { class: "agent-chip", "data-agent": e.agent, text: AGENT_LABEL[e.agent] || e.agent }),
-      el("span", { class: "entry-title" }, el("span", { class: "entry-kind", text: e.kind }), ...entryTitle(e)),
+      el("span", { class: "entry-title" }, el("span", { class: "entry-plain", "data-testid": "entry-plain", text: plainStep(e) }),
+        el("span", { class: "entry-tech" }, el("span", { class: "entry-kind", text: e.kind }), ...entryTitle(e))),
       el("span", { class: "entry-badges" }, ...entryBadges(e))));
     const body = el("div", { class: "entry-body" });
     if (chips.length) body.append(el("div", { class: "store-chips" }, chips.map((c) => el("span", { class: `chip chip-${c.kind}`, text: c.text }))));
@@ -1883,7 +2004,7 @@
   }
 
   // A read-only handle for debugging in the console (and for the E2E tests' assertions).
-  window.ReturnsDesk = { app, player, describeEntry, foldTeam, executionSteps, short,
+  window.ReturnsDesk = { app, player, describeEntry, foldTeam, executionSteps, short, plainStep,
     entryTitle: (e) => entryTitle(e).map((p) => (p instanceof Node ? p.textContent : p)).join(""),
     entryBadges: (e) => entryBadges(e).map((b) => b.textContent) };
   init();
