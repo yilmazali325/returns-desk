@@ -95,3 +95,12 @@ def test_reduced_motion_keeps_the_highlights_without_moving_packets(make_desk: A
     desk.wait_team_caught_up()
     assert desk.page.get_attribute('[data-node="approval"]', "data-status") == "ok"
     assert desk.page.evaluate("() => window.__packets") == 0
+
+
+LLM_ANIMATED = """() => [...document.querySelectorAll('[data-testid="team-graph"] [data-node]')]
+    .filter(n => n.getAnimations().some(a => a.animationName.startsWith('llm-'))).map(n => n.dataset.node).sort()"""
+
+
+def test_only_the_llm_agents_animate_and_reduced_motion_stops_them(make_desk: Any) -> None:
+    assert make_desk().page.evaluate(LLM_ANIMATED) == ["operations", "resolution"]
+    assert make_desk(reduced_motion="reduce").page.evaluate(LLM_ANIMATED) == []
