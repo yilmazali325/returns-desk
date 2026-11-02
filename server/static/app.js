@@ -407,6 +407,22 @@
       : "Blank conversation: type any request for this customer.";
   }
 
+  /** Index of the next scripted turn to send, or null (blank conversation, or the script is done). */
+  function nextScriptIndex() {
+    const scenario = app.session ? scenarioById(app.session.case_id) : null;
+    const done = app.session ? app.session.turns.length : 0;
+    return scenario && done < scenario.turns.length ? done : null;
+  }
+
+  /** "Fill turn N" next to Send: the next scripted step sits where the user is already looking. */
+  function renderNextStep() {
+    const button = $("next-btn");
+    const next = nextScriptIndex();
+    button.hidden = next === null || Boolean($("composer-input").value.trim());
+    button.disabled = app.busy;
+    if (next !== null) button.textContent = `Fill turn ${next + 1}`;
+  }
+
   function renderScript() {
     const list = clear($("script-list"));
     const scenario = app.session ? scenarioById(app.session.case_id) : null;
@@ -458,7 +474,15 @@
     const log = clear($("chat-log"));
     const records = turnRecords();
     if (!records.length) {
-      log.append(el("p", { class: "empty-chat", text: "Pick a scenario, fill its first scripted message (or type one), and press Send." }));
+      const next = nextScriptIndex();
+      log.append(el("div", { class: "empty-chat", "data-testid": "empty-chat" },
+        el("h2", { text: "Try a customer request" }),
+        el("ol", { class: "empty-steps" },
+          el("li", { text: "Pick a scenario on the left" }),
+          el("li", { text: "Fill its first message, or type your own" }),
+          el("li", { text: "Send, then confirm the proposal" })),
+        next === null ? null : el("button", { type: "button", class: "btn btn-next btn-large", "data-testid": "empty-fill",
+          text: `Fill turn ${next + 1}`, onclick: () => fillScript(next) })));
     }
     const latestProposalTurn = records.reduce((acc, r) => (r.output && r.output.proposal ? r.turn : acc), null);
     for (const record of records) {
@@ -1460,7 +1484,9 @@
     $("reset-btn").disabled = app.busy || !app.session;
     $("scenario-select").disabled = app.busy;
     $("composer-input").setAttribute("aria-busy", app.busy ? "true" : "false");
+    document.body.dataset.busy = app.busy ? "true" : "false";
     renderConfirmAttach();
+    renderNextStep();
   }
 
   const STATUS_NOTE = {
@@ -1627,6 +1653,7 @@
       $("confirm-attach-box").checked = true;
     }
     renderConfirmAttach();
+    renderNextStep();
     $("composer-input").focus();
     $("progress").textContent = turn.confirm_proposal === "last"
       ? pid ? `Filled turn ${index + 1}; it carries the explicit confirmation of ${pid}.` : `Filled turn ${index + 1}; there is no earlier proposal to confirm.`
@@ -1638,6 +1665,7 @@
     clearConfirmation();
     renderConfirmAttach();
     $("composer-input").value = text;
+    renderNextStep();
     $("composer-input").focus();
     $("progress").textContent = "Filled the message box. Press Send to ask for it; nothing moves until you confirm the new proposal.";
   }
@@ -1699,6 +1727,16 @@
     prefs.set("tab", which);
   }
 
+  /** Light or dark; with no saved choice the page follows the system setting. */
+  const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
+  function setTheme(theme) {
+    if (theme) document.documentElement.dataset.theme = theme;
+    const current = document.documentElement.dataset.theme || (systemDark.matches ? "dark" : "light");
+    for (const button of document.querySelectorAll("[data-theme-choice]")) {
+      button.setAttribute("aria-pressed", String(button.dataset.themeChoice === current));
+    }
+  }
+
   function setTheater(on) {
     document.body.classList.toggle("theater", on);
     $("theater-btn").setAttribute("aria-pressed", String(on));
@@ -1739,6 +1777,11 @@
     $("confirm-attach-box").addEventListener("change", () => {
       app.confirm.tickedFor = $("confirm-attach-box").checked ? lastPresentedProposalId() : null;
     });
+    $("composer-input").addEventListener("input", renderNextStep);
+    $("next-btn").addEventListener("click", () => {
+      const next = nextScriptIndex();
+      if (next !== null) fillScript(next);
+    });
     $("composer-input").addEventListener("keydown", (event) => {
       if (event.key === "Enter" && !event.shiftKey && !event.isComposing) {
         event.preventDefault();
@@ -1754,6 +1797,13 @@
       $(`tab-${next}`).focus();
     });
     $("theater-btn").addEventListener("click", () => setTheater(!document.body.classList.contains("theater")));
+    for (const button of document.querySelectorAll("[data-theme-choice]")) {
+      button.addEventListener("click", () => {
+        setTheme(button.dataset.themeChoice);
+        prefs.set("theme", button.dataset.themeChoice);
+      });
+    }
+    systemDark.addEventListener("change", () => setTheme(null));
     document.addEventListener("keydown", (event) => {
       if ((event.key === "t" || event.key === "T") && !event.metaKey && !event.ctrlKey && !event.altKey && !isTyping(event.target)) {
         setTheater(!document.body.classList.contains("theater"));
@@ -1809,6 +1859,7 @@
     setDrawer(prefs.get("drawer", false));
     selectTab(prefs.get("tab", "team"));
     setTheater(prefs.get("theater", false));
+    setTheme(prefs.get("theme", null));
     try {
       [app.meta, app.scenarios] = await Promise.all([request("GET", "/api/meta"), request("GET", "/api/scenarios")]);
     } catch (error) {

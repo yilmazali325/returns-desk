@@ -286,3 +286,31 @@ def test_dark_mode_uses_the_dark_tokens(make_desk: Any) -> None:
     background = desk.page.evaluate("() => getComputedStyle(document.body).backgroundColor")
     assert background == "rgb(15, 17, 21)"
     desk.shot("12_dark_mode.png")
+
+
+def test_theme_switch_overrides_the_system_setting_and_is_remembered(make_desk: Any) -> None:
+    desk = make_desk(color_scheme="dark")
+    pressed = '[data-testid="theme-switch"] [aria-pressed="true"]'
+    background_is = "rgb => getComputedStyle(document.body).backgroundColor === rgb"
+    assert desk.page.get_attribute(pressed, "data-theme-choice") == "dark"
+    desk.page.click('[data-testid="theme-switch"] [data-theme-choice="light"]')
+    desk.page.wait_for_function(background_is, arg="rgb(246, 247, 249)")
+    assert desk.page.get_attribute(pressed, "data-theme-choice") == "light"
+    desk.page.reload()
+    desk.page.wait_for_function(background_is, arg="rgb(246, 247, 249)")
+    assert desk.page.get_attribute(pressed, "data-theme-choice") == "light"
+    desk.page.click('[data-testid="theme-switch"] [data-theme-choice="dark"]')
+    desk.page.wait_for_function(background_is, arg="rgb(15, 17, 21)")
+
+
+def test_fill_next_offers_the_next_scripted_turn_beside_send(desk: Any) -> None:
+    desk.open("refund_boundary")
+    assert desk.page.inner_text('[data-testid="empty-fill"]') == "Fill turn 1"
+    desk.page.click('[data-testid="empty-fill"]')
+    assert desk.page.input_value("#composer-input") == desk.case["turns"][0]["message"]
+    assert desk.page.is_hidden('[data-testid="fill-next"]')  # the box already holds a message
+    desk.page.click('[data-testid="send"]')
+    assert desk.wait_turn(1) == "propose"
+    assert desk.page.inner_text('[data-testid="fill-next"]') == "Fill turn 2"
+    desk.page.click('[data-testid="fill-next"]')
+    assert desk.page.input_value("#composer-input") == desk.case["turns"][1]["message"]
