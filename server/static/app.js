@@ -703,19 +703,20 @@
   // 8. Team view: the agents and specialists as a live graph (SPEC §10.1)
 
   // Goals are short enough to wrap into at most two lines at every layout width (no truncation).
+  // Each job is the plain-language answer to "what does this part do?", shown in full under the goal.
   const NODES = [
-    { id: "customer", name: "Customer", kind: "actor", badge: "PERSON", goal: "describes the request, confirms it", icon: "M12 12a4 4 0 100-8 4 4 0 000 8zM4 21a8 8 0 0116 0" },
-    { id: "resolution", name: "Resolution agent", kind: "llm", badge: "LLM", goal: "talks to the customer, asks if unclear", icon: "M4 5h16v11H9l-5 4z" },
-    { id: "operations", name: "Operations agent", kind: "llm", badge: "LLM", goal: "checks the facts, prepares the remedy", icon: "M4 7h16v13H4zM9 7V4h6v3M4 12h16" },
-    { id: "orchestrator", name: "Orchestrator", kind: "code", badge: "CODE", goal: "runs the turn and routes every handoff", icon: "M12 3v18M5 8l7-5 7 5M5 16l7 5 7-5" },
-    { id: "grounding", name: "Grounding", kind: "code", badge: "CODE", goal: "named orders, lines, sizes must exist", icon: "M12 21s-7-6-7-11a7 7 0 0114 0c0 5-7 11-7 11zM12 12a2 2 0 100-4 2 2 0 000 4z" },
-    { id: "policy", name: "Policy", kind: "code", badge: "CODE", goal: "in window, unopened, not final sale", icon: "M12 3v18M5 7h14M5 7l-3 7h6zM19 7l-3 7h6z" },
-    { id: "approval", name: "Approval gate", kind: "code", badge: "CODE", goal: "nothing moves without a confirmation", icon: "M6 11h12v10H6zM9 11V7a3 3 0 016 0v4" },
-    { id: "gateway", name: "Transaction gateway", kind: "code", badge: "CODE", goal: "one atomic commit, never applied twice", icon: "M4 8h13l-3-3M20 16H7l3 3" },
-    { id: "recovery", name: "Recovery", kind: "code", badge: "CODE", goal: "after a timeout, checks records first", icon: "M20 12a8 8 0 11-3-6.3M20 4v5h-5" },
-    { id: "replyguard", name: "Reply guard", kind: "code", badge: "CODE", goal: "replies never claim what records lack", icon: "M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z" },
-    { id: "store", name: "Store (SQLite)", kind: "data", badge: "DATA", goal: "holds every committed effect", icon: "M5 6c0-2 14-2 14 0v12c0 2-14 2-14 0zM5 6c0 2 14 2 14 0M5 12c0 2 14 2 14 0" },
-    { id: "warehouse", name: "Warehouse", kind: "actor", badge: "EXTERNAL", goal: "outside events, e.g. stock changes", icon: "M3 9l9-5 9 5v11H3zM8 20v-6h8v6" },
+    { id: "customer", name: "Customer", kind: "actor", badge: "PERSON", goal: "describes the request, confirms it", job: "Asks for a refund or exchange, answers questions, then presses Confirm.", icon: "M12 12a4 4 0 100-8 4 4 0 000 8zM4 21a8 8 0 0116 0" },
+    { id: "resolution", name: "Resolution agent", kind: "llm", badge: "LLM", goal: "talks to the customer, asks if unclear", job: "Front desk. Talks to the customer and works out which item, refund or exchange, and which size.", icon: "M4 5h16v11H9l-5 4z" },
+    { id: "operations", name: "Operations agent", kind: "llm", badge: "LLM", goal: "checks the facts, prepares the remedy", job: "Back office. Uses the tools that create and carry out the change. Never sees the customer's words.", icon: "M4 7h16v13H4zM9 7V4h6v3M4 12h16" },
+    { id: "orchestrator", name: "Orchestrator", kind: "code", badge: "CODE", goal: "runs the turn and routes every handoff", job: "The manager of each turn. Runs the steps in order and enforces the limits.", icon: "M12 3v18M5 8l7-5 7 5M5 16l7 5 7-5" },
+    { id: "grounding", name: "Grounding", kind: "code", badge: "CODE", goal: "named orders, lines, sizes must exist", job: "Checks the agent's choice against what the customer actually wrote.", icon: "M12 21s-7-6-7-11a7 7 0 0114 0c0 5-7 11-7 11zM12 12a2 2 0 100-4 2 2 0 000 4z" },
+    { id: "policy", name: "Policy", kind: "code", badge: "CODE", goal: "in window, unopened, not final sale", job: "The store rules, and the refund amount in cents.", icon: "M12 3v18M5 7h14M5 7l-3 7h6zM19 7l-3 7h6z" },
+    { id: "approval", name: "Approval gate", kind: "code", badge: "CODE", goal: "nothing moves without a confirmation", job: "Ties Confirm to one exact proposal. Typing \"yes\" alone runs nothing.", icon: "M6 11h12v10H6zM9 11V7a3 3 0 016 0v4" },
+    { id: "gateway", name: "Transaction gateway", kind: "code", badge: "CODE", goal: "one atomic commit, never applied twice", job: "The only door to the data. Every business tool goes through it.", icon: "M4 8h13l-3-3M20 16H7l3 3" },
+    { id: "recovery", name: "Recovery", kind: "code", badge: "CODE", goal: "after a timeout, checks records first", job: "After a timeout, reads the database first. Never retries a refund blindly.", icon: "M20 12a8 8 0 11-3-6.3M20 4v5h-5" },
+    { id: "replyguard", name: "Reply guard", kind: "code", badge: "CODE", goal: "replies never claim what records lack", job: "Stops the AI from stating a number or success the data doesn't back.", icon: "M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z" },
+    { id: "store", name: "Store (SQLite)", kind: "data", badge: "DATA", goal: "holds every committed effect", job: "The SQLite database: orders, stock, refunds.", icon: "M5 6c0-2 14-2 14 0v12c0 2-14 2-14 0zM5 6c0 2 14 2 14 0M5 12c0 2 14 2 14 0" },
+    { id: "warehouse", name: "Warehouse", kind: "actor", badge: "EXTERNAL", goal: "outside events, e.g. stock changes", job: "Changes from outside the desk, such as stock selling out.", icon: "M3 9l9-5 9 5v11H3zM8 20v-6h8v6" },
   ];
   const NODE_BY_ID = Object.fromEntries(NODES.map((n) => [n.id, n]));
   const CODE_NODES = NODES.filter((n) => n.kind === "code" && n.id !== "orchestrator").map((n) => n.id);
@@ -749,9 +750,10 @@
     const icon = svgEl("svg", { class: "node-icon", viewBox: "0 0 24 24", "aria-hidden": "true" }, svgEl("path", { d: n.icon }));
     // The badge sits in the footer with the counters, so the name gets the card's full width.
     const card = el("div", { class: "node", "data-node": n.id, "data-kind": n.kind, "data-status": "idle", "data-current": "false",
-      role: "group", "aria-label": `${n.name} (${n.badge}): ${n.goal}`, title: `${n.name}: ${n.goal}` },
+      role: "group", "aria-label": `${n.name} (${n.badge}): ${n.goal}. Job: ${n.job}`, title: `${n.name}: ${n.job}` },
       el("div", { class: "node-head" }, icon, el("span", { class: "node-name", text: n.name })),
-      el("p", { class: "node-goal", text: n.goal }), status,
+      el("p", { class: "node-goal", text: n.goal }),
+      el("p", { class: "node-job", "data-testid": "node-job" }, el("span", { class: "node-job-label", text: "Job" }), " ", n.job), status,
       el("div", { class: "node-foot" }, el("span", { class: "node-badge", "data-testid": "node-badge", text: n.badge }), counters));
     if (cell) {
       card.style.gridColumn = String(cell[0] + 1);
@@ -1207,6 +1209,7 @@
     $("replay-pos").dataset.step = String(player.cursor);
     $("replay-pos").dataset.steps = String(entries.length);
     $("replay").dataset.playing = player.playing ? "true" : "false";
+    $("team-graph").dataset.moving = player.playing ? "true" : "false"; /* replay running: agents "type" */
     const backlog = entries.length - player.cursor;
     $("catching-up").hidden = !(player.live && backlog > 2);
     $("catching-up").textContent = `catching up… ${backlog} queued`;

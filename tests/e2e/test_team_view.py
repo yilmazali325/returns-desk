@@ -26,6 +26,25 @@ def test_every_node_renders_with_its_badge(desk: Any) -> None:
     assert "Agents decide; code can say no." in legend and "Deterministic specialist" in legend
 
 
+JOBS = """() => [...document.querySelectorAll('[data-testid="team-graph"] [data-node]')].map(n => {
+  const job = n.querySelector('[data-testid="node-job"]');
+  return job && { node: n.dataset.node, text: job.textContent, shown: job.getClientRects().length > 0,
+    cut: job.scrollHeight > job.clientHeight + 1, font: parseFloat(getComputedStyle(job).fontSize) };
+})"""
+
+
+@pytest.mark.parametrize("viewport", [(1280, 720), (1440, 900)])
+def test_every_card_says_its_job_in_full(make_desk: Any, viewport: tuple[int, int]) -> None:
+    desk = make_desk(viewport={"width": viewport[0], "height": viewport[1]})
+    jobs = {j["node"]: j for j in desk.page.evaluate(JOBS) if j}
+    assert set(jobs) == set(BADGES)
+    for job in jobs.values():
+        assert job["shown"] and not job["cut"] and job["font"] >= 12, job
+        assert job["text"].startswith("Job ") and len(job["text"]) > len("Job ") + 20, job
+    assert "Front desk" in jobs["resolution"]["text"]
+    assert "Never sees the customer's words" in jobs["operations"]["text"]
+
+
 def test_a_confirm_turn_animates_the_handoff_approves_and_shows_the_refund_chip(desk: Any) -> None:
     desk.open("refund_boundary")
     assert desk.fill_and_send(1) == "propose"
@@ -104,3 +123,15 @@ LLM_ANIMATED = """() => [...document.querySelectorAll('[data-testid="team-graph"
 def test_only_the_llm_agents_animate_and_reduced_motion_stops_them(make_desk: Any) -> None:
     assert make_desk().page.evaluate(LLM_ANIMATED) == ["operations", "resolution"]
     assert make_desk(reduced_motion="reduce").page.evaluate(LLM_ANIMATED) == []
+
+
+TYPING = """() => [...document.querySelectorAll('[data-testid="team-graph"] [data-node]')]
+    .filter(n => getComputedStyle(n, '::after').content !== 'none').map(n => n.dataset.node)"""
+
+
+def test_no_agent_is_still_typing_once_the_turn_is_over(desk: Any) -> None:
+    desk.open("refund_boundary")
+    assert desk.fill_and_send(1) == "propose"
+    desk.wait_team_caught_up()
+    assert desk.page.get_attribute('[data-node="resolution"]', "data-status") == "working"  # last to act
+    assert desk.page.evaluate(TYPING) == []
