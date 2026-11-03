@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Returns Desk</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root {
+  --bg: #F5F3EE; --ink: #1D2833; --muted: #56616D; --soft: #78828D;
+  --rust: #B4471B; --line: #DCD8CF; --card: #FCFBF8; --card-line: #E2DED5;
+  --navy: #16202B; --navy-ink: #F3F0E8; --navy-muted: #B9C2CD; --orange: #EE8B45;
+  --green: #1E6B47; --green-soft: #E3EFE7; --peach: #F5DECD;
+  --violet: #6236B8; --violet-soft: #ECE5FA; --teal: #0D6B63; --teal-soft: #D9EFEA;
+  --red: #9B2C2C; --red-soft: #F6E0DF; --amber: #875800; --amber-soft: #FBEBC6;
+  --blue: #24508F; --blue-soft: #DFE8F6; --grey: #59626B; --grey-soft: #E7E4DE;
+}
+@page { size: 1920px 1080px; margin: 0 }
+* { box-sizing: border-box }
+html, body { margin: 0; padding: 0; background: var(--bg) }
+h1, h2, h3, p, ul, ol { margin: 0 }
+body { font-family: 'IBM Plex Sans', Arial, sans-serif; color: var(--ink) }
+section { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--bg);
+  padding: 124px 128px 34px; display: flex; flex-direction: column; break-after: page }
+.q { position: absolute; top: 24px; left: 128px; right: 128px; border-left: 4px solid var(--rust);
+  padding: 2px 0 2px 18px; font-size: 20px; line-height: 1.35; color: var(--muted) }
+.q b { color: var(--rust); font-weight: 600 }
+.eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 28px; letter-spacing: .12em; color: var(--rust); text-transform: uppercase }
+h2 { font-size: 64px; font-weight: 700; line-height: 1.1; margin-top: 10px; letter-spacing: -0.01em }
+.shows { font-size: 25px; color: var(--muted); margin-top: 26px }
+.shows b { color: var(--rust); font-weight: 600 }
+.verdict { margin-top: 24px; background: var(--green-soft); border-left: 6px solid var(--green); border-radius: 0 12px 12px 0;
+  padding: 16px 26px; font-size: 24px; line-height: 1.4 }
+.verdict .head { color: var(--green); font-weight: 600 }
+.verdict b { font-weight: 600 }
+table { border-collapse: collapse; width: 100%; font-size: 21px; line-height: 1.32 }
+th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line) }
+thead th { font-weight: 600; border-bottom: 1px solid var(--line) }
+tr.group th { font-size: 18px; letter-spacing: .04em; text-transform: uppercase; color: var(--rust);
+  border-bottom: 2px solid var(--rust); padding-bottom: 6px }
+td.lead { font-weight: 600 }
+td.rust { color: var(--rust); font-weight: 600 }
+td.num, th.num { text-align: right; white-space: nowrap }
+td.muted { color: var(--muted) }
+tr.final td { background: var(--peach); font-weight: 600 }
+.pill { display: inline-block; padding: 2px 13px; border-radius: 999px; font-size: 19px; font-weight: 600; white-space: nowrap }
+.p-green { background: var(--green-soft); color: var(--green) }
+.p-sel { background: var(--green); color: #fff }
+.p-amber { background: var(--amber-soft); color: var(--amber) }
+.p-blue { background: var(--blue-soft); color: var(--blue) }
+.p-grey { background: var(--grey-soft); color: var(--grey) }
+.p-red { background: var(--red-soft); color: var(--red) }
+.p-ai { background: var(--violet-soft); color: var(--violet) }
+.p-code { background: var(--teal-soft); color: var(--teal) }
+.p-person { background: var(--peach); color: var(--rust) }
+.cards { display: flex; gap: 30px }
+.card { flex: 1; background: var(--card); border: 1px solid var(--card-line); border-radius: 16px; padding: 26px 30px }
+.card h3 { font-size: 27px; font-weight: 600; margin-bottom: 12px }
+.card p, .card li { font-size: 22px; line-height: 1.42 }
+.card ul { padding-left: 1.1em } .card li { margin-bottom: 6px }
+.card li::marker { color: var(--soft) }
+.dark { background: var(--navy); color: var(--navy-ink); border-radius: 16px; padding: 24px 34px }
+.dark h3 { color: var(--orange); font-size: 27px; font-weight: 600; margin-bottom: 10px }
+.dark p { font-size: 22px; line-height: 1.45; margin-top: 6px }
+.gloss { margin-top: auto; border-top: 1px solid var(--line); padding-top: 12px; font-size: 15px; line-height: 1.5; color: var(--muted) }
+.gloss b { color: var(--ink); font-weight: 600 }
+.exact { margin-top: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 14px; line-height: 1.4; color: var(--muted); overflow-wrap: anywhere }
+section.lite .verdict { font-size: 30px }
+section.lite table { font-size: 29px; line-height: 1.35 }
+section.lite th, section.lite td { padding: 14px 14px }
+section.lite .pill { font-size: 23px }
+section.lite .step { padding: 24px 22px 20px }
+section.lite .step .n { font-size: 21px }
+section.lite .step h3 { font-size: 32px; margin: 6px 0 10px }
+section.lite .step p { font-size: 27px; line-height: 1.4 }
+section.lite .card h3 { font-size: 34px }
+section.lite .card p, section.lite .card li { font-size: 28px }
+section.lite .dark h3 { font-size: 32px }
+section.lite .dark p { font-size: 28px }
+section.lite .lost p { font-size: 27px }
+section.lite .lost span { font-size: 22px }
+section.lite .result { font-size: 28px; margin-top: 26px }
+section.lite .foot { margin-top: auto }
+.foot { margin-top: 14px; font-size: 24px; color: var(--soft) }
+.ok { color: var(--green); font-weight: 700 }
+
+/* cover */
+section.cover { background: var(--navy); color: var(--navy-ink); padding: 124px 128px 70px }
+.cover .eyebrow { color: var(--orange) }
+.cover h1 { font-size: 112px; font-weight: 700; line-height: 1.05; margin-top: 22px; letter-spacing: -0.01em }
+.cover .sub { font-size: 33px; line-height: 1.45; color: var(--navy-muted); margin-top: 24px; max-width: 1640px }
+.index { margin-top: auto; border-top: 1px solid #2E3A47; border-bottom: 1px solid #2E3A47; padding: 22px 0;
+  display: grid; grid-template-columns: 1fr 1fr; column-gap: 96px; row-gap: 12px }
+.index div { display: grid; grid-template-columns: 82px 1fr 40px; font-size: 28px; color: var(--navy-ink) }
+.index span:first-child { font-family: 'IBM Plex Mono', monospace; color: var(--orange) }
+.index span:last-child { text-align: right; color: var(--navy-muted) }
+.cover-foot { display: flex; justify-content: space-between; align-items: baseline; margin-top: 56px }
+.cover-foot .who { font-size: 29px; color: var(--navy-muted) }
+.cover-foot .stack { font-family: 'IBM Plex Mono', monospace; font-size: 22px; color: #8D98A5 }
+
+/* flow strip (Q2) */
+.flow { display: flex; align-items: stretch; gap: 0; margin-top: 26px }
+.step { flex: 1; background: var(--card); border: 1px solid var(--card-line); border-radius: 14px; padding: 18px 18px 16px;
+  display: flex; flex-direction: column; gap: 8px }
+.step .n { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--soft) }
+.step h3 { font-size: 24px; font-weight: 600 }
+.step p { font-size: 19px; line-height: 1.38 }
+.step .chk { margin-top: auto; padding-top: 8px; border-top: 1px dashed var(--line); color: var(--teal) }
+.step .chk b { font-weight: 600 }
+.arrow { width: 30px; display: flex; align-items: center; justify-content: center; color: var(--soft); font-size: 26px; flex: none }
+.step.ai { border-top: 5px solid var(--violet) }
+.step.code { border-top: 5px solid var(--teal) }
+.step.person { border-top: 5px solid var(--rust) }
+.key { display: flex; gap: 22px; align-items: center; font-size: 19px; color: var(--muted); margin-top: 12px }
+
+/* team table (Q1) and step slides (Q2, Q3) */
+.tables { display: flex; gap: 40px; margin-top: 18px }
+.tables table { font-size: 19px }
+.tables td, .tables th { padding: 6px 10px }
+.step .use { margin-top: auto; padding-top: 8px; border-top: 1px dashed var(--line); color: var(--violet) }
+.step .use b, .step .chk b { font-weight: 600 }
+.step ul { padding-left: 1.1em; font-size: 19px; line-height: 1.38 } .step li { margin: 0 0 2px }
+.result { font-size: 20px; color: var(--muted); margin-top: 12px }
+.result b { color: var(--ink) }
+.lost { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 6px }
+.lost p { font-size: 19px; line-height: 1.42; margin: 0 }
+.lost span { display: block; font-family: 'IBM Plex Mono', monospace; color: var(--orange); font-size: 18px; margin-bottom: 4px }
+.p-outside { background: var(--amber-soft); color: var(--amber) }
+.p-data { background: var(--blue-soft); color: var(--blue) }
+
+/* architecture (Q1) */
+.arch { position: relative; width: 1664px; height: 555px; margin-top: 22px; flex: none }
+.arch svg { position: absolute; inset: 0; width: 1664px; height: 555px; overflow: visible }
+.zone { position: absolute; border: 2px dashed var(--teal); border-radius: 18px; background: rgba(217,239,234,.35) }
+.zone .zl { position: absolute; left: 20px; top: 12px; font-size: 22px; font-weight: 600; color: var(--teal) }
+.zone .zl span { font-weight: 400; color: var(--muted); font-size: 19px }
+.box { position: absolute; background: var(--card); border: 1px solid var(--card-line); border-top-width: 5px; border-radius: 14px; padding: 10px 14px }
+.box .t { font-family: 'IBM Plex Mono', monospace; font-size: 15px; letter-spacing: .08em; text-transform: uppercase }
+.box h3 { font-size: 23px; font-weight: 600; line-height: 1.25 }
+.box p { font-size: 18px; line-height: 1.33; color: var(--ink); margin-top: 2px }
+.box.ai { border-top-color: var(--violet) } .box.ai .t { color: var(--violet) }
+.box.code { border-top-color: var(--teal) } .box.code .t { color: var(--teal) }
+.box.person { border-top-color: var(--rust) } .box.person .t { color: var(--rust) }
+.box.data { border-top-color: var(--blue) } .box.data .t { color: var(--blue) }
+.box.out { border-top-color: var(--amber) } .box.out .t { color: var(--amber) }
+.limits { position: absolute; font-size: 18px; line-height: 1.4; color: var(--muted) }
+.limits b { color: var(--ink); font-weight: 600 }
+.band { position: absolute; left: 0; right: 0; top: 497px; height: 58px; border-radius: 12px; background: var(--violet-soft);
+  color: var(--violet); font-size: 20px; display: flex; align-items: center; justify-content: center; gap: 10px }
+.band b { font-weight: 600 }
+.al { font-family: 'IBM Plex Mono', monospace; font-size: 15px; fill: var(--muted) }
+.tech { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 15px; font-weight: 400; color: var(--soft); margin-top: 1px; line-height: 1.2; white-space: nowrap }
+
+/* shine: paint only, same sizes and spacing */
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact }
+:root { --lift: 0 3px 0 rgba(29,40,51,.06); --bar: linear-gradient(90deg, var(--rust), var(--orange) 45%, var(--violet)) }
+section { background:
+  radial-gradient(1100px 520px at 100% 0%, rgba(238,139,69,.11), transparent 65%),
+  radial-gradient(900px 520px at 0% 100%, rgba(98,54,184,.06), transparent 60%), var(--bg) }
+section::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 8px; background: var(--bar) }
+.eyebrow::before { content: ''; display: inline-block; width: 44px; height: 4px; border-radius: 2px; margin-right: 16px;
+  vertical-align: middle; position: relative; top: -3px; background: var(--bar) }
+.verdict { background: linear-gradient(90deg, #DDEDE3, #EEF6F1 70%, #F4F8F5); border-radius: 0 14px 14px 0;
+  box-shadow: inset 0 0 0 1px rgba(30,107,71,.10) }
+.card, .step, .box { background: linear-gradient(180deg, #FFFFFF, #FBFAF7); box-shadow: var(--lift) }
+.card { border-radius: 18px }
+.step.ai, .box.ai { background: linear-gradient(180deg, #F3EEFC, #FFFFFF 46%) }
+.step.code, .box.code { background: linear-gradient(180deg, #E6F4F0, #FFFFFF 46%) }
+.step.person, .box.person { background: linear-gradient(180deg, #FBEADF, #FFFFFF 46%) }
+.box.data { background: linear-gradient(180deg, #E8EEF8, #FFFFFF 46%) }
+.box.out { background: linear-gradient(180deg, #FCF1D9, #FFFFFF 46%) }
+.arrow { color: var(--rust); font-weight: 600 }
+.zone { background: linear-gradient(180deg, rgba(217,239,234,.55), rgba(217,239,234,.18)) }
+.band { background: linear-gradient(90deg, #ECE5FA, #E6ECFA); box-shadow: inset 0 0 0 1px rgba(98,54,184,.12) }
+.dark { background: radial-gradient(700px 260px at 0% 0%, rgba(238,139,69,.20), transparent 65%),
+  radial-gradient(700px 260px at 100% 100%, rgba(98,54,184,.28), transparent 65%), linear-gradient(135deg, #1C2836, #111922);
+  border: 1px solid rgba(255,255,255,.06) }
+.lost span { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(238,139,69,.16); box-shadow: inset 0 0 0 1px rgba(238,139,69,.35); margin-bottom: 10px }
+table { border-collapse: separate; border-spacing: 0; background: rgba(255,255,255,.72); border-radius: 14px; box-shadow: var(--lift) }
+thead tr:not(.group) th { background: linear-gradient(180deg, #EFEBE3, #E8E3D9); border-bottom: 1px solid #D6D0C4 }
+thead tr th:first-child { border-top-left-radius: 14px } thead tr th:last-child { border-top-right-radius: 14px }
+tbody tr:nth-child(even) td { background: rgba(245,243,238,.75) }
+tbody tr:last-child td { border-bottom: 0 }
+tbody tr:last-child td:first-child { border-bottom-left-radius: 14px } tbody tr:last-child td:last-child { border-bottom-right-radius: 14px }
+tr.final td { background: linear-gradient(90deg, #F8E4D5, #F3D3BC) }
+.pill { box-shadow: inset 0 0 0 1px rgba(29,40,51,.08) }
+.p-sel { background: linear-gradient(180deg, #23805A, #1B5F40) }
+.gloss { border-top: 0; background: linear-gradient(90deg, var(--line), transparent) top / 100% 1px no-repeat }
+
+/* shine: cover */
+section.cover { background:
+  radial-gradient(900px 620px at 88% 6%, rgba(98,54,184,.38), transparent 62%),
+  radial-gradient(820px 560px at 0% 100%, rgba(13,107,99,.36), transparent 62%),
+  radial-gradient(640px 420px at 58% 58%, rgba(238,139,69,.10), transparent 70%),
+  linear-gradient(160deg, #1B2734, #10181F) }
+.cover h1 { color: #FFFFFF } .cover h1 span { color: var(--orange) }
+.index { background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border: 1px solid rgba(255,255,255,.10);
+  border-radius: 20px; padding: 22px 34px; box-shadow: inset 0 1px 0 rgba(255,255,255,.07) }
+.lost p { display: flex; gap: 14px; align-items: flex-start }
+.lost span { flex: none; margin: 0 }
+.flow + .result, div[style*="display:flex"] > table { align-self: flex-start }
+</style>
+</head>
+<body>
+
+<!-- 1 · Cover -->
+<section class="cover">
+  <p class="eyebrow">Agentic AI · Retail interview case</p>
+  <h1>Returns <span>Desk</span></h1>
+  <p class="sub">Two AI agents handle a store's returns and exchanges on one laptop, with the internet off. The agents make every choice; plain code checks each step and can only say no. Nine questions, answered with measured results.</p>
+  <div class="index">
+    <div><span>Q1</span><span>Architecture and the team</span><span>2</span></div>
+    <div><span>Q6</span><span>When things go wrong</span><span>7</span></div>
+    <div><span>Q2</span><span>One request: to the offer</span><span>3</span></div>
+    <div><span>Q7</span><span>How it was tested</span><span>8</span></div>
+    <div><span>Q3</span><span>One request: Confirm and save</span><span>4</span></div>
+    <div><span>Q8</span><span>Baseline vs final</span><span>9</span></div>
+    <div><span>Q4</span><span>Do the agents really do the work?</span><span>5</span></div>
+    <div><span>Q9</span><span>Limitations and next steps</span><span>10</span></div>
+    <div><span>Q5</span><span>Model and engine</span><span>6</span></div>
+  </div>
+  <div class="cover-foot">
+    <p class="who">Ali · November 2026</p>
+    <p class="stack">Qwen3.5-4B · llama.cpp · Apple M5 Pro · offline</p>
+  </div>
+</section>
+
+<!-- 2 · Q1 Architecture -->
+<section>
+  <p class="eyebrow">Q1 · Architecture · 2 AI agents, 7 code parts</p>
+  <h2>Two AI agents do the work; code keeps it safe</h2>
+  <div class="verdict"><span class="head">✓ Selected: two AI agents with separate jobs.</span> <b>Why:</b> the agent that reads the customer can't change money or stock, and the agent that can never reads the customer's words. Code can block, read or replay, but never proposes or carries out anything itself.</div>
+  <div class="arch">
+<div class="zone" style="left:230px;top:0;width:880px;height:476px"><p class="zl">Orchestrator · code <span>runs each turn, step by step</span></p></div>
+<div class="zone" style="left:1160px;top:0;width:280px;height:476px"><p class="zl">Transaction gateway<br><span>the only door to the data</span></p></div>
+<div class="box person" style="left:0px;top:110px;width:180px;height:330px"><p class="t">Person</p><h3>Customer</h3><p>Writes the request, answers questions, presses Confirm.</p></div>
+<div class="box ai" style="left:255px;top:62px;width:270px;height:180px"><p class="t">AI agent</p><h3>Resolution</h3><p>Front desk. Reads the customer and picks the item, refund or exchange, and size.</p></div>
+<div class="box code" style="left:570px;top:62px;width:215px;height:180px"><p class="t">Code check</p><h3>Grounding</h3><p>Checks each handoff against the customer's own words.</p></div>
+<div class="box ai" style="left:830px;top:62px;width:255px;height:180px"><p class="t">AI agent</p><h3>Operations</h3><p>Back office. Uses the tools that make the change. Never sees the customer's words.</p></div>
+<div class="box code" style="left:255px;top:318px;width:270px;height:140px"><p class="t">Code check</p><h3>Reply guard</h3><p>Blocks any number or success the data doesn't back.</p></div>
+<p class="limits" style="left:575px;top:332px;width:510px"><b>Limits per turn, set by code:</b><br>Resolution 5 steps · Operations 4 steps<br>12 AI calls · 2 handoffs · then it must ask</p>
+<div class="box code" style="left:1176px;top:92px;width:248px;height:116px"><p class="t">Code check</p><h3>Policy</h3><p>Store rules and the refund amount, in cents.</p></div>
+<div class="box code" style="left:1176px;top:216px;width:248px;height:124px"><p class="t">Code check</p><h3>Approval gate</h3><p>Runs only the exact offer the customer confirmed.</p></div>
+<div class="box code" style="left:1176px;top:348px;width:248px;height:120px"><p class="t">Code check</p><h3>Recovery</h3><p>After a timeout, reads the data before anything else.</p></div>
+<div class="box data" style="left:1490px;top:92px;width:174px;height:190px"><p class="t">Data</p><h3>Store</h3><p>One SQLite file: orders, stock, refunds.</p></div>
+<div class="box out" style="left:1490px;top:330px;width:174px;height:138px"><p class="t">Outside</p><h3>Warehouse</h3><p>Stock can change at any time.</p></div>
+<div class="band"><b>All on one laptop, internet off:</b> both AI agents run on Qwen3.5-4B (4-bit) with llama.cpp on the Apple M5 Pro graphics chip</div>
+<svg viewBox="0 0 1664 555" aria-hidden="true"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1L9 5L1 9z" fill="#56616D"/></marker></defs>
+<g stroke="#56616D" stroke-width="2.5" fill="none" marker-end="url(#ah)">
+<path d="M182 150H251"/>
+<path d="M255 400H184"/>
+<path d="M330 244V314"/>
+<path d="M527 150H566"/>
+<path d="M787 150H826"/>
+<path d="M957 244V276H470V248"/>
+<path d="M1087 150H1156"/>
+<path d="M1442 190H1486"/>
+<path d="M1577 330V286"/>
+</g>
+<text class="al" x="205" y="136" text-anchor="middle">asks</text>
+<text class="al" x="205" y="386" text-anchor="middle">reply</text>
+<text class="al" x="713" y="298" text-anchor="middle">report back (outcome only)</text>
+<text class="al" x="1135" y="136" text-anchor="middle">tools</text>
+</svg>
+</div>
+  <p class="gloss"><b>AI agent</b>: an AI model that decides the next step and uses tools, not just writes text · <b>Tool</b>: one action an agent can ask for, like "create proposal" · <b>Proposal</b>: the offer shown to the customer before anything changes · <b>Store rules</b>: delivered, unopened, not final sale, within 30 days · <b>SQLite</b>: a small database kept in one file on the laptop · <b>Timeout</b>: an answer that never arrives · <b>Block, read, replay</b>: the only three things code may do to an agent's choice</p>
+  <p class="foot">Returns Desk · 2 · architecture · the same parts as the Team (live) view · docs/ARCHITECTURE.md</p>
+</section>
+
+<!-- 3 · Q2 Turn 1 -->
+<section class="lite">
+  <p class="eyebrow">Q2 · One request, part 1 · From message to offer</p>
+  <h2>The agents prepare an offer; nothing changes yet</h2>
+  <div class="flow" style="margin-top:56px">
+    <div class="step code"><p class="n">1 · Orchestrator</p><h3>Message arrives</h3><p class="chk"><b>Check:</b> a repeat returns the saved result</p></div>
+    <div class="arrow">→</div>
+    <div class="step ai"><p class="n">2 · Resolution</p><h3>Thinks</h3><p>Reads the chat and account card; picks exchange, line L1, size L</p></div>
+    <div class="arrow">→</div>
+    <div class="step code"><p class="n">3 · Grounding</p><h3>Checks the handoff</h3><p class="chk"><b>Check:</b> item and size match the customer's words, or retry</p></div>
+    <div class="arrow">→</div>
+    <div class="step ai"><p class="n">4 · Operations</p><h3>Prepares the offer</h3><p>Never sees the customer's text</p><p class="chk"><b>Check:</b> rules, stock, amount</p></div>
+    <div class="arrow">→</div>
+    <div class="step ai"><p class="n">5 · Resolution</p><h3>Shows the offer</h3><p class="chk"><b>Check:</b> the reply guard; then Confirm appears</p></div>
+  </div>
+  <p class="result"><b>End of turn 1:</b> decision "propose"; money and stock unchanged.</p>
+  <p class="foot">Returns Desk · 3 · public case 02</p>
+</section>
+
+<!-- 4 · Q3 Turn 2 -->
+<section class="lite">
+  <p class="eyebrow">Q3 · One request, part 2 · From Confirm to saved result</p>
+  <h2>One button, one exact offer, one save</h2>
+  <div class="flow" style="margin-top:56px">
+    <div class="step person"><p class="n">6 · Customer + approval gate</p><h3>Confirms</h3><p>Tied to this exact offer; "yes, but the jeans" runs nothing</p></div>
+    <div class="arrow">→</div>
+    <div class="step ai"><p class="n">7 · Operations + gateway</p><h3>Carries it out</h3><p>Re-checks, then saves all at once, with a "done" entry</p></div>
+    <div class="arrow">→</div>
+    <div class="step code"><p class="n">8 · Store + Resolution</p><h3>Reports the truth</h3><p>The result comes from the database, not the AI</p></div>
+  </div>
+  <div class="dark" style="margin-top:44px">
+    <h3>Answer lost after the save (timeout)</h3>
+    <div class="lost">
+      <p><span>1</span>Saved, but the answer is lost</p>
+      <p><span>2</span>No blind retry: status check only</p>
+      <p><span>3</span>Recovery finds the record: completed</p>
+      <p><span>4</span>Confirm again: same result, no second refund</p>
+    </div>
+  </div>
+  <p class="foot">Returns Desk · 4 · public cases 02 and 06</p>
+</section>
+
+<!-- 5 · Q4 Agents do the work -->
+<section class="lite">
+  <p class="eyebrow">Q4 · Do the agents do the work? · Measured</p>
+  <h2>Without the agents, code completes zero refunds</h2>
+  <div class="verdict"><span class="head">✓ The agents add 78–83 points of fully correct cases.</span> Code alone completes 0 refunds or exchanges.</div>
+  <table style="margin-top:34px">
+    <thead><tr><th style="width:40%">Test set</th><th class="num">With AI agents</th><th class="num">Code alone</th><th class="num">Added</th></tr></thead>
+    <tbody>
+      <tr><td>Public (6 cases, 3 runs each)</td><td class="num">18/18</td><td class="num">1/6</td><td class="num"><b>+83 points</b></td></tr>
+      <tr><td>Variants</td><td class="num">241/241</td><td class="num">54/241</td><td class="num"><b>+78 points</b></td></tr>
+      <tr><td>Red-team</td><td class="num">56/57</td><td class="num">11/57</td><td class="num"><b>+79 points</b></td></tr>
+      <tr><td>Blind</td><td class="num">58/60</td><td class="num">9/60</td><td class="num"><b>+82 points</b></td></tr>
+    </tbody>
+  </table>
+  <div class="cards" style="margin-top:34px">
+    <div class="card"><h3 style="color:var(--violet)">Only the agents</h3><p>Read messy messages, pick item and size, ask, call tools in order, recover.</p></div>
+    <div class="card"><h3 style="color:var(--teal)">Code alone</h3><p>Passes only "ask" or "no" cases. 0 rule breaks in any run.</p></div>
+  </div>
+  <p class="foot">Returns Desk · 5 · final version · docs/RESULTS.md §1</p>
+</section>
+
+<!-- 6 · Q5 Model and engine -->
+<section>
+  <p class="eyebrow">Q5 · Model and engine</p>
+  <h2>A small open model, on one laptop, internet off</h2>
+  <div class="verdict"><span class="head">✓ Selected: Qwen3.5-4B in 4-bit, run by llama.cpp on an Apple M5 Pro laptop.</span> <b>Why:</b> about 5 seconds per case, reliable at filling the agents' tool forms, and no customer data ever leaves the machine.</div>
+  <table style="margin-top:12px">
+    <thead><tr><th style="width:13%">Choice</th><th style="width:17%">Selected</th><th style="width:28%">In plain words</th><th style="width:30%">Why, and the tradeoff</th><th>Evidence</th></tr></thead>
+    <tbody>
+      <tr><td class="rust">AI model</td><td class="lead">Qwen3.5-4B</td><td>An open AI model with 4 billion learned numbers</td><td>Fast and reliable at tool calls here; a bigger model may read odd wording better, but slower</td><td><span class="pill p-grey">Not compared</span></td></tr>
+      <tr><td class="rust">Model size</td><td class="lead">4-bit (B: 8-bit)<span class="tech">Q4_K_M · B: Q8_0</span></td><td>Each learned number stored in fewer bits</td><td>22% faster and 1.6 GiB less graphics memory, same quality</td><td><span class="pill p-sel">✓ Measured</span></td></tr>
+      <tr><td class="rust">Tool calls</td><td class="lead">A fixed answer form (B: the model's own format)</td><td>The model can only write answers in the exact shape our tools expect</td><td>36% faster and fewer broken answers, same quality</td><td><span class="pill p-sel">✓ Measured</span></td></tr>
+      <tr><td class="rust">Engine</td><td class="lead">llama.cpp</td><td>Free software that runs the model on the laptop's graphics chip</td><td>Works offline, enforces the answer form, reports its own speed; other engines not tested</td><td><span class="pill p-grey">Not compared</span></td></tr>
+      <tr><td class="rust">Hardware</td><td class="lead">Apple M5 Pro, 24 gigabytes</td><td>One laptop: 15 CPU cores, 16-core GPU, shared memory</td><td>No hardware purchase; plugged in, one request at a time</td><td><span class="pill p-blue">Disclosed</span></td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:22px;color:var(--muted);margin-top:12px"><b style="color:var(--ink)">The main tradeoff:</b> speed and privacy over a bigger model's language range. Typos and Spanish product words make the desk ask instead of act (Q9).</p>
+  <p class="exact"><b>Exact run</b> (adapter results.json): unsloth/Qwen3.5-4B-GGUF · Qwen3.5-4B-Q4_K_M.gguf · revision e87f176479d0855a907a41277aca2f8ee7a09523 · sha256 00fe7986ff5f6b463e62455821146049db6f9313603938a70800d1fb69ef11a4 (sha256 source: fresh on first read, then cache(path,size,mtime)) · llama.cpp llama-server 0.7.0 (build 11669, commit 620d2225c) · engine check: warn (strict in the benchmark)</p>
+  <p class="gloss"><b>Open model</b>: an AI model anyone can download and run · <b>Qwen3.5-4B</b>: the open model used, 4 billion learned numbers · <b>4-bit / 8-bit</b> (Q4_K_M / Q8_0): how precisely each number is stored; fewer bits = smaller and faster · <b>B</b>: the baseline version · <b>Engine</b> (llama.cpp): the program that runs the AI model · <b>Fixed answer form</b> (JSON schema): the shape every answer must fit · <b>GPU</b>: the graphics chip, which does AI maths in parallel · <b>CPU</b>: the general-purpose processor · <b>GiB</b>: 2^30 bytes</p>
+  <p class="foot">Returns Desk · 6 · README, "Pinned versions and hardware" · docs/RESULTS.md §4</p>
+</section>
+
+<!-- 7 · Q6 Failures -->
+<section class="lite">
+  <p class="eyebrow">Q6 · When things go wrong · Tested</p>
+  <h2>Every failure in the brief ends safely</h2>
+  <div class="verdict"><span class="head">✓ All 6 public scenarios pass in 3 of 3 runs.</span> No refund is claimed without a saved record.</div>
+  <table style="margin-top:34px">
+    <thead><tr><th style="width:30%">Failure</th><th>What the desk does</th><th style="width:18%">Proof</th></tr></thead>
+    <tbody>
+      <tr><td class="rust">Unclear request</td><td>Asks which item; nothing changes</td><td><span class="pill p-green">Public 04</span></td></tr>
+      <tr><td class="rust">Policy says no</td><td>Code blocks it; the reply says why</td><td><span class="pill p-green">Public 03</span></td></tr>
+      <tr><td class="rust">Stock changes</td><td>Re-checked at Confirm; offer cancelled</td><td><span class="pill p-green">Public 05</span></td></tr>
+      <tr><td class="rust">Timeout after save</td><td>Status check finds the saved refund</td><td><span class="pill p-green">Public 06</span></td></tr>
+      <tr><td class="rust">Repeated approval</td><td>Same saved result; no second refund</td><td><span class="pill p-green">Public 06</span></td></tr>
+      <tr><td class="rust">Changed at Confirm</td><td>Nothing runs; the new item is offered</td><td><span class="pill p-green">Blind set</span></td></tr>
+    </tbody>
+  </table>
+  <p class="foot">Returns Desk · 7 · candidate_assets/public_cases.json</p>
+</section>
+
+<!-- 8 · Q7 Evaluation -->
+<section class="lite">
+  <p class="eyebrow">Q7 · How it was tested</p>
+  <h2>Every case scored against the right answer</h2>
+  <div class="cards" style="margin-top:48px">
+    <div class="card"><h3>364 test cases</h3><ul><li>Public: 6, run 3 times</li><li>Variants: 241 reworded</li><li>Red-team: 57 tricky</li><li>Blind: 60, written without the code</li></ul></div>
+    <div class="card"><h3>Success means all of</h3><ul><li>Every decision right</li><li>Exact offer: item, size, amount</li><li>Final money and stock right</li><li>Zero rule breaks</li></ul></div>
+    <div class="card"><h3>Fair comparison</h3><ul><li>Same laptop, runs interleaved</li><li>Fresh model server each run</li><li>Checker written apart from the desk</li><li>Baseline run twice for noise</li></ul></div>
+  </div>
+  <div class="dark" style="margin-top:44px">
+    <h3>What the blind test caught</h3>
+    <p>"Yes, refund the t-shirt" on a jeans offer refunded the jeans. Only comparing final data caught it. Fixed in two rounds: 56 → 57 → 58 of 60.</p>
+  </div>
+  <p class="foot">Returns Desk · 8 · evals/oracle.py</p>
+</section>
+
+<!-- 9 · Q8 Baseline vs final -->
+<section>
+  <p class="eyebrow">Q8 · Baseline vs final · Measured</p>
+  <h2>57% faster, with the same quality</h2>
+  <div class="verdict"><span class="head">✓ Selected: the final version (F), five changes, each kept only if quality held.</span> <b>Why:</b> a typical case takes 5.0 s instead of 11.5 s, with the same 18/18 and 1.6 GiB less graphics memory. The baseline already scored 18/18, so it is a fair starting point, not a weak one.</div>
+  <div style="display:flex;gap:48px;margin-top:22px">
+    <table style="width:42%">
+      <thead><tr class="group"><th>Measure</th><th class="num">Baseline</th><th class="num">Final</th><th class="num">Change</th></tr></thead>
+      <tbody>
+        <tr><td>Typical case</td><td class="num">11.5 s</td><td class="num">5.0 s</td><td class="num">−56%</td></tr>
+        <tr><td>Slowest case</td><td class="num">13.2 s</td><td class="num">5.7 s</td><td class="num">−56%</td></tr>
+        <tr><td>Writing speed (tokens per second)</td><td class="num">52</td><td class="num">74</td><td class="num">+43%</td></tr>
+        <tr><td>Graphics memory</td><td class="num">4.7 GiB</td><td class="num">3.1 GiB</td><td class="num">−34%</td></tr>
+        <tr><td>Fully correct</td><td class="num">18/18</td><td class="num">18/18</td><td class="num">same</td></tr>
+        <tr class="final"><td>Overall, per case</td><td class="num"></td><td class="num"></td><td class="num">57% faster</td></tr>
+      </tbody>
+    </table>
+    <table style="flex:1">
+      <thead><tr class="group"><th style="width:31%">Change in F</th><th>In plain words</th><th class="num">Faster by</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td class="lead">Fixed answer form<span class="tech">JSON-schema tool calls<br>B: native</span></td><td>The model fills a form instead of free-writing; fewer words</td><td class="num">36%</td><td><span class="pill p-green">Kept</span></td></tr>
+        <tr><td class="lead">4-bit model<span class="tech">Q4_K_M weights<br>B: Q8_0</span></td><td>A smaller copy of the same model</td><td class="num">22%</td><td><span class="pill p-green">Kept</span></td></tr>
+        <tr><td class="lead">Code writes the report<span class="tech">code-built ops report<br>B: free text</span></td><td>Code sums up tool results, so the AI writes less</td><td class="num">18%</td><td><span class="pill p-green">Kept</span></td></tr>
+        <tr><td class="lead">Account loaded up front<span class="tech">prefetched account card<br>B: off</span></td><td>The agent skips one lookup</td><td class="num">10%</td><td><span class="pill p-green">Kept</span></td></tr>
+        <tr><td class="lead">Smaller prompt memory<span class="tech">--cache-ram 2048<br>B: 8192 (MiB)</span></td><td>Caps reused-prompt storage at 2 GiB</td><td class="num">none</td><td><span class="pill p-grey">No effect</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:20px;color:var(--muted);margin-top:14px">Each change was tested by putting it back alone; every row kept 18/18. The effects overlap, so they don't add up to 57%. The last change did nothing measurable, and we say so.</p>
+  <p class="gloss"><b>Baseline</b> (B): a working version with the same desk code · <b>Final</b> (F): B plus five changes · <b>Typical</b>: the median, half of cases are faster · <b>Slowest</b>: the worst of 18 runs · <b>Tokens per second</b>: tokens (word pieces, about ¾ of a word) written per second · <b>Overall</b>: the average speed-up when each case is compared with itself (95% range 54–60%) · <b>Fixed answer form</b>: the exact shape the model must answer in · <b>Prompt memory</b> (prompt cache): reuse of text the model has already read</p>
+  <p class="foot">Returns Desk · 9 · public suite, 6 cases × 3 runs, fresh server per run, laptop plugged in · docs/RESULTS.md §2–§5</p>
+</section>
+
+<!-- 10 · Q9 Limits -->
+<section class="lite">
+  <p class="eyebrow">Q9 · Limitations and next steps</p>
+  <h2>Tested limits fail safe; one known gap is left</h2>
+  <table style="margin-top:44px">
+    <thead><tr><th style="width:44%">Limitation or idea</th><th>Today</th><th style="width:17%">Status</th></tr></thead>
+    <tbody>
+      <tr><td class="lead">Typos or Spanish product names</td><td>Asks which item instead of acting</td><td><span class="pill p-amber">Seen in tests</span></td></tr>
+      <tr><td class="lead">A misspelled change at Confirm the agent also misses</td><td>The confirmed offer still runs</td><td><span class="pill p-red">Known gap</span></td></tr>
+      <tr><td class="lead">English only</td><td>Other languages get more questions</td><td><span class="pill p-amber">Known</span></td></tr>
+      <tr><td class="lead">Every test set used for tuning</td><td>Hidden cases are the real test</td><td><span class="pill p-amber">Known</span></td></tr>
+      <tr><td class="lead">Typo-tolerant, multilingual product list</td><td>Would close the first two rows</td><td><span class="pill p-blue">Proposed</span></td></tr>
+      <tr><td class="lead">Blind set written by people</td><td>A true unseen test</td><td><span class="pill p-blue">Proposed</span></td></tr>
+      <tr><td class="lead">Speculative decoding (a helper model)</td><td>Could cut writing time, the biggest cost</td><td><span class="pill p-blue">Proposed</span></td></tr>
+    </tbody>
+  </table>
+  <p class="foot">Returns Desk · 10 · docs/LIMITATIONS.md</p>
+</section>
+</body>
+</html>
