@@ -4,7 +4,8 @@ Each finding test asserts the SAFE behaviour. They were `xfail(strict=True)` whi
 SEC-1, SEC-4 and SEC-5 are fixed, so the markers are gone and the tests guard the fixes. The other tests
 pin properties that already held (regression guards for the review's "no finding" items).
 
-The TestClient addresses the server as 127.0.0.1: the server refuses any other Host header (SEC-4).
+SEC-4's Host check was removed on purpose (any Host is served, for SSH port forwards), so that one test
+is xfail(strict=True) again; the Origin check and body cap still hold.
 """
 
 from __future__ import annotations
@@ -98,6 +99,7 @@ def test_a_cross_site_bodiless_reset_is_refused(client: TestClient) -> None:
     assert response.status_code in (400, 403)
 
 
+@pytest.mark.xfail(strict=True, reason="Host check removed on purpose (2026-11-03) so SSH port forwards and proxies work")
 def test_a_foreign_host_header_is_refused(client: TestClient) -> None:
     response = client.get("/api/scenarios", headers={"Host": "attacker.example:8000"})
     assert response.status_code == 400

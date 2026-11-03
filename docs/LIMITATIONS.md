@@ -74,5 +74,8 @@ improvements below are not measured unless stated.
   footprint and the GPU allocation separately and never add them; "VRAM" here means the GPU's
   unified-memory allocation.
 - **The confirm control trusts the browser session.** Confirmation is bound to the proposal's binding
-  hash and generation, and the server answers only to localhost, but there is no user
+  hash and generation, and the server listens only on 127.0.0.1, but there is no user
   authentication.
+- **Any Host header is served.** So that SSH port forwards and proxies work, the desk no longer
+  checks the Host header, which leaves a DNS-rebinding page able to read session state. Cross-site
+  POSTs are still refused by the Origin check.

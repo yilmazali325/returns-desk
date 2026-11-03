@@ -86,6 +86,9 @@ with 422, so cross-site "simple" requests cannot drive turns or faults. Three ga
 Fix: add `TrustedHostMiddleware(allowed_hosts=["127.0.0.1", "localhost"])`. Add a small middleware that refuses
 POSTs whose `Origin` is not this server, or that lack `application/json`. Cap the body at about 1 MB.
 
+Status (2026-11-03): the Origin check and body cap stay. The Host check was removed on purpose so the desk can
+be opened through an SSH port forward or a proxy; see docs/LIMITATIONS.md.
+
 ### SEC-5 (low): some malformed inputs give an opaque 500 instead of an actionable 422
 
 - A message containing a lone surrogate (`"\ud800"`): pydantic rejects it, and FastAPI's 422 handler echoes the

@@ -89,7 +89,7 @@ def case_by_suffix(suffix: str) -> dict[str, Any]:
     return next(c for c in CASES if c["case_id"].endswith(suffix))
 
 
-LOCAL = "http://127.0.0.1:8000"  # the server refuses any Host that is not this machine (SEC-4)
+LOCAL = "http://127.0.0.1:8000"  # the TestClient's address: same-origin POSTs name it
 
 
 def local_client(app: Any, **options: Any) -> TestClient:
@@ -960,7 +960,6 @@ def test_main_serves_the_ui_and_stops_the_server_it_started(monkeypatch: pytest.
                             "--allow-engine-mismatch"]) == 0
     assert served == [("127.0.0.1", 8410, "Returns Desk")] and started.stopped
     assert configs[0].allow_engine_mismatch is True and configs[0].port == 8410
-    assert configs[0].allowed_hostnames == ("127.0.0.1", "localhost", "::1")
     assert keep_signal_handlers[:2] == [(server_app.signal.SIGTERM, server_app._exit_on_signal),
                                         (server_app.signal.SIGHUP, server_app._exit_on_signal)]
     assert server_app.main(["--port", "8411", "--fake", "--start-llama"]) == 0  # fake mode never starts a model
@@ -969,18 +968,6 @@ def test_main_serves_the_ui_and_stops_the_server_it_started(monkeypatch: pytest.
     monkeypatch.delattr(server_app.signal, "SIGHUP")  # as on Windows
     assert server_app.main(["--port", "8412", "--fake"]) == 0
     assert keep_signal_handlers == [(server_app.signal.SIGTERM, server_app._exit_on_signal)]
-
-
-@pytest.mark.parametrize(("host", "names"), [("0.0.0.0", ("127.0.0.1", "localhost", "::1")),
-                                             ("[::1]", ("127.0.0.1", "localhost", "::1")),
-                                             ("Desk.Local", ("127.0.0.1", "localhost", "::1", "desk.local"))])
-def test_main_also_accepts_the_host_it_binds(monkeypatch: pytest.MonkeyPatch, tmp_path: Path, host: str,
-                                             names: tuple[str, ...]) -> None:
-    monkeypatch.setenv("DESK_VAR_DIR", str(tmp_path))
-    seen: list[ServerConfig] = []
-    monkeypatch.setattr(server_app.uvicorn, "run", lambda app, host, port, log_level: seen.append(app.state.config))
-    assert server_app.main(["--fake", "--host", host, "--port", "8412"]) == 0
-    assert seen[0].allowed_hostnames == names
 
 
 def test_main_exits_3_when_llama_server_cannot_start(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
@@ -1271,10 +1258,10 @@ def test_a_generation_must_be_an_integer(client: TestClient) -> None:
 # SEC-4: local-only requests
 
 
-@pytest.mark.parametrize("host", ["attacker.example", "attacker.example:8000", "127.0.0.1.attacker.example", "[::1"])
-def test_a_foreign_host_header_is_refused(client: TestClient, host: str) -> None:
-    response = client.get("/api/scenarios", headers={"Host": host})
-    assert response.status_code == 400 and "127.0.0.1 or localhost" in response.json()["detail"]
+@pytest.mark.parametrize("host", ["workstation.lan:9000", "10.0.0.5:8000", "desk.example", "127.0.0.1.nip.io:9000"])
+def test_any_host_header_is_served(client: TestClient, host: str) -> None:
+    """Port forwards, proxies and LAN names all reach the desk; the Origin check below still stops cross-site POSTs."""
+    assert client.get("/api/scenarios", headers={"Host": host}).status_code == 200
 
 
 @pytest.mark.parametrize("host", ["127.0.0.1:8000", "localhost:8000", "LOCALHOST", "[::1]:8000", "127.0.0.1"])
@@ -1283,8 +1270,7 @@ def test_local_host_names_are_served(client: TestClient, host: str) -> None:
 
 
 def test_a_port_forward_to_another_local_port_is_served(tmp_path: Path) -> None:
-    """`ssh -L 9000:127.0.0.1:8000` makes the browser send Host localhost:9000. The host name is what
-    stops DNS rebinding, so any port on a local name is served; a POST's Origin must still match it."""
+    """`ssh -L 9000:127.0.0.1:8000` makes the browser send Host localhost:9000; a POST's Origin must still match it."""
     client = local_client(make_app(tmp_path, port=8000))
     forwarded = {"Host": "localhost:9000"}
     assert client.get("/", headers=forwarded).status_code == 200
@@ -1321,13 +1307,12 @@ def test_request_bodies_are_capped(client: TestClient) -> None:
 
 
 def test_a_chunked_body_without_length_and_a_bad_length_are_refused() -> None:
-    config = ServerConfig()
     chunked = server_app.Headers(raw=[(b"host", b"127.0.0.1"), (b"transfer-encoding", b"chunked")])
-    assert server_app.request_refusal("POST", chunked, config) == (411, "send a Content-Length with the request body")
+    assert server_app.request_refusal("POST", chunked) == (411, "send a Content-Length with the request body")
     bad = server_app.Headers(raw=[(b"host", b"127.0.0.1"), (b"content-length", b"12x")])
-    assert server_app.request_refusal("POST", bad, config)[0] == 400
+    assert server_app.request_refusal("POST", bad)[0] == 400
     bodiless = server_app.Headers(raw=[(b"host", b"localhost")])
-    assert server_app.request_refusal("POST", bodiless, config) is None
+    assert server_app.request_refusal("POST", bodiless) is None
 
 
 def test_netloc_parsing_never_raises() -> None:

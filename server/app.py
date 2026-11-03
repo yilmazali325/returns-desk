@@ -18,9 +18,9 @@ Approvals bind to what the browser displayed: a confirmation must carry the prop
 binding hash shown on its card and the session generation; a mismatch is a 409 and nothing runs.
 
 Local-only hardening (a demo server on 127.0.0.1, but any web page the operator visits can send it
-requests): the Host header must name this machine (DNS rebinding), a state-changing POST must come
-from this origin when the browser says where it came from (cross-site requests), and request bodies
-are capped. Malformed input is a 422 with a readable message, never a 500.
+requests): a state-changing POST must come from this origin when the browser says where it came from
+(cross-site requests), and request bodies are capped. Any Host is served, so port forwards, proxies and
+LAN names work. Malformed input is a 422 with a readable message, never a 500.
 
 Run: `python -m server.app [--port 8000] [--llama-url URL] [--start-llama] [--fake] [--allow-engine-mismatch]`.
 """
@@ -93,7 +93,6 @@ MAX_MESSAGE_CHARS = 2000  # sanitize() caps prompts at 1,000; this only refuses 
 HASH_PREFIX = 12
 MIB = 1024 * 1024
 MAX_BODY_BYTES = 1 * MIB  # a scenario state is a few KB; nothing legitimate comes close
-LOCAL_HOSTNAMES = ("127.0.0.1", "localhost", "::1")
 STATE_CHANGING_METHODS = ("POST", "PUT", "PATCH", "DELETE")
 STALE_PROPOSAL = "this proposal changed since this page showed it; reload the page and check it again"
 MISSING_BINDING = ("a confirmation must carry the confirm_binding_hash and generation of the proposal card it "
@@ -116,7 +115,6 @@ class ServerConfig:
     var_dir: Path = DEFAULT_VAR_DIR
     fake_step_delay_s: float = 0.0
     allow_engine_mismatch: bool = False  # --start-llama with another llama.cpp build: warn instead of refusing
-    allowed_hostnames: tuple[str, ...] = LOCAL_HOSTNAMES
     port: int | None = None  # the UI port, when known: load runs started from the page call it
     slots: int = SLOTS  # parallel requests the model server serves (scripts/run.sh --slots)
     max_turns: int | None = None  # turns running at once; None: TURNS_PER_SLOT x slots (no cap on the fake)
@@ -726,12 +724,9 @@ def _netloc(url_or_host: str) -> tuple[str | None, int | None]:
         return None, None
 
 
-def request_refusal(method: str, headers: Headers, config: ServerConfig) -> tuple[int, str] | None:
+def request_refusal(method: str, headers: Headers) -> tuple[int, str] | None:
     """Why this request must not reach the app, as (status, message); None when it may."""
     hostname, port = _netloc(headers.get("host", ""))
-    # Any port: an SSH port forward (ssh -L 9000:127.0.0.1:8000) arrives as localhost:9000.
-    if hostname not in config.allowed_hostnames:
-        return 400, "this server only answers requests addressed to 127.0.0.1 or localhost"
     if method not in STATE_CHANGING_METHODS:
         return None
     source = headers.get("origin") or headers.get("referer")
@@ -750,13 +745,12 @@ def request_refusal(method: str, headers: Headers, config: ServerConfig) -> tupl
 class LocalRequestGuard:
     """ASGI middleware applying request_refusal() before any route runs (SSE streams pass through)."""
 
-    def __init__(self, app: ASGIApp, config: ServerConfig) -> None:
+    def __init__(self, app: ASGIApp) -> None:
         self.app = app
-        self.config = config
 
     async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
         if scope["type"] == "http":
-            refusal = request_refusal(scope["method"], Headers(scope=scope), self.config)
+            refusal = request_refusal(scope["method"], Headers(scope=scope))
             if refusal is not None:
                 await json_error(*refusal)(scope, receive, send)
                 return
@@ -793,7 +787,7 @@ def create_app(config: ServerConfig | None = None, llm: Any = None) -> FastAPI:
     app.state.config = config
     app.state.turn_line = line
     app.state.load_runs = load_runs = LoadRuns(config.var_dir / "load")
-    app.add_middleware(LocalRequestGuard, config=config)
+    app.add_middleware(LocalRequestGuard)
 
     @app.exception_handler(RequestValidationError)
     async def on_validation_error(_request: Request, exc: RequestValidationError) -> Response:
@@ -1006,12 +1000,10 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     config = ServerConfig.from_env()
-    # A non-wildcard --host (e.g. a LAN name) must also be accepted in the Host header.
-    hostnames = config.allowed_hostnames + (() if args.host in ("0.0.0.0", "::") else (args.host.strip("[]").lower(),))
     config = replace(config, llama_url=args.llama_url or config.llama_url, profile=args.profile or config.profile,
                      llm_mode=FAKE_POLICY if args.fake else config.llm_mode, port=args.port,
                      allow_engine_mismatch=args.allow_engine_mismatch or config.allow_engine_mismatch,
-                     allowed_hostnames=tuple(dict.fromkeys(hostnames)), slots=args.slots, max_turns=args.max_turns)
+                     slots=args.slots, max_turns=args.max_turns)
     profile = get_profile(config.profile)
     # Python's default SIGTERM/SIGHUP end the process without running `finally`; turn them into SystemExit
     # so a llama-server we started is always stopped (scripts/run.sh sends SIGTERM on exit).
