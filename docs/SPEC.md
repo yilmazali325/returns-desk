@@ -194,7 +194,10 @@ Checks over a handoff (each returns ok or a code the agent gets back with a hint
 - `check_target(analysis, order_id, line_id, evidence)` → `TargetCheck{ok, code, grounded_by, evidence,
   reason}`. Hard facts: the line is on the account (`ORDER_NOT_FOUND` / `LINE_NOT_FOUND`), no typed ID
   is unknown, every typed ID agrees (`TARGET_MISMATCH`). One line left by the typed IDs →
-  `customer_ids`; one line on the account → `only_line` unless the customer described a size or product
+  `customer_ids`; one line on the account and code read no order, line, product or size in the customer's
+  words (owner decision 2026-11-02) → `agent` if the agent's `evidence` is a verbatim, unhedged quote with a
+  word that is not generic, a size or a remedy ("my hoodi", "chaqueta"), else `AMBIGUOUS_TARGET` (ask which
+  item); otherwise `only_line` unless the customer described a size or product
   that line is not, including a catalog product they do not own (`TARGET_MISMATCH`). Two or more left → the agent's `evidence` must pass
   `check_evidence` (`agent`); without a valid citation the target is accepted only if code's own reading
   picks the same line (`agent+grounding`); else `AMBIGUOUS_TARGET` with the reason.
@@ -451,10 +454,18 @@ POST /api/sessions                    {case_id?|initial_state?, customer_id?, re
 POST /api/sessions/{id}/turns         {message, confirm_proposal_id?, confirm_binding_hash?, generation?} → text/event-stream:
                                       `audit` events, then `turn`. With a confirm_proposal_id the other two are required
                                       (422 if missing) and must match the card and session generation (409, nothing runs)
+                                      Real model: more than 2 turns per model slot at once wait in a FIFO line and
+                                      stream `queued` {turn, position} every 1 s; 1000 already waiting → 503 + Retry-After: 2
 POST /api/sessions/{id}/faults        {type:"stock_change", sku, new_stock} | {type:"timeout_after_commit"}
 GET  /api/sessions/{id}/state         final_state shape + proposals + events + audit
 POST /api/sessions/{id}/reset         restore the session's initial state (fresh request_id suffix optional)
-GET  /api/telemetry                   last step timings, tokens/s, footprint, unified GPU memory
+POST /api/sessions/{id}/new-request   the same customer's next request: current state kept, fresh request_id, no script
+GET  /api/telemetry                   last step timings, tokens/s, footprint, unified GPU memory, capacity (turns running /
+                                      waiting in line, slots, calls waiting / at the model, turns refused, circuit breaker)
+POST /api/load                        {customers 1–20000, concurrency 1–2000, scenarios?} → start bench.load as its own
+                                      process against this server (409 while one runs; 503 without a known port)
+GET  /api/load                        {run: null | {run_id, state: running|finished|stopped|failed, live, report}}
+POST /api/load/{run_id}/stop          end the run's process
 GET  /api/meta                        {reason_text, code_class, window_days}: the UI words codes like the desk does
 ```
 
@@ -494,7 +505,9 @@ counters: checks, blocks.
 **Event → node mapping** (from audit entries `kind, agent, tool`; unknown kinds go to Orchestrator):
 - `llm_step` + agent `resolution` → Resolution is active. The bubble shows the chosen tool plus a short
   argument summary (e.g. `handoff_to_operations · propose_refund O100/L1`). For `reply_to_customer` the
-  edge animates Resolution → Customer.
+  edge animates Resolution → Orchestrator (the draft). A finished turn then ends with two closing steps the
+  audit does not log, derived from it: Orchestrator → Reply guard ("reply matches the records", skipped when
+  `guard/reply_guard` already logged a verdict) and Orchestrator → Customer (the delivered reply).
 - `llm_step` + agent `operations` → Operations is active, bubble `check_eligibility()` etc. Show tool
   level only, never model reasoning text.
 - `grounding/analyze`, `target/set_target`, `tool/prefetch_account_card`, `gate/handoff_to_operations`,

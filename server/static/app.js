@@ -11,7 +11,7 @@
  *
  * Sections: 1 helpers · 2 API · 3 state · 4 wording · 5 header · 6 rail · 7 conversation
  *           8 team view (graph, event mapping, player) · 9 audit trail · 10 state inspector
- *           11 actions · 12 start-up
+ *           11 actions · 12 load test · 13 start-up
  */
 (() => {
   "use strict";
@@ -286,7 +286,9 @@
     dot.dataset.state = h.llm === "ok" ? "ok" : "down";
     dot.setAttribute("aria-label", h.llm === "ok" ? "Model answering" : "Model not reachable");
     // The chip stays one short line (the header must not wrap at 1280 px); the full engine string is its tooltip.
-    $("model-text").textContent = [h.model, h.quantization, h.engine_short || h.engine, `profile ${h.profile}`].filter(Boolean).join(" · ");
+    // On a phone it may wrap, but only between segments ("profile F" never splits): no-break spaces inside each.
+    $("model-text").textContent = [h.model, h.quantization, h.engine_short || h.engine, `profile ${h.profile}`].filter(Boolean)
+      .map((part) => part.replace(/ /g, " ")).join(" · ");
     $("model-chip").title = [h.model, h.quantization, h.engine, `profile ${h.profile}`].filter(Boolean).join(" · ");
     $("legend-llm").textContent = h.mode === "fake-policy"
       ? "LLM agent: fake-policy test double (no model loaded)"
@@ -403,7 +405,7 @@
     add("business date", s.initial_state.as_of || "–");
     const scenario = scenarioById(s.case_id);
     notes.textContent = scenario
-      ? `${plural(scenario.turns.length, "scripted turn")}${scenario.fault_texts.length ? ` · fault: ${scenario.fault_texts.join("; ")}` : ""}`
+      ? `${plural(scenario.turns.length, "customer message")}${scenario.fault_texts.length ? ` · fault: ${scenario.fault_texts.join("; ")}` : ""}`
       : "Blank conversation: type any request for this customer.";
   }
 
@@ -414,13 +416,13 @@
     return scenario && done < scenario.turns.length ? done : null;
   }
 
-  /** "Fill turn N" next to Send: the next scripted step sits where the user is already looking. */
+  /** "Fill message N" next to Send: the next scripted step sits where the user is already looking. */
   function renderNextStep() {
     const button = $("next-btn");
     const next = nextScriptIndex();
     button.hidden = next === null || Boolean($("composer-input").value.trim());
     button.disabled = app.busy;
-    if (next !== null) button.textContent = `Fill turn ${next + 1}`;
+    if (next !== null) button.textContent = `Fill message ${next + 1}`;
   }
 
   function renderScript() {
@@ -433,7 +435,7 @@
     const done = app.session.turns.length;
     scenario.turns.forEach((turn, index) => {
       const confirm = turn.confirm_proposal === "last";
-      const label = `T${index + 1}${confirm ? " · confirms the last proposal" : ""}`;
+      const label = `Customer message ${index + 1}${confirm ? " · confirms the offer" : ""}`;
       const fill = el("button", { type: "button", class: "btn btn-small", text: "Fill", "data-testid": `fill-${index + 1}`,
         "aria-label": `Fill scripted turn ${index + 1}`, onclick: () => fillScript(index) });
       fill.disabled = app.busy;
@@ -447,7 +449,8 @@
     const skuSelect = $("stock-sku");
     const previous = skuSelect.value;
     clear(skuSelect);
-    for (const p of s ? s.final_state.products : []) skuSelect.append(el("option", { value: p.sku, text: `${p.sku} (stock ${p.stock})` }));
+    for (const p of s ? s.final_state.products : []) skuSelect.append(el("option", { value: p.sku,
+      text: `${p.product_id.charAt(0) + p.product_id.slice(1).toLowerCase()}, size ${p.size}: ${p.stock} in stock` }));
     if (previous) skuSelect.value = previous;
     const status = $("fault-status");
     const faults = s ? s.faults : null;
@@ -482,7 +485,7 @@
           el("li", { text: "Fill its first message, or type your own" }),
           el("li", { text: "Send, then confirm the proposal" })),
         next === null ? null : el("button", { type: "button", class: "btn btn-next btn-large", "data-testid": "empty-fill",
-          text: `Fill turn ${next + 1}`, onclick: () => fillScript(next) })));
+          text: `Fill message ${next + 1}`, onclick: () => fillScript(next) })));
     }
     const latestProposalTurn = records.reduce((acc, r) => (r.output && r.output.proposal ? r.turn : acc), null);
     for (const record of records) {
@@ -736,7 +739,7 @@
     ["customer", "resolution"], ["resolution", "operations"], ["resolution", "orchestrator"], ["resolution", "grounding"],
     ["orchestrator", "grounding"], ["orchestrator", "operations"], ["operations", "gateway"], ["gateway", "store"],
     ["gateway", "policy"], ["orchestrator", "approval"], ["approval", "gateway"], ["warehouse", "store"],
-    ["recovery", "store"], ["gateway", "recovery"], ["orchestrator", "replyguard"],
+    ["recovery", "store"], ["gateway", "recovery"], ["orchestrator", "replyguard"], ["orchestrator", "customer"],
   ];
   const edgeKey = (a, b) => [a, b].sort().join("--");
   const EDGE_KEYS = new Set(EDGES.map(([a, b]) => edgeKey(a, b)));
@@ -823,7 +826,7 @@
         }
         add(agent, err ? "blocked" : "working", err ? `protocol error ${code}` : toolSummary(e.tool, args), null, { llm: result });
         if (agent === "resolution" && e.tool === "handoff_to_operations") ctx.handoff = args;
-        if (agent === "resolution" && e.tool === "reply_to_customer") add("customer", "info", "reads the reply", "resolution");
+        if (agent === "resolution" && e.tool === "reply_to_customer") add("orchestrator", "working", "takes the draft reply", "resolution");
         break;
       }
       case "grounding": {
@@ -879,6 +882,12 @@
         add("operations", "ok", `reported ${result.outcome}${pid}`);
         break;
       }
+      case "reply_check": // the two closing steps playerEntries adds
+        add("replyguard", "ok", "reply matches the records", "orchestrator");
+        break;
+      case "delivery":
+        add("customer", "info", "reads the reply", "orchestrator");
+        break;
       default: // an entry kind this page does not know yet: still shown, on the Orchestrator card
         add("orchestrator", code ? "blocked" : "info", `${e.kind} · ${e.tool}${code ? `: ${reasonText(code)}` : ""}`);
     }
@@ -1102,8 +1111,14 @@
 
   const player = { turn: null, cursor: 0, timer: null, playing: false, live: false, speed: 1 };
 
+  /** The turn's audit entries, then two closing steps the audit does not log: the orchestrator has the
+   *  draft checked (unless the reply guard already logged a verdict) and delivers the reply. */
   function playerEntries() {
-    return player.turn === null ? [] : entriesOfTurn(player.turn);
+    if (player.turn === null) return [];
+    const entries = entriesOfTurn(player.turn);
+    if (!entries.length || !turnFinished(player.turn)) return entries;
+    const checked = entries.some((e) => e.kind === "guard" && e.tool === "reply_guard");
+    return [...entries, ...(checked ? [] : [{ kind: "reply_check", turn: player.turn }]), { kind: "delivery", turn: player.turn }];
   }
 
   function turnFinished(turn) {
@@ -1139,7 +1154,7 @@
     stopPlayer();
     player.live = false;
     player.turn = turn;
-    player.cursor = atEnd ? entriesOfTurn(turn).length : 0;
+    player.cursor = atEnd ? playerEntries().length : 0;
     renderReplayPicker();
     renderTeam(false);
   }
@@ -1175,11 +1190,6 @@
       const d = record.output.decision;
       customer.status = d === "completed" ? "ok" : d === "deny" || d === "error" ? "blocked" : "info";
       customer.text = `hears: ${d}`;
-      if (!entries.some((e) => e.kind === "guard" && e.tool === "reply_guard")) {
-        state.nodes.replyguard.status = "ok";
-        state.nodes.replyguard.text = "reply matches the records";
-        state.nodes.replyguard.checks += 1;
-      }
     } else if (!customer.text && record) {
       customer.text = `“${short(record.message, 40)}”`;
     } else if (!customer.text && app.live && app.live.turn === player.turn) {
@@ -1606,6 +1616,7 @@
   function renderBusy() {
     $("send-btn").disabled = app.busy || !app.session;
     $("reset-btn").disabled = app.busy || !app.session;
+    $("new-request-btn").disabled = app.busy || !app.session;
     $("scenario-select").disabled = app.busy;
     $("composer-input").setAttribute("aria-busy", app.busy ? "true" : "false");
     document.body.dataset.busy = app.busy ? "true" : "false";
@@ -1708,7 +1719,9 @@
   }
 
   function onTurnEvent(type, data) {
-    if (type === "start") {
+    if (type === "queued") {
+      $("progress").textContent = `Turn ${data.turn}: the desk is busy, waiting in line (number ${data.position})…`;
+    } else if (type === "start") {
       app.live.turn = data.turn;
       player.turn = data.turn;
     } else if (type === "audit") {
@@ -1799,9 +1812,21 @@
     try {
       const state = await request("POST", `/api/sessions/${encodeURIComponent(app.session.session_id)}/reset`, { fresh_request_id: false });
       adoptSession(state);
-      $("progress").textContent = "State reset to the scenario's initial state.";
+      $("progress").textContent = state.case_id ? "State reset to the scenario's initial state." : "State reset to the start of this request.";
     } catch (error) {
       showNotice("Reset failed", error.message);
+    }
+  }
+
+  /** The same customer's next request: the data so far is kept, the request id is new, the chat starts empty. */
+  async function newRequest() {
+    if (!app.session || app.busy) return;
+    try {
+      const state = await request("POST", `/api/sessions/${encodeURIComponent(app.session.session_id)}/new-request`);
+      adoptSession(state);
+      $("progress").textContent = `New request ${state.request_id} for ${state.customer_id}: refunds, exchanges and stock so far are kept.`;
+    } catch (error) {
+      showNotice("New request failed", error.message);
     }
   }
 
@@ -1837,17 +1862,327 @@
   }
 
   // ============================================================================================
-  // 12. Start-up and event wiring
+  // 12. Load test: many simulated customers at once (the server runs bench.load), live numbers
+
+  const load = { run: null, timer: null };
+  const LOAD_MAX_BARS = 120; // longer runs show averages over a few seconds per bar
+  const LOAD_LIMITS = { customers: 20000, concurrency: 2000 }; // the server's own limits
+
+  /** One shape for the live snapshot (while running) and the final report (once done). */
+  function loadNumbers(run) {
+    const r = run.report;
+    if (r) {
+      return { final: true, done: r.completed + r.failed, failed: r.failed, inFlight: r.peak_in_flight ?? 0,
+        turnsPerS: r.turns_per_s, p50: r.latency_client_ms.p50, p95: r.latency_client_ms.p95,
+        refused: r.turns_refused_at_capacity ?? 0, duplicates: r.duplicate_refunds_or_exchanges, elapsed: r.wall_s,
+        perSecond: r.turns_finished_per_second || [], memory: r.server_footprint_mb_peak,
+        replyBySecond: r.reply_p50_ms_by_second || [], timeline: r.timeline || [], peakWaiting: r.peak_waiting_in_line,
+        line: r.turn_line_limit == null ? null : { max_turns: r.turn_line_limit, running: 0, waiting: 0 }, model: r.model_slots == null ? null : { slots: r.model_slots, waiting: r.peak_model_calls_waiting, breaker: r.breaker } };
+    }
+    const l = run.live || {};
+    const m = l.model;
+    return { final: false, done: l.done ?? 0, failed: l.failed ?? 0, inFlight: l.in_flight ?? 0,
+      turnsPerS: l.turns_per_s, p50: l.latency_client_ms?.p50, p95: l.latency_client_ms?.p95,
+      refused: l.refused ?? 0, duplicates: l.duplicates ?? 0, elapsed: l.elapsed_s ?? 0,
+      perSecond: l.turns_finished_per_second || [], memory: l.server_footprint_mb,
+      replyBySecond: l.reply_p50_ms_by_second || [], timeline: l.timeline || [], line: l.line || null,
+      model: m && m.slots != null ? { slots: m.slots, busy: m.in_flight, waiting: m.waiting, breaker: m.breaker } : null };
+  }
+
+
+  const fmtRate = (v) => (v === null || v === undefined ? "–" : v >= 10 ? String(Math.round(v)) : String(Math.round(v * 10) / 10));
+
+  function setLoadStatus(state, text) {
+    $("load-status").dataset.state = state;
+    $("load-status").textContent = text;
+  }
+
+  function loadStatusText(run, n) {
+    const done = `${n.done} of ${run.customers} customers done`;
+    if (run.state === "running") return `Running: ${done}, ${n.inFlight} in flight, ${Math.round(n.elapsed)} s`;
+    if (run.state === "stopped") return `Stopped: ${done}.`;
+    if (run.state === "failed") return `The load test failed: ${run.error}`;
+    return `Finished in ${n.elapsed} s: ${n.done - n.failed} of ${run.customers} customers ok, ${n.failed} failed.`;
+  }
+
+  function renderLoadKpis(n, run) {
+    const tiles = [
+      ["Customers done", `${n.done} / ${run.customers}`],
+      ["Failed", String(n.failed), n.failed ? "bad" : null],
+      [n.final ? "Most in flight" : "In flight", String(n.inFlight)],
+      ["Turns per second", fmtRate(n.turnsPerS)],
+      ["Reply time p50", fmtMs(n.p50)],
+      ["Reply time p95", fmtMs(n.p95)],
+      ["Turns refused, retried", String(n.refused)],
+      ["Double refunds", String(n.duplicates), n.duplicates ? "bad" : null],
+    ];
+    if (n.model) {
+      const state = n.model.breaker?.state ?? "–";
+      tiles.push(["Model slots", String(n.model.slots)],
+        [n.final ? "Most calls waiting" : "Calls waiting", String(n.model.waiting ?? "–")],
+        ["Breaker", state, state !== "closed" && state !== "–" ? "bad" : null]);
+    }
+    tiles.push(["Server memory", fmtMb(n.memory)]);
+    const box = clear($("load-kpis"));
+    for (const [label, value, tone] of tiles) box.append(el("div", { "data-tone": tone }, el("dt", { text: label }), el("dd", { text: value })));
+  }
+
+  /** A bar whose top corners are rounded and whose foot sits on the baseline. */
+  function barPath(x, y, w, h) {
+    const r = Math.min(4, w / 2, h);
+    return `M${x},${y + h}V${y + r}Q${x},${y} ${x + r},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + h}Z`;
+  }
+
+  /** Average `values` over buckets so a long run still fits `max` points; returns [{from, to, value}]. */
+  function bucketed(values, max) {
+    const size = Math.max(1, Math.ceil(values.length / max));
+    const out = [];
+    for (let i = 0; i < values.length; i += size) {
+      const known = values.slice(i, i + size).filter((v) => v !== null && v !== undefined);
+      out.push({ from: i, to: Math.min(values.length, i + size), value: known.length ? known.reduce((a, b) => a + b, 0) / known.length : null });
+    }
+    return out;
+  }
+
+  /**
+   * One chart, one unit, one axis: bars (one series) or lines (one or two series; the second is dashed).
+   * `xs` are seconds since the start; each series has `name` and `values` (null = no data). Hover shows
+   * every series' value at that moment.
+   */
+  function loadChart({ title, kind, xs, series, fmt, width }) {
+    const height = 150, left = 48, right = 8, top = 10, bottom = 18;
+    const plotW = width - left - right, plotH = height - top - bottom;
+    const n = xs.length;
+    const peak = Math.max(1e-9, ...series.flatMap((s) => s.values.filter((v) => v !== null && v !== undefined)));
+    const yMax = peak > 1e-9 ? peak : 1;
+    const y = (v) => top + plotH - (v / yMax) * plotH;
+    const step = n > 1 ? plotW / (kind === "bars" ? n : n - 1) : plotW;
+    const x = (i) => left + (kind === "bars" ? i * step + step / 2 : n > 1 ? i * step : plotW / 2);
+    const svg = svgEl("svg", { viewBox: `0 0 ${width} ${height}`, role: "img",
+      "aria-label": `${title}: ${series.map((s) => `${s.name} up to ${fmt(Math.max(0, ...s.values.filter((v) => v !== null)))}`).join("; ")}` });
+    svg.append(
+      svgEl("line", { class: "grid", x1: left, x2: width - right, y1: y(yMax), y2: y(yMax) }),
+      svgEl("line", { class: "grid", x1: left, x2: width - right, y1: y(0), y2: y(0) }),
+      svgEl("text", { class: "axis", x: left - 6, y: y(yMax) + 4, "text-anchor": "end", text: fmt(yMax) }),
+      svgEl("text", { class: "axis", x: left - 6, y: y(0) + 4, "text-anchor": "end", text: fmt(0) }),
+      svgEl("text", { class: "axis", x: left, y: height - 4, text: `${Math.round(xs[0] ?? 0)} s` }),
+      svgEl("text", { class: "axis", x: width - right, y: height - 4, "text-anchor": "end", text: `${Math.round(xs[n - 1] ?? 0)} s` }),
+    );
+    const bars = [];
+    if (kind === "bars") {
+      series[0].values.forEach((v, i) => {
+        const bar = svgEl("path", { class: "bar", d: barPath(left + i * step + 1, y(v || 0), Math.max(1, step - 2), y(0) - y(v || 0)) });
+        bars.push(bar);
+        if (v) svg.append(bar);
+      });
+    } else {
+      series.forEach((s, k) => {
+        let d = "";
+        s.values.forEach((v, i) => {
+          if (v === null || v === undefined) return;
+          d += `${d && s.values[i - 1] !== null && s.values[i - 1] !== undefined ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`;
+        });
+        if (d) svg.append(svgEl("path", { class: `line s${k + 1}`, d }));
+      });
+    }
+    const cross = svgEl("line", { class: "cross", y1: top, y2: top + plotH, visibility: "hidden" });
+    const overlay = svgEl("rect", { class: "overlay", x: left, y: top, width: plotW, height: plotH });
+    svg.append(cross, overlay);
+    const tip = el("div", { class: "chart-tip", hidden: "" });
+    const figure = el("figure", { class: "load-chart" }, el("figcaption", { text: title }));
+    if (series.length > 1) {
+      figure.append(el("div", { class: "chart-legend" }, series.map((s, k) => el("span", {},
+        el("span", { class: "chart-swatch", "data-series": k + 1 }), s.name))));
+    }
+    figure.append(svg, tip);
+    const hide = () => {
+      cross.setAttribute("visibility", "hidden");
+      tip.hidden = true;
+      bars.forEach((b) => b.removeAttribute("data-on"));
+    };
+    overlay.addEventListener("mouseleave", hide);
+    overlay.addEventListener("mousemove", (event) => {
+      const box = svg.getBoundingClientRect();
+      const px = ((event.clientX - box.left) / box.width) * width;
+      const i = Math.max(0, Math.min(n - 1, Math.round(kind === "bars" ? (px - left - step / 2) / step : (px - left) / (step || 1))));
+      cross.setAttribute("x1", x(i));
+      cross.setAttribute("x2", x(i));
+      cross.setAttribute("visibility", "visible");
+      bars.forEach((b, j) => (j === i ? b.setAttribute("data-on", "true") : b.removeAttribute("data-on")));
+      tip.textContent = `${Math.round(xs[i])} s · ${series.map((s) => `${s.name} ${fmt(s.values[i])}`).join(" · ")}`;
+      tip.hidden = false;
+      const left_ = (x(i) / width) * box.width;
+      tip.style.left = `${Math.min(Math.max(0, left_ - tip.offsetWidth / 2), box.width - tip.offsetWidth)}px`;
+    });
+    return figure;
+  }
+
+  /** Where the customers are now (or, once done, at most): waiting line -> running -> model -> done. */
+  function renderLoadFlow(run, n) {
+    const box = clear($("load-flow"));
+    box.hidden = false;
+    const stage = (label, number, detail, extra, tone) => el("div", { class: "flow-stage", "data-tone": tone },
+      el("span", { class: "flow-label", text: label }), el("span", { class: "flow-num", text: number }),
+      detail ? el("span", { class: "flow-detail", text: detail }) : null, extra);
+    const arrow = () => el("span", { class: "flow-arrow", "aria-hidden": "true", text: "→" });
+    const cells = (on, total) => el("span", { class: "flow-cells" },
+      Array.from({ length: Math.min(total, 32) }, (_, i) => el("span", { class: "flow-cell", "data-on": i < on })));
+    const notStarted = Math.max(0, run.customers - n.done - n.inFlight);
+    box.append(stage("Customers", String(run.customers), n.final ? null : `${notStarted} not started yet`));
+    const line = n.line;
+    if (line) {
+      const waiting = n.final ? n.peakWaiting ?? 0 : line.waiting ?? 0;
+      const meter = el("span", { class: "flow-meter" }, el("span", { style: `width:${Math.min(100, (waiting / Math.max(1, n.inFlight || waiting)) * 100)}%` }));
+      box.append(arrow(), stage(n.final ? "Most waiting in line" : "Waiting in line", String(waiting), "first come, first served", meter));
+      const running = n.final ? line.max_turns : line.running ?? 0;
+      box.append(arrow(), stage(n.final ? "Turns at once (limit)" : "Turns running", `${running}`, `limit ${line.max_turns}`, cells(n.final ? 0 : running, line.max_turns)));
+    } else {
+      box.append(arrow(), stage(n.final ? "Most in flight" : "In flight", String(n.inFlight), "test double: no limit"));
+    }
+    if (n.model) {
+      const busy = n.final ? 0 : n.model.busy ?? 0;
+      const breaker = n.model.breaker?.state ?? "–";
+      box.append(arrow(), stage("Model slots busy", n.final ? `${n.model.slots}` : `${busy} / ${n.model.slots}`,
+        `${n.final ? "most" : "now"} ${n.model.waiting ?? 0} calls waiting · breaker ${breaker}`, cells(busy, n.model.slots), breaker === "closed" ? null : "bad"));
+    }
+    box.append(arrow(), stage("Done", String(n.done - n.failed), n.failed ? `${n.failed} failed` : "0 failed", null, n.failed ? "bad" : n.done ? "ok" : null));
+  }
+
+  function renderLoadCharts(n) {
+    const wrap = clear($("load-charts"));
+    $("load-table-wrap").hidden = n.perSecond.length === 0;
+    if (!n.perSecond.length) return;
+    const total = wrap.clientWidth || 480;
+    const width = Math.max(260, Math.floor(total >= 600 ? (total - 12) / 2 : total));
+    const ms = (v) => (v === null || v === undefined ? "–" : v >= 10000 ? `${Math.round(v / 1000)} s` : v >= 1000 ? `${(v / 1000).toFixed(1)} s` : `${Math.round(v)} ms`);
+    const count = (v) => (v === null || v === undefined ? "–" : fmtRate(v));
+    const perSecond = bucketed(n.perSecond, LOAD_MAX_BARS);
+    const reply = bucketed(n.replyBySecond, 300);
+    const charts = [
+      { title: perSecond.length === n.perSecond.length ? "Turns finished each second" : "Turns finished per second (bucket averages)",
+        kind: "bars", xs: perSecond.map((b) => b.from), series: [{ name: "Turns/s", values: perSecond.map((b) => b.value) }], fmt: count },
+      { title: "Reply time (median of the last 10 s)", kind: "lines", xs: reply.map((b) => b.from),
+        series: [{ name: "Median", values: reply.map((b) => b.value) }], fmt: ms },
+    ];
+    const tl = n.timeline;
+    if (tl.length) {
+      const xs = tl.map((p) => p.t);
+      charts.push(tl.some((p) => p.running !== null && p.running !== undefined)
+        ? { title: "Turns running vs waiting in line", kind: "lines", xs, fmt: count,
+            series: [{ name: "Running", values: tl.map((p) => p.running) }, { name: "Waiting", values: tl.map((p) => p.waiting) }] }
+        : { title: "Customers in flight", kind: "lines", xs, fmt: count, series: [{ name: "In flight", values: tl.map((p) => p.in_flight) }] });
+      if (tl.some((p) => p.model_busy !== null && p.model_busy !== undefined)) {
+        charts.push({ title: "Model calls: at the model vs waiting for a slot", kind: "lines", xs, fmt: count,
+          series: [{ name: "At the model", values: tl.map((p) => p.model_busy) }, { name: "Waiting for a slot", values: tl.map((p) => p.model_waiting) }] });
+      }
+    }
+    for (const chart of charts) wrap.append(loadChart({ ...chart, width }));
+    const rows = n.perSecond.map((v, s) => el("tr", {}, el("td", { text: s }), el("td", { text: v }), el("td", { text: ms(n.replyBySecond[s]) })));
+    clear($("load-table")).append(el("table", {},
+      el("thead", {}, el("tr", {}, el("th", { text: "Second" }), el("th", { text: "Turns finished" }), el("th", { text: "Reply time (median, last 10 s)" }))),
+      el("tbody", {}, rows)));
+  }
+
+  function renderLoadResult(run, n) {
+    const box = clear($("load-result"));
+    const r = run.report;
+    if (!r) return;
+    const decisions = Object.entries(r.decisions || {}).sort().map(([k, v]) => `${k} ${v}`).join(", ");
+    const varied = Object.entries(r.scenarios || {}).filter(([, v]) => v.distinct_outcomes > 1).map(([k]) => k);
+    box.append(
+      el("p", { text: `Decisions: ${decisions || "none"}.` }),
+      el("p", { text: r.duplicate_refunds_or_exchanges ? `${plural(r.duplicate_refunds_or_exchanges, "order line")} refunded or exchanged twice.` : "No order line was refunded or exchanged twice." }),
+      el("p", { text: varied.length ? `Ended differently between copies: ${varied.join(", ")}${n.model ? " (the real model may vary)" : ""}.` : "Every copy of each scenario ended the same way." }),
+    );
+    const errors = Object.entries(r.errors || {});
+    if (errors.length) box.append(el("p", { text: "Errors:" }), el("ul", {}, errors.map(([k, v]) => el("li", { text: `${k} ×${v}` }))));
+    if (run.report_path) box.append(el("p", { class: "hint", text: `Full report: ${run.report_path}` }));
+  }
+
+  function renderLoad() {
+    const run = load.run;
+    const running = run?.state === "running";
+    $("load-start").disabled = running;
+    $("load-stop").hidden = !running;
+    $("load-customers").disabled = running;
+    $("load-concurrency").disabled = running;
+    if (!run) return;
+    const n = loadNumbers(run);
+    setLoadStatus(run.state, loadStatusText(run, n));
+    $("load-progress").hidden = false;
+    $("load-progress").value = run.customers ? n.done / run.customers : 0;
+    renderLoadFlow(run, n);
+    renderLoadKpis(n, run);
+    renderLoadCharts(n);
+    renderLoadResult(run, n);
+  }
+
+  function watchLoad(on) {
+    if (on && !load.timer) load.timer = window.setInterval(refreshLoad, 1000);
+    if (!on && load.timer) {
+      window.clearInterval(load.timer);
+      load.timer = null;
+    }
+  }
+
+  async function refreshLoad() {
+    try {
+      load.run = (await request("GET", "/api/load")).run;
+    } catch (_) {
+      return; // the next tick tries again
+    }
+    renderLoad();
+    watchLoad(load.run?.state === "running");
+  }
+
+  async function startLoad(event) {
+    event.preventDefault();
+    const customers = Number($("load-customers").value);
+    const concurrency = Number($("load-concurrency").value);
+    const inRange = (v, max) => Number.isInteger(v) && v >= 1 && v <= max;
+    if (!inRange(customers, LOAD_LIMITS.customers) || !inRange(concurrency, LOAD_LIMITS.concurrency)) {
+      setLoadStatus("invalid", `Customers must be a whole number from 1 to ${LOAD_LIMITS.customers.toLocaleString("en-US")}, and at the same time from 1 to ${LOAD_LIMITS.concurrency.toLocaleString("en-US")}.`);
+      return;
+    }
+    $("load-start").disabled = true;
+    try {
+      load.run = await request("POST", "/api/load", { customers, concurrency });
+    } catch (error) {
+      setLoadStatus("failed", `Could not start: ${error.message}`);
+      $("load-start").disabled = false;
+      return;
+    }
+    renderLoad();
+    watchLoad(true);
+  }
+
+  async function stopLoad() {
+    if (!load.run) return;
+    try {
+      load.run = await request("POST", `/api/load/${encodeURIComponent(load.run.run_id)}/stop`);
+    } catch (error) {
+      setLoadStatus("failed", `Could not stop: ${error.message}`);
+      return;
+    }
+    renderLoad();
+    watchLoad(false);
+  }
+
+  // ============================================================================================
+  // 13. Start-up and event wiring
+
+  const TABS = ["team", "audit", "load"];
 
   function selectTab(which) {
-    const team = which === "team";
-    $("tab-team").setAttribute("aria-selected", String(team));
-    $("tab-audit").setAttribute("aria-selected", String(!team));
-    $("tab-team").tabIndex = team ? 0 : -1;
-    $("tab-audit").tabIndex = team ? -1 : 0;
-    $("panel-team").hidden = !team;
-    $("panel-audit").hidden = team;
-    if (team) chooseLayout();
+    if (!TABS.includes(which)) which = "team";
+    for (const tab of TABS) {
+      const on = tab === which;
+      $(`tab-${tab}`).setAttribute("aria-selected", String(on));
+      $(`tab-${tab}`).tabIndex = on ? 0 : -1;
+      $(`panel-${tab}`).hidden = !on;
+    }
+    if (which === "team") chooseLayout();
+    if (which === "load") renderLoad(); // the chart takes the panel's width, known only once it shows
     prefs.set("tab", which);
   }
 
@@ -1890,6 +2225,7 @@
     });
     $("customer-select").addEventListener("change", startSession);
     $("reset-btn").addEventListener("click", resetSession);
+    $("new-request-btn").addEventListener("click", newRequest);
     $("stock-form").addEventListener("submit", setStock);
     $("arm-timeout").addEventListener("click", armTimeout);
     $("composer").addEventListener("submit", (event) => {
@@ -1912,14 +2248,16 @@
         $("composer").requestSubmit();
       }
     });
-    $("tab-team").addEventListener("click", () => selectTab("team"));
-    $("tab-audit").addEventListener("click", () => selectTab("audit"));
+    for (const tab of TABS) $(`tab-${tab}`).addEventListener("click", () => selectTab(tab));
     document.querySelector('[role="tablist"]').addEventListener("keydown", (event) => {
       if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
-      const next = $("tab-team").getAttribute("aria-selected") === "true" ? "audit" : "team";
+      const current = TABS.findIndex((tab) => $(`tab-${tab}`).getAttribute("aria-selected") === "true");
+      const next = TABS[(current + (event.key === "ArrowRight" ? 1 : -1) + TABS.length) % TABS.length];
       selectTab(next);
       $(`tab-${next}`).focus();
     });
+    $("load-form").addEventListener("submit", startLoad);
+    $("load-stop").addEventListener("click", stopLoad);
     $("theater-btn").addEventListener("click", () => setTheater(!document.body.classList.contains("theater")));
     for (const button of document.querySelectorAll("[data-theme-choice]")) {
       button.addEventListener("click", () => {
@@ -1961,6 +2299,14 @@
       renderAudit();
     });
     if ("ResizeObserver" in window) new ResizeObserver(() => chooseLayout()).observe($("team-graph"));
+    if ("ResizeObserver" in window) {
+      let lastWidth = 0;
+      new ResizeObserver(() => {
+        const width = $("load-charts").clientWidth;
+        if (load.run && width !== lastWidth) renderLoadCharts(loadNumbers(load.run));
+        lastWidth = width;
+      }).observe($("load-charts"));
+    }
     reducedMotion.addEventListener("change", () => renderTeam(false));
   }
 
@@ -1995,6 +2341,7 @@
     await refreshHealth();
     await restoreOrStart();
     refreshTelemetry();
+    refreshLoad();
     window.setInterval(() => {
       if (!document.hidden) refreshHealth();
     }, 3000);

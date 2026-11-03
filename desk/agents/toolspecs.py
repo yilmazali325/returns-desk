@@ -51,7 +51,7 @@ _SIZE_HELP = 'The size the customer wants, e.g. "L"; "UP" or "DOWN" for one size
 _PRODUCT_HELP = '"SAME", or the product_id the customer asks for instead.'
 # Optional citation (SPEC §6.0): the customer's exact words that pick this line when the ids they
 # typed leave more than one line. Code accepts the target iff the quote is theirs and fits only it.
-EVIDENCE = {"type": "string", "description": "The customer's exact words that pick this line, when several lines could fit."}
+EVIDENCE = {"type": "string", "description": "The customer's exact words that name or pick this line, when they did not type the line id."}
 
 HANDOFF_SPEC = ToolSpec(
     HANDOFF,

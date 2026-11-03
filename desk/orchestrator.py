@@ -513,7 +513,11 @@ class Desk:
         hints = {
             ORDER_NOT_FOUND: "That order is not on this customer's account. Tell the customer; do not hand off.",
             LINE_NOT_FOUND: "That line is not in the order. Ask the customer which line they mean.",
-            AMBIGUOUS_TARGET: ("More than one line could fit. If the customer's words pick one, hand off again with "
+            AMBIGUOUS_TARGET: ("Code could not read an item in the customer's words. If they name it (misspelled or in "
+                               "another language), hand off again with evidence set to those exact words; otherwise ask "
+                               "which item they mean."
+                               if len(a.id_candidates) == 1 else
+                               "More than one line could fit. If the customer's words pick one, hand off again with "
                                "evidence set to their exact words; otherwise ask which line they mean."),
             TARGET_MISMATCH: "That line does not fit what the customer typed. Use the line they named, or ask.",
             TARGET_NOT_GROUNDED: ("The customer confirmed, but nothing has been proposed yet and they named no item. "

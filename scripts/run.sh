@@ -1,11 +1,12 @@
 #!/bin/zsh
 # Start the Returns Desk demo: the local model (llama-server) and the web UI, then print the URL.
-#   scripts/run.sh [--port 8000] [--llama-port 8081] [--profile F] [--fake] [--no-warmup] [--allow-engine-mismatch]
+#   scripts/run.sh [--port 8000] [--llama-port 8081] [--profile F] [--slots 1] [--fake] [--no-warmup] [--allow-engine-mismatch]
 # The UI process attaches to a healthy llama-server on --llama-port, or starts one for the profile
 # (model sha256 and engine version are checked, one warm-up request, both agents' static prompts are
 # primed in the prompt cache). The UI answers only once the model is ready. Ctrl+C stops the UI and
 # any llama-server it started. --fake runs the deterministic test double instead of the model.
 # --allow-engine-mismatch starts a llama.cpp build other than the pinned one (scripts/check_engine.sh).
+# --slots N lets the model serve N requests at once (for load tests; benchmarked results use 1).
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -18,10 +19,11 @@ while (( $# )); do
     --port) UI_PORT=$2; shift 2 ;;
     --llama-port) LLAMA_PORT=$2; shift 2 ;;
     --profile) PROFILE=$2; shift 2 ;;
+    --slots) EXTRA+=(--slots "$2"); shift 2 ;;
     --fake) EXTRA+=(--fake); shift ;;
     --no-warmup) EXTRA+=(--no-warmup); shift ;;
     --allow-engine-mismatch) EXTRA+=(--allow-engine-mismatch); shift ;;
-    -h|--help) sed -n '2,8p' "$0"; exit 0 ;;
+    -h|--help) sed -n '2,9p' "$0"; exit 0 ;;
     *) echo "unknown option: $1 (see --help)" >&2; exit 2 ;;
   esac
 done

@@ -59,13 +59,14 @@ CACHE_RAM_BOUNDED_MIB = 2048
 CTX_CHECKPOINTS = 32
 
 
-def pinned_engine_flags(cache_ram_mib: int, ctx_checkpoints: int) -> tuple[str, ...]:
-    """The full llama-server flag set shared by all profiles (model path and port are added at launch)."""
+def pinned_engine_flags(cache_ram_mib: int, ctx_checkpoints: int, slots: int = SLOTS) -> tuple[str, ...]:
+    """The full llama-server flag set shared by all profiles (model path and port are added at launch).
+    `slots` > 1 is for the UI server under load only: each slot keeps CTX_SIZE tokens."""
     return (
         "-ngl", "99",
         "-fa", "on",
-        "-c", str(CTX_SIZE),
-        "-np", str(SLOTS),
+        "-c", str(CTX_SIZE * slots),
+        "-np", str(slots),
         "--jinja",
         "--reasoning", "off",
         "--cache-ram", str(cache_ram_mib),
@@ -106,9 +107,10 @@ class Profile:
     def model_sha256(self) -> str:
         return MODEL_SHA256[self.model_file]
 
-    def engine_argv(self, binary: str, model_path: str, port: int) -> list[str]:
-        """Exact argv used to launch llama-server for this profile."""
-        return [binary, "-m", model_path, "--port", str(port), *self.engine_flags]
+    def engine_argv(self, binary: str, model_path: str, port: int, slots: int = SLOTS) -> list[str]:
+        """Exact argv used to launch llama-server for this profile (`slots` > 1: parallel requests, UI only)."""
+        flags = self.engine_flags if slots == SLOTS else pinned_engine_flags(self.cache_ram_mib, self.ctx_checkpoints, slots)
+        return [binary, "-m", model_path, "--port", str(port), *flags]
 
     def app_switches(self) -> dict[str, object]:
         """The application-level switches, as reported under configuration.app_switches."""

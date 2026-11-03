@@ -6,11 +6,13 @@ HTTP is mocked with httpx.MockTransport; no llama-server is needed.
 from __future__ import annotations
 
 import json
+import threading
 
 import httpx
 import pytest
 
 from desk.llm import (
+    CircuitBreaker,
     FakeLLM,
     FakeLLMExhausted,
     LLMClient,
@@ -588,3 +590,64 @@ def test_fake_llm_validates_requests_like_the_real_client():
     with pytest.raises(ValueError):
         fake.step("resolution", [{"role": "boss", "content": "x"}], TOOLS, ALL, 10)
     assert fake.protocol == "fake" and fake.remaining == 1
+
+
+OK_REPLY = chat_response({"content": '{"tool": "reply_to_customer", "args": {"message": "x"}}'})
+
+
+def test_slot_gate_keeps_extra_calls_off_the_model_and_refuses_after_the_queue_timeout():
+    entered, release = threading.Event(), threading.Event()
+
+    def model(request: httpx.Request) -> httpx.Response:
+        entered.set()
+        release.wait(5)
+        return httpx.Response(200, json=OK_REPLY)
+
+    client = LLMClient("http://h", "constrained", transport=httpx.MockTransport(model), max_in_flight=1,
+                       queue_timeout_s=0)
+    first = threading.Thread(target=client.step, args=("resolution", CONVERSATION[:2], TOOLS, ALL, 32))
+    first.start()
+    assert entered.wait(5) and client.load()["in_flight"] == 1
+    with pytest.raises(LLMError) as err:  # the only slot is taken: this call never reaches the model
+        client.step("resolution", CONVERSATION[:2], TOOLS, ALL, 32)
+    assert err.value.kind == "busy"
+    release.set()
+    first.join(5)
+    load = client.load()
+    assert (load["slots"], load["waiting"], load["in_flight"], load["busy_refusals"]) == (1, 0, 0, 1)
+    assert client.step("resolution", CONVERSATION[:2], TOOLS, ALL, 32).ok  # the slot is free again
+
+
+def test_circuit_breaker_fails_fast_while_the_model_is_down_then_closes_after_a_good_trial_call():
+    now = [0.0]
+    breaker = CircuitBreaker(failures=2, open_s=10, clock=lambda: now[0])
+    down = httpx.ConnectError("refused")
+    server = Server(down, down, down, OK_REPLY)
+    client = client_for(server, "constrained", retries=0, breaker=breaker)
+
+    def call():
+        return client.step("resolution", CONVERSATION[:2], TOOLS, ALL, 32)
+
+    for _ in range(2):
+        with pytest.raises(LLMError, match="^connection"):
+            call()
+    with pytest.raises(LLMError) as err:
+        call()
+    assert err.value.kind == "unavailable" and len(server.requests) == 2  # failed at once, model not called
+    now[0] = 10.0  # open time over: one trial call; it fails, so the breaker opens again
+    with pytest.raises(LLMError, match="^connection"):
+        call()
+    with pytest.raises(LLMError, match="^unavailable"):
+        call()
+    now[0] = 20.0
+    assert call().ok
+    assert breaker.snapshot() == {"state": "closed", "failures_in_a_row": 0, "times_opened": 2}
+
+
+def test_a_bad_answer_from_a_working_model_does_not_trip_the_breaker():
+    breaker = CircuitBreaker(failures=1)
+    client = client_for(Server(400, 400), "constrained", breaker=breaker)
+    for _ in range(2):
+        with pytest.raises(LLMError, match="^http_status"):
+            client.step("resolution", CONVERSATION[:2], TOOLS, ALL, 32)
+    assert breaker.snapshot()["state"] == "closed"

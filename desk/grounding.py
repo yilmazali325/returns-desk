@@ -67,7 +67,7 @@ UP, DOWN, SAME = "UP", "DOWN", "SAME"  # requested-size tokens besides plain lab
 
 # How an accepted handoff target was grounded (audited on set_target).
 BY_CUSTOMER_IDS = "customer_ids"  # the order/line IDs the customer typed pin exactly this line
-BY_ONLY_LINE = "only_line"  # the account has one line the request can be about
+BY_ONLY_LINE = "only_line"  # the account has one line and the customer described it (product or size)
 BY_AGENT = "agent"  # the agent cited the customer's words and code verified the citation
 BY_AGENT_AND_GROUNDING = "agent+grounding"  # no citation, but code's own reading picks the same line
 # The most common citation slip of a small model is a paraphrase ("the large tee"); say how to fix it.
@@ -1089,7 +1089,7 @@ def analyze(messages: Sequence[str], lines: Sequence[Any], catalog: Sequence[Any
 
     candidates, filters_used, filter_notes = _filter_candidates(account, conversation)
     not_found = _not_found_code(account, conversation)
-    unique = _unique_target(candidates, not_found)
+    unique = _unique_target(candidates, not_found, filters_used)
     explain.extend(filter_notes)
     explain.append(_describe_outcome(candidates, unique, not_found, conversation))
 
@@ -1197,14 +1197,14 @@ def _not_found_code(account: _Account, conv: _Conversation) -> str | None:
     return None
 
 
-def _unique_target(candidates: list[dict[str, Any]], not_found: str | None) -> tuple[str, str] | None:
-    """Exactly one candidate left and nothing named that does not exist.
+def _unique_target(candidates: list[dict[str, Any]], not_found: str | None,
+                   filters_used: list[str]) -> tuple[str, str] | None:
+    """Exactly one candidate left by what the customer said, and nothing named that does not exist.
 
-    This covers both SPEC §5 cases. Either at least one filter narrowed the lines to one, or no
-    filter ran at all, which leaves exactly one candidate only when the account has a single line
-    and the text names no order or line.
+    At least one filter must have run: a customer who names no item is asked which one, even when
+    the account has a single line (owner decision 2026-11-02).
     """
-    if not_found or len(candidates) != 1:
+    if not_found or len(candidates) != 1 or not filters_used:
         return None
     return candidates[0]["order_id"], candidates[0]["line_id"]
 
@@ -1262,7 +1262,8 @@ def check_target(analysis: Analysis, order_id: Any, line_id: Any, evidence: Any 
     """Is the agent's chosen line consistent with the facts, and does someone's reading pick it?
 
     Hard facts: the line is on the account; every order/line ID the customer typed agrees with it.
-    Then: when the typed IDs (or the account) leave one line, the agent's target is accepted.
+    Then: when the typed IDs leave one line, the agent's target is accepted; so it is when the
+    account has one line and the customer described it (a product or size), not when they named nothing.
     With 2+ lines left the agent must cite the customer's words that pick its line (evidence);
     without a citation it is accepted only if code's own reading picks the same line.
     """
@@ -1281,6 +1282,11 @@ def check_target(analysis: Analysis, order_id: Any, line_id: Any, evidence: Any 
         contradiction = _description_contradiction(analysis, key)
         if contradiction:
             return TargetCheck(False, TARGET_MISMATCH, reason=contradiction)
+        if not analysis.filters_used:  # code read no item: the agent may cite the customer's own words
+            reason = check_item_quote(analysis, evidence) if evidence else NO_ITEM_NAMED
+            if reason:
+                return TargetCheck(False, AMBIGUOUS_TARGET, reason=reason)
+            return TargetCheck(True, key=key, grounded_by=BY_AGENT, evidence=str(evidence).strip())
         return TargetCheck(True, key=key, grounded_by=BY_ONLY_LINE)
     quote = str(evidence).strip() if evidence else ""
     reason = "the handoff cites no customer words that pick this line"
@@ -1318,14 +1324,9 @@ def check_evidence(analysis: Analysis, key: tuple[str, str], evidence: str) -> s
     reason (fed back to the agent).
     """
     quote = _quote_form(evidence)
-    if len(quote) < 2:
-        return "the evidence is empty"
-    sentences = [_sentence_around(text, m.start(), m.end()) for text in analysis.texts
-                 for m in re.finditer(re.escape(quote), text)]
-    if not sentences:
-        return NOT_A_QUOTE
-    if all(_HEDGE_RE.search(sentence) for sentence in sentences):
-        return "the customer's words hedge between items ('or', 'not sure', 'which one')"
+    problem = _quote_problem(analysis, quote)
+    if problem:
+        return problem
     candidates = analysis.id_candidates
     matches = _attribute_matches(analysis, quote, candidates)
     if not matches:
@@ -1338,6 +1339,52 @@ def check_evidence(analysis: Analysis, key: tuple[str, str], evidence: str) -> s
     if len(survivors) != 1:
         return "the evidence fits more than one line"
     return None
+
+
+def _quote_problem(analysis: Analysis, quote: str) -> str | None:
+    """Why `quote` is not an unhedged, verbatim part of the customer's messages, or None."""
+    if len(quote) < 2:
+        return "the evidence is empty"
+    sentences = [_sentence_around(text, m.start(), m.end()) for text in analysis.texts
+                 for m in re.finditer(re.escape(quote), text)]
+    if not sentences:
+        return NOT_A_QUOTE
+    if all(_HEDGE_RE.search(sentence) for sentence in sentences):
+        return "the customer's words hedge between items ('or', 'not sure', 'which one')"
+    return None
+
+
+NO_ITEM_NAMED = "the customer has not said which item they mean"
+# Words that never name an item by themselves ("can i get a refund", "send it back", "my order").
+_GENERIC_WORDS = {
+    "i", "im", "me", "my", "mine", "we", "our", "us", "you", "your", "it", "its", "this", "that", "these",
+    "those", "them", "they", "the", "a", "an", "one", "ones", "thing", "things", "item", "items", "stuff",
+    "something", "order", "orders", "purchase", "product", "bought", "buy", "got", "get", "want", "wanna",
+    "need", "would", "like", "could", "can", "please", "pls", "plz", "refund", "exchange", "return", "swap",
+    "switch", "change", "replace", "send", "back", "money", "go", "ahead", "yes", "yeah", "ya", "ok", "okay",
+    "to", "for", "of", "in", "on", "and", "with", "from", "is", "was", "be", "do", "did", "have", "has",
+    "just", "hi", "hey", "hello", "size", "bigger", "smaller", "larger", "up", "down", "another",
+    "different", "same", "new", "other", "too", "so", "very", "really", "help", "thanks", "thank", "sure",
+    "way", "big", "tight", "loose", "baggy", "long", "short", "fit", "fits", "small", "medium", "large",
+}
+
+
+def check_item_quote(analysis: Analysis, evidence: Any) -> str | None:
+    """On a one-line account where code read no item: does the agent's citation name one?
+
+    Code cannot spell-check "my hoodi" or translate "chaqueta"; the agent can. Accepted iff the
+    words are a verbatim, unhedged part of the customer's messages and at least one of them is not
+    a generic word, a size or a remedy word (one typo allowed). Returns None when accepted, else why.
+    """
+    quote = _quote_form(evidence)
+    problem = _quote_problem(analysis, quote)
+    if problem:
+        return problem
+    words = [re.sub(r"(.)\1{2,}", r"\1", w) for w in re.findall(r"[^\W\d_]+", quote)]  # "waaay" -> "way"
+    naming = [w for w in words if w not in _GENERIC_WORDS and not _size_word(w) and w not in _LETTER_SIZES
+              and not any(_one_edit_apart(w, t) or w.startswith(t)
+                          for t in _TYPO_TARGETS + ("small", "medium", "large"))]
+    return None if naming else "the quoted words do not name an item"
 
 
 def _sentence_around(text: str, start: int, end: int) -> str:

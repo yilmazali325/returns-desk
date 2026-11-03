@@ -40,6 +40,7 @@ from __future__ import annotations
 
 import copy
 import json
+import threading
 import time
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, field
@@ -254,7 +255,7 @@ class LLMError(Exception):
     def __init__(self, kind: str, message: str, *, status_code: int | None = None,
                  attempts: int = 0) -> None:
         super().__init__(f"{kind}: {message}")
-        self.kind = kind  # connection | timeout | http_status | bad_response | reasoning
+        self.kind = kind  # connection | timeout | http_status | bad_response | reasoning | busy | unavailable
         self.status_code = status_code
         self.attempts = attempts
 
@@ -437,12 +438,58 @@ def constrained_messages(messages: Sequence[Mapping[str, Any]],
 # --------------------------------------------------------------------------------------------------
 # The real client
 
+def _model_failure(exc: LLMError) -> bool:
+    """The model is down or hung (what the breaker counts), not a bad answer from a working model."""
+    return exc.kind in ("connection", "timeout") or (exc.kind == "http_status" and (exc.status_code or 0) >= 500)
+
+
+class CircuitBreaker:
+    """Stop calling a model that is down. After `failures` failed calls in a row, every call fails at
+    once (LLMError "unavailable") for `open_s` seconds, so turns end in a clean error instead of each
+    waiting out its own timeouts; then one trial call goes through, and its success closes the breaker."""
+
+    def __init__(self, failures: int = 3, open_s: float = 10.0, clock: Callable[[], float] = time.monotonic) -> None:
+        self.failures = failures
+        self.open_s = open_s
+        self._clock = clock
+        self._lock = threading.Lock()
+        self._streak = 0
+        self._open_until: float | None = None
+        self._trial = False
+        self.opened = 0
+
+    def before_call(self) -> None:
+        with self._lock:
+            if self._open_until is None:
+                return
+            if self._trial or self._clock() < self._open_until:
+                raise LLMError("unavailable", "the model failed several calls in a row; retrying it shortly")
+            self._trial = True  # half-open: this call decides
+
+    def record(self, ok: bool) -> None:
+        with self._lock:
+            if ok:
+                self._streak, self._open_until, self._trial = 0, None, False
+                return
+            self._streak += 1
+            if self._trial or self._streak >= self.failures:
+                self._open_until = self._clock() + self.open_s
+                self._trial = False
+                self.opened += 1
+
+    def snapshot(self) -> dict[str, Any]:
+        with self._lock:
+            state = "closed" if self._open_until is None else ("half-open" if self._trial else "open")
+            return {"state": state, "failures_in_a_row": self._streak, "times_opened": self.opened}
+
+
 class LLMClient:
     """One tool-call step at a time against a llama-server; see the module docstring for protocols."""
 
     def __init__(self, base_url: str, protocol: str, *, seed: int = 42, timeout_s: float = 20.0,
                  retries: int = 1, retry_backoff_s: float = 0.25,
-                 transport: httpx.BaseTransport | None = None) -> None:
+                 transport: httpx.BaseTransport | None = None, max_in_flight: int | None = None,
+                 queue_timeout_s: float = 60.0, breaker: CircuitBreaker | None = None) -> None:
         if protocol not in PROTOCOLS:
             raise ValueError(f"unknown protocol {protocol!r}; expected one of {PROTOCOLS}")
         self.base_url = base_url.rstrip("/")
@@ -450,6 +497,17 @@ class LLMClient:
         self.seed = seed
         self.retries = retries
         self.retry_backoff_s = retry_backoff_s
+        # At most `max_in_flight` calls at the model at once (its slot count); the rest wait here, so the
+        # step timeout measures the model's work, never time queued behind other sessions' calls.
+        self.max_in_flight = max_in_flight
+        self.queue_timeout_s = queue_timeout_s
+        self.breaker = breaker
+        self._gate = threading.BoundedSemaphore(max_in_flight) if max_in_flight else None
+        self._load_lock = threading.Lock()
+        self._waiting = 0
+        self._in_flight = 0
+        self._busy = 0
+        self._max_wait_ms = 0.0
         self._http = httpx.Client(base_url=self.base_url, transport=transport,
                                   timeout=httpx.Timeout(timeout_s, connect=min(5.0, timeout_s)))
 
@@ -490,12 +548,54 @@ class LLMClient:
         """Run one LLM call and return the interpreted Step. Raises LLMError on transport failure."""
         payload = self.build_payload(messages, tools, allowed, max_tokens)
         started = time.perf_counter()  # telemetry only, never business logic
-        body, attempts = self._post(payload)
+        body, attempts = self._call(payload)
         step = self._interpret(body, tools, allowed, max_tokens)
         step.role = role
         step.http_attempts = attempts
         step.latency_ms = round((time.perf_counter() - started) * 1000, 1)
         return step
+
+    def load(self) -> dict[str, Any]:
+        """Telemetry: calls waiting for a model slot and at the model now, refusals, the breaker."""
+        with self._load_lock:
+            out: dict[str, Any] = {"slots": self.max_in_flight, "waiting": self._waiting, "in_flight": self._in_flight,
+                                   "busy_refusals": self._busy, "max_queue_wait_ms": round(self._max_wait_ms, 1)}
+        if self.breaker is not None:
+            out["breaker"] = self.breaker.snapshot()
+        return out
+
+    def _call(self, payload: dict[str, Any]) -> tuple[dict[str, Any], int]:
+        """`_post` behind the slot gate and the circuit breaker (both optional)."""
+        if self._gate is not None:
+            with self._load_lock:
+                self._waiting += 1
+            queued = time.perf_counter()
+            got = self._gate.acquire(timeout=self.queue_timeout_s)
+            with self._load_lock:
+                self._waiting -= 1
+                self._max_wait_ms = max(self._max_wait_ms, (time.perf_counter() - queued) * 1000)
+                self._busy += not got
+            if not got:
+                raise LLMError("busy", f"no model slot free within {self.queue_timeout_s:g} s")
+        with self._load_lock:
+            self._in_flight += 1
+        try:
+            if self.breaker is not None:
+                self.breaker.before_call()
+            try:
+                result = self._post(payload)
+            except LLMError as exc:
+                if self.breaker is not None:
+                    self.breaker.record(ok=not _model_failure(exc))
+                raise
+            if self.breaker is not None:
+                self.breaker.record(ok=True)
+            return result
+        finally:
+            with self._load_lock:
+                self._in_flight -= 1
+            if self._gate is not None:
+                self._gate.release()
 
     def _post(self, payload: dict[str, Any]) -> tuple[dict[str, Any], int]:
         """POST with one retry for connection errors, timeouts and 5xx; 4xx fail immediately."""

@@ -219,6 +219,25 @@ def test_reset_restores_the_initial_state(desk: Any) -> None:
     desk.shot("09_after_reset_and_rerun.png")
 
 
+def test_new_request_keeps_the_data_and_starts_an_empty_chat(desk: Any) -> None:
+    desk.open("refund_boundary")
+    assert desk.run_script() == ["propose", "completed"]
+    first = desk.page.evaluate("() => window.ReturnsDesk.app.session.request_id")
+    desk.page.click('[data-testid="new-request"]')
+    desk.page.wait_for_function("() => window.ReturnsDesk.app.session.turns.length === 0 && window.ReturnsDesk.app.session.generation === 2")
+    assert desk.page.evaluate("() => window.ReturnsDesk.app.session.request_id") != first
+    assert desk.page.locator('[data-testid="desk-message"]').count() == 0
+    assert "kept" in desk.page.inner_text('[data-testid="progress"]')
+    desk.open_inspector()
+    order = desk.case["initial_state"]["orders"][0]
+    assert desk.rows("records-refunds") == 1 and desk.returned(order["order_id"], order["lines"][0]["line_id"]) is True
+    desk.page.fill('[data-testid="composer-input"]', desk.case["turns"][0]["message"])
+    desk.page.click('[data-testid="send"]')
+    assert desk.wait_turn(1) == "deny"  # already refunded under the first request
+    assert desk.rows("records-refunds") == 1
+    desk.shot("09b_new_request_keeps_the_data.png")
+
+
 def test_keyboard_only_flow_and_live_regions(desk: Any) -> None:
     desk.open("refund_boundary")
     assert desk.page.get_attribute('[data-testid="progress"]', "aria-live") == "polite"
@@ -323,12 +342,12 @@ def test_theme_switch_overrides_the_system_setting_and_is_remembered(make_desk: 
 
 def test_fill_next_offers_the_next_scripted_turn_beside_send(desk: Any) -> None:
     desk.open("refund_boundary")
-    assert desk.page.inner_text('[data-testid="empty-fill"]') == "Fill turn 1"
+    assert desk.page.inner_text('[data-testid="empty-fill"]') == "Fill message 1"
     desk.page.click('[data-testid="empty-fill"]')
     assert desk.page.input_value("#composer-input") == desk.case["turns"][0]["message"]
     assert desk.page.is_hidden('[data-testid="fill-next"]')  # the box already holds a message
     desk.page.click('[data-testid="send"]')
     assert desk.wait_turn(1) == "propose"
-    assert desk.page.inner_text('[data-testid="fill-next"]') == "Fill turn 2"
+    assert desk.page.inner_text('[data-testid="fill-next"]') == "Fill message 2"
     desk.page.click('[data-testid="fill-next"]')
     assert desk.page.input_value("#composer-input") == desk.case["turns"][1]["message"]

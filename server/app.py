@@ -35,14 +35,18 @@ import os
 import queue
 import secrets
 import signal
+import subprocess
+import sys
 import threading
 import time
-from collections.abc import Iterator, Mapping
+from collections import deque
+from collections.abc import Callable, Iterator, Mapping
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Annotated, Any, Literal
 from urllib.parse import urlparse, urlsplit
 
+import httpx
 import uvicorn
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
@@ -58,9 +62,9 @@ from desk.adapter_main import LLM_HTTP_RETRIES, LLM_STEP_TIMEOUT_S
 from desk.agents.prompts import RESOLUTION_SYSTEM, operations_system
 from desk.agents.toolspecs import REPLY, REPORT, RESOLUTION_TOOLS, operations_tools
 from desk.domain import CODE_CLASS, WINDOW_DAYS
-from desk.llm import LLMClient, LLMError
+from desk.llm import CircuitBreaker, LLMClient, LLMError
 from desk.llm_server import LlamaServer, LlamaServerError, pid_listening_on, server_healthy
-from desk.profiles import ENGINE, ENGINE_VERSION, MODEL_NAME, SEED, Profile, get_profile
+from desk.profiles import ENGINE, ENGINE_VERSION, MODEL_NAME, SEED, SLOTS, Profile, get_profile
 from desk.render import REASON_TEXT, money
 from desk.session import CaseSession
 from desk.testing.fake_policy_llm import ENGINE_LABEL, FakePolicyLLM
@@ -68,12 +72,22 @@ from desk.testing.fake_policy_llm import ENGINE_LABEL, FakePolicyLLM
 ROOT = Path(__file__).resolve().parents[1]
 STATIC_DIR = Path(__file__).resolve().parent / "static"
 DEFAULT_CASES = ROOT / "candidate_assets" / "public_cases.json"
+DEMO_CASES = ROOT / "server" / "demo_cases.json"  # natural-language chats for the demo, listed after the public ones
 DEFAULT_VAR_DIR = ROOT / "var" / "ui"
 DEFAULT_LLAMA_URL = "http://127.0.0.1:8081"
 DEFAULT_UI_PORT = 8000
 FAKE_POLICY = "fake-policy"
 REAL_LLM = "llama"
 HEALTH_CACHE_S = 1.0  # the header polls; one /health probe per second is plenty
+# Under load (real model): at most TURNS_PER_SLOT turns per model slot run at once; the next ones wait
+# in a first-come, first-served line (at most MAX_WAITING; one more is refused with 503 + Retry-After).
+# A model call waits at most LLM_QUEUE_TIMEOUT_S for a free slot; then that turn ends in a decision error
+# and nothing changes.
+TURNS_PER_SLOT = 2  # measured: 8 per slot left 28 calls waiting on 4 slots and 2 turns hit the queue cap
+MAX_WAITING = 1000
+QUEUED_EVERY_S = 1.0  # a waiting turn's stream repeats its place in line this often
+RETRY_AFTER_S = 2
+LLM_QUEUE_TIMEOUT_S = 60.0
 MEMORY_CACHE_S = 1.0  # ioreg and lsof take tens of milliseconds each
 SSE_KEEPALIVE_S = 10.0
 MAX_MESSAGE_CHARS = 2000  # sanitize() caps prompts at 1,000; this only refuses absurd payloads
@@ -99,11 +113,15 @@ class ServerConfig:
     llama_url: str = DEFAULT_LLAMA_URL
     profile: str = "F"
     cases_path: Path = DEFAULT_CASES
+    demo_cases_path: Path | None = DEMO_CASES
     var_dir: Path = DEFAULT_VAR_DIR
     fake_step_delay_s: float = 0.0
     allow_engine_mismatch: bool = False  # --start-llama with another llama.cpp build: warn instead of refusing
     allowed_hostnames: tuple[str, ...] = LOCAL_HOSTNAMES
     port: int | None = None  # the UI port, when known: the Host header must then name it
+    slots: int = SLOTS  # parallel requests the model server serves (scripts/run.sh --slots)
+    max_turns: int | None = None  # turns running at once; None: TURNS_PER_SLOT x slots (no cap on the fake)
+    max_waiting: int = MAX_WAITING  # turns waiting in line for one of those places
 
     @classmethod
     def from_env(cls, environ: Mapping[str, str] = os.environ) -> ServerConfig:
@@ -131,7 +149,14 @@ def build_llm(config: ServerConfig, profile: Profile) -> Any:
     if config.fake:
         return FakePolicyLLM(step_delay_s=config.fake_step_delay_s)
     return LLMClient(config.llama_url, profile.protocol, seed=SEED, timeout_s=LLM_STEP_TIMEOUT_S,
-                     retries=LLM_HTTP_RETRIES)
+                     retries=LLM_HTTP_RETRIES, max_in_flight=config.slots, queue_timeout_s=LLM_QUEUE_TIMEOUT_S,
+                     breaker=CircuitBreaker())
+
+
+def turn_limit(config: ServerConfig) -> int | None:
+    if config.max_turns is not None:
+        return config.max_turns
+    return None if config.fake else TURNS_PER_SLOT * config.slots
 
 
 def model_info(config: ServerConfig, profile: Profile) -> dict[str, Any]:
@@ -278,6 +303,16 @@ class SessionRegistry:
         spec = session.spec
         if fresh_request_id:
             spec = replace(spec, request_id=f"{_base_request_id(spec.request_id)}-R{session.generation + 1}")
+        self._rebuild(session, spec)
+
+    def new_request(self, session: UISession) -> None:
+        """The same customer's next request: today's data carried over, a fresh request id, no script and no
+        scripted faults. A later reset returns to this point (the caller holds session.lock)."""
+        spec = replace(session.spec, initial_state=session.case.tools.final_state(),
+                       request_id=self.next_request_id(), faults=[], case_id=None, turn_count=None)
+        self._rebuild(session, spec)
+
+    def _rebuild(self, session: UISession, spec: SessionSpec) -> None:
         old_path = session.store_path
         session.case.store.close()
         session.generation += 1
@@ -555,6 +590,150 @@ class LLMHealth:
 
 
 # ================================================================================================
+# The turn line: first come, first served
+
+
+class TurnLine:
+    """At most `limit` turns run at once; the next ones wait in arrival order (at most `max_waiting`,
+    then join() refuses). A finished turn hands its place straight to the first one waiting."""
+
+    def __init__(self, limit: int, max_waiting: int) -> None:
+        self.limit = limit
+        self.max_waiting = max_waiting
+        self._lock = threading.Lock()
+        self._free = limit
+        self._waiting: deque[threading.Event] = deque()
+        self.refused = 0
+        self.peak_waiting = 0
+
+    def join(self) -> threading.Event | None:
+        """A ticket that is set once this turn may run; None when the line is full."""
+        ticket = threading.Event()
+        with self._lock:
+            if self._free and not self._waiting:
+                self._free -= 1
+                ticket.set()
+            elif len(self._waiting) >= self.max_waiting:
+                self.refused += 1
+                return None
+            else:
+                self._waiting.append(ticket)
+                self.peak_waiting = max(self.peak_waiting, len(self._waiting))
+        return ticket
+
+    def position(self, ticket: threading.Event) -> int:
+        """1 for the first one waiting; 0 once the turn may run."""
+        with self._lock:
+            return 0 if ticket.is_set() else self._waiting.index(ticket) + 1
+
+    def leave(self) -> None:
+        with self._lock:
+            if self._waiting:
+                self._waiting.popleft().set()
+            else:
+                self._free += 1
+
+    def snapshot(self) -> dict[str, Any]:
+        with self._lock:
+            return {"max_turns": self.limit, "running": self.limit - self._free, "waiting": len(self._waiting),
+                    "peak_waiting": self.peak_waiting, "max_waiting": self.max_waiting, "turns_refused": self.refused}
+
+
+# ================================================================================================
+# Load runs started from the page
+
+
+MAX_LOAD_CUSTOMERS = 20000
+MAX_LOAD_CONCURRENCY = 2000
+
+
+class LoadRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    customers: StrictInt = Field(ge=1, le=MAX_LOAD_CUSTOMERS)
+    concurrency: StrictInt = Field(ge=1, le=MAX_LOAD_CONCURRENCY)
+    scenarios: list[str] | None = None
+
+
+def _read_json(path: Path) -> Any:
+    try:
+        return json.loads(path.read_text())
+    except (OSError, ValueError):
+        return None
+
+
+class LoadRuns:
+    """Load runs started from the page. bench.load runs in its own process and calls this server over
+    HTTP, as outside customers would, rewriting a live snapshot that GET /api/load reads. One run at a
+    time; the newest is kept so a reloaded page still shows it."""
+
+    def __init__(self, out_dir: Path, launch: Callable[..., Any] = subprocess.Popen) -> None:
+        self.out_dir = out_dir
+        self.launch = launch
+        self._lock = threading.Lock()
+        self._run: dict[str, Any] | None = None
+
+    def start(self, url: str, body: LoadRequest) -> dict[str, Any]:
+        with self._lock:
+            if self._run is not None and self._run["proc"].poll() is None:
+                raise SessionError(409, "a load run is still going; stop it or wait for it to finish")
+            run_id = f"L-{secrets.token_hex(4)}"
+            self.out_dir.mkdir(parents=True, exist_ok=True)
+            live, report, log = (self.out_dir / f"{run_id}{suffix}" for suffix in (".live.json", ".json", ".log"))
+            argv = [sys.executable, "-m", "bench.load", "--url", url, "--customers", str(body.customers),
+                    "--concurrency", str(body.concurrency), "--out", str(report), "--live", str(live)]
+            if body.scenarios:
+                argv += ["--scenarios", *body.scenarios]
+            with log.open("wb") as log_file:  # the child keeps its own copy of the handle
+                proc = self.launch(argv, cwd=ROOT, stdout=log_file, stderr=subprocess.STDOUT)
+            self._run = {"run_id": run_id, "customers": body.customers, "concurrency": body.concurrency,
+                         "scenarios": body.scenarios, "started": time.time(), "proc": proc, "stopped": False,
+                         "live": live, "report": report, "log": log}
+        return self.view() or {}
+
+    def view(self) -> dict[str, Any] | None:
+        with self._lock:
+            run = self._run
+        if run is None:
+            return None
+        running = run["proc"].poll() is None
+        report = None if running else _read_json(run["report"])
+        if running:
+            state = "running"
+        elif run["stopped"]:
+            state = "stopped"
+        else:
+            state = "finished" if report is not None else "failed"
+        out: dict[str, Any] = {key: run[key] for key in ("run_id", "customers", "concurrency", "scenarios")}
+        out.update(state=state, live=_read_json(run["live"]),
+                   report={k: v for k, v in report.items() if k != "samples"} if report else None,
+                   report_path=str(run["report"].relative_to(ROOT)) if run["report"].is_relative_to(ROOT) else None)
+        if state == "failed":
+            lines = run["log"].read_text(errors="replace").strip().splitlines() if run["log"].exists() else []
+            out["error"] = lines[-1][:300] if lines else "the load tool exited without a report"
+        return out
+
+    def stop(self, run_id: str) -> dict[str, Any]:
+        with self._lock:
+            run = self._run
+            if run is None or run["run_id"] != run_id:
+                raise SessionError(404, f"no load run {run_id}")
+            if run["proc"].poll() is None:
+                run["stopped"] = True
+                run["proc"].terminate()
+                try:
+                    run["proc"].wait(timeout=5)
+                except subprocess.TimeoutExpired:
+                    run["proc"].kill()
+        return self.view() or {}
+
+    def stop_all(self) -> None:
+        with self._lock:
+            run = self._run
+        if run is not None and run["proc"].poll() is None:
+            self.stop(run["run_id"])
+
+
+# ================================================================================================
 # The turn stream
 
 
@@ -565,20 +744,27 @@ def sse(event: str, data: Any) -> str:
     return f"event: {event}\ndata: {json.dumps(data, ensure_ascii=False)}\n\n"
 
 
-def start_turn(session: UISession, board: TelemetryBoard, message: str, confirm_id: str | None) -> Iterator[str]:
+def start_turn(session: UISession, board: TelemetryBoard, message: str, confirm_id: str | None,
+               line: TurnLine | None = None, ticket: threading.Event | None = None) -> Iterator[str]:
     """Run one turn in a worker thread and return the SSE stream of its audit entries.
 
-    The caller already holds `session.lock`; the worker releases it when the turn ends, even if
-    the browser went away mid-stream (a turn is never abandoned half way)."""
+    The caller already holds `session.lock` (and a `ticket` in `line`, if given). While the ticket
+    waits, the stream sends `queued` events with the place in line; then the turn runs. The worker
+    releases both when the turn ends, even if the browser went away mid-stream (a turn is never
+    abandoned half way)."""
     events: queue.Queue[Any] = queue.Queue()
     case = session.case
-    unsubscribe = case.audit.subscribe(lambda entry: events.put(("audit", entry)))
     turn_no = len(case.desk.history) + 1
-    events.put(("start", {"turn": turn_no, "message": message, "confirm_proposal_id": confirm_id}))
+    unsubscribe: Callable[[], None] = lambda: None  # noqa: E731 - replaced once the turn starts
 
     def work() -> None:
+        nonlocal unsubscribe
         released = False
         try:
+            while ticket is not None and line is not None and not ticket.wait(QUEUED_EVERY_S):
+                events.put(("queued", {"turn": turn_no, "position": line.position(ticket)}))
+            unsubscribe = case.audit.subscribe(lambda entry: events.put(("audit", entry)))
+            events.put(("start", {"turn": turn_no, "message": message, "confirm_proposal_id": confirm_id}))
             output = case.run_turn(message, confirm_id)
             latency = case.desk.turn_latency_ms[-1] if case.desk.turn_latency_ms else None
             record = {"turn": turn_no, "message": message, "confirm_proposal_id": confirm_id, "output": output,
@@ -595,8 +781,12 @@ def start_turn(session: UISession, board: TelemetryBoard, message: str, confirm_
             if not released:
                 unsubscribe()
                 session.lock.release()
+            if line is not None:
+                line.leave()
             events.put(_DONE)
 
+    if ticket is not None and line is not None and not ticket.is_set():
+        events.put(("queued", {"turn": turn_no, "position": line.position(ticket)}))
     threading.Thread(target=work, name=f"turn-{session.session_id}-{turn_no}", daemon=True).start()
     return _drain(events)
 
@@ -723,13 +913,19 @@ def create_app(config: ServerConfig | None = None, llm: Any = None) -> FastAPI:
     `llm` replaces the configured client (tests pass scripted or deliberately broken ones)."""
     config = config or ServerConfig.from_env()
     profile = get_profile(config.profile)
-    cases = {c["case_id"]: c for c in load_cases(config.cases_path)}
+    demo = load_cases(config.demo_cases_path) if config.demo_cases_path else []
+    cases = {c["case_id"]: c for c in load_cases(config.cases_path) + demo}
     board = TelemetryBoard(None if config.fake else config.llama_port)
-    registry = SessionRegistry(llm or build_llm(config, profile), profile, config.var_dir / "sessions", board)
+    model = llm or build_llm(config, profile)
+    registry = SessionRegistry(model, profile, config.var_dir / "sessions", board)
     health = LLMHealth(config)
+    limit = turn_limit(config)
+    line = TurnLine(limit, config.max_waiting) if limit is not None else None
     app = FastAPI(title="Returns Desk", docs_url=None, redoc_url=None)
     app.state.registry = registry
     app.state.config = config
+    app.state.turn_line = line
+    app.state.load_runs = load_runs = LoadRuns(config.var_dir / "load")
     app.add_middleware(LocalRequestGuard, config=config)
 
     @app.exception_handler(RequestValidationError)
@@ -791,7 +987,12 @@ def create_app(config: ServerConfig | None = None, llm: Any = None) -> FastAPI:
         except HTTPException:
             session.lock.release()
             raise
-        stream = start_turn(session, board, body.message, body.confirm_proposal_id or None)
+        ticket = line.join() if line is not None else None
+        if line is not None and ticket is None:
+            session.lock.release()
+            raise HTTPException(503, f"the desk is at capacity ({line.max_waiting} turns already waiting); "
+                                     f"retry in {RETRY_AFTER_S} s", headers={"Retry-After": str(RETRY_AFTER_S)})
+        stream = start_turn(session, board, body.message, body.confirm_proposal_id or None, line, ticket)
         return StreamingResponse(stream, media_type="text/event-stream",
                                  headers={"Cache-Control": "no-store", "X-Accel-Buffering": "no"})
 
@@ -822,10 +1023,47 @@ def create_app(config: ServerConfig | None = None, llm: Any = None) -> FastAPI:
             session.lock.release()
         return snapshot(session)
 
+    @app.post("/api/sessions/{session_id}/new-request")
+    def post_new_request(session_id: str) -> dict[str, Any]:
+        session = session_or_error(session_id)
+        claim(session)
+        try:
+            registry.new_request(session)
+        finally:
+            session.lock.release()
+        return snapshot(session)
+
+    @app.post("/api/load")
+    def post_load(body: LoadRequest) -> dict[str, Any]:
+        """Start a load run: `customers` simulated customers, `concurrency` at a time, through this API."""
+        if config.port is None:
+            raise HTTPException(503, "the load tool needs this server's port: start the desk with scripts/run.sh")
+        unknown = [case_id for case_id in body.scenarios or [] if case_id not in cases]
+        if unknown:
+            raise HTTPException(422, f"unknown scenario(s): {', '.join(unknown)}")
+        try:
+            return load_runs.start(f"http://127.0.0.1:{config.port}", body)
+        except SessionError as exc:
+            raise HTTPException(exc.status, exc.message) from exc
+
+    @app.get("/api/load")
+    def get_load() -> dict[str, Any]:
+        return {"run": load_runs.view()}
+
+    @app.post("/api/load/{run_id}/stop")
+    def stop_load(run_id: str) -> dict[str, Any]:
+        try:
+            return load_runs.stop(run_id)
+        except SessionError as exc:
+            raise HTTPException(exc.status, exc.message) from exc
+
     @app.get("/api/telemetry")
     def get_telemetry() -> dict[str, Any]:
+        capacity: dict[str, Any] = line.snapshot() if line is not None else {"max_turns": None, "turns_refused": 0}
+        if hasattr(model, "load"):
+            capacity["model"] = model.load()
         return {"last_step": board.last_step, "last_turn": board.last_turn, "memory": board.memory(),
-                "mode": config.llm_mode}
+                "mode": config.llm_mode, "capacity": capacity}
 
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
     return app
@@ -857,7 +1095,8 @@ def ensure_llama(config: ServerConfig, profile: Profile, warm: bool = True) -> L
         server = None
     else:
         log = config.var_dir / f"llama-server-{config.llama_port}.log"
-        server = LlamaServer(profile, config.llama_port, log, allow_engine_mismatch=config.allow_engine_mismatch)
+        server = LlamaServer(profile, config.llama_port, log, allow_engine_mismatch=config.allow_engine_mismatch,
+                             slots=config.slots)
         startup = server.start()
         if startup.get("engine_version_match") is False:
             _log(f"WARNING: llama.cpp {startup['engine_version']!r} is not the pinned {startup['engine_version_expected']!r}; "
@@ -872,6 +1111,14 @@ def ensure_llama(config: ServerConfig, profile: Profile, warm: bool = True) -> L
     return server
 
 
+def served_slots(llama_url: str) -> int | None:
+    """The running llama-server's slot count (GET /props), or None when it does not say."""
+    try:
+        return int(httpx.get(f"{llama_url.rstrip('/')}/props", timeout=2.0).json()["total_slots"])
+    except (httpx.HTTPError, ValueError, KeyError, TypeError):
+        return None
+
+
 def parse_args(argv: list[str] | None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Serve the Returns Desk UI.")
     parser.add_argument("--host", default="127.0.0.1")
@@ -881,6 +1128,9 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
     parser.add_argument("--fake", action="store_true", help="use the deterministic fake-policy LLM (no model)")
     parser.add_argument("--start-llama", action="store_true", help="start llama-server if none is healthy at the URL")
     parser.add_argument("--no-warmup", action="store_true", help="skip the prompt-cache warm-up")
+    parser.add_argument("--slots", type=int, default=SLOTS,
+                        help=f"parallel model requests, with --start-llama (default {SLOTS}, as benchmarked)")
+    parser.add_argument("--max-turns", type=int, help=f"turns running at once (default {TURNS_PER_SLOT} per slot)")
     parser.add_argument("--allow-engine-mismatch", action="store_true",
                         help="with --start-llama, run a llama.cpp build other than the pinned one (or DESK_ALLOW_ENGINE_MISMATCH=1)")
     return parser.parse_args(argv)
@@ -894,7 +1144,7 @@ def main(argv: list[str] | None = None) -> int:
     config = replace(config, llama_url=args.llama_url or config.llama_url, profile=args.profile or config.profile,
                      llm_mode=FAKE_POLICY if args.fake else config.llm_mode, port=args.port,
                      allow_engine_mismatch=args.allow_engine_mismatch or config.allow_engine_mismatch,
-                     allowed_hostnames=tuple(dict.fromkeys(hostnames)))
+                     allowed_hostnames=tuple(dict.fromkeys(hostnames)), slots=args.slots, max_turns=args.max_turns)
     profile = get_profile(config.profile)
     # Python's default SIGTERM/SIGHUP end the process without running `finally`; turn them into SystemExit
     # so a llama-server we started is always stopped (scripts/run.sh sends SIGTERM on exit).
@@ -908,8 +1158,16 @@ def main(argv: list[str] | None = None) -> int:
             except LlamaServerError as exc:
                 _log(f"could not start llama-server: {exc}")
                 return 3
+            actual = served_slots(config.llama_url)
+            if actual is not None and actual != config.slots:  # attached to a server started with other flags
+                _log(f"llama-server serves {actual} slot(s), not {config.slots}: the desk sends {actual} call(s) at a time")
+                config = replace(config, slots=actual)
         _log(f"Returns Desk UI on http://{args.host}:{args.port} (profile {profile.name}, llm {config.llm_mode})")
-        uvicorn.run(create_app(config), host=args.host, port=args.port, log_level="warning")
+        app = create_app(config)
+        try:
+            uvicorn.run(app, host=args.host, port=args.port, log_level="warning")
+        finally:
+            app.state.load_runs.stop_all()  # a load run started from the page ends with the server
     finally:
         if llama is not None:
             llama.stop()

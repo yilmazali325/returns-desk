@@ -263,9 +263,18 @@ def test_flag_with_nothing_to_confirm_uses_an_item_named_in_an_earlier_turn(stat
     assert out["decision"] == PROPOSE and desk.audit("gate") == []
 
 
-def test_no_item_named_without_the_flag_still_proposes_the_only_line(state) -> None:
-    desk = Desk(_hoodie_only(state), PROPOSE_TURN)
+def test_no_item_named_asks_which_item_even_when_the_account_has_one_line(state) -> None:
+    # owner decision 2026-11-02: owning a single item is not a reason to guess which one is meant
+    desk = Desk(_hoodie_only(state), {"resolution": [HX9, R("Which item would you like to refund?")], "operations": []})
     out = desk.turn("Yes, go ahead and refund it.")
+    assert out["decision"] == CLARIFY and desk.session.tools.proposals() == []
+    rejection = desk.audit("gate")[0]["error"]
+    assert rejection["code"] == "AMBIGUOUS_TARGET" and "could not read an item" in rejection["hint"]
+
+
+def test_naming_the_only_item_still_proposes_it(state) -> None:
+    desk = Desk(_hoodie_only(state), PROPOSE_TURN)
+    out = desk.turn("Please refund my hoodie.")
     assert out["decision"] == PROPOSE and desk.audit("gate") == []
 
 

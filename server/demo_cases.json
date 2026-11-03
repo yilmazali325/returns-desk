@@ -1,0 +1,548 @@
+{
+  "contract_version": 1,
+  "note": "Demo-only chats written the way customers type (no IDs, typos, slang, Spanish), copied from evals/holdout/holdout_v2.json. Shown in the UI after the public cases; never scored.",
+  "cases": [
+    {
+      "case_id": "demo_07_typos_hoodie_exchange",
+      "customer_id": "C4100",
+      "request_id": "REQ-DEMO-07",
+      "initial_state": {
+        "as_of": "2026-11-01",
+        "currency": "USD",
+        "products": [
+          {
+            "sku": "TEE-S",
+            "product_id": "TEE",
+            "size": "S",
+            "price_cents": 4000,
+            "stock": 5
+          },
+          {
+            "sku": "TEE-M",
+            "product_id": "TEE",
+            "size": "M",
+            "price_cents": 4000,
+            "stock": 2
+          },
+          {
+            "sku": "TEE-L",
+            "product_id": "TEE",
+            "size": "L",
+            "price_cents": 4000,
+            "stock": 3
+          },
+          {
+            "sku": "TEE-XL",
+            "product_id": "TEE",
+            "size": "XL",
+            "price_cents": 4500,
+            "stock": 4
+          },
+          {
+            "sku": "JACKET-S",
+            "product_id": "JACKET",
+            "size": "S",
+            "price_cents": 9000,
+            "stock": 2
+          },
+          {
+            "sku": "JACKET-M",
+            "product_id": "JACKET",
+            "size": "M",
+            "price_cents": 9000,
+            "stock": 1
+          },
+          {
+            "sku": "JACKET-L",
+            "product_id": "JACKET",
+            "size": "L",
+            "price_cents": 9000,
+            "stock": 0
+          },
+          {
+            "sku": "HOODIE-S",
+            "product_id": "HOODIE",
+            "size": "S",
+            "price_cents": 6000,
+            "stock": 0
+          },
+          {
+            "sku": "HOODIE-M",
+            "product_id": "HOODIE",
+            "size": "M",
+            "price_cents": 6000,
+            "stock": 3
+          },
+          {
+            "sku": "HOODIE-L",
+            "product_id": "HOODIE",
+            "size": "L",
+            "price_cents": 6000,
+            "stock": 2
+          },
+          {
+            "sku": "HOODIE-XL",
+            "product_id": "HOODIE",
+            "size": "XL",
+            "price_cents": 6000,
+            "stock": 1
+          },
+          {
+            "sku": "JEANS-30",
+            "product_id": "JEANS",
+            "size": "30",
+            "price_cents": 7000,
+            "stock": 2
+          },
+          {
+            "sku": "JEANS-32",
+            "product_id": "JEANS",
+            "size": "32",
+            "price_cents": 7000,
+            "stock": 1
+          },
+          {
+            "sku": "JEANS-34",
+            "product_id": "JEANS",
+            "size": "34",
+            "price_cents": 7000,
+            "stock": 2
+          },
+          {
+            "sku": "JEANS-36",
+            "product_id": "JEANS",
+            "size": "36",
+            "price_cents": 7000,
+            "stock": 3
+          },
+          {
+            "sku": "SNEAKER-9",
+            "product_id": "SNEAKER",
+            "size": "9",
+            "price_cents": 11000,
+            "stock": 2
+          },
+          {
+            "sku": "SNEAKER-9.5",
+            "product_id": "SNEAKER",
+            "size": "9.5",
+            "price_cents": 11000,
+            "stock": 1
+          },
+          {
+            "sku": "SNEAKER-10",
+            "product_id": "SNEAKER",
+            "size": "10",
+            "price_cents": 11000,
+            "stock": 1
+          },
+          {
+            "sku": "SNEAKER-10.5",
+            "product_id": "SNEAKER",
+            "size": "10.5",
+            "price_cents": 11000,
+            "stock": 4
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "O-1201",
+            "customer_id": "C4100",
+            "status": "delivered",
+            "delivered_on": "2026-10-23",
+            "lines": [
+              {
+                "line_id": "L1",
+                "sku": "HOODIE-L",
+                "paid_cents": 5400,
+                "unopened": true,
+                "final_sale": false,
+                "returned": false
+              }
+            ]
+          }
+        ],
+        "returns": [],
+        "refunds": [],
+        "exchanges": [],
+        "quarantine": [],
+        "idempotency": {}
+      },
+      "turns": [
+        {
+          "message": "can i exhange my hoodi for a mediun pls its waaay to big"
+        },
+        {
+          "message": "ya",
+          "confirm_proposal": "last"
+        }
+      ],
+      "faults": []
+    },
+    {
+      "case_id": "demo_08_slang_size_down_then_refund",
+      "customer_id": "C4101",
+      "request_id": "REQ-DEMO-08",
+      "initial_state": {
+        "as_of": "2026-11-01",
+        "currency": "USD",
+        "products": [
+          {
+            "sku": "TEE-S",
+            "product_id": "TEE",
+            "size": "S",
+            "price_cents": 4000,
+            "stock": 5
+          },
+          {
+            "sku": "TEE-M",
+            "product_id": "TEE",
+            "size": "M",
+            "price_cents": 4000,
+            "stock": 2
+          },
+          {
+            "sku": "TEE-L",
+            "product_id": "TEE",
+            "size": "L",
+            "price_cents": 4000,
+            "stock": 3
+          },
+          {
+            "sku": "TEE-XL",
+            "product_id": "TEE",
+            "size": "XL",
+            "price_cents": 4500,
+            "stock": 4
+          },
+          {
+            "sku": "JACKET-S",
+            "product_id": "JACKET",
+            "size": "S",
+            "price_cents": 9000,
+            "stock": 2
+          },
+          {
+            "sku": "JACKET-M",
+            "product_id": "JACKET",
+            "size": "M",
+            "price_cents": 9000,
+            "stock": 1
+          },
+          {
+            "sku": "JACKET-L",
+            "product_id": "JACKET",
+            "size": "L",
+            "price_cents": 9000,
+            "stock": 0
+          },
+          {
+            "sku": "HOODIE-S",
+            "product_id": "HOODIE",
+            "size": "S",
+            "price_cents": 6000,
+            "stock": 0
+          },
+          {
+            "sku": "HOODIE-M",
+            "product_id": "HOODIE",
+            "size": "M",
+            "price_cents": 6000,
+            "stock": 3
+          },
+          {
+            "sku": "HOODIE-L",
+            "product_id": "HOODIE",
+            "size": "L",
+            "price_cents": 6000,
+            "stock": 2
+          },
+          {
+            "sku": "HOODIE-XL",
+            "product_id": "HOODIE",
+            "size": "XL",
+            "price_cents": 6000,
+            "stock": 1
+          },
+          {
+            "sku": "JEANS-30",
+            "product_id": "JEANS",
+            "size": "30",
+            "price_cents": 7000,
+            "stock": 2
+          },
+          {
+            "sku": "JEANS-32",
+            "product_id": "JEANS",
+            "size": "32",
+            "price_cents": 7000,
+            "stock": 1
+          },
+          {
+            "sku": "JEANS-34",
+            "product_id": "JEANS",
+            "size": "34",
+            "price_cents": 7000,
+            "stock": 2
+          },
+          {
+            "sku": "JEANS-36",
+            "product_id": "JEANS",
+            "size": "36",
+            "price_cents": 7000,
+            "stock": 3
+          },
+          {
+            "sku": "SNEAKER-9",
+            "product_id": "SNEAKER",
+            "size": "9",
+            "price_cents": 11000,
+            "stock": 2
+          },
+          {
+            "sku": "SNEAKER-9.5",
+            "product_id": "SNEAKER",
+            "size": "9.5",
+            "price_cents": 11000,
+            "stock": 1
+          },
+          {
+            "sku": "SNEAKER-10",
+            "product_id": "SNEAKER",
+            "size": "10",
+            "price_cents": 11000,
+            "stock": 1
+          },
+          {
+            "sku": "SNEAKER-10.5",
+            "product_id": "SNEAKER",
+            "size": "10.5",
+            "price_cents": 11000,
+            "stock": 4
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "O-1202",
+            "customer_id": "C4101",
+            "status": "delivered",
+            "delivered_on": "2026-10-18",
+            "lines": [
+              {
+                "line_id": "L1",
+                "sku": "HOODIE-M",
+                "paid_cents": 6000,
+                "unopened": true,
+                "final_sale": false,
+                "returned": false
+              }
+            ]
+          }
+        ],
+        "returns": [],
+        "refunds": [],
+        "exchanges": [],
+        "quarantine": [],
+        "idempotency": {}
+      },
+      "turns": [
+        {
+          "message": "yo this hoodie is hella baggy lol, can i swap it one size down?"
+        },
+        {
+          "message": "ugh ok just refund it then"
+        },
+        {
+          "message": "ok",
+          "confirm_proposal": "last"
+        }
+      ],
+      "faults": []
+    },
+    {
+      "case_id": "demo_09_spanglish_tee_exchange",
+      "customer_id": "C5152",
+      "request_id": "REQ-DEMO-09",
+      "initial_state": {
+        "as_of": "2026-11-01",
+        "currency": "USD",
+        "products": [
+          {
+            "sku": "TEE-S",
+            "product_id": "TEE",
+            "size": "S",
+            "price_cents": 4000,
+            "stock": 5
+          },
+          {
+            "sku": "TEE-M",
+            "product_id": "TEE",
+            "size": "M",
+            "price_cents": 4000,
+            "stock": 2
+          },
+          {
+            "sku": "TEE-L",
+            "product_id": "TEE",
+            "size": "L",
+            "price_cents": 4000,
+            "stock": 3
+          },
+          {
+            "sku": "TEE-XL",
+            "product_id": "TEE",
+            "size": "XL",
+            "price_cents": 4500,
+            "stock": 4
+          },
+          {
+            "sku": "JACKET-S",
+            "product_id": "JACKET",
+            "size": "S",
+            "price_cents": 9000,
+            "stock": 2
+          },
+          {
+            "sku": "JACKET-M",
+            "product_id": "JACKET",
+            "size": "M",
+            "price_cents": 9000,
+            "stock": 1
+          },
+          {
+            "sku": "JACKET-L",
+            "product_id": "JACKET",
+            "size": "L",
+            "price_cents": 9000,
+            "stock": 0
+          },
+          {
+            "sku": "HOODIE-S",
+            "product_id": "HOODIE",
+            "size": "S",
+            "price_cents": 6000,
+            "stock": 0
+          },
+          {
+            "sku": "HOODIE-M",
+            "product_id": "HOODIE",
+            "size": "M",
+            "price_cents": 6000,
+            "stock": 3
+          },
+          {
+            "sku": "HOODIE-L",
+            "product_id": "HOODIE",
+            "size": "L",
+            "price_cents": 6000,
+            "stock": 2
+          },
+          {
+            "sku": "HOODIE-XL",
+            "product_id": "HOODIE",
+            "size": "XL",
+            "price_cents": 6000,
+            "stock": 1
+          },
+          {
+            "sku": "JEANS-30",
+            "product_id": "JEANS",
+            "size": "30",
+            "price_cents": 7000,
+            "stock": 2
+          },
+          {
+            "sku": "JEANS-32",
+            "product_id": "JEANS",
+            "size": "32",
+            "price_cents": 7000,
+            "stock": 1
+          },
+          {
+            "sku": "JEANS-34",
+            "product_id": "JEANS",
+            "size": "34",
+            "price_cents": 7000,
+            "stock": 2
+          },
+          {
+            "sku": "JEANS-36",
+            "product_id": "JEANS",
+            "size": "36",
+            "price_cents": 7000,
+            "stock": 3
+          },
+          {
+            "sku": "SNEAKER-9",
+            "product_id": "SNEAKER",
+            "size": "9",
+            "price_cents": 11000,
+            "stock": 2
+          },
+          {
+            "sku": "SNEAKER-9.5",
+            "product_id": "SNEAKER",
+            "size": "9.5",
+            "price_cents": 11000,
+            "stock": 1
+          },
+          {
+            "sku": "SNEAKER-10",
+            "product_id": "SNEAKER",
+            "size": "10",
+            "price_cents": 11000,
+            "stock": 1
+          },
+          {
+            "sku": "SNEAKER-10.5",
+            "product_id": "SNEAKER",
+            "size": "10.5",
+            "price_cents": 11000,
+            "stock": 4
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "O-3002",
+            "customer_id": "C5152",
+            "status": "delivered",
+            "delivered_on": "2026-10-29",
+            "lines": [
+              {
+                "line_id": "L1",
+                "sku": "TEE-M",
+                "paid_cents": 3500,
+                "unopened": true,
+                "final_sale": false,
+                "returned": false
+              },
+              {
+                "line_id": "L2",
+                "sku": "JEANS-32",
+                "paid_cents": 7000,
+                "unopened": true,
+                "final_sale": false,
+                "returned": false
+              }
+            ]
+          }
+        ],
+        "returns": [],
+        "refunds": [],
+        "exchanges": [],
+        "quarantine": [],
+        "idempotency": {}
+      },
+      "turns": [
+        {
+          "message": "Hi! Quisiera cambiar my tee por una talla L, porfa. Es muy peque\u00f1a."
+        },
+        {
+          "message": "S\u00ed, perfecto",
+          "confirm_proposal": "last"
+        }
+      ],
+      "faults": []
+    }
+  ]
+}

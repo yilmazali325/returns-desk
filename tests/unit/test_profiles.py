@@ -82,6 +82,16 @@ def test_engine_argv_app_switches_and_caches():
                           "persistence": "within a run across cases; cleared by server restart between runs"}
 
 
+def test_engine_argv_with_more_slots_keeps_each_slot_at_the_pinned_context():
+    f = get_profile("F")
+    argv = f.engine_argv("/bin/llama-server", "/m/model.gguf", 8401, slots=4)
+    assert argv[argv.index("-np") + 1] == "4" and argv[argv.index("-c") + 1] == str(4 * 8192)
+    rest = [a for i, a in enumerate(argv[5:]) if a not in ("-np", "-c") and argv[5:][i - 1] not in ("-np", "-c")]
+    pinned = [a for i, a in enumerate(f.engine_flags) if a not in ("-np", "-c") and f.engine_flags[i - 1] not in ("-np", "-c")]
+    assert rest == pinned  # nothing else changes
+    assert f.engine_argv("/bin/llama-server", "/m/model.gguf", 8401, slots=1)[5:] == list(f.engine_flags)
+
+
 def test_aliases_and_unknown_names():
     assert get_profile("final") is get_profile("F")
     assert get_profile("baseline") is get_profile("B")

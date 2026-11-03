@@ -63,7 +63,7 @@ def test_a_confirm_turn_animates_the_handoff_approves_and_shows_the_refund_chip(
     assert strip.startswith("Turn 2") and "2 LLM agents" in strip and strip.endswith("completed")
 
 
-def test_replay_steps_through_exactly_the_audit_entries_of_the_turn(desk: Any) -> None:
+def test_replay_steps_through_the_audit_entries_then_the_reply_delivery(desk: Any) -> None:
     desk.open("refund_boundary")
     desk.run_script()
     desk.wait_team_caught_up()
@@ -76,14 +76,18 @@ def test_replay_steps_through_exactly_the_audit_entries_of_the_turn(desk: Any) -
     desk.page.wait_for_function("() => document.getElementById('replay').dataset.playing === 'true'")
     desk.wait_team_caught_up()
     position = desk.page.locator('[data-testid="replay-pos"]')
-    assert int(position.get_attribute("data-steps")) == audit_count == int(position.get_attribute("data-step"))
-    assert desk.page.locator('[data-testid="mission-log"] li').count() == audit_count
+    steps = audit_count + 2  # then the orchestrator's reply check and delivery (owner request 2026-11-02)
+    assert int(position.get_attribute("data-steps")) == steps == int(position.get_attribute("data-step"))
+    log = desk.page.locator('[data-testid="mission-log"] li')
+    assert log.count() == steps
+    assert log.nth(steps - 2).inner_text().startswith("Orchestrator → Reply guard")
+    assert log.nth(steps - 1).inner_text().startswith("Orchestrator → Customer")
     desk.page.focus('[data-testid="panel-team"]')
     desk.page.keyboard.press("ArrowLeft")
     desk.page.keyboard.press("ArrowLeft")
-    assert position.get_attribute("data-step") == str(audit_count - 2)
+    assert position.get_attribute("data-step") == str(steps - 2)
     desk.page.keyboard.press("ArrowRight")
-    assert position.get_attribute("data-step") == str(audit_count - 1)
+    assert position.get_attribute("data-step") == str(steps - 1)
 
 
 def test_the_slowest_replay_speed_moves_each_handoff_ten_times_slower(desk: Any) -> None:

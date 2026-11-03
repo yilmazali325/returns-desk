@@ -202,7 +202,7 @@ ID_TABLE = [
     # identifiers that are not orders or lines do not block grounding
     ("ONE", ["I'm customer C100, refund L1 of O100"], dict(target=("O100", "L1"), other=["C100"])),
     ("ONE", ["My account is C100. Refund L1."], dict(target=("O100", "L1"), other=["C100"])),
-    ("ONE", ["Yes I confirm P-0001"], dict(target=("O100", "L1"), other=["P-0001"], remedy=NONE)),
+    ("ONE", ["Yes I confirm P-0001"], dict(target=None, other=["P-0001"], remedy=NONE)),  # names no item: ask
     ("TWO", ["I wear us9 usually; refund the tee"], dict(target=("O100", "L1"), unknown_orders=[], other=[])),
     ("TWO", ["I want to order 2 more, but refund the tee"], dict(target=("O100", "L1"), orders=[], unknown_orders=[])),
     # a size letter inside an ID is never a size
@@ -226,7 +226,7 @@ SIZE_TABLE = [
     ("TWO", ["Refund the size M tee"], dict(target=("O100", "L1"), remedy=REFUND, orig=["M"], req=None)),
     ("TWO", ["exchange my medium tee for a large"], dict(target=("O100", "L1"), remedy=EXCHANGE, req="L", orig=["M"])),
     ("TWO", ["swap it for one size bigger"], dict(target=None, n=2, remedy=EXCHANGE, req=UP)),
-    ("ONE", ["swap it for one size bigger"], dict(target=("O100", "L1"), req=UP)),
+    ("ONE", ["swap it for one size bigger"], dict(target=None, req=UP)),  # names no item: ask
     ("TWO", ["This t-shirt is too small, can I exchange it?"], dict(target=("O100", "L1"), req=UP, sizes=[])),
     ("TWO", ["exchange my tee, it's too big"], dict(req=DOWN)),
     ("TWO", ["the medium tee is too large for me, swap it"], dict(req=DOWN, orig=["M"], target=("O100", "L1"))),
@@ -258,7 +258,7 @@ SIZE_TABLE = [
     ("ONE", ["can I swap my tee for an L?", "is the XL available instead?"], dict(target=("O100", "L1"), req="XL")),
     ("ONE", ["swap my tee for a large", "ok what about the small then?"], dict(target=("O100", "L1"), req="S")),
     ("ONE", ["swap my tee", "is the large back in stock?"], dict(target=("O100", "L1"), req="L")),
-    ("ONE", ["Refund the large one please"], dict(target=("O100", "L1"), orig=["L"])),  # loose: ignored, explained
+    ("ONE", ["Refund the large one please"], dict(target=None, orig=["L"])),  # loose: ignored, explained, so ask
     ("ONE", ["Please refund my size L tee."], dict(target=None, n=0, orig=["L"])),  # describes the item: hard
     ("ONE", ["Refund the size L tee"], dict(target=None, n=0)),
     # "the same size" (code-NEW-1)
@@ -313,7 +313,7 @@ PRODUCT_TABLE = [
      dict(target=("O100", "L1"), remedy=EXCHANGE, req="L")),
     ("TWO", ["refund both items"], dict(target=None, n=2)),
     ("TWO", ["refund the tee and the jacket"], dict(target=None, n=2, products=["TEE", "JACKET"])),
-    ("ONE", ["refund it"], dict(target=("O100", "L1"), remedy=REFUND)),
+    ("ONE", ["refund it"], dict(target=None, remedy=REFUND)),  # names no item: ask even with one line
 ]
 
 
@@ -549,8 +549,8 @@ TARGET_TABLE = [
     ("ONE", ["Refund line L1 of order O999"], "O100", "L1", None, (False, "ORDER_NOT_FOUND", None)),
     ("SPLIT", ["refund L5 of O100"], "O101", "L5", None, (False, "LINE_NOT_FOUND", None)),
     # one line on the account: the agent's choice stands unless the customer described another item
-    ("ONE", ["refund it"], "O100", "L1", None, (True, None, BY_ONLY_LINE)),
-    ("ONE", ["chaqueta, refund por favor"], "O100", "L1", None, (True, None, BY_ONLY_LINE)),
+    ("ONE", ["refund it"], "O100", "L1", None, (False, "AMBIGUOUS_TARGET", None)),  # names no item: ask (owner 2026-11-02)
+    ("ONE", ["chaqueta, refund por favor"], "O100", "L1", None, (False, "AMBIGUOUS_TARGET", None)),  # no item read
     ("ONE", ["Please refund my size L tee."], "O100", "L1", None, (False, "TARGET_MISMATCH", None)),
     ("ONE", ["refund my dress"], "O100", "L1", None, (False, "TARGET_MISMATCH", None)),
     ("ONE", ["I'd like to send the hoodie back"], "O100", "L1", None, (False, "TARGET_MISMATCH", None)),  # sold, not owned
@@ -779,8 +779,22 @@ def test_missing_product_fields_are_filled_from_catalog() -> None:
     assert analyze(["refund the medium one"], lines, CAT).unique_target == ("O100", "L1")  # GHOST has no size
 
 
+@pytest.mark.parametrize("message, evidence, ok", [
+    ("can i exhange my hoodi for a mediun pls", "my hoodi", True),       # a typo code cannot read
+    ("chaqueta, refund por favor", "chaqueta", True),                  # another language
+    ("i wanna get refund", None, False),                                # nothing cited
+    ("i wanna get refund", "i wanna get refund", False),                # generic words only
+    ("can i exhange my hoodi for a mediun pls", "a mediun", False),    # a size, not the item
+    ("can i exhange my hoodi for a mediun pls", "my hoodie", False),   # not what the customer typed
+])
+def test_one_line_account_accepts_a_real_quote_that_names_the_item(message, evidence, ok) -> None:
+    verdict = check_target(analyze([message], ONE, CAT), "O100", "L1", evidence)
+    assert verdict.ok is ok, verdict
+    assert verdict.grounded_by == ("agent" if ok else None)
+
+
 def test_empty_conversation() -> None:
-    assert analyze([], ONE, CAT).unique_target == ("O100", "L1")
+    assert analyze([], ONE, CAT).unique_target is None  # nothing named: ask, even with one line
     assert analyze([], TWO, CAT).unique_target is None
     assert analyze(["refund it"], [], CAT).unique_target is None
 

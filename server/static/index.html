@@ -50,6 +50,8 @@
         <p class="hint" id="scenario-notes"></p>
         <div class="button-row">
           <button type="button" id="reset-btn" class="btn" data-testid="reset">Reset state</button>
+          <button type="button" id="new-request-btn" class="btn" data-testid="new-request"
+                  title="Start this customer's next request; refunds, exchanges and stock so far are kept">New request</button>
         </div>
         <details class="session-more">
           <summary>Session details</summary>
@@ -102,6 +104,7 @@
         <div role="tablist" aria-label="Agent views">
           <button type="button" role="tab" id="tab-team" aria-selected="true" aria-controls="panel-team" data-testid="tab-team">Team (live)</button>
           <button type="button" role="tab" id="tab-audit" aria-selected="false" aria-controls="panel-audit" tabindex="-1" data-testid="tab-audit">Audit trail</button>
+          <button type="button" role="tab" id="tab-load" aria-selected="false" aria-controls="panel-load" tabindex="-1" data-testid="tab-load">Load test</button>
         </div>
         <button type="button" class="btn btn-small" id="theater-btn" aria-pressed="false" data-testid="theater">Theater <kbd>T</kbd></button>
       </div>
@@ -143,6 +146,25 @@
           <button type="button" class="btn btn-small" id="audit-collapse">Collapse all</button>
         </div>
         <div id="audit-timeline" class="audit-timeline" data-testid="audit-timeline"></div>
+      </div>
+
+      <div role="tabpanel" id="panel-load" aria-labelledby="tab-load" tabindex="0" class="panel panel-load" hidden data-testid="panel-load">
+        <form id="load-form" class="load-form" data-testid="load-form" novalidate>
+          <label class="field"><span>Customers</span><input id="load-customers" type="number" min="1" max="20000" step="1" value="100" inputmode="numeric" required data-testid="load-customers"></label>
+          <label class="field"><span>At the same time</span><input id="load-concurrency" type="number" min="1" max="2000" step="1" value="20" inputmode="numeric" required data-testid="load-concurrency"></label>
+          <div class="load-actions">
+            <button type="submit" class="btn btn-primary" id="load-start" data-testid="load-start">Start load test</button>
+            <button type="button" class="btn" id="load-stop" hidden data-testid="load-stop">Stop</button>
+          </div>
+        </form>
+        <p class="hint">Each simulated customer opens its own session and sends one scenario's scripted messages through the same API as this page, from a separate process. While the desk is full, new turns (yours too) wait their turn.</p>
+        <p class="load-status" id="load-status" role="status" aria-live="polite" data-testid="load-status">No load test yet.</p>
+        <progress class="load-progress" id="load-progress" max="1" value="0" hidden data-testid="load-progress"></progress>
+        <div class="load-flow" id="load-flow" role="group" aria-label="Where the customers are" hidden data-testid="load-flow"></div>
+        <dl class="load-kpis" id="load-kpis" data-testid="load-kpis"></dl>
+        <div class="load-charts" id="load-charts" data-testid="load-charts"></div>
+        <details class="load-table" id="load-table-wrap" hidden><summary>Show the chart numbers as a table</summary><div id="load-table"></div></details>
+        <div class="load-result" id="load-result" data-testid="load-result"></div>
       </div>
     </section>
   </main>

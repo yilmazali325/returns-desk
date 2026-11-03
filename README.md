@@ -115,6 +115,54 @@ correctness:
 .venv/bin/python -m evals.score --input candidate_assets/public_cases.json --labels evals/expected/public_expected.json --output results.json
 ```
 
+## Load test
+
+Many customers at once against a running desk, through the same HTTP API the page uses. In the page:
+open the **Load test** tab, enter how many customers and how many at the same time, and press Start. It
+shows the flow (customers → waiting in line → turns running → model slots busy → done), live numbers (turns
+per second, reply time p50/p95, turns refused and retried, double refunds, breaker) and four charts: turns
+finished each second, reply time, turns running vs waiting in line, and model calls at the model vs waiting
+for a slot. Hover a chart for exact values; a table view is under the charts. From a terminal:
+
+```bash
+scripts/run.sh --fake --port 8010
+.venv/bin/python -m bench.load --url http://127.0.0.1:8010 --customers 1000 --concurrency 100
+```
+
+Each customer gets its own session for one scenario (public cases and demo chats in turn) and sends its
+scripted messages, confirming like the page does. The report (`var/load/load-<UTC time>.json`, plus a printed
+summary) has throughput, client and server latency p50/p95/p99, customers in flight, server memory, the decision
+mix, errors, and two checks: no line refunded or exchanged twice, and every copy of a scenario reached the same
+decisions. Point `--url` at `scripts/run.sh` (real model) for real speeds.
+
+How the desk stays up under load (real model; `server/app.py`, `desk/llm.py`):
+- `scripts/run.sh --slots 4` lets the model serve 4 requests at once (8192 tokens each). Benchmarked
+  results use the default, 1 slot.
+- At most that many calls go to the model at once; the rest wait in the desk, so the 20 s step timeout
+  measures only the model's work. A call that gets no slot within 60 s ends its turn in a decision
+  error: nothing changes, and the customer gets the safe reply.
+- At most 2 turns per slot run at once. Later turns wait in a first-come, first-served line and stream
+  `queued` events with their place every second. Only when 1000 turns already wait does a turn get `503`
+  with `Retry-After: 2`, which the load tool honours.
+- After 3 model failures in a row (down, hung, 5xx), a circuit breaker fails calls at once for 10 s, then
+  lets one trial call through.
+- `GET /api/telemetry` → `capacity`: turns running and waiting in line, slots, calls waiting and at the
+  model, turns refused, breaker state.
+
+Measured on the M5 Pro, 40 customers at once (`var/load/`):
+
+| Setup | Turns failed | Server turn p50 / p99 | Turns/s |
+|---|---|---|---|
+| Before: 1 slot, no limits | 44 of 86 (timeouts) | 40 s / 128 s | 0.53 |
+| 4 slots, 8 turns per slot | 2 of 86 (slot wait > 60 s) | 41 s / 107 s | 0.62 |
+| 4 slots, 2 turns per slot | 0 of 86 | 12 s / 25 s | 0.61 |
+| 4 slots, 2 turns per slot, waiting line | 0 of 88, 0 refused | 13 s / 31 s | 0.55 |
+
+On the test double, 1000 customers at 100 at a time finish in about 11 s (about 200 turns/s, 0 failed). The
+model is the ceiling: one local GPU gives about 0.6 turns/s whatever the slot count, so more throughput
+means more model servers. With the line, the customer's reply time includes the wait: p50 60 s at 40 at once,
+of which the server turn is 13 s.
+
 ## Benchmark
 
 ```bash

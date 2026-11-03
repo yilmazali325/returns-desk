@@ -39,7 +39,7 @@ from typing import IO, Any
 
 import httpx
 
-from desk.profiles import ENGINE_VERSION, Profile
+from desk.profiles import ENGINE_VERSION, SLOTS, Profile
 
 ROOT = Path(__file__).resolve().parents[1]
 MODELS_DIR = ROOT / "models"
@@ -299,8 +299,9 @@ class LlamaServer:
     def __init__(self, profile: Profile, port: int, log_path: Path, *, binary: str | None = None,
                  models_dir: Path = MODELS_DIR, host: str = "127.0.0.1", ready_timeout_s: float = 180.0,
                  expected_sha256: str | None = None, expected_engine_version: str = ENGINE_VERSION,
-                 allow_engine_mismatch: bool = False, warmup: bool = True) -> None:
+                 allow_engine_mismatch: bool = False, warmup: bool = True, slots: int = SLOTS) -> None:
         self.profile = profile
+        self.slots = slots
         self.port = port
         self.host = host
         self.log_path = Path(log_path)
@@ -328,7 +329,7 @@ class LlamaServer:
 
     @property
     def argv(self) -> list[str]:
-        return self.profile.engine_argv(self.binary, str(self.model_path), self.port)
+        return self.profile.engine_argv(self.binary, str(self.model_path), self.port, self.slots)
 
     def verify(self) -> dict[str, Any]:
         """Model hash + engine version checks (run by start(); callable alone for preflight)."""

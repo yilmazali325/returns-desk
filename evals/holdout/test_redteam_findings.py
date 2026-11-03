@@ -86,7 +86,8 @@ def test_correct_target_choice_is_accepted(case_id, handoff, line):
 
 @pytest.mark.parametrize("case_id, handoff, sku", [
     ("hx05_typos_exchange", {"intent": "propose_exchange", "order_id": "O-1201", "line_id": "L1",
-                             "requested_size": "M", "requested_product": "SAME"}, "HOODIE-M"),       # "a mediun"
+                             "requested_size": "M", "requested_product": "SAME", "evidence": "my hoodi"},
+     "HOODIE-M"),  # "a mediun"; code cannot read "hoodi", so the agent cites it (owner decision 2026-11-02)
     ("hx10_jeans_numeric_swap", {"intent": "propose_exchange", "order_id": "O-1206", "line_id": "L1",
                                  "requested_size": "32", "requested_product": "SAME"}, "JEANS-32"),   # "the 30s for 32s"
     ("hx13_spanglish_exchange_tee", {"intent": "propose_exchange", "order_id": "O-3002", "line_id": "L1",

@@ -58,6 +58,7 @@ from desk.telemetry import Footprint
 from desk.testing import fake_policy_llm as fp
 from desk.testing.fake_policy_llm import FakePolicyLLM
 from server.app import (
+    DEMO_CASES,
     FAKE_POLICY,
     REAL_LLM,
     CreateSessionRequest,
@@ -95,7 +96,7 @@ def local_client(app: Any, **options: Any) -> TestClient:
 
 
 def make_app(tmp_path: Path, llm: Any = None, **config: Any):
-    settings = {"llm_mode": FAKE_POLICY, "var_dir": tmp_path / "ui", **config}
+    settings = {"llm_mode": FAKE_POLICY, "var_dir": tmp_path / "ui", "demo_cases_path": None, **config}
     return create_app(ServerConfig(**settings), llm=llm)
 
 
@@ -304,6 +305,15 @@ def test_scenarios_come_from_the_case_file(client: TestClient) -> None:
     assert stale["initial_state"] == case_by_suffix("stale_stock")["initial_state"]
 
 
+def test_demo_chats_follow_the_public_cases(tmp_path: Path) -> None:
+    scenarios = local_client(make_app(tmp_path, demo_cases_path=DEMO_CASES)).get("/api/scenarios").json()
+    ids = [s["case_id"] for s in scenarios]
+    assert ids[:len(CASE_IDS)] == CASE_IDS and len(ids) == len(CASE_IDS) + 3
+    assert [s["title"] for s in scenarios[len(CASE_IDS):]] == [
+        "07 · typos hoodie exchange", "08 · slang size down then refund", "09 · spanglish tee exchange"]
+    assert scenarios[-3]["turns"][0]["message"] == "can i exhange my hoodi for a mediun pls its waaay to big"
+
+
 def test_scenario_titles_and_fault_texts_are_derived_generically() -> None:
     assert scenario_title("batch_12_late_parcel") == "12 · late parcel"
     assert scenario_title("odd_case") == "odd case"
@@ -436,6 +446,74 @@ def test_an_empty_confirm_id_means_no_confirmation(client: TestClient) -> None:
     assert data["state"]["final_state"]["refunds"] == []
 
 
+def test_the_turn_line_serves_waiting_turns_in_arrival_order() -> None:
+    line = server_app.TurnLine(limit=1, max_waiting=2)
+    first, second, third = line.join(), line.join(), line.join()
+    assert first.is_set() and not second.is_set() and not third.is_set()
+    assert (line.position(second), line.position(third)) == (1, 2)
+    assert line.join() is None  # the line is full
+    line.leave()  # the running turn ends: its place goes to the first one waiting
+    assert second.is_set() and not third.is_set() and line.position(third) == 1
+    line.leave()
+    assert third.is_set()
+    line.leave()
+    assert line.snapshot() == {"max_turns": 1, "running": 0, "waiting": 0, "peak_waiting": 2, "max_waiting": 2,
+                               "turns_refused": 1}
+
+
+def test_a_waiting_turn_streams_its_place_in_line_then_runs(tmp_path: Path) -> None:
+    app = make_app(tmp_path, max_turns=1)
+    client = local_client(app)
+    line = app.state.turn_line
+    session_id = create(client, case_id="public_01_refund_boundary")["session_id"]
+    line.join()  # another conversation holds the only place
+    result: dict[str, Any] = {}
+    waiter = threading.Thread(target=lambda: result.update(events=post_turn(client, session_id, "Hi")))
+    waiter.start()
+    deadline = time.monotonic() + 5
+    while line.snapshot()["waiting"] != 1 and time.monotonic() < deadline:
+        time.sleep(0.01)
+    assert line.snapshot()["waiting"] == 1
+    line.leave()
+    waiter.join(10)
+    events = result["events"]
+    assert events[0] == ("queued", {"turn": 1, "position": 1})
+    starts = [data for kind, data in events if kind == "start"]
+    assert starts == [{"turn": 1, "message": "Hi", "confirm_proposal_id": None}]
+    turn_event(events)
+    assert line.snapshot()["running"] == 0  # the finished turn gave its place back
+
+
+def test_a_full_line_refuses_with_503_and_retry_after_and_nothing_runs(tmp_path: Path) -> None:
+    app = make_app(tmp_path, max_turns=1, max_waiting=0)
+    client = local_client(app)
+    session_id = create(client, case_id="public_01_refund_boundary")["session_id"]
+    app.state.turn_line.join()  # the only place is taken and no one may wait
+    refused = client.post(f"/api/sessions/{session_id}/turns", json={"message": "Hi"})
+    assert refused.status_code == 503 and refused.headers["retry-after"] == str(server_app.RETRY_AFTER_S)
+    assert "at capacity" in refused.json()["detail"]
+    assert client.get("/api/telemetry").json()["capacity"]["turns_refused"] == 1
+    app.state.turn_line.leave()
+    events = post_turn(client, session_id, "Hi")
+    assert events[0] == ("start", {"turn": 1, "message": "Hi", "confirm_proposal_id": None})  # the refusal ran nothing
+    turn_event(events)
+
+
+def test_a_busy_session_takes_no_place_in_the_line(tmp_path: Path) -> None:
+    app = make_app(tmp_path, max_turns=1)
+    client = local_client(app)
+    session_id = create(client, case_id="public_01_refund_boundary")["session_id"]
+    app.state.registry.get(session_id).lock.acquire()  # a turn is still running in this session
+    assert client.post(f"/api/sessions/{session_id}/turns", json={"message": "Hi"}).status_code == 409
+    assert app.state.turn_line.snapshot()["running"] == 0
+
+
+def test_capacity_defaults_to_a_few_turns_per_model_slot_and_no_cap_on_the_fake(tmp_path: Path) -> None:
+    assert server_app.turn_limit(ServerConfig(slots=2)) == 2 * server_app.TURNS_PER_SLOT
+    assert server_app.turn_limit(ServerConfig(llm_mode=FAKE_POLICY)) is None
+    assert make_app(tmp_path).state.turn_line is None
+
+
 def test_a_busy_session_refuses_turns_faults_and_reset_with_409(app, client: TestClient) -> None:
     session_id = create(client, case_id=CASES[0]["case_id"])["session_id"]
     session = app.state.registry.get(session_id)
@@ -562,6 +640,44 @@ def test_reset_with_a_fresh_request_id_numbers_the_suffix(client: TestClient) ->
     assert first["request_id"] == f"{case['request_id']}-R2"
     assert second["request_id"] == f"{case['request_id']}-R3"
     assert third["request_id"] == second["request_id"]
+
+
+def test_a_new_request_keeps_the_data_and_gets_a_fresh_request_id(client: TestClient) -> None:
+    case = case_by_suffix("refund_boundary")
+    _, state, _ = run_over_http(client, case)
+    session_id = state["session_id"]
+    assert state["final_state"]["refunds"]
+    answer = client.post(f"/api/sessions/{session_id}/new-request")
+    assert answer.status_code == 200
+    fresh = answer.json()
+    assert fresh["request_id"].startswith("REQ-UI-") and fresh["request_id"] != case["request_id"]
+    assert fresh["final_state"] == fresh["initial_state"] == state["final_state"]
+    assert fresh["turns"] == [] and fresh["proposals"] == [] and fresh["action_audit"] == []
+    assert fresh["case_id"] is None and fresh["faults"]["scheduled"] == []
+    assert fresh["customer_id"] == case["customer_id"] and fresh["generation"] == state["generation"] + 1
+    # The refunded line stays refunded: asking for it again under the new request is denied and nothing moves.
+    data = turn_event(post_turn(client, session_id, case["turns"][0]["message"]))
+    assert data["output"]["decision"] == "deny"
+    assert data["state"]["final_state"]["refunds"] == state["final_state"]["refunds"]
+    # Reset now returns to the start of this request, not of the scenario.
+    reset = client.post(f"/api/sessions/{session_id}/reset").json()
+    assert reset["final_state"] == state["final_state"] and reset["request_id"] == fresh["request_id"]
+
+
+def test_a_new_request_is_refused_while_busy_or_cross_site(app, client: TestClient) -> None:
+    session_id = create(client, case_id=CASES[0]["case_id"])["session_id"]
+    before = client.get(f"/api/sessions/{session_id}/state").json()["request_id"]
+    session = app.state.registry.get(session_id)
+    session.lock.acquire()
+    try:
+        response = client.post(f"/api/sessions/{session_id}/new-request")
+        assert response.status_code == 409 and "still running" in response.json()["detail"]
+    finally:
+        session.lock.release()
+    response = client.post(f"/api/sessions/{session_id}/new-request", headers={"Origin": "https://evil.example"})
+    assert response.status_code == 403 and "cross-site" in response.json()["detail"]
+    assert client.post("/api/sessions/S-000000000000/new-request").status_code == 404
+    assert client.get(f"/api/sessions/{session_id}/state").json()["request_id"] == before
 
 
 def test_base_request_id_only_strips_a_numbered_suffix() -> None:
@@ -738,9 +854,9 @@ def test_ensure_llama_attaches_to_a_healthy_server(monkeypatch: pytest.MonkeyPat
 class FakeLlamaServer:
     engine = "0.7.0 (build 11669, commit 620d2225c)"
 
-    def __init__(self, profile: Any, port: int, log: Path, allow_engine_mismatch: bool = False) -> None:
+    def __init__(self, profile: Any, port: int, log: Path, allow_engine_mismatch: bool = False, slots: int = 1) -> None:
         self.profile, self.port, self.log, self.stopped = profile, port, log, False
-        self.allow_engine_mismatch = allow_engine_mismatch
+        self.allow_engine_mismatch, self.slots = allow_engine_mismatch, slots
 
     def start(self) -> dict[str, Any]:
         expected = "0.7.0 (build 11669, commit 620d2225c)"
