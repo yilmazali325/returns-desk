@@ -15,6 +15,9 @@ Why these sources (evidence in docs/notes/spec_critique.json and docs/notes/llm_
   with pmset/ps at run start and end and belong in run_conditions(); hardware.power points there.
 - Privacy: other processes are recorded by executable name, pid, %CPU and %MEM only, never by their
   full command line (arguments can hold tokens and private paths).
+- Linux/Windows (e.g. an NVIDIA workstation): libproc, ioreg, sysctl and pmset are missing, so footprints
+  read None (callers fall back to RSS), GPU busy and dedicated VRAM come from `nvidia-smi`, and hardware
+  names from lscpu/nproc/free/uname/nvidia-smi.
 
 All readers return None instead of raising when a source is unavailable (non-macOS, process gone),
 so a telemetry gap can never fail a case; the report then says why a value is null.
@@ -150,9 +153,26 @@ def gpu_in_use_system_memory() -> int | None:
 
 
 def gpu_busy_percent() -> int | None:
-    """The GPU's 'Device Utilization %' (0-100) right now, or None if unavailable."""
+    """The GPU's 'Device Utilization %' (0-100) right now (NVIDIA: utilization.gpu), or None if unavailable."""
     stats = gpu_performance_statistics()
-    return None if stats is None else stats.get("Device Utilization %")
+    if stats is not None:
+        return stats.get("Device Utilization %")
+    return nvidia_gpu()["busy_pct"]
+
+
+def _nvidia_rows(fields: str) -> list[list[str]]:
+    """One row of `fields` per NVIDIA GPU from nvidia-smi; [] without nvidia-smi."""
+    out = _run(["nvidia-smi", f"--query-gpu={fields}", "--format=csv,noheader,nounits"])
+    return [[cell.strip() for cell in line.split(",")] for line in (out or "").splitlines() if line.strip()]
+
+
+def nvidia_gpu() -> dict[str, int | None]:
+    """The first NVIDIA GPU's busy % and dedicated memory in use (bytes); None per field when unreadable
+    (no nvidia-smi, or "[N/A]", as unified-memory parts like the GB10 report memory)."""
+    rows = _nvidia_rows("utilization.gpu,memory.used")
+    busy, used = (rows[0] + [None, None])[:2] if rows else (None, None)
+    return {"busy_pct": int(busy) if busy and busy.isdigit() else None,
+            "memory_used": int(used) * MIB if used and used.isdigit() else None}
 
 
 def system_memory() -> tuple[int, int] | None:
@@ -373,6 +393,17 @@ def _sw_vers(key: str) -> str | None:
 
 
 _GPU_CORES_RE = re.compile(r'"gpu-core-count" = (\d+)')
+_LSCPU_MODEL_RE = re.compile(r"^Model name:\s*(.+)$", re.MULTILINE)
+_FREE_TOTAL_RE = re.compile(r"^Mem:\s+(\d+)", re.MULTILINE)
+
+
+def _linux_cpu_cores_memory() -> tuple[str | None, str | None, str | None]:
+    """(CPU model, core count, RAM bytes) as text from lscpu/nproc/free, each None when unreadable."""
+    model = _LSCPU_MODEL_RE.search(_run(["lscpu"]) or "")
+    cores = (_run(["nproc"]) or "").strip()
+    total = _FREE_TOTAL_RE.search(_run(["free", "-b"]) or "")
+    name = model.group(1).strip() if model else ""
+    return name if name not in ("", "-") else None, cores or None, total.group(1) if total else None  # "-": lscpu unknown
 
 POWER_POINTER = "measured per run, not declared: see configuration.run_conditions (pmset power source, powermode, thermal)"
 
@@ -385,24 +416,30 @@ def static_hardware() -> dict[str, object]:
     `--baseline` check compares this object for equality. Power is a reading, so `power` only says
     where the measured state is (run_conditions(), before and after every run).
     """
-    cpu = _sysctl("machdep.cpu.brand_string") or "unknown CPU"
+    cpu = _sysctl("machdep.cpu.brand_string")
     cores = _sysctl("hw.ncpu")
     memsize = _sysctl("hw.memsize")
+    if cpu is None:  # not macOS
+        cpu, cores, memsize = _linux_cpu_cores_memory()
+    cpu = cpu or "unknown CPU"
     accel = _run(["ioreg", "-r", "-d", "1", "-w", "0", "-c", "IOAccelerator"]) or ""
     gpu_cores = _GPU_CORES_RE.findall(accel)
+    nvidia = [] if gpu_cores else _nvidia_rows("name,driver_version")
     product, build = _sw_vers("productVersion"), _sw_vers("buildVersion")
     is_arm64 = _sysctl("hw.optional.arm64") == "1"
-    gpu = f"{cpu} integrated GPU ({gpu_cores[0]} cores)" if gpu_cores else "unknown GPU"
+    gpu = (f"{cpu} integrated GPU ({gpu_cores[0]} cores)" if gpu_cores
+           else " + ".join(row[0] for row in nvidia) if nvidia else "unknown GPU")
+    kernel = (_run(["uname", "-sr"]) or "").strip()
     return {
         "cpu": cpu,
         "cpu_cores": int(cores) if cores and cores.isdigit() else None,
         "gpu": gpu,
-        "gpu_count": len(gpu_cores),
+        "gpu_count": len(gpu_cores) or len(nvidia),
         "ram_gb": round(int(memsize) / 2**30) if memsize and memsize.isdigit() else None,
         "unified_memory": is_arm64,
-        "os": f"macOS {product} ({build})" if product and build else "unknown OS",
+        "os": f"macOS {product} ({build})" if product and build else kernel or "unknown OS",
         "driver": (f"Metal (bundled with macOS {build}; no separate GPU driver)" if build
-                   else "unknown driver"),
+                   else f"NVIDIA driver {nvidia[0][-1]}" if nvidia else "unknown driver"),
         "power": POWER_POINTER,
     }
 
@@ -478,9 +515,9 @@ def run_conditions(own_pids: Iterable[int] = ()) -> dict[str, object]:
     gpu = gpu_performance_statistics() or {}
     return {
         **_power_conditions(),
-        "load_avg_1_5_15": [round(x, 2) for x in os.getloadavg()],
+        "load_avg_1_5_15": [round(x, 2) for x in os.getloadavg()] if hasattr(os, "getloadavg") else None,
         "other_llama_servers": [r for r in others if r["name"] == "llama-server"],
         "cpu_heavy_processes": [r for r in others if float(r["cpu_pct"]) >= CPU_HOG_THRESHOLD_PCT],
-        "gpu_device_utilization_pct": gpu.get("Device Utilization %"),
+        "gpu_device_utilization_pct": gpu.get("Device Utilization %") if gpu else nvidia_gpu()["busy_pct"],
         "gpu_in_use_system_memory_mb": _mb(gpu.get("In use system memory")),
     }

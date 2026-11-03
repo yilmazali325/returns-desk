@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 # Start the Returns Desk demo: the local model (llama-server) and the web UI, then print the URL.
 #   scripts/run.sh [--port 8000] [--llama-port 8081] [--profile F] [--slots 1] [--fake] [--no-warmup] [--allow-engine-mismatch]
 # The UI process attaches to a healthy llama-server on --llama-port, or starts one for the profile

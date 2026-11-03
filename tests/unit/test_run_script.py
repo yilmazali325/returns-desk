@@ -81,6 +81,11 @@ def test_check_engine_accepts_the_pinned_build_and_records_it(tmp_path):
     assert f"found: {ENGINE_VERSION}\npinned: {ENGINE_VERSION}" in record
 
 
+def test_check_engine_accepts_a_source_build_of_the_pinned_commit(tmp_path):
+    proc, _ = _check_engine(tmp_path, "version: 0.7.0-dev (build 11669, commit 620d2225c)")
+    assert proc.returncode == 0 and proc.stdout.startswith("ok  llama.cpp 0.7.0-dev (build 11669, commit 620d2225c)")
+
+
 def test_check_engine_warns_about_another_build_and_says_how_to_get_the_pinned_one(tmp_path):
     proc, record = _check_engine(tmp_path, "version: 0.7.1 (build 11702, commit abcdef123)")
     assert proc.returncode == 0 and "WARNING: llama.cpp is '0.7.1 (build 11702, commit abcdef123)'" in proc.stdout

@@ -585,9 +585,14 @@ def test_preflight_names_cpu_hogs_and_saves_raw_readings(tmp_path: Path) -> None
 
 
 def test_preflight_refuses_a_foreign_llama_server_and_a_busy_port(tmp_path: Path) -> None:
-    # /bin/sleep running under the name .../llama-server (argv[0]); ps shows argv, as for a real server.
+    # A process ps names llama-server, as for a real server. macOS ps shows argv[0], so /bin/sleep under
+    # that name; Linux ps shows the executable's own name, so a copy of sleep with that name.
     fake = tmp_path / "llama-server"
-    sleeper = subprocess.Popen([str(fake), "30"], executable="/bin/sleep")
+    if sys.platform == "darwin":
+        sleeper = subprocess.Popen([str(fake), "30"], executable="/bin/sleep")
+    else:
+        shutil.copy(shutil.which("sleep") or "/bin/sleep", fake)
+        sleeper = subprocess.Popen([str(fake), "30"])
     time.sleep(0.2)
     port = free_port()
     with socket.socket() as listener:

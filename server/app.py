@@ -534,16 +534,18 @@ class TelemetryBoard:
     def _read_memory(self) -> dict[str, Any]:
         """phys_footprint of this server and of llama-server, the GPU's unified-memory use, and how busy the
         machine is: CPU (whole machine and each server, as a share of all cores), GPU, memory used."""
-        server = telemetry.read_footprint(os.getpid())
+        server = _footprint_bytes(os.getpid())
         llama = self._llama_footprint()
         gpu = telemetry.gpu_in_use_system_memory()
-        parts = [f.phys_footprint for f in (server, llama) if f is not None]
+        vram = None if gpu is not None else telemetry.nvidia_gpu()["memory_used"]
+        parts = [b for b in (server, llama) if b is not None]
         machine = telemetry.system_memory()
         return {
-            "server_footprint_mb": _mib(server.phys_footprint) if server else None,
-            "llama_footprint_mb": _mib(llama.phys_footprint) if llama else None,
+            "server_footprint_mb": _mib(server) if server is not None else None,
+            "llama_footprint_mb": _mib(llama) if llama is not None else None,
             "footprint_mb": _mib(sum(parts)) if parts else None,
             "gpu_unified_mb": _mib(gpu) if gpu is not None else None,
+            "gpu_vram_mb": _mib(vram) if vram is not None else None,
             "llama_pid": self._llama_pid,
             "cpu_pct": self._cpu.machine(),
             "server_cpu_pct": self._cpu.process(os.getpid()),
@@ -551,20 +553,27 @@ class TelemetryBoard:
             "gpu_busy_pct": telemetry.gpu_busy_percent(),
             "memory_used_mb": _mib(machine[0]) if machine else None,
             "memory_total_mb": _mib(machine[1]) if machine else None,
-            "notes": "footprint = kernel phys_footprint (server + llama-server); GPU = IOAccelerator "
-                     "'In use system memory', system-wide unified memory that overlaps the footprint. CPU = "
-                     "share of all cores since the last read; GPU busy = 'Device Utilization %'; memory used = "
-                     "total - available, whole machine.",
+            "notes": "footprint = kernel phys_footprint (server + llama-server; resident set size where there is "
+                     "no libproc, e.g. Linux); GPU = IOAccelerator 'In use system memory', system-wide unified "
+                     "memory that overlaps the footprint (NVIDIA: gpu_vram_mb, dedicated memory in use from "
+                     "nvidia-smi). CPU = share of all cores since the last read; GPU busy = 'Device Utilization "
+                     "%' (NVIDIA: utilization.gpu); memory used = total - available, whole machine.",
         }
 
-    def _llama_footprint(self) -> telemetry.Footprint | None:
+    def _llama_footprint(self) -> int | None:
         if self.llama_port is None:
             return None
-        reading = telemetry.read_footprint(self._llama_pid) if self._llama_pid else None
+        reading = _footprint_bytes(self._llama_pid) if self._llama_pid else None
         if reading is None:  # first call, or llama-server was restarted: look the pid up again
             self._llama_pid = pid_listening_on(self.llama_port)
-            reading = telemetry.read_footprint(self._llama_pid) if self._llama_pid else None
+            reading = _footprint_bytes(self._llama_pid) if self._llama_pid else None
         return reading
+
+
+def _footprint_bytes(pid: int) -> int | None:
+    """phys_footprint where libproc exists (macOS), else resident set size; None if the process is gone."""
+    reading = telemetry.read_footprint(pid)
+    return reading.phys_footprint if reading else telemetry.read_rss(pid)
 
 
 def _mib(value: int) -> float:
@@ -1006,7 +1015,8 @@ def main(argv: list[str] | None = None) -> int:
     # Python's default SIGTERM/SIGHUP end the process without running `finally`; turn them into SystemExit
     # so a llama-server we started is always stopped (scripts/run.sh sends SIGTERM on exit).
     signal.signal(signal.SIGTERM, _exit_on_signal)
-    signal.signal(signal.SIGHUP, _exit_on_signal)
+    if hasattr(signal, "SIGHUP"):  # not on Windows
+        signal.signal(signal.SIGHUP, _exit_on_signal)
     llama: LlamaServer | None = None
     try:
         if args.start_llama and not config.fake:

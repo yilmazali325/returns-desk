@@ -367,6 +367,19 @@ def test_shim_reexecs_into_the_venv_when_dependencies_are_missing(monkeypatch) -
     assert os.environ[shim.REEXEC_MARKER] == "1"
 
 
+def test_shim_runs_the_venv_python_as_a_child_on_windows(monkeypatch) -> None:
+    shim = load_module("adapter_shim5", ROOT / "adapter.py")
+    calls: list[list[str]] = []
+    monkeypatch.setattr(shim, "dependencies_available", lambda: False)
+    monkeypatch.setattr(shim, "running_in_venv", lambda: False)
+    monkeypatch.delenv(shim.REEXEC_MARKER, raising=False)
+    monkeypatch.setattr(shim.os, "name", "nt")  # Windows has no exec
+    monkeypatch.setattr(subprocess, "call", lambda argv: calls.append(argv) or 3)
+    monkeypatch.setattr(sys, "argv", ["adapter.py", "--input", "a.json"])
+    assert shim.main() == 3
+    assert calls == [[shim.VENV_PYTHON, str(ROOT / "adapter.py"), "--input", "a.json"]]
+
+
 def test_shim_prints_the_setup_command_when_no_venv_can_help(monkeypatch, capsys) -> None:
     shim = load_module("adapter_shim3", ROOT / "adapter.py")
     monkeypatch.setattr(shim, "dependencies_available", lambda: False)

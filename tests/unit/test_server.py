@@ -772,6 +772,7 @@ def test_memory_of_llama_server_is_found_by_port_and_cached(monkeypatch: pytest.
     alive = {4242}
     monkeypatch.setattr(server_app.telemetry, "read_footprint",
                         lambda pid: Footprint(pid, 2**30, 0, 0, 0) if pid in alive or pid != 4242 else None)
+    monkeypatch.setattr(server_app.telemetry, "read_rss", lambda pid: None)  # the gone pid has no RSS either
     monkeypatch.setattr(server_app.telemetry, "gpu_in_use_system_memory", lambda: None)
     board = TelemetryBoard(8404)
     first = board.memory()
@@ -805,9 +806,25 @@ def test_telemetry_reports_cpu_gpu_and_machine_memory(monkeypatch: pytest.Monkey
 
 def test_memory_readings_degrade_to_null(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(server_app.telemetry, "read_footprint", lambda pid: None)
+    monkeypatch.setattr(server_app.telemetry, "read_rss", lambda pid: None)
     monkeypatch.setattr(server_app, "pid_listening_on", lambda port: None)
     memory = TelemetryBoard(8404)._read_memory()
     assert memory["footprint_mb"] is None and memory["server_footprint_mb"] is None and memory["llama_pid"] is None
+
+
+def test_without_libproc_memory_is_rss_and_the_gpu_is_read_from_nvidia(monkeypatch: pytest.MonkeyPatch) -> None:
+    lookups = []
+    monkeypatch.setattr(server_app.telemetry, "read_footprint", lambda pid: None)  # Linux / Windows
+    monkeypatch.setattr(server_app.telemetry, "read_rss", lambda pid: {4242: 3 * 2**30}.get(pid, 80 * 2**20))
+    monkeypatch.setattr(server_app.telemetry, "gpu_in_use_system_memory", lambda: None)
+    monkeypatch.setattr(server_app.telemetry, "nvidia_gpu", lambda: {"busy_pct": 90, "memory_used": 5 * 2**30})
+    monkeypatch.setattr(server_app, "pid_listening_on", lambda port: lookups.append(port) or 4242)
+    board = TelemetryBoard(8404)
+    memory = board._read_memory()
+    assert (memory["server_footprint_mb"], memory["llama_footprint_mb"], memory["footprint_mb"]) == (80.0, 3072.0, 3152.0)
+    assert memory["gpu_unified_mb"] is None and memory["gpu_vram_mb"] == 5120.0
+    board._read_memory()
+    assert lookups == [8404]  # a readable RSS keeps the pid: no port lookup every second
 
 
 def test_config_reads_the_environment() -> None:
@@ -948,6 +965,10 @@ def test_main_serves_the_ui_and_stops_the_server_it_started(monkeypatch: pytest.
                                         (server_app.signal.SIGHUP, server_app._exit_on_signal)]
     assert server_app.main(["--port", "8411", "--fake", "--start-llama"]) == 0  # fake mode never starts a model
     assert served[-1][1] == 8411
+    keep_signal_handlers.clear()
+    monkeypatch.delattr(server_app.signal, "SIGHUP")  # as on Windows
+    assert server_app.main(["--port", "8412", "--fake"]) == 0
+    assert keep_signal_handlers == [(server_app.signal.SIGTERM, server_app._exit_on_signal)]
 
 
 @pytest.mark.parametrize(("host", "names"), [("0.0.0.0", ("127.0.0.1", "localhost", "::1")),

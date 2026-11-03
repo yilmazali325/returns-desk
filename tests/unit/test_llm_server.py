@@ -14,6 +14,7 @@ import os
 import socket
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 import httpx
 import pytest
@@ -149,6 +150,15 @@ def test_stop_kills_a_server_that_ignores_sigterm(fake_binary, models_dir, tmp_p
     assert server.stop(timeout_s=0.5) == -9
 
 
+@pytest.mark.parametrize(("mode", "code"), [("normal", -15), ("ignore_term", -9)])
+def test_stop_without_process_groups_ends_the_child_itself(fake_binary, models_dir, tmp_path, monkeypatch, mode, code):
+    monkeypatch.setenv("FAKE_MODE", mode)
+    server = make_server(fake_binary, models_dir, tmp_path, warmup=False)
+    server.start()
+    monkeypatch.delattr(LS.os, "killpg")  # as on Windows
+    assert server.stop(timeout_s=0.5) == code
+
+
 def test_metrics_need_the_metrics_flag(fake_binary, models_dir, tmp_path, monkeypatch):
     monkeypatch.setenv("FAKE_MODE", "no_metrics")
     with make_server(fake_binary, models_dir, tmp_path) as server:
@@ -216,6 +226,15 @@ def test_verify_rejects_wrong_hash(fake_binary, models_dir, tmp_path):
     server = make_server(fake_binary, models_dir, tmp_path, expected_sha256=None)  # the real pinned hash
     with pytest.raises(LlamaServerError, match="sha256 mismatch"):
         server.verify()
+
+
+def test_a_source_build_of_the_pinned_commit_is_the_pinned_engine(fake_binary, models_dir, tmp_path, monkeypatch):
+    monkeypatch.setenv("FAKE_VERSION", "version: 0.7.0-dev (build 11669, commit 620d2225c)")
+    checks = make_server(fake_binary, models_dir, tmp_path).verify()
+    assert checks["engine_version_match"] is True and checks["engine_version"].startswith("0.7.0-dev")
+    assert LS.same_engine_build("0.7.0 (build 11669, commit 620d2225c)", ENGINE_VERSION)
+    assert not LS.same_engine_build("0.7.0 (build 11670, commit 620d2225c)", ENGINE_VERSION)
+    assert not LS.same_engine_build("0.7.0", "0.7.0-dev")  # an expected string without a build part
 
 
 def test_verify_engine_version_mismatch(fake_binary, models_dir, tmp_path, monkeypatch):
@@ -335,6 +354,8 @@ def test_page_cache_residency_unknown_cases(tmp_path, monkeypatch):
     data.write_bytes(b"x" * 10)
     monkeypatch.setattr(LS, "_libc", BrokenLibc)
     assert LS.page_cache_residency(data) is None
+    monkeypatch.delattr(LS.mmap, "MAP_SHARED")  # Windows: no mincore to ask
+    assert LS.page_cache_residency(data) is None
 
 
 def test_evict_page_cache_makes_a_file_cold(tmp_path):
@@ -351,6 +372,7 @@ def test_evict_page_cache_failures(tmp_path, monkeypatch):
     empty = tmp_path / "empty"
     empty.write_bytes(b"")
     assert LS.evict_page_cache(empty) is False
+    monkeypatch.delattr(LS.os, "posix_fadvise", raising=False)  # the macOS (msync) path, on any system
 
     class NoMsync:
         def mmap(self, *args):
@@ -365,6 +387,23 @@ def test_evict_page_cache_failures(tmp_path, monkeypatch):
     data = tmp_path / "d"
     data.write_bytes(b"x" * 10)
     monkeypatch.setattr(LS, "_libc", NoMsync)
+    assert LS.evict_page_cache(data) is False
+    monkeypatch.delattr(LS.mmap, "MAP_SHARED")  # Windows: neither msync nor posix_fadvise
+    assert LS.evict_page_cache(data) is False
+
+
+def test_evict_page_cache_uses_posix_fadvise_where_it_exists(tmp_path, monkeypatch):
+    calls = []
+    data = tmp_path / "d"
+    data.write_bytes(b"x" * 10)
+    monkeypatch.setattr(LS.os, "POSIX_FADV_DONTNEED", 4, raising=False)
+    monkeypatch.setattr(LS.os, "posix_fadvise", lambda fd, offset, length, advice: calls.append(advice), raising=False)
+    assert LS.evict_page_cache(data) is True and calls == [4]
+
+    def refused(fd, offset, length, advice):
+        raise OSError("not supported on this file system")
+
+    monkeypatch.setattr(LS.os, "posix_fadvise", refused)
     assert LS.evict_page_cache(data) is False
 
 
@@ -439,6 +478,33 @@ def test_ports_and_listening_pid(monkeypatch):
 
     monkeypatch.setattr(LS.subprocess, "run", no_lsof)
     assert LS.pid_listening_on(port) is None
+
+    def slow_lsof(*args, **kwargs):
+        raise LS.subprocess.TimeoutExpired("lsof", 30)
+
+    monkeypatch.setattr(LS.subprocess, "run", slow_lsof)
+    assert LS.pid_listening_on(port) is None
+
+
+def test_without_lsof_the_listening_pid_comes_from_psutil(monkeypatch):
+    def no_lsof(*args, **kwargs):
+        raise FileNotFoundError("lsof")
+
+    def conn(port, status, pid):
+        return SimpleNamespace(laddr=SimpleNamespace(port=port), status=status, pid=pid)
+
+    connections = [conn(8081, "ESTABLISHED", 11), conn(8081, LS.psutil.CONN_LISTEN, None),
+                   conn(9000, LS.psutil.CONN_LISTEN, 12), conn(8081, LS.psutil.CONN_LISTEN, 13)]
+    monkeypatch.setattr(LS.subprocess, "run", no_lsof)
+    monkeypatch.setattr(LS.psutil, "net_connections", lambda kind: connections)
+    assert LS.pid_listening_on(8081) == 13
+    assert LS.pid_listening_on(7000) is None
+
+    def denied(kind):
+        raise LS.psutil.AccessDenied()
+
+    monkeypatch.setattr(LS.psutil, "net_connections", denied)  # macOS without root
+    assert LS.pid_listening_on(8081) is None
 
 
 def test_next_free_port_skips_busy_ports_then_asks_the_os(monkeypatch):

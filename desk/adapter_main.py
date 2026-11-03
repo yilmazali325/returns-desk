@@ -50,6 +50,7 @@ from desk.llm_server import (
     next_free_port,
     pid_listening_on,
     port_in_use,
+    same_engine_build,
     server_healthy,
 )
 from desk.orchestrator import MAX_HANDOFFS
@@ -73,7 +74,8 @@ LLM_STEP_TIMEOUT_S = 20.0
 LLM_HTTP_RETRIES = 1
 LOG_DIR = ROOT / "var" / "adapter"
 EXIT_OK, EXIT_BAD_INPUT, EXIT_NO_SERVER = 0, 1, 3
-STOP_SIGNALS = (signal.SIGTERM, signal.SIGHUP, signal.SIGINT)
+# Windows has no SIGHUP.
+STOP_SIGNALS = tuple(getattr(signal, name) for name in ("SIGTERM", "SIGHUP", "SIGINT") if hasattr(signal, name))
 ENGINE_WARN, ENGINE_STRICT, ENGINE_ALLOW = "warn", "strict", "allow"
 
 
@@ -212,7 +214,8 @@ def configuration(profile: Profile, server: ServerHandle, conditions: dict[str, 
         "engine": ENGINE,
         "engine_version": (owned.engine_version if owned else None) or ENGINE_VERSION,
         "engine_version_expected": ENGINE_VERSION,
-        "engine_version_verified": bool(owned and owned.engine_version == ENGINE_VERSION),
+        "engine_version_verified": bool(owned and owned.engine_version
+                                        and same_engine_build(owned.engine_version, ENGINE_VERSION)),
         "engine_check": server.engine_check,
         "engine_argv": owned.argv if owned else None,
         "protocol": profile.protocol,

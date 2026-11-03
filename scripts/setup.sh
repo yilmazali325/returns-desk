@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 # One-time setup (needs internet). Afterwards everything runs offline.
 # 0) llama.cpp build check (pinned: 0.7.0, build 11669, commit 620d2225c; recorded in var/setup/engine.txt)
 # 1) Python env with pinned deps  2) Playwright browser for UI tests  3) model files (pinned revision + sha256)
@@ -9,13 +9,20 @@ command -v uv >/dev/null || { echo "Install uv first: https://docs.astral.sh/uv/
 scripts/check_engine.sh || exit 1
 uv sync --frozen
 .venv/bin/python -m playwright install chromium
+if [ "$(uname -s)" = Linux ]; then
+  echo "Linux: if the browser tests cannot start Chromium, add its system libraries once:"
+  echo "  sudo .venv/bin/python -m playwright install-deps chromium"
+fi
 REV=e87f176479d0855a907a41277aca2f8ee7a09523
 mkdir -p models
+sha256() {  # sha256sum on Linux, shasum on macOS
+  if command -v sha256sum >/dev/null; then sha256sum "$1"; else shasum -a 256 "$1"; fi | cut -d' ' -f1
+}
 fetch() {  # repo file sha256
   local repo=$1 file=$2 sha=$3
-  if [[ -f models/$file ]] && [[ "$(shasum -a 256 models/$file | cut -d' ' -f1)" == "$sha" ]]; then echo "ok  $file"; return; fi
+  if [[ -f models/$file ]] && [[ "$(sha256 models/$file)" == "$sha" ]]; then echo "ok  $file"; return; fi
   echo "get $file"; curl -L --fail --retry 5 -C - -o "models/$file" "https://huggingface.co/$repo/resolve/$REV_FOR/$file"
-  [[ "$(shasum -a 256 models/$file | cut -d' ' -f1)" == "$sha" ]] || { echo "sha256 mismatch for $file"; exit 1; }
+  [[ "$(sha256 models/$file)" == "$sha" ]] || { echo "sha256 mismatch for $file"; exit 1; }
 }
 REV_FOR=$REV fetch unsloth/Qwen3.5-4B-GGUF Qwen3.5-4B-Q4_K_M.gguf 00fe7986ff5f6b463e62455821146049db6f9313603938a70800d1fb69ef11a4
 REV_FOR=$REV fetch unsloth/Qwen3.5-4B-GGUF Qwen3.5-4B-Q8_0.gguf 10cc391b403021dd11c614679d2fd92f611c3681d29e29651b717316965d61e1

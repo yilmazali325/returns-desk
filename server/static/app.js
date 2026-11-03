@@ -307,7 +307,9 @@
     $("tm-step").textContent = !step ? "–" : step.error ? `failed: ${step.error} (${who})` : `${fmtMs(step.latency_ms)} (${who})`;
     $("tm-toks").textContent = step && step.decode_tok_s ? `${step.decode_tok_s} tok/s` : t.last_turn && t.last_turn.decode_tok_s ? `${t.last_turn.decode_tok_s} tok/s` : "–";
     $("tm-mem").textContent = fmtMb(t.memory && t.memory.footprint_mb);
-    $("tm-gpu").textContent = fmtMb(t.memory && t.memory.gpu_unified_mb);
+    const vram = t.memory && t.memory.gpu_unified_mb == null && t.memory.gpu_vram_mb != null; // NVIDIA: dedicated memory
+    $("tm-gpu").textContent = fmtMb(t.memory && (vram ? t.memory.gpu_vram_mb : t.memory.gpu_unified_mb));
+    $("tm-gpu").previousElementSibling.textContent = vram ? "GPU memory" : "GPU unified";
     $("tm-mem").title = t.memory ? `server ${fmtMb(t.memory.server_footprint_mb)} + llama-server ${fmtMb(t.memory.llama_footprint_mb)} (phys_footprint)` : "";
     $("tm-gpu").title = t.memory ? t.memory.notes : "";
     const m = t.memory || {};

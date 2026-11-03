@@ -148,9 +148,17 @@ fi
 SLEEP_LINE="$(printf '%s\n' "$SETTINGS" | awk '$1 == "sleep" {$1 = $1; print; exit}')"
 echo "INFO  sleep setting: ${SLEEP_LINE:-unknown} (the run itself is wrapped in caffeinate -dimsu)"
 
-# 7. Ports the run will listen on.
+# 7. Ports the run will listen on. Without lsof (many Linux installs) a connect test still finds a
+#    busy port, but cannot name its owner.
+port_owner() {
+  if command -v lsof >/dev/null; then
+    lsof -nP -iTCP:"$1" -sTCP:LISTEN 2>/dev/null | tail -n +2
+  elif (exec 3<>"/dev/tcp/127.0.0.1/$1") 2>/dev/null; then
+    echo "a process (no lsof here to name it)"
+  fi
+}
 for PORT in ${PORTS[@]+"${PORTS[@]}"}; do
-  OWNER="$(lsof -nP -iTCP:"$PORT" -sTCP:LISTEN 2>/dev/null | tail -n +2)"
+  OWNER="$(port_owner "$PORT")"
   if [ -z "$OWNER" ]; then
     pass "port $PORT: free"
   else

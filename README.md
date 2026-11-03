@@ -18,6 +18,7 @@ setup the demo, the adapter and the tests run with the network off
 
 | Read next | What it covers |
 |---|---|
+| [RUN_ON_HP.md](RUN_ON_HP.md) | step-by-step setup on an HP Z workstation: Linux or Windows (WSL2), NVIDIA GPU |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | agent boundaries, data and tool flow, failure handling |
 | [docs/RESULTS.md](docs/RESULTS.md) | measured baseline vs final, kept apart from proposed improvements |
 | [docs/LIMITATIONS.md](docs/LIMITATIONS.md) | known limitations |
@@ -28,13 +29,25 @@ setup the demo, the adapter and the tests run with the network off
 
 ## Requirements
 
-- An Apple Silicon Mac (measured on an M5 Pro with 24 GB unified memory, macOS 26.4.1). Another
-  machine works if it runs llama.cpp; only the timings differ.
+- An Apple Silicon Mac (measured on an M5 Pro with 24 GB unified memory, macOS 26.4.1), or Linux,
+  e.g. an HP Z workstation with an NVIDIA GPU (see [RUN_ON_HP.md](RUN_ON_HP.md)).
+  Only the timings differ.
 - Python 3.12 via [uv](https://docs.astral.sh/uv/) (0.11.14 used).
-- llama.cpp `llama-server`, pinned to 0.7.0 (build 11669, commit `620d2225c`). Install it with
+- llama.cpp `llama-server`, pinned to 0.7.0 (build 11669, commit `620d2225c`). On macOS install it with
   `brew install llama.cpp`. Another build runs with a warning (`scripts/check_engine.sh` explains how
   to get the pinned one), and `--strict-engine` refuses it.
 - About 7 GB of disk for the two model files.
+
+### Linux, NVIDIA and Windows
+
+> **Tested on a Mac only.** The desk was built, benchmarked and fully tested on an Apple Silicon Mac.
+> Elsewhere it was only checked in a CPU-only Ubuntu container. It has not run on a real NVIDIA GPU,
+> WSL2 or Windows, so expect some hiccups there; [RUN_ON_HP.md](RUN_ON_HP.md) has a troubleshooting table.
+
+On an HP Z workstation or any PC with an NVIDIA GPU, follow [RUN_ON_HP.md](RUN_ON_HP.md): Ubuntu, or
+Windows through WSL2, step by step from the driver check to the UI, the adapter, the tests and the
+load test. In short: build the pinned llama.cpp with `-DGGML_CUDA=ON`, set `LLAMA_SERVER_BIN`, then run
+the same scripts as below.
 
 ## Setup (once, needs internet)
 

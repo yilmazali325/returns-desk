@@ -110,6 +110,17 @@ def test_an_unreachable_server_is_shown_in_the_header(desk: Any) -> None:
     assert desk.page.locator("#model-text").inner_text() == "desk server not reachable"
 
 
+def test_an_nvidia_machine_shows_dedicated_gpu_memory_in_the_header(desk: Any) -> None:
+    memory = {"footprint_mb": 3152.0, "server_footprint_mb": 80.0, "llama_footprint_mb": 3072.0, "gpu_unified_mb": None,
+              "gpu_vram_mb": 5120.0, "cpu_pct": 12.5, "gpu_busy_pct": 90, "memory_used_mb": 16384.0,
+              "memory_total_mb": 65536.0, "notes": "NVIDIA"}  # as /api/telemetry reports it on Linux (no unified memory)
+    body = json.dumps({"last_step": None, "last_turn": None, "memory": memory})
+    desk.page.route("**/api/telemetry", lambda route: route.fulfill(status=200, content_type=JSON, body=body))
+    desk.page.wait_for_function("() => document.querySelector('#tm-gpu').textContent === '5.00 GiB'", timeout=10_000)
+    assert desk.page.locator("#tm-gpu").evaluate("dd => dd.previousElementSibling.textContent") == "GPU memory"
+    assert desk.page.inner_text("#tm-gpu-busy") == "90%"
+
+
 @pytest.mark.http_errors
 def test_start_up_failures_are_explained(make_desk: Any) -> None:
     broken = make_desk(before_goto=lambda page: page.route("**/api/meta", lambda route: route.fulfill(status=500, body="x")))

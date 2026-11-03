@@ -134,6 +134,23 @@ def test_gpu_busy_percent_reads_device_utilization(monkeypatch):
     assert T.gpu_busy_percent() is None
 
 
+NVIDIA_SMI = "87, 6143\n12, 100\n"  # two GPUs: utilization.gpu, memory.used (MiB)
+
+
+def test_nvidia_gpu_reads_the_first_gpu(monkeypatch):
+    monkeypatch.setattr(T, "_run", fake_run({"nvidia-smi": NVIDIA_SMI}))
+    assert T.nvidia_gpu() == {"busy_pct": 87, "memory_used": 6143 * MIB}
+    assert T.gpu_busy_percent() == 87  # no ioreg here: the NVIDIA reading
+
+
+@pytest.mark.parametrize("output", [None, "", "[N/A], [N/A]\n", "5\n"])
+def test_nvidia_gpu_unreadable_fields_are_none(monkeypatch, output):
+    monkeypatch.setattr(T, "_run", fake_run({"nvidia-smi": output}))
+    reading = T.nvidia_gpu()
+    assert reading["memory_used"] is None
+    assert reading["busy_pct"] == (5 if output == "5\n" else None)
+
+
 def test_system_memory_is_used_of_total_and_degrades_to_none(monkeypatch):
     used, total = T.system_memory()
     assert 0 < used < total
@@ -350,6 +367,35 @@ def test_static_hardware_unknown_machine(monkeypatch):
     assert hw["cpu"] == "unknown CPU" and hw["cpu_cores"] is None and hw["gpu"] == "unknown GPU"
     assert hw["gpu_count"] == 0 and hw["ram_gb"] is None and hw["unified_memory"] is False
     assert hw["os"] == "unknown OS" and hw["driver"] == "unknown driver"
+
+
+LINUX_MACHINE = {
+    "lscpu": "Architecture:  x86_64\nModel name:    Intel(R) Xeon(R) w5-2455X\n", "nproc": "24\n",
+    "free -b": "        total   used\nMem:    68719476736  1\nSwap: 0 0\n", "uname -sr": "Linux 6.8.0-45-generic\n",
+    "nvidia-smi": "NVIDIA RTX 4000 Ada Generation, 550.120\nNVIDIA RTX A2000, 550.120\n",
+}
+
+
+def test_static_hardware_on_a_linux_nvidia_workstation(monkeypatch):
+    monkeypatch.setattr(T, "_run", fake_run(LINUX_MACHINE))
+    assert T.static_hardware() == {
+        "cpu": "Intel(R) Xeon(R) w5-2455X", "cpu_cores": 24,
+        "gpu": "NVIDIA RTX 4000 Ada Generation + NVIDIA RTX A2000", "gpu_count": 2, "ram_gb": 64,
+        "unified_memory": False, "os": "Linux 6.8.0-45-generic", "driver": "NVIDIA driver 550.120",
+        "power": T.POWER_POINTER,
+    }
+
+
+def test_static_hardware_when_lscpu_does_not_know_the_cpu(monkeypatch):
+    monkeypatch.setattr(T, "_run", fake_run(LINUX_MACHINE | {"lscpu": "Architecture: aarch64\nModel name: -\n"}))
+    assert T.static_hardware()["cpu"] == "unknown CPU"
+
+
+def test_run_conditions_without_loadavg_read_the_nvidia_gpu(monkeypatch):
+    monkeypatch.setattr(T, "_run", fake_run(LINUX_MACHINE | {"nvidia-smi": NVIDIA_SMI}))
+    monkeypatch.delattr(T.os, "getloadavg")  # as on Windows
+    rc = T.run_conditions()
+    assert rc["load_avg_1_5_15"] is None and rc["gpu_device_utilization_pct"] == 87
 
 
 @needs_macos

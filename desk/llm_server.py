@@ -38,6 +38,7 @@ from pathlib import Path
 from typing import IO, Any
 
 import httpx
+import psutil
 
 from desk.profiles import ENGINE_VERSION, SLOTS, Profile
 
@@ -79,6 +80,16 @@ def engine_version(binary: str) -> str:
     if match is None:
         raise LlamaServerError(f"unrecognised --version output from {binary}")
     return match.group(1).strip()
+
+
+_BUILD_RE = re.compile(r"\(build \d+, commit \w+\)")
+
+
+def same_engine_build(found: str, expected: str) -> bool:
+    """The same build number and commit. A source build of the pinned commit says '0.7.0-dev (build
+    11669, commit 620d2225c)', Homebrew's says '0.7.0 (...)': the same engine."""
+    pin = _BUILD_RE.search(expected)
+    return found == expected or (pin is not None and pin.group(0) in found)
 
 
 SHA_FRESH = "fresh"
@@ -145,6 +156,8 @@ def page_cache_residency(path: Path) -> float | None:
 
     Mapping a file does not read it, so the probe itself does not warm the cache.
     """
+    if not hasattr(mmap, "MAP_SHARED"):  # Windows: no mmap flags and no mincore
+        return None
     try:
         size = os.path.getsize(path)
         fd = os.open(path, os.O_RDONLY)
@@ -171,7 +184,8 @@ MS_INVALIDATE = 0x2  # <sys/mman.h> on macOS
 
 
 def evict_page_cache(path: Path) -> bool:
-    """Drop the file's clean pages from the OS page cache (msync MS_INVALIDATE; no sudo needed).
+    """Drop the file's clean pages from the OS page cache (macOS: msync MS_INVALIDATE; Linux:
+    posix_fadvise DONTNEED; no sudo needed). False where neither exists (Windows).
 
     Used only by the bench to measure a true cold start (weights read from SSD); `sudo purge` would
     evict everything on the machine instead.
@@ -180,6 +194,21 @@ def evict_page_cache(path: Path) -> bool:
         size = os.path.getsize(path)
         fd = os.open(path, os.O_RDONLY)
     except OSError:
+        return False
+    if size == 0:  # nothing to map or drop
+        os.close(fd)
+        return False
+    if hasattr(os, "posix_fadvise"):  # Linux: msync MS_INVALIDATE does not drop clean pages there
+        try:
+            os.fsync(fd)  # DONTNEED drops clean pages only: write back a just-written file first
+            os.posix_fadvise(fd, 0, 0, os.POSIX_FADV_DONTNEED)
+            return True
+        except OSError:
+            return False
+        finally:
+            os.close(fd)
+    if not hasattr(mmap, "MAP_SHARED"):
+        os.close(fd)
         return False
     libc = _libc()
     try:
@@ -276,10 +305,21 @@ def pid_listening_on(port: int) -> int | None:
     try:
         done = subprocess.run(["lsof", "-nP", f"-iTCP:{port}", "-sTCP:LISTEN", "-t"],
                               capture_output=True, text=True, timeout=LSOF_TIMEOUT_S, check=False)
+    except FileNotFoundError:  # no lsof (many Linux images, Windows): ask psutil instead
+        return _pid_listening_psutil(port)
     except (OSError, subprocess.SubprocessError):
         return None
     first = done.stdout.split()
     return int(first[0]) if first and first[0].isdigit() else None
+
+
+def _pid_listening_psutil(port: int) -> int | None:
+    try:
+        connections = psutil.net_connections(kind="tcp")
+    except (psutil.Error, OSError):
+        return None
+    return next((c.pid for c in connections
+                 if c.status == psutil.CONN_LISTEN and c.laddr and c.laddr.port == port and c.pid), None)
 
 
 def _child_env() -> dict[str, str]:
@@ -341,7 +381,7 @@ class LlamaServer:
             raise LlamaServerError(f"sha256 mismatch for {self.model_path.name}: got {self.model_sha256}, "
                                    f"expected {self.expected_sha256}")
         self.engine_version = engine_version(self.binary)
-        match = self.engine_version == self.expected_engine_version
+        match = same_engine_build(self.engine_version, self.expected_engine_version)
         if not match and not self.allow_engine_mismatch:
             raise LlamaServerError(f"engine version {self.engine_version!r} is not the pinned "
                                    f"{self.expected_engine_version!r}: {MISMATCH_HELP}")
@@ -417,11 +457,11 @@ class LlamaServer:
         code = None
         if proc is not None:
             if proc.poll() is None:
-                _signal_group(proc.pid, signal.SIGTERM)
+                _end(proc, hard=False)
                 try:
                     proc.wait(timeout=timeout_s)
                 except subprocess.TimeoutExpired:
-                    _signal_group(proc.pid, signal.SIGKILL)
+                    _end(proc, hard=True)
                     proc.wait(timeout=timeout_s)
             code = proc.returncode
         if self._log is not None:
@@ -463,6 +503,18 @@ class LlamaServer:
             return "\n".join(self.log_path.read_text(errors="replace").splitlines()[-lines:])
         except OSError:
             return "(no log)"
+
+
+def _end(proc: subprocess.Popen[bytes], hard: bool) -> None:
+    """SIGTERM (hard: SIGKILL) the child's process group. Windows has neither process groups nor
+    SIGKILL; there the child itself is terminated (hard: killed)."""
+    if not hasattr(os, "killpg"):
+        if hard:
+            proc.kill()
+        else:
+            proc.terminate()
+        return
+    _signal_group(proc.pid, signal.SIGKILL if hard else signal.SIGTERM)
 
 
 def _signal_group(pid: int, sig: int) -> None:
