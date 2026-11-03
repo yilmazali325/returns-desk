@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import copy
 import json
+import os
 import queue
 import re
 import socket
@@ -781,6 +782,25 @@ def test_memory_of_llama_server_is_found_by_port_and_cached(monkeypatch: pytest.
     board._memory_read_at = float("-inf")
     alive.clear()  # llama-server restarted: the old pid is gone, so the port is looked up again
     assert board.memory()["llama_footprint_mb"] is None and lookups == [8404, 8404]
+
+
+def test_telemetry_reports_cpu_gpu_and_machine_memory(monkeypatch: pytest.MonkeyPatch) -> None:
+    class Meter:
+        def machine(self) -> float:
+            return 37.5
+
+        def process(self, pid: int | None) -> float | None:
+            return {os.getpid(): 4.2, 4242: 12.0}.get(pid)
+
+    monkeypatch.setattr(server_app.telemetry, "CpuMeter", Meter)
+    monkeypatch.setattr(server_app.telemetry, "read_footprint", lambda pid: Footprint(pid, 64 * 2**20, 0, 0, 0))
+    monkeypatch.setattr(server_app.telemetry, "gpu_in_use_system_memory", lambda: None)
+    monkeypatch.setattr(server_app.telemetry, "gpu_busy_percent", lambda: 88)
+    monkeypatch.setattr(server_app.telemetry, "system_memory", lambda: (12 * 2**30, 24 * 2**30))
+    monkeypatch.setattr(server_app, "pid_listening_on", lambda port: 4242)
+    memory = TelemetryBoard(8404)._read_memory()
+    assert (memory["cpu_pct"], memory["server_cpu_pct"], memory["llama_cpu_pct"]) == (37.5, 4.2, 12.0)
+    assert memory["gpu_busy_pct"] == 88 and (memory["memory_used_mb"], memory["memory_total_mb"]) == (12288.0, 24576.0)
 
 
 def test_memory_readings_degrade_to_null(monkeypatch: pytest.MonkeyPatch) -> None:

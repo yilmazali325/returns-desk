@@ -120,9 +120,11 @@ correctness:
 Many customers at once against a running desk, through the same HTTP API the page uses. In the page:
 open the **Load test** tab, enter how many customers and how many at the same time, and press Start. It
 shows the flow (customers → waiting in line → turns running → model slots busy → done), live numbers (turns
-per second, reply time p50/p95, turns refused and retried, double refunds, breaker) and four charts: turns
-finished each second, reply time, turns running vs waiting in line, and model calls at the model vs waiting
-for a slot. Hover a chart for exact values; a table view is under the charts. From a terminal:
+per second, reply time p50/p95, turns refused and retried, double refunds, breaker, CPU, GPU and memory) and
+six charts: turns finished each second, reply time, turns running vs waiting in line, model calls at the model
+vs waiting for a slot, CPU vs GPU busy, and memory in use (whole machine vs desk + model). Hover a chart for
+exact values; a table view is under the charts. The page header also shows CPU, GPU busy and memory in use.
+From a terminal:
 
 ```bash
 scripts/run.sh --fake --port 8010
@@ -147,7 +149,8 @@ How the desk stays up under load (real model; `server/app.py`, `desk/llm.py`):
 - After 3 model failures in a row (down, hung, 5xx), a circuit breaker fails calls at once for 10 s, then
   lets one trial call through.
 - `GET /api/telemetry` → `capacity`: turns running and waiting in line, slots, calls waiting and at the
-  model, turns refused, breaker state.
+  model, turns refused, breaker state; `memory`: CPU (whole machine, desk server, model server, as a share
+  of all cores), GPU busy %, machine memory in use, and the two servers' footprints.
 
 Measured on the M5 Pro, 40 customers at once (`var/load/`):
 

@@ -70,6 +70,9 @@
 
   const fmtMs = (ms) => (ms === null || ms === undefined ? "–" : ms >= 1000 ? `${(ms / 1000).toFixed(2)} s` : `${Math.round(ms)} ms`);
   const fmtMb = (mb) => (mb === null || mb === undefined ? "n/a" : mb >= 1024 ? `${(mb / 1024).toFixed(2)} GiB` : `${Math.round(mb)} MiB`);
+  const fmtPct = (v) => (v === null || v === undefined ? "–" : `${Math.round(v)}%`);
+  /** Memory in use of the machine's total: "14.2 / 24 GiB". */
+  const fmtUsedOf = (used, total) => (used === null || used === undefined ? "–" : `${(used / 1024).toFixed(1)} / ${Math.round(total / 1024)} GiB`);
   const plural = (n, word, many = `${word}s`) => `${n} ${n === 1 ? word : many}`;
   const lineRef = (order, line) => `${order}/${line}`;
   /** At most `max` characters, cut at a word boundary when there is one, with an ellipsis. */
@@ -307,6 +310,12 @@
     $("tm-gpu").textContent = fmtMb(t.memory && t.memory.gpu_unified_mb);
     $("tm-mem").title = t.memory ? `server ${fmtMb(t.memory.server_footprint_mb)} + llama-server ${fmtMb(t.memory.llama_footprint_mb)} (phys_footprint)` : "";
     $("tm-gpu").title = t.memory ? t.memory.notes : "";
+    const m = t.memory || {};
+    $("tm-cpu").textContent = fmtPct(m.cpu_pct);
+    $("tm-cpu").title = `whole machine, all cores; desk server ${fmtPct(m.server_cpu_pct)}, llama-server ${fmtPct(m.llama_cpu_pct)}`;
+    $("tm-gpu-busy").textContent = fmtPct(m.gpu_busy_pct);
+    $("tm-ram").textContent = fmtUsedOf(m.memory_used_mb, m.memory_total_mb);
+    $("tm-ram").title = "memory in use on the whole machine (total minus available)";
   }
 
   function commandRow(label, command) {
@@ -1875,7 +1884,7 @@
       return { final: true, done: r.completed + r.failed, failed: r.failed, inFlight: r.peak_in_flight ?? 0,
         turnsPerS: r.turns_per_s, p50: r.latency_client_ms.p50, p95: r.latency_client_ms.p95,
         refused: r.turns_refused_at_capacity ?? 0, duplicates: r.duplicate_refunds_or_exchanges, elapsed: r.wall_s,
-        perSecond: r.turns_finished_per_second || [], memory: r.server_footprint_mb_peak,
+        perSecond: r.turns_finished_per_second || [], memory: r.server_footprint_mb_peak, machine: r.machine_peak || null,
         replyBySecond: r.reply_p50_ms_by_second || [], timeline: r.timeline || [], peakWaiting: r.peak_waiting_in_line,
         line: r.turn_line_limit == null ? null : { max_turns: r.turn_line_limit, running: 0, waiting: 0 }, model: r.model_slots == null ? null : { slots: r.model_slots, waiting: r.peak_model_calls_waiting, breaker: r.breaker } };
     }
@@ -1884,7 +1893,7 @@
     return { final: false, done: l.done ?? 0, failed: l.failed ?? 0, inFlight: l.in_flight ?? 0,
       turnsPerS: l.turns_per_s, p50: l.latency_client_ms?.p50, p95: l.latency_client_ms?.p95,
       refused: l.refused ?? 0, duplicates: l.duplicates ?? 0, elapsed: l.elapsed_s ?? 0,
-      perSecond: l.turns_finished_per_second || [], memory: l.server_footprint_mb,
+      perSecond: l.turns_finished_per_second || [], memory: l.server_footprint_mb, machine: l.machine || null,
       replyBySecond: l.reply_p50_ms_by_second || [], timeline: l.timeline || [], line: l.line || null,
       model: m && m.slots != null ? { slots: m.slots, busy: m.in_flight, waiting: m.waiting, breaker: m.breaker } : null };
   }
@@ -1923,6 +1932,13 @@
         ["Breaker", state, state !== "closed" && state !== "–" ? "bad" : null]);
     }
     tiles.push(["Server memory", fmtMb(n.memory)]);
+    if (n.machine) {
+      const most = n.final ? "Peak " : "";
+      tiles.push([`${most}CPU, all cores`, fmtPct(n.machine.cpu_pct)],
+        [`${most}CPU, desk / model`, `${fmtPct(n.machine.server_cpu_pct)} / ${fmtPct(n.machine.llama_cpu_pct)}`],
+        [`${most}GPU busy`, fmtPct(n.machine.gpu_busy_pct)],
+        [`${most}Memory in use`, fmtUsedOf(n.machine.memory_used_mb, n.machine.memory_total_mb)]);
+    }
     const box = clear($("load-kpis"));
     for (const [label, value, tone] of tiles) box.append(el("div", { "data-tone": tone }, el("dt", { text: label }), el("dd", { text: value })));
   }
@@ -1949,12 +1965,12 @@
    * `xs` are seconds since the start; each series has `name` and `values` (null = no data). Hover shows
    * every series' value at that moment.
    */
-  function loadChart({ title, kind, xs, series, fmt, width }) {
+  function loadChart({ title, kind, xs, series, fmt, width, max }) {
     const height = 150, left = 48, right = 8, top = 10, bottom = 18;
     const plotW = width - left - right, plotH = height - top - bottom;
     const n = xs.length;
     const peak = Math.max(1e-9, ...series.flatMap((s) => s.values.filter((v) => v !== null && v !== undefined)));
-    const yMax = peak > 1e-9 ? peak : 1;
+    const yMax = max ?? (peak > 1e-9 ? peak : 1);
     const y = (v) => top + plotH - (v / yMax) * plotH;
     const step = n > 1 ? plotW / (kind === "bars" ? n : n - 1) : plotW;
     const x = (i) => left + (kind === "bars" ? i * step + step / 2 : n > 1 ? i * step : plotW / 2);
@@ -2074,6 +2090,16 @@
       if (tl.some((p) => p.model_busy !== null && p.model_busy !== undefined)) {
         charts.push({ title: "Model calls: at the model vs waiting for a slot", kind: "lines", xs, fmt: count,
           series: [{ name: "At the model", values: tl.map((p) => p.model_busy) }, { name: "Waiting for a slot", values: tl.map((p) => p.model_waiting) }] });
+      }
+      if (tl.some((p) => p.cpu !== null && p.cpu !== undefined)) {
+        charts.push({ title: "Machine busy: CPU (all cores) vs GPU", kind: "lines", xs, fmt: fmtPct, max: 100,
+          series: [{ name: "CPU", values: tl.map((p) => p.cpu) }, { name: "GPU", values: tl.map((p) => p.gpu) }] });
+      }
+      if (tl.some((p) => p.mem_used_mb !== null && p.mem_used_mb !== undefined)) {
+        const gib = (v) => (v === null || v === undefined ? "–" : `${(v / 1024).toFixed(v >= 10240 ? 0 : 1)} GiB`);
+        charts.push({ title: "Memory in use: whole machine vs desk + model", kind: "lines", xs, fmt: gib,
+          max: n.machine?.memory_total_mb ?? undefined,
+          series: [{ name: "Whole machine", values: tl.map((p) => p.mem_used_mb) }, { name: "Desk + model", values: tl.map((p) => p.footprint_mb) }] });
       }
     }
     for (const chart of charts) wrap.append(loadChart({ ...chart, width }));

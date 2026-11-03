@@ -460,7 +460,8 @@ POST /api/sessions/{id}/faults        {type:"stock_change", sku, new_stock} | {t
 GET  /api/sessions/{id}/state         final_state shape + proposals + events + audit
 POST /api/sessions/{id}/reset         restore the session's initial state (fresh request_id suffix optional)
 POST /api/sessions/{id}/new-request   the same customer's next request: current state kept, fresh request_id, no script
-GET  /api/telemetry                   last step timings, tokens/s, footprint, unified GPU memory, capacity (turns running /
+GET  /api/telemetry                   last step timings, tokens/s, footprint, unified GPU memory, CPU % (machine, desk
+                                      server, llama-server), GPU busy %, machine memory used/total, capacity (turns running /
                                       waiting in line, slots, calls waiting / at the model, turns refused, circuit breaker)
 POST /api/load                        {customers 1–20000, concurrency 1–2000, scenarios?} → start bench.load as its own
                                       process against this server (409 while one runs; 503 without a known port)

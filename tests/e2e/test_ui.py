@@ -316,6 +316,12 @@ def test_mobile_layout_has_no_horizontal_scroll(make_desk: Any) -> None:
     desk.shot("11_mobile.png")
 
 
+def test_the_narrowest_phone_has_no_horizontal_scroll(make_desk: Any) -> None:
+    desk = make_desk(viewport={"width": 375, "height": 812})  # the reviewers' phone width
+    desk.open("refund_boundary")
+    assert desk.page.evaluate("() => document.documentElement.scrollWidth - window.innerWidth") <= 0
+
+
 def test_dark_mode_uses_the_dark_tokens(make_desk: Any) -> None:
     desk = make_desk(color_scheme="dark")
     desk.open("exchange")

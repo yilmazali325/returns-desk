@@ -11,7 +11,8 @@ Telemetry in the report (var/load/load-<UTC time>.json) and the printed summary:
 - speed: wall time, customers and turns per second, turns finished in each second of the run;
 - latency per turn: client side (request to final event) and server side, p50/p95/p99/max;
 - load: customers in flight (sampled every 0.5 s); the server's memory, model calls waiting for a
-  slot and at the model (sampled every 2 s); turns refused at capacity (503) and retried;
+  slot and at the model, CPU (whole machine, desk server, model server), GPU busy and the machine's
+  memory in use (sampled every 1 s); turns refused at capacity (503) and retried;
 - outcome: decision mix, errors by kind;
 - correctness: no order line refunded or exchanged twice, and every copy of a scenario reached the
   same decisions (expected on the test double; the real model may legitimately vary).
@@ -119,13 +120,27 @@ def run_customer(client: httpx.Client, index: int, scenario: dict[str, Any], t0:
     return out
 
 
+MACHINE_KEYS = ("cpu_pct", "server_cpu_pct", "llama_cpu_pct", "gpu_busy_pct", "memory_used_mb", "memory_total_mb")
+
+
 def timeline(samples: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Where the customers were over time: in flight (load tool), running and waiting in the server's
-    turn line, and the model's calls (at the model, waiting for a slot). One point per telemetry read."""
+    turn line, and the model's calls (at the model, waiting for a slot); and how busy the machine was
+    (CPU and GPU %, memory in use, desk + model footprint). One point per telemetry read."""
     points = [{"t": s["t"], "in_flight": s["in_flight"], "running": (s.get("line") or {}).get("running"),
                "waiting": (s.get("line") or {}).get("waiting"), "model_busy": (s.get("model") or {}).get("in_flight"),
-               "model_waiting": (s.get("model") or {}).get("waiting")} for s in samples if "memory" in s]
+               "model_waiting": (s.get("model") or {}).get("waiting"),
+               "cpu": (s["memory"] or {}).get("cpu_pct"), "gpu": (s["memory"] or {}).get("gpu_busy_pct"),
+               "mem_used_mb": (s["memory"] or {}).get("memory_used_mb"),
+               "footprint_mb": (s["memory"] or {}).get("footprint_mb")} for s in samples if "memory" in s]
     return points[::max(1, math.ceil(len(points) / MAX_POINTS))]
+
+
+def machine_peaks(samples: list[dict[str, Any]]) -> dict[str, float | None]:
+    """The highest reading of each machine number during the run (None when it was never read)."""
+    readings = [s["memory"] for s in samples if s.get("memory")]
+    return {k: max((r[k] for r in readings if isinstance(r.get(k), (int, float))), default=None)
+            for k in MACHINE_KEYS}
 
 
 def reply_p50_by_second(turns: list[dict[str, Any]], seconds: int) -> list[float | None]:
@@ -159,6 +174,7 @@ def live_snapshot(started: list[dict[str, Any]], finished: list[dict[str, Any]],
         "timeline": timeline(samples),
         "line": next((s["line"] for s in reversed(samples) if s.get("line")), None),
         "model": model, "server_footprint_mb": (memory or {}).get("server_footprint_mb"),
+        "machine": {k: (memory or {}).get(k) for k in MACHINE_KEYS},
     }
 
 
@@ -285,6 +301,7 @@ def build_report(results: list[dict[str, Any]], samples: list[dict[str, Any]], w
         "timeline": timeline(samples),
         "peak_waiting_in_line": max(((s.get("line") or {}).get("waiting") or 0 for s in samples), default=None),
         "turn_line_limit": next((s["line"]["max_turns"] for s in reversed(samples) if s.get("line")), None),
+        "machine_peak": machine_peaks(samples),
         "samples": samples,
     }
 
@@ -304,6 +321,9 @@ def format_summary(report: dict[str, Any]) -> str:
         f"  load          peak {report['peak_in_flight']} customers in flight, server memory peak "
         f"{report['server_footprint_mb_peak'] or '–'} MB, {report['turns_refused_at_capacity']} turns refused "
         "at capacity (retried)",
+        "  machine       peak CPU {cpu_pct}% (desk {server_cpu_pct}%, model {llama_cpu_pct}%), GPU busy {gpu_busy_pct}%, "
+        "memory {memory_used_mb} of {memory_total_mb} MB".format_map(
+            {k: "–" if v is None else v for k, v in report["machine_peak"].items()}),
         f"  decisions     {', '.join(f'{k} {v}' for k, v in sorted(report['decisions'].items(), key=str))}",
         f"  correctness   {report['duplicate_refunds_or_exchanges']} duplicate refunds/exchanges; "
         + ", ".join(f"{case} {v['distinct_outcomes']} outcome(s)" for case, v in report["scenarios"].items()),

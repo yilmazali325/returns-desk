@@ -127,6 +127,45 @@ def test_gpu_statistics_unavailable(monkeypatch, output):
     assert T.gpu_in_use_system_memory() is None
 
 
+def test_gpu_busy_percent_reads_device_utilization(monkeypatch):
+    monkeypatch.setattr(T, "_run", fake_run({"ioreg": IOREG}))
+    assert T.gpu_busy_percent() == 20
+    monkeypatch.setattr(T, "_run", fake_run({"ioreg": None}))
+    assert T.gpu_busy_percent() is None
+
+
+def test_system_memory_is_used_of_total_and_degrades_to_none(monkeypatch):
+    used, total = T.system_memory()
+    assert 0 < used < total
+
+    def broken():
+        raise OSError("no sysctl")
+
+    monkeypatch.setattr(T.psutil, "virtual_memory", broken)
+    assert T.system_memory() is None
+
+
+def test_cpu_meter_reports_shares_of_all_cores_and_none_for_a_gone_process(monkeypatch):
+    meter = T.CpuMeter()
+    assert meter.process(None) is None
+    assert meter.process(os.getpid()) == 0.0  # psutil measures between two reads
+    end = time.perf_counter() + 0.3
+    while time.perf_counter() < end:  # keep one core busy
+        pass
+    share = meter.process(os.getpid())
+    assert 0 < share <= 100 / meter._cores + 1
+    assert 0 <= meter.machine() <= 100
+    gone = subprocess.Popen([sys.executable, "-c", "pass"])
+    gone.wait()
+    assert meter.process(gone.pid) is None
+
+    def broken(interval):
+        raise OSError("no counters")
+
+    monkeypatch.setattr(T.psutil, "cpu_percent", broken)
+    assert meter.machine() is None
+
+
 @needs_macos
 def test_gpu_in_use_memory_is_readable_on_this_mac():
     value = T.gpu_in_use_system_memory()

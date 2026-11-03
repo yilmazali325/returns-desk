@@ -7,7 +7,8 @@ from pathlib import Path
 import httpx
 from fastapi.testclient import TestClient
 
-from bench.load import format_summary, live_snapshot, percentile, read_turn, run_customer, run_load
+from bench.load import (format_summary, live_snapshot, machine_peaks, percentile, read_turn, run_customer,
+                        run_load, timeline)
 from desk.llm import CircuitBreaker, LLMClient
 from server.app import FAKE_POLICY, ServerConfig, create_app
 
@@ -91,3 +92,19 @@ def test_reply_time_line_is_the_median_of_the_last_ten_seconds() -> None:
     line = reply_p50_by_second(turns, 14)
     assert line[0] == 100.0 and line[3] == 100.0 and line[9] == 100.0  # nearest-rank median of [100, 300]
     assert line[10] == 300.0 and line[12] == 300.0 and line[13] == 900.0
+
+
+def test_machine_numbers_follow_the_run_and_peak_in_the_report() -> None:
+    reads = [{"cpu_pct": 20.0, "server_cpu_pct": 1.0, "llama_cpu_pct": 3.0, "gpu_busy_pct": 90, "memory_used_mb": 12000.0,
+              "memory_total_mb": 24576.0, "footprint_mb": 3000.0},
+             {"cpu_pct": 35.0, "server_cpu_pct": None, "llama_cpu_pct": 2.0, "gpu_busy_pct": 70, "memory_used_mb": 12500.0,
+              "memory_total_mb": 24576.0, "footprint_mb": 3100.0}]
+    samples = [{"t": 0.5, "in_flight": 2}, {"t": 1.0, "in_flight": 2, "memory": reads[0]},
+               {"t": 2.0, "in_flight": 1, "memory": reads[1]}, {"t": 3.0, "in_flight": 0, "memory": None}]
+    points = timeline(samples)
+    assert [(p["cpu"], p["gpu"], p["mem_used_mb"], p["footprint_mb"]) for p in points] == [
+        (20.0, 90, 12000.0, 3000.0), (35.0, 70, 12500.0, 3100.0), (None, None, None, None)]
+    assert machine_peaks(samples) == {"cpu_pct": 35.0, "server_cpu_pct": 1.0, "llama_cpu_pct": 3.0, "gpu_busy_pct": 90,
+                                      "memory_used_mb": 12500.0, "memory_total_mb": 24576.0}
+    snapshot = live_snapshot([], [], samples[:3], 2.0, customers=2, concurrency=2, in_flight=1)
+    assert snapshot["machine"]["cpu_pct"] == 35.0 and snapshot["machine"]["memory_used_mb"] == 12500.0

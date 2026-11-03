@@ -413,7 +413,7 @@ body[data-busy="true"] .chat::before { content: ""; position: absolute; z-index:
 
 /* ---------- side panel: tabs, team graph, audit ---------- */
 .side { display: grid; grid-template-rows: auto minmax(0, 1fr); background: linear-gradient(var(--surface), var(--surface)) padding-box, var(--grad-border) border-box; border: 1.5px solid transparent; border-radius: var(--radius); box-shadow: var(--shadow-md); }
-.side-tabs { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 10px; border-bottom: 1px solid var(--border); }
+.side-tabs { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 10px; border-bottom: 1px solid var(--border); }
 [role="tablist"] { display: flex; gap: 4px; padding: 4px; background: var(--surface-2); border-radius: var(--radius-pill); }
 [role="tab"] { border: 0; background: none; padding: 7px 16px; border-radius: var(--radius-pill); cursor: pointer; font-weight: 650; color: var(--muted); }
 [role="tab"][aria-selected="true"] { color: var(--on-brand); background: var(--grad-brand); box-shadow: var(--glow-accent); }

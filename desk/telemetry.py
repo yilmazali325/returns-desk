@@ -149,6 +149,46 @@ def gpu_in_use_system_memory() -> int | None:
     return stats["In use system memory"]
 
 
+def gpu_busy_percent() -> int | None:
+    """The GPU's 'Device Utilization %' (0-100) right now, or None if unavailable."""
+    stats = gpu_performance_statistics()
+    return None if stats is None else stats.get("Device Utilization %")
+
+
+def system_memory() -> tuple[int, int] | None:
+    """(used, total) bytes of the whole machine; used = total - available, as Activity Monitor counts it."""
+    try:
+        vm = psutil.virtual_memory()
+    except (psutil.Error, OSError):
+        return None
+    return vm.total - vm.available, vm.total
+
+
+class CpuMeter:
+    """CPU use since the previous read, for the whole machine and for single processes, each as a share of
+    all cores (0-100). psutil measures between two reads, so the first read of a process is 0."""
+
+    def __init__(self) -> None:
+        self._cores = psutil.cpu_count() or 1
+        self._procs: dict[int, psutil.Process] = {}
+
+    def machine(self) -> float | None:
+        try:
+            return round(psutil.cpu_percent(None), 1)
+        except (psutil.Error, OSError):
+            return None
+
+    def process(self, pid: int | None) -> float | None:
+        if pid is None:
+            return None
+        try:
+            proc = self._procs.setdefault(pid, psutil.Process(pid))
+            return round(proc.cpu_percent(None) / self._cores, 1)
+        except (psutil.Error, OSError):
+            self._procs.pop(pid, None)
+            return None
+
+
 def measure_gpu_baseline(samples: int = 3, interval_s: float = 0.1,
                          read_gpu: Callable[[], int | None] = gpu_in_use_system_memory) -> int | None:
     """Median of a few idle readings, taken before llama-server launches; None if unreadable."""
