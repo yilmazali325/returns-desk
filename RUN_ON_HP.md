@@ -146,6 +146,14 @@ http://127.0.0.1:8000`. Open that address in a browser (on WSL2, in the Windows 
 
 Options: `--port 8010` for another port, `--fake` for the deterministic test double (no model needed).
 
+From another computer, forward the port over SSH and open the forwarded address there; any local port works:
+
+```bash
+ssh -N -L 9000:127.0.0.1:8000 user@workstation
+```
+
+Then open `http://localhost:9000` in that computer's browser.
+
 ## Step 7: run the contract adapter
 
 ```bash
@@ -210,6 +218,7 @@ Clears UI sessions and logs under `var/`. It never touches `results/` or `models
 | `cmake` cannot find CUDA | `nvcc --version` must work: step 2, then remove `~/llama.cpp/build` and build again |
 | Browser tests fail to start Chromium | `sudo .venv/bin/python -m playwright install-deps chromium` |
 | `Port 8000 is already in use` | `scripts/run.sh --port 8010` |
+| `No supported WebSocket library detected` | harmless: the desk uses no WebSockets; something sent an upgrade request and got a normal reply |
 | `No .venv here` | run `scripts/setup.sh` first, from the project folder |
 | `python3: command not found` | `sudo apt install -y python3` (any Python 3 starts the adapter; it switches to `.venv` itself) |
 | The model server log | `var/llama-server-8081.log` (UI) |

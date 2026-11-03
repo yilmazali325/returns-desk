@@ -1282,11 +1282,17 @@ def test_local_host_names_are_served(client: TestClient, host: str) -> None:
     assert client.get("/api/scenarios", headers={"Host": host}).status_code == 200
 
 
-def test_with_a_known_port_the_host_header_must_name_it(tmp_path: Path) -> None:
+def test_a_port_forward_to_another_local_port_is_served(tmp_path: Path) -> None:
+    """`ssh -L 9000:127.0.0.1:8000` makes the browser send Host localhost:9000. The host name is what
+    stops DNS rebinding, so any port on a local name is served; a POST's Origin must still match it."""
     client = local_client(make_app(tmp_path, port=8000))
-    assert client.get("/api/scenarios").status_code == 200
+    forwarded = {"Host": "localhost:9000"}
+    assert client.get("/", headers=forwarded).status_code == 200
     assert client.get("/api/scenarios", headers={"Host": "127.0.0.1"}).status_code == 200  # no port: default
-    assert client.get("/api/scenarios", headers={"Host": "127.0.0.1:9999"}).status_code == 400
+    session_id = create(client, case_id=CASES[0]["case_id"])["session_id"]
+    reset = f"/api/sessions/{session_id}/reset"
+    assert client.post(reset, headers={**forwarded, "Origin": "http://localhost:9000"}).status_code == 200
+    assert client.post(reset, headers={**forwarded, "Origin": "http://localhost:3000"}).status_code == 403
 
 
 @pytest.mark.parametrize("headers", [{"Origin": "https://evil.example"}, {"Origin": "null"},

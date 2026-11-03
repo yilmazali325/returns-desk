@@ -117,7 +117,7 @@ class ServerConfig:
     fake_step_delay_s: float = 0.0
     allow_engine_mismatch: bool = False  # --start-llama with another llama.cpp build: warn instead of refusing
     allowed_hostnames: tuple[str, ...] = LOCAL_HOSTNAMES
-    port: int | None = None  # the UI port, when known: the Host header must then name it
+    port: int | None = None  # the UI port, when known: load runs started from the page call it
     slots: int = SLOTS  # parallel requests the model server serves (scripts/run.sh --slots)
     max_turns: int | None = None  # turns running at once; None: TURNS_PER_SLOT x slots (no cap on the fake)
     max_waiting: int = MAX_WAITING  # turns waiting in line for one of those places
@@ -729,7 +729,8 @@ def _netloc(url_or_host: str) -> tuple[str | None, int | None]:
 def request_refusal(method: str, headers: Headers, config: ServerConfig) -> tuple[int, str] | None:
     """Why this request must not reach the app, as (status, message); None when it may."""
     hostname, port = _netloc(headers.get("host", ""))
-    if hostname not in config.allowed_hostnames or (config.port is not None and port not in (config.port, None)):
+    # Any port: an SSH port forward (ssh -L 9000:127.0.0.1:8000) arrives as localhost:9000.
+    if hostname not in config.allowed_hostnames:
         return 400, "this server only answers requests addressed to 127.0.0.1 or localhost"
     if method not in STATE_CHANGING_METHODS:
         return None
